@@ -18,7 +18,7 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="welcome_img">
-                        <img class="img-fluid" src="img/cake-feature/welcome-right.jpg" alt="">
+                        <img class="img-fluid" src="public/img/cake-feature/welcome-right.jpg" alt="">
                     </div>
                 </div>
             </div>
@@ -32,7 +32,7 @@
                 <div class="item">
                     <div class="cake_feature_item">
                         <div class="cake_img">
-                            <img src="img/cake-feature/c-feature-1.jpg" alt="">
+                            <img src="public/img/cake-feature/c-feature-1.jpg" alt="">
                         </div>
                         <div class="cake_text">
                             <h4>$29</h4>
@@ -44,7 +44,7 @@
                 <div class="item">
                     <div class="cake_feature_item">
                         <div class="cake_img">
-                            <img src="img/cake-feature/c-feature-2.jpg" alt="">
+                            <img src="public/img/cake-feature/c-feature-2.jpg" alt="">
                         </div>
                         <div class="cake_text">
                             <h4>$29</h4>
@@ -56,7 +56,7 @@
                 <div class="item">
                     <div class="cake_feature_item">
                         <div class="cake_img">
-                            <img src="img/cake-feature/c-feature-3.jpg" alt="">
+                            <img src="public/img/cake-feature/c-feature-3.jpg" alt="">
                         </div>
                         <div class="cake_text">
                             <h4>$29</h4>
@@ -68,7 +68,7 @@
                 <div class="item">
                     <div class="cake_feature_item">
                         <div class="cake_img">
-                            <img src="img/cake-feature/c-feature-4.jpg" alt="">
+                            <img src="public/img/cake-feature/c-feature-4.jpg" alt="">
                         </div>
                         <div class="cake_text">
                             <h4>$29</h4>
