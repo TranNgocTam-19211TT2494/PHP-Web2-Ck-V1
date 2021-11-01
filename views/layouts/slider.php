@@ -3,11 +3,11 @@
         <ul>
             <li data-index="rs-1587" data-transition="fade" data-slotamount="default" data-hideafterloop="0"
                 data-hideslideonmobile="off" data-easein="default" data-easeout="default" data-masterspeed="300"
-                data-thumb="img/home-slider/slider-1.jpg" data-rotate="0" data-saveperformance="off"
+                data-thumb="public/img/home-slider/slider-1.jpg" data-rotate="0" data-saveperformance="off"
                 data-title="Creative" data-param1="01" data-param2="" data-param3="" data-param4="" data-param5=""
                 data-param6="" data-param7="" data-param8="" data-param9="" data-param10="" data-description="">
                 <!-- MAIN IMAGE -->
-                <img src="img/home-slider/slider-1.jpg" alt="" data-bgposition="center center" data-bgfit="cover"
+                <img src="public/img/home-slider/slider-1.jpg" alt="" data-bgposition="center center" data-bgfit="cover"
                     data-bgrepeat="no-repeat" data-bgparallax="5" class="rev-slidebg" data-no-retina>
 
                 <!-- LAYER NR. 1 -->
@@ -44,11 +44,11 @@
             </li>
             <li data-index="rs-1588" data-transition="fade" data-slotamount="default" data-hideafterloop="0"
                 data-hideslideonmobile="off" data-easein="default" data-easeout="default" data-masterspeed="300"
-                data-thumb="img/home-slider/slider-2.jpg" data-rotate="0" data-saveperformance="off"
+                data-thumb="public/img/home-slider/slider-2.jpg" data-rotate="0" data-saveperformance="off"
                 data-title="Creative" data-param1="01" data-param2="" data-param3="" data-param4="" data-param5=""
                 data-param6="" data-param7="" data-param8="" data-param9="" data-param10="" data-description="">
                 <!-- MAIN IMAGE -->
-                <img src="img/home-slider/slider-2.jpg" alt="" data-bgposition="center center" data-bgfit="cover"
+                <img src="public/img/home-slider/slider-2.jpg" alt="" data-bgposition="center center" data-bgfit="cover"
                     data-bgrepeat="no-repeat" data-bgparallax="5" class="rev-slidebg" data-no-retina>
                 <!-- LAYERS -->
                 <!-- LAYERS -->

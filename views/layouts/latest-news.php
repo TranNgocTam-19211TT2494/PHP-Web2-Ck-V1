@@ -8,7 +8,7 @@
             <div class="col-lg-4 col-md-6">
                 <div class="l_news_image">
                     <div class="l_news_img">
-                        <img class="img-fluid" src="img/blog/latest-news/l-news-1.jpg" alt="">
+                        <img class="img-fluid" src="public/img/blog/latest-news/l-news-1.jpg" alt="">
                     </div>
                     <div class="l_news_hover">
                         <a href="#">
@@ -23,7 +23,7 @@
             <div class="col-lg-4 col-md-6">
                 <div class="l_news_item">
                     <div class="l_news_img">
-                        <img class="img-fluid" src="img/blog/latest-news/l-news-2.jpg" alt="">
+                        <img class="img-fluid" src="public/img/blog/latest-news/l-news-2.jpg" alt="">
                     </div>
                     <div class="l_news_text">
                         <a href="#">
@@ -40,7 +40,7 @@
             <div class="col-lg-4 col-md-6">
                 <div class="l_news_item">
                     <div class="l_news_img">
-                        <img class="img-fluid" src="img/blog/latest-news/l-news-3.jpg" alt="">
+                        <img class="img-fluid" src="public/img/blog/latest-news/l-news-3.jpg" alt="">
                     </div>
                     <div class="l_news_text">
                         <a href="#">

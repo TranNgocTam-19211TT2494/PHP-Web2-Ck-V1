@@ -4,7 +4,7 @@
             <div class="row footer_wd_inner">
                 <div class="col-lg-3 col-6">
                     <aside class="f_widget f_about_widget">
-                        <img src="img/footer-logo.png" alt="">
+                        <img src="public/img/footer-logo.png" alt="">
                         <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui bland itiis praesentium
                             voluptatum deleniti atque corrupti.</p>
                         <ul class="nav">
