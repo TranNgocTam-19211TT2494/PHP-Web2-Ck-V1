@@ -26,7 +26,7 @@
     <!--================End Service Area =================-->
 
     <!--================Discover Menu Area =================-->
-    <?php include_once("views/layouts/discover-menu.php");?>
+    <!-- <?php include_once("views/layouts/discover-menu.php");?> -->
     <!--================End Discover Menu Area =================-->
 
     <!--================Client Says Area =================-->
@@ -53,10 +53,6 @@
     <!--================Search Box Area =================-->
     <?php include_once("views/layouts/search.php");?>
     <!--================End Search Box Area =================-->
-
-
-
-
 
     <?php include_once("views/footer.php");?>
 </body>

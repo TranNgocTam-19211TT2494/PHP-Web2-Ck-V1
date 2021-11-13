@@ -1,3 +1,7 @@
+<?php
+	require_once 'views/head.php';
+	
+?>
 <section class="discover_menu_area">
     <div class="discover_menu_inner">
         <div class="container">

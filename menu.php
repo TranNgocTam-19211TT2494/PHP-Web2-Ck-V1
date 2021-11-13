@@ -65,7 +65,7 @@
 			<div class="main_menu_area">
 				<div class="container">
 					<nav class="navbar navbar-expand-lg navbar-light bg-light">
-						<a class="navbar-brand" href="index.html">
+						<a class="navbar-brand" href="index.php">
 						<img src="img/logo.png" alt="">
 						<img src="img/logo-2.png" alt="">
 						</a>
@@ -81,21 +81,21 @@
 								<li class="dropdown submenu">
 									<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Home</a>
 									<ul class="dropdown-menu">
-										<li><a href="index.html">Home 1</a></li>
-										<li><a href="index-2.html">Home 2</a></li>
+										<li><a href="index.php">Home 1</a></li>
+										<!-- <li><a href="index-2.html">Home 2</a></li>
 										<li><a href="index-3.html">Home 3</a></li>
 										<li><a href="index-4.html">Home 4</a></li>
-										<li><a href="index-5.html">Home 5</a></li>
+										<li><a href="index-5.html">Home 5</a></li> -->
 									</ul>
 								</li>
-								<li><a href="cake.html">Our Cakes</a></li>
-								<li class="active"><a href="menu.html">Menu</a></li>
+								<li><a href="cake.php">Our Cakes</a></li>
+								<li class="active"><a href="menu.php">Menu</a></li>
 								<li class="dropdown submenu">
 									<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">About Us</a>
 									<ul class="dropdown-menu">
-										<li><a href="about-us.html">About Us</a></li>
-										<li><a href="our-team.html">Our Chefs</a></li>
-										<li><a href="testimonials.html">Testimonials</a></li>
+										<li><a href="about-us.php">About Us</a></li>
+										<li><a href="our-team.php">Our Chefs</a></li>
+										<li><a href="testimonials.php">Testimonials</a></li>
 									</ul>
 								</li>
 							</ul>
@@ -103,39 +103,39 @@
 								<li class="dropdown submenu">
 									<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Pages</a>
 									<ul class="dropdown-menu">
-										<li><a href="service.html">Services</a></li>
+										<li><a href="service.php">Services</a></li>
 										<li class="dropdown submenu">
 											<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Gallery</a>
 											<ul class="dropdown-menu">
-												<li><a href="portfolio.html">-  Gallery Classic</a></li>
-												<li><a href="portfolio-full-width.html">-  Gallery Full width</a></li>
+												<li><a href="portfolio.php">-  Gallery Classic</a></li>
+												<li><a href="portfolio-full-width.php">-  Gallery Full width</a></li>
 											</ul>
 										</li>
-										<li><a href="faq.html">Faq</a></li>
-										<li><a href="what-we-make.html">What we make</a></li>
-										<li><a href="special.html">Special Recipe</a></li>
-										<li><a href="404.html">404 page</a></li>
-										<li><a href="comming-soon.html">Coming Soon page</a></li>
+										<li><a href="faq.php">Faq</a></li>
+										<li><a href="what-we-make.php">What we make</a></li>
+										<li><a href="special.php">Special Recipe</a></li>
+										<li><a href="404.php">404 page</a></li>
+										<li><a href="comming-soon.php">Coming Soon page</a></li>
 									</ul>
 								</li>
 								<li class="dropdown submenu">
 									<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Blog</a>
 									<ul class="dropdown-menu">
-										<li><a href="blog.html">Blog with sidebar</a></li>
-										<li><a href="blog-2column.html">Blog 2 column</a></li>
-										<li><a href="single-blog.html">Blog details</a></li>
+										<li><a href="blog.php">Blog with sidebar</a></li>
+										<li><a href="blog-2column.php">Blog 2 column</a></li>
+										<li><a href="single-blog.php">Blog details</a></li>
 									</ul>
 								</li>
 								<li class="dropdown submenu">
 									<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Shop</a>
 									<ul class="dropdown-menu">
-										<li><a href="shop.html">Main shop</a></li>
-										<li><a href="product-details.html">Product Details</a></li>
-										<li><a href="cart.html">Cart Page</a></li>
-										<li><a href="checkout.html">Checkout Page</a></li>
+										<li><a href="shop.php">Main shop</a></li>
+										<li><a href="product-details.php">Product Details</a></li>
+										<li><a href="cart.php">Cart Page</a></li>
+										<li><a href="checkout.php">Checkout Page</a></li>
 									</ul>
 								</li>
-								<li><a href="contact.html">Contact Us</a></li>
+								<li><a href="contact.php">Contact Us</a></li>
 							</ul>
 						</div>
 					</nav>
@@ -150,8 +150,8 @@
         		<div class="banner_text">
         			<h3>Menu</h3>
         			<ul>
-        				<li><a href="index.html">Home</a></li>
-        				<li><a href="menu.html">Menu</a></li>
+        				<li><a href="index.php">Home</a></li>
+        				<li><a href="menu.php">Menu</a></li>
         			</ul>
         		</div>
         	</div>
