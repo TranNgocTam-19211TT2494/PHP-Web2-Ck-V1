@@ -97,7 +97,6 @@
                                     <div class="social-button">
                                         <button class="au-btn au-btn--block au-btn--blue m-b-20">register with
                                             google</button>
-
                                     </div>
                                 </div>
                             </form>
