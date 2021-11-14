@@ -1,3 +1,29 @@
+<?php 
+session_start();
+
+    require_once('models/UserModel.php');
+    $UserModel = new UserModel();
+    
+    if (!empty($_POST['submit'])) {
+        $users = [
+            'email' => $_POST['email'],
+            'password' => $_POST['password']
+        ];
+        $user = NULL;
+        if ($user = $UserModel->login($users['email'], $users['password'])) {
+            //Login successful
+            $_SESSION['id'] = $user['id'];
+    
+            $_SESSION['message'] = 'Login successful';
+            header('location: index.php');
+        }else {
+            //Login failed
+            $_SESSION['message'] = 'Login failed';
+        }
+    
+    }
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -23,14 +49,15 @@
 
     <!-- Vendor CSS-->
     <link href="public/backend/vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
-    <link href="public/backend/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
+    <link href="public/backend/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet"
+        media="all">
     <link href="public/backend/vendor/wow/animate.css" rel="stylesheet" media="all">
     <link href="public/backend/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
     <link href="public/backend/vendor/slick/slick.css" rel="stylesheet" media="all">
     <link href="public/backend/vendor/select2/select2.min.css" rel="stylesheet" media="all">
     <link href="public/backend/vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all">
 
-    <!-- Main CSS-->    
+    <!-- Main CSS-->
     <link href="public/backend/css/theme.css" rel="stylesheet" media="all">
 
 </head>
@@ -47,14 +74,16 @@
                             </a>
                         </div>
                         <div class="login-form">
-                            <form action="" method="post">
+                            <form method="post">
                                 <div class="form-group">
                                     <label>Email Address</label>
-                                    <input class="au-input au-input--full" type="email" name="email" placeholder="Email">
+                                    <input class="au-input au-input--full" type="email" name="email"
+                                        placeholder="Email">
                                 </div>
                                 <div class="form-group">
                                     <label>Password</label>
-                                    <input class="au-input au-input--full" type="password" name="password" placeholder="Password">
+                                    <input class="au-input au-input--full" type="password" name="password"
+                                        placeholder="Password">
                                 </div>
                                 <div class="login-checkbox">
                                     <label>
@@ -64,10 +93,11 @@
                                         <a href="forgot-password.php">Forgotten Password?</a>
                                     </label>
                                 </div>
-                                <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">sign in</button>
+                                <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit" name="submit" value="submit">sign in</button>
                                 <div class="social-login-content">
                                     <div class="social-button">
-                                        <button class="au-btn au-btn--block au-btn--blue m-b-20">sign in with facebook</button>
+                                        <button class="au-btn au-btn--block au-btn--blue m-b-20">sign in with
+                                            facebook</button>
                                         <button class="au-btn au-btn--block au-btn--blue2">sign in with twitter</button>
                                     </div>
                                 </div>
