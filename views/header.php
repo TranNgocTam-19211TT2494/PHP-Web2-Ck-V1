@@ -17,6 +17,10 @@
                     <li class="shop_cart"><a href="#"><i class="lnr lnr-cart"></i></a></li>
                     <li><a class="popup-with-zoom-anim" href="#test-search"><i class="fa fa-search"></i></a></li>
                 </ul>
+                <ul class="h_search list_style">
+                    <li class="shop_cart12"><a style="color: black;font-weight: 600;" href="login.php">Login</a></li>
+                    <li><a style="color: black;font-weight: 600;" class="popup-with-zoom-anim" href="register.php">Register</a></li>
+                </ul>
             </div>
         </div>
     </div>
@@ -39,21 +43,21 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
                         <li class="dropdown submenu active">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="index.php" role="button"
                                 aria-haspopup="true" aria-expanded="false">Home</a>
                             <ul class="dropdown-menu">
                                 <li><a href="index.php">Home 1</a></li>
                             </ul>
                         </li>
                         <li><a href="cake.php">Our Cakes</a></li>
-                        <li><a href="./layouts/discover-menu.php">Menu</a></li>
+                        <li><a href="menu.php">Menu</a></li>
                         <li class="dropdown submenu">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button"
                                 aria-haspopup="true" aria-expanded="false">About Us</a>
                             <ul class="dropdown-menu">
                                 <li><a href="about-us.php">About Us</a></li>
                                 <li><a href="our-team.php">Our Chefs</a></li>
-                                <li><a href="testimonials.php">Testimonials</a></li>
+                                <!-- <li><a href="testimonials.html">Testimonials</a></li> -->
                             </ul>
                         </li>
                     </ul>
@@ -71,14 +75,14 @@
                                         <li><a href="portfolio-full-width.php">- Gallery Full width</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="faq.php">Faq</a></li>
-                                <li><a href="what-we-make.php">What we make</a></li>
-                                <li><a href="special.php">Special Recipe</a></li>
+                                <!-- <li><a href="faq.html">Faq</a></li>
+                                <li><a href="what-we-make.html">What we make</a></li>
+                                <li><a href="special.html">Special Recipe</a></li> -->
                                 <li><a href="404.php">404 page</a></li>
-                                <li><a href="comming-soon.php">Coming Soon page</a></li>
+                                <!-- <li><a href="comming-soon.html">Coming Soon page</a></li> -->
                             </ul>
                         </li>
-                        <li class="dropdown submenu">
+                        <!-- <li class="dropdown submenu">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button"
                                 aria-haspopup="true" aria-expanded="false">Blog</a>
                             <ul class="dropdown-menu">
@@ -86,7 +90,7 @@
                                 <li><a href="blog-2column.php">Blog 2 column</a></li>
                                 <li><a href="single-blog.php">Blog details</a></li>
                             </ul>
-                        </li>
+                        </li> -->
                         <li class="dropdown submenu">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button"
                                 aria-haspopup="true" aria-expanded="false">Shop</a>
