@@ -17,9 +17,8 @@ if (!empty($_POST['submit'])) {
 
     if (!empty($type_id)) {
         $protypesModel->UpdateProtype($_POST);
-        // var_dump($protypesModel->UpdateProtype($_POST));die();
     } else {
-        // $protypesModel->insertUser($_POST);
+        $protypesModel->insertProtype($_POST);
     }
     header('location: ./Protypes.php');
 }

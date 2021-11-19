@@ -10,6 +10,13 @@ class ProtypeModel extends BaseAdminModel
         $protypes = $this->select($sql);
         return $protypes;
     }
+    public function insertProtype($input)
+    {
+        $sql = "INSERT INTO protypes (type_name) VALUES (" .
+        "'" . $input['name'] ."')";
+        $protypes = $this->insert($sql);
+        return $protypes;
+    }
     public function UpdateProtype($input)
     {
         $sql = 'UPDATE protypes SET 
