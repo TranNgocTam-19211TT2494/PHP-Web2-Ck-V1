@@ -1,11 +1,6 @@
 <?php 
-
 session_start();
-
-if(isset($_SESSION['id'])) {
-    $id = $_SESSION['id'];
-    
-}
+ob_start();
 ?>
 
 <header class="main_header_area">
@@ -111,14 +106,24 @@ if(isset($_SESSION['id'])) {
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button"
                                 aria-haspopup="true" aria-expanded="false">Account</a>
                             <ul class="dropdown-menu">
-                                <li><a href="login.php">Login</a></li>
-                                <li><a href="register.php">Register</a></li>
-                                <?php if(!empty($_SESSION['id'])) { ?>
-                                <li><a href="register.php">Xin tạo tài khoản</a></li>
-                                <?php } else {?> 
-                                <li><a href="logout.php">Logout</a></li>
-                                <?php } ?>
-                               
+                                <?php
+                            if (!empty($_SESSION["lgUserID"])) {
+                                $chuoi1 = <<<EOD
+                            <li><a href="logout.php"><i class="fa fa-user"></i>Đăng xuất</a></li>
+EOD;
+                                echo $chuoi1;
+                          
+                            } else {
+                            $chuoi1 = <<<EOD
+                            
+                            <li><a href="login.php"><i class="fa fa-user"></i>Đăng Nhập</a></li>
+                            <li><a href="register.php"><i class="fa fa-user"></i>Đăng Ký</a></li>
+EOD;
+                            echo $chuoi1;
+                        }
+
+                        ?>
+
 
                             </ul>
                         </li>

@@ -1,12 +1,12 @@
 <?php 
-    require_once('models/UserModel.php');
-    $UserModel = new UserModel();
+    require_once('models/HomeModel.php');
+    $HomeModel = new HomeModel();
 
     if(!empty($_POST['submit'])) {
 
       
         if($_POST['username'] != '' && $_POST['email'] != '' && $_POST['password'] != '') {
-            $insert = $UserModel->createNewUser($_POST);
+            $insert = $HomeModel->createNewUser($_POST);
             if($insert) {
                 header("location: login.php");
             } else {
