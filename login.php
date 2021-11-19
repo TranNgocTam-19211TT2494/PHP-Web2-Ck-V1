@@ -1,25 +1,35 @@
 <?php 
-session_start();
 
-    require_once('models/UserModel.php');
-    $UserModel = new UserModel();
+session_start();
+    require_once('models/HomeModel.php');
+    $HomeModel = new HomeModel();
     
     if (!empty($_POST['submit'])) {
-        $users = [
-            'email' => $_POST['email'],
-            'password' => $_POST['password']
-        ];
-        $user = NULL;
-        if ($user = $UserModel->login($users['email'], $users['password'])) {
-            //Login successful
-            $_SESSION['id'] = $user['id'];
-    
-            $_SESSION['message'] = 'Login successful';
-            header('location: index.php');
-        }else {
-            //Login failed
-            $_SESSION['message'] = 'Login failed';
+        $userName=trim($_POST["username"]);
+        $passWord=trim($_POST["password"]);
+        if ($userName!="" && $passWord!="") {
+            
+            $rows=$HomeModel->login($userName, $passWord);
+            
+            
+           
+            if (!empty($rows)) {
+               foreach($rows as $row) {
+                    $_SESSION["lgUserName"]=$userName;
+                    
+                    $_SESSION["lgUserID"]=$row['id'];
+                   
+               }
+                header("location:index.php");
+            } else {
+                echo "<p class=\"error\" style = 'color: red;
+				text-align: center;'>Tên đăng nhập hoặc mật khẩu không đúng</p>";
+            }
+            
         }
+     
+       
+        
     
     }
 
@@ -76,9 +86,9 @@ session_start();
                         <div class="login-form">
                             <form method="post">
                                 <div class="form-group">
-                                    <label>Email Address</label>
-                                    <input class="au-input au-input--full" type="email" name="email"
-                                        placeholder="Email">
+                                    <label>Enter Name</label>
+                                    <input class="au-input au-input--full" type="text" name="username"
+                                        placeholder="Name">
                                 </div>
                                 <div class="form-group">
                                     <label>Password</label>
@@ -93,7 +103,8 @@ session_start();
                                         <a href="forgot-password.php">Forgotten Password?</a>
                                     </label>
                                 </div>
-                                <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit" name="submit" value="submit">sign in</button>
+                                <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit" name="submit"
+                                    value="submit">sign in</button>
                                 <div class="social-login-content">
                                     <div class="social-button">
                                         <button class="au-btn au-btn--block au-btn--blue m-b-20">sign in with

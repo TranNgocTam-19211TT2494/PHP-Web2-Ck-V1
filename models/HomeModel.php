@@ -2,10 +2,10 @@
 require_once 'BaseModel.php'; 
 class HomeModel extends BaseModel {
       //Login
-      public function login($email, $password)
+      public function login($username, $password)
       {
           $md5Password = md5($password);
-          $sql = 'SELECT * FROM users WHERE email = "' . $email . '" AND password = "' . $md5Password . '"';
+          $sql = 'SELECT * FROM users WHERE username = "' . $username . '" AND password = "' . $md5Password . '"';
   
           $user = $this->select($sql);
           return $user;
