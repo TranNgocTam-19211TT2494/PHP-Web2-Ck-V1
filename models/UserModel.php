@@ -33,5 +33,17 @@ class UserModel extends BaseAdminModel {
         $user = $this->select($sql);
         return $user;
     }
-    
+    public function updateUser($input) {
+        $sql = 'UPDATE users SET 
+        name = "' . mysqli_real_escape_string(self::$_connection, $input['username']) .'", 
+        password="'. md5($input['password']) .'",
+        email = "' . $input['email'] .'",
+        permission = "' . $input['permission'] .'",
+        WHERE id = ' . $input['id'];
+
+        $user = $this->update($sql);
+
+        return $user;
+    }
+
 }

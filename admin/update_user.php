@@ -10,6 +10,15 @@ if (!empty($_GET['id'])) {
     $user = $userModel->findUserById($id);//Update existing user
 }
 
+//Update existing user
+if (!empty($_POST['submit'])) {
+    if (!empty($_id)) {
+        $userModel->updateUser($_POST);
+    } else {
+        echo "Sai người dùng";
+    }
+    header('location: admin.php');
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -50,20 +59,20 @@ if (!empty($_GET['id'])) {
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
                         <div class="row">
-                            <div class="col-lg-3">
+                            <div class="col-lg-3"></div>
+                            <?php if ($user || !empty($id)) { ?>
 
-                            </div>
-                            <?php if ($user || empty($id)) { ?>
                             <div class="col-lg-6">
                                 <div class="card">
                                     <div class="card-header">User
                                         <?php if (!empty($user[0]['username'])) echo $user[0]['username'] ?></div>
                                     <div class="card-body card-block">
                                         <form method="post" class="">
+                                            <input type="hidden" name="id" value="<?php echo $id ?>">
                                             <div class="form-group">
                                                 <div class="input-group">
                                                     <div class="input-group-addon">Username</div>
-                                                    <input type="text" id="username3" name="username3"
+                                                    <input type="text" id="username3" name="username"
                                                         value="<?php if (!empty($user[0]['username'])) echo $user[0]['username'] ?>"
                                                         class="form-control">
                                                     <div class="input-group-addon">
@@ -74,7 +83,7 @@ if (!empty($_GET['id'])) {
                                             <div class="form-group">
                                                 <div class="input-group">
                                                     <div class="input-group-addon">Email</div>
-                                                    <input type="email" id="email3" name="email3"
+                                                    <input type="email" id="email3" name="email"
                                                         value="<?php if (!empty($user[0]['email'])) echo $user[0]['email'] ?>"
                                                         class="form-control">
                                                     <div class="input-group-addon">
@@ -84,15 +93,28 @@ if (!empty($_GET['id'])) {
                                             </div>
                                             <div class="form-group">
                                                 <div class="input-group">
-                                                    <div class="input-group-addon">Date</div>
-                                                    <input type="text" id="password3" name="date"
-                                                        value="<?php if (!empty($user[0]['date'])) echo $user[0]['date'] ?>"
+                                                    <div class="input-group-addon">Password</div>
+                                                    <input type="text" id="password3" name="password"
+                                                        value="<?php if (!empty($user[0]['password'])) echo $user[0]['password'] ?>"
                                                         class="form-control">
                                                     <div class="input-group-addon">
                                                         <i class="fa fa-asterisk"></i>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <div class="input-group-addon">Permission</div>
+                                                    <input type="text" id="password3" name="permission"
+                                                        value="<?php if (!empty($user[0]['permission'])) echo $user[0]['permission'] ?>"
+                                                        class="form-control">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-asterisk"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button class="au-btn au-btn--block au-btn--green m-b-20" name="submit"
+                                                value="submit">Submit</button>
                                             <div class="form-actions form-group">
                                                 <a href="admin.php" class="btn btn-primary btn-sm">Back</a>
                                             </div>
@@ -101,9 +123,7 @@ if (!empty($_GET['id'])) {
                                 </div>
                             </div>
                             <?php } ?>
-                            <div class="col-lg-3">
-
-                            </div>
+                            <div class="col-lg-3"></div>
                         </div>
                         <div class="row">
                             <div class="col-md-12">
