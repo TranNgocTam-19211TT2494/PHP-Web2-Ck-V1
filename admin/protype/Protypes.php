@@ -90,7 +90,7 @@ $protypes = $protypesModel->getProtype();
                                                         <button class="item" data-toggle="tooltip" data-placement="top" title="Edit" onclick="window.location.href='./ViewProtypes.php?type_id=<?php echo $proty['type_id'] ?>'">
                                                             <i class="zmdi zmdi-edit"></i>
                                                         </button>
-                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Delete" onclick="window.location.href='./DeleteProtypes.php?type_id=<?php echo $proty['type_id'] ?>'">
                                                             <i class="zmdi zmdi-delete"></i>
                                                         </button>
                                                     </div>

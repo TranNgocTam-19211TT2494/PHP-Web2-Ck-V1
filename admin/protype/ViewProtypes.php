@@ -4,7 +4,7 @@ require "../../models/ProtypeModel.php";
 $protypesModel = new ProtypeModel();
 
 
-$protype = NULL; //Add new user
+$protype = NULL; 
 $type_id = NULL;
 
 if (!empty($_GET['type_id'])) {

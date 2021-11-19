@@ -23,4 +23,9 @@ class ProtypeModel extends BaseAdminModel
         $protypes = $this->select($protypes);
         return $protypes;
     }
+    public function DeleteProtype($id) {
+        $sql = 'DELETE FROM protypes WHERE type_id = '.$id;
+        return $this->delete($sql);
+
+    }
 }
