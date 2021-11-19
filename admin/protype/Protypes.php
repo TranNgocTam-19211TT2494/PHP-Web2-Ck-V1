@@ -87,7 +87,7 @@ $protypes = $protypesModel->getProtype();
                                                 <td><?= $proty['type_name'] ?></td>
                                                 <td>
                                                     <div class="table-data-feature">
-                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Edit" onclick="window.location.href='./ViewProtypes.php?type_id=<?php echo $proty['type_id'] ?>'">
+                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Edit" >
                                                             <i class="zmdi zmdi-edit"></i>
                                                         </button>
                                                         <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
