@@ -1,5 +1,5 @@
 <?php
-require_once '../configs/database.php';
+require_once '../../configs/database.php';
 
 abstract class BaseAdminModel {
     // Database connection
