@@ -77,15 +77,17 @@ $protypes = $protypesModel->getProtype();
                                         <tr>
                                             <th>#</th>
                                             <th>name</th>
+                                            <th>Create_at</th>
                                             <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php foreach ($protypes as $proty) { ?>
                                             <tr class="tr-shadow">
-                                                <td>#</td>
+                                            <td class="stt"></td>
                                                 <td><?= $proty['type_name'] ?></td>
-                                                <td>
+                                                <td><?= date( "m-d-Y", strtotime($proty['create_at']));?> </td>
+                                                <td class="edit-delete">
                                                     <div class="table-data-feature">
                                                         <button class="item" data-toggle="tooltip" data-placement="top" title="Edit" onclick="window.location.href='./ViewProtypes.php?type_id=<?php echo $proty['type_id'] ?>'">
                                                             <i class="zmdi zmdi-edit"></i>
