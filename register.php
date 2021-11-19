@@ -8,7 +8,7 @@
         if($_POST['username'] != '' && $_POST['email'] != '' && $_POST['password'] != '') {
             $insert = $UserModel->createNewUser($_POST);
             if($insert) {
-                header("location: index.php");
+                header("location: login.php");
             } else {
                 echo "<div class=\"alert alert-dark\" role=\"alert\">
                 username error or pass not!</div>";
@@ -54,7 +54,7 @@
 
     <!-- Main CSS-->
     <link href="public/backend/css/theme.css" rel="stylesheet" media="all">
-    
+
 </head>
 
 <body class="animsition">
@@ -97,7 +97,6 @@
                                     <div class="social-button">
                                         <button class="au-btn au-btn--block au-btn--blue m-b-20">register with
                                             google</button>
-
                                     </div>
                                 </div>
                             </form>

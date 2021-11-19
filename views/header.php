@@ -1,4 +1,15 @@
+<?php 
+
+session_start();
+
+if(isset($_SESSION['id'])) {
+    $id = $_SESSION['id'];
+    
+}
+?>
+
 <header class="main_header_area">
+
     <div class="top_header_area row m0">
         <div class="container">
             <div class="float-left">
@@ -17,10 +28,7 @@
                     <li class="shop_cart"><a href="#"><i class="lnr lnr-cart"></i></a></li>
                     <li><a class="popup-with-zoom-anim" href="#test-search"><i class="fa fa-search"></i></a></li>
                 </ul>
-                <ul class="h_search list_style">
-                    <li class="shop_cart12"><a style="color: black;font-weight: 600;" href="login.php">Login</a></li>
-                    <li><a style="color: black;font-weight: 600;" class="popup-with-zoom-anim" href="register.php">Register</a></li>
-                </ul>
+
             </div>
         </div>
     </div>
@@ -86,15 +94,7 @@
                                 <!-- <li><a href="comming-soon.html">Coming Soon page</a></li> -->
                             </ul>
                         </li>
-                        <!-- <li class="dropdown submenu">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button"
-                                aria-haspopup="true" aria-expanded="false">Blog</a>
-                            <ul class="dropdown-menu">
-                                <li><a href="blog.html">Blog with sidebar</a></li>
-                                <li><a href="blog-2column.html">Blog 2 column</a></li>
-                                <li><a href="single-blog.html">Blog details</a></li>
-                            </ul>
-                        </li> -->
+                        <!-- Shop -->
                         <li class="dropdown submenu">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button"
                                 aria-haspopup="true" aria-expanded="false">Shop</a>
@@ -106,6 +106,22 @@
                             </ul>
                         </li>
                         <li><a href="contact.php">Contact Us</a></li>
+                        <!-- account -->
+                        <li class="dropdown submenu">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                                aria-haspopup="true" aria-expanded="false">Account</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="login.php">Login</a></li>
+                                <li><a href="register.php">Register</a></li>
+                                <?php if(!empty($_SESSION['id'])) { ?>
+                                <li><a href="register.php">Xin tạo tài khoản</a></li>
+                                <?php } else {?> 
+                                <li><a href="logout.php">Logout</a></li>
+                                <?php } ?>
+                               
+
+                            </ul>
+                        </li>
                     </ul>
                 </div>
             </nav>
