@@ -29,7 +29,7 @@
     <link href="public/backend/vendor/slick/slick.css" rel="stylesheet" media="all">
     <link href="public/backend/vendor/select2/select2.min.css" rel="stylesheet" media="all">
     <link href="public/backend/vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all">
-
+    
     <!-- Main CSS-->
     <link href="public/backend/css/theme.css" rel="stylesheet" media="all">
 
