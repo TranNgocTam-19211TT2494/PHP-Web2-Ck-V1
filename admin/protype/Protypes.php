@@ -67,7 +67,7 @@ $protypes = $protypesModel->getProtype();
                             <h3 class="title-5 m-b-35">data table</h3>
                             <div class="table-data__tool">
                                 <div class="table-data__tool-right">
-                                    <button class="au-btn au-btn-icon au-btn--green au-btn--small" onclick="window.location.href='./ViewProtypes.php'" >
+                                    <button class="au-btn au-btn-icon au-btn--green au-btn--small" onclick="window.location.href='./ViewProtypes.php'">
                                         <i class="zmdi zmdi-plus"></i>add item</button>
                                 </div>
                             </div>
@@ -75,19 +75,21 @@ $protypes = $protypesModel->getProtype();
                                 <table class="table table-data2">
                                     <thead>
                                         <tr>
-                                            <th>#</th>
-                                            <th>name</th>
+                                            <th>STT</th>
+                                            <th>Name</th>
+                                            <th>Create_at</th>
                                             <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php foreach ($protypes as $proty) { ?>
                                             <tr class="tr-shadow">
-                                                <td>#</td>
+                                                <td class="stt"></td>
                                                 <td><?= $proty['type_name'] ?></td>
-                                                <td>
+                                                <td><?= date( "m-d-Y", strtotime($proty['create_at']));?> </td>
+                                                <td class="edit-delete">
                                                     <div class="table-data-feature">
-                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Edit" >
+                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
                                                             <i class="zmdi zmdi-edit"></i>
                                                         </button>
                                                         <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
