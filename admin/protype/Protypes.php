@@ -89,10 +89,10 @@ $protypes = $protypesModel->getProtype();
                                                 <td><?= date( "m-d-Y", strtotime($proty['create_at']));?> </td>
                                                 <td class="edit-delete">
                                                     <div class="table-data-feature">
-                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Edit" onclick="window.location.href='./ViewProtypes.php?type_id=<?php echo $proty['type_id'] ?>'">
+                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Edit" onclick="window.location.href='./ViewProtypes.php?type_id=<?php echo md5( $proty['type_id'] . 'chuyen-de-web-2') ?>'">
                                                             <i class="zmdi zmdi-edit"></i>
                                                         </button>
-                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Delete" onclick="window.location.href='./DeleteProtypes.php?type_id=<?php echo $proty['type_id'] ?>'">
+                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Delete" onclick="window.location.href='./DeleteProtypes.php?type_id=<?php echo md5($proty['type_id'] . 'chuyen-de-web-2')  ?>'">
                                                             <i class="zmdi zmdi-delete"></i>
                                                         </button>
                                                     </div>

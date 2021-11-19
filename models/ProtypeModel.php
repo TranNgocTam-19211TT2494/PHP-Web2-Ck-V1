@@ -19,20 +19,46 @@ class ProtypeModel extends BaseAdminModel
     }
     public function UpdateProtype($input)
     {
-        $sql = 'UPDATE protypes SET 
-        type_name = "' . $input['name'] . '"
-        WHERE type_id = ' . $input['type_id'];
-        $protypes = $this->update($sql);
-        return $protypes;
+
+        $protypes = 'SELECT type_id FROM protypes';
+        $protype = $this->select($protypes);
+        $proty = null;
+        foreach($protype as $idprotys){
+            $md5 = md5($idprotys['type_id'] . 'chuyen-de-web-2');
+            if($md5 == $input['type_id']){
+                $sql ='UPDATE protypes SET 
+                type_name = "' . $input['name'] . '"
+                WHERE type_id = ' . $idprotys['type_id'];
+                $proty = $this->update($sql);
+            }
+        }
+        return $proty;
     }
     public function FindProtypebyid($id){
-        $protypes = 'SELECT * FROM protypes WHERE type_id = '.$id;
-        $protypes = $this->select($protypes);
-        return $protypes;
+        $protypes = 'SELECT type_id FROM protypes';
+        $protype = $this->select($protypes);
+        $proty = null;
+        foreach($protype as $idproty){
+            $md5 = md5($idproty['type_id'] . 'chuyen-de-web-2');
+            if($md5 == $id){
+                $sql = 'SELECT * FROM protypes WHERE type_id = ' . $idproty['type_id'];
+                $proty = $this->select($sql);
+            }
+        }
+        return $proty;
     }
     public function DeleteProtype($id) {
-        $sql = 'DELETE FROM protypes WHERE type_id = '.$id;
-        return $this->delete($sql);
-
+        $protypes = 'SELECT type_id FROM protypes';
+        $protype = $this->select($protypes);
+        $proty = null;
+        foreach($protype as $idproty){
+            $md5 = md5($idproty['type_id'] . 'chuyen-de-web-2');
+            if($md5 == $id){
+                $sql = 'DELETE FROM protypes WHERE type_id = '.$idproty['type_id'] ;
+                $proty = $this->delete($sql);
+            }
+        }
+        return $proty;
+       
     }
 }
