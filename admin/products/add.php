@@ -55,13 +55,8 @@
     $allProduct =  $productModel->getProducts();
     $allManufactures = $productModel->getManufacture();
     $allProtypes = $productModel->getProtypes();
-   
     if (!empty($_POST['submit'])) {
-        
-        if (!empty($_id)) {
-            $userModel->updateUser($_POST, $_POST['version']);
-            header('location: list_users.php');
-        } else {
+        if (empty($_id)) {
             if(!empty($_POST['name']) && !empty($_POST['price']) && !empty($_FILES['image']['name']) && $_POST['manufacture'] !== "0" && $_POST['protype'] !== "0" ){
                 $file_ext=$_FILES['image']['type'];
                 $expensions= array("image/jpeg","image/jpg","image/png");
@@ -76,7 +71,7 @@
             }else{
                 $error = true;
             }
-        }
+        } 
         $error = true;
     }
     ?>
