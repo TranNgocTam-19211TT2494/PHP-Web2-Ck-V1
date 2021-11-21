@@ -24,8 +24,8 @@ class ManufactureModel extends BaseAdminModel
     public function updateManufacture($input)
     {
         $sql = 'UPDATE manufactures SET 
-                manu_name = "' . $input['name'] . '"
-                WHERE id = ' .  $input['id'];
+                manu_name = "' . $input['manu_name'] . '"
+                WHERE manu_id = ' .  $input['manu_id'];
         $manus = $this->update($sql);
         return $manus;
     }

@@ -344,7 +344,7 @@ $manufacture = $manusModel->getManufactures();
                                                         <!-- <button class="item" data-toggle="tooltip" data-placement="top" title="Send">
                                                             <i class="zmdi zmdi-mail-send"></i>
                                                         </button> -->
-                                                        <a href="add-manu.php?id=<?php echo $item['manu_id']?>" class="item" data-toggle="tooltip" data-placement="top" title="Edit">
+                                                        <a href="add-manu.php?manu_id=<?php echo $item['manu_id']?>" class="item" data-toggle="tooltip" data-placement="top" title="Edit">
                                                             <i class="zmdi zmdi-edit"></i>
                                                         </a>
                                                         <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">

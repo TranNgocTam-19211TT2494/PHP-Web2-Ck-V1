@@ -1,12 +1,12 @@
 <?php
 include '../../models/ManufactureModel.php';
 $manusModel = new ManufactureModel();
-if (!empty($_GET['menu_id'])) {
-    $_id = $_GET['menu_id'];
+if (isset($_GET['manu_id'])) {
+    $_id = $_GET['manu_id'];
+    $manu = $manusModel->findManufactureById($_id);
 }
 if (!empty($_POST['submit'])) {
     if (!empty($_id)) {
-        var_dump($_POST) . die();
         $manusModel->updateManufacture($_POST);
     } else {
         $manusModel->insertManufacture($_POST);
@@ -294,26 +294,29 @@ if (!empty($_POST['submit'])) {
                             <strong>Manufacture</strong> Form
                         </div>
                         <div class="card-body card-block">
-                            <form method="post" class="form-horizontal">
-                                <input type="hidden" name="menu_id" value="<?php echo $_id ?>">
-                                <div class="row form-group">
-                                    <div class="col col-md-3">
-                                        <label for="name" class=" form-control-label">Manufacture Name</label>
+                            <?php if (empty($_id) || $manu) { 
+                                ?>
+                                <form method="post" class="form-horizontal">
+                                    <input type="hidden" name="manu_id" value="<?php echo $_id ?>">
+                                    <div class="row form-group">
+                                        <div class="col col-md-3">
+                                            <label for="name" class=" form-control-label">Manufacture Name</label>
+                                        </div>
+                                        <div class="col-12 col-md-9">
+                                            <input type="text" value="<?php if(!empty($manu[0]['manu_name'])) echo $manu[0]['manu_name']?>"  id="name" name="manu_name" placeholder="Enter Manufacture Name..." class="form-control">
+                                            <span class="help-block">Please enter name</span>
+                                        </div>
                                     </div>
-                                    <div class="col-12 col-md-9">
-                                        <input type="text" id="name" name="name" placeholder="Enter Manufacture Name..." class="form-control">
-                                        <span class="help-block">Please enter name</span>
+                                    <div class="card-footer">
+                                        <button type="submit" name="submit" value="submit" class="btn btn-primary btn-sm">
+                                            <i class="fa fa-dot-circle-o"></i> Submit
+                                        </button>
+                                        <a type="reset" class="btn btn-danger btn-sm">
+                                            <i class="fa fa-ban"></i> Reset
+                                        </a>
                                     </div>
-                                </div>
-                                <div class="card-footer">
-                                    <button type="submit" name="submit" value="submit" class="btn btn-primary btn-sm">
-                                        <i class="fa fa-dot-circle-o"></i> Submit
-                                    </button>
-                                    <a type="reset" class="btn btn-danger btn-sm">
-                                        <i class="fa fa-ban"></i> Reset
-                                    </a>
-                                </div>
-                            </form>
+                                </form>
+                            <?php } ?>
                         </div>
 
                     </div>
