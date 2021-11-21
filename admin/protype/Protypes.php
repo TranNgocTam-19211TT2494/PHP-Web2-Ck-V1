@@ -86,7 +86,7 @@ $protypes = $protypesModel->getProtype();
                                             <tr class="tr-shadow">
                                             <td class="stt"></td>
                                                 <td><?= $proty['type_name'] ?></td>
-                                                <td><?= date( "m-d-Y", strtotime($proty['create_at']));?> </td>
+                                                <td><?= date( "d-m-Y", strtotime($proty['create_at']));?> </td>
                                                 <td class="edit-delete">
                                                     <div class="table-data-feature">
                                                         <button class="item" data-toggle="tooltip" data-placement="top" title="Edit" onclick="window.location.href='./ViewProtypes.php?type_id=<?php echo md5( $proty['type_id'] . 'chuyen-de-web-2') ?>'">
