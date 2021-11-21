@@ -53,7 +53,7 @@
                                 <a href="">Manufactures</a>
                             </li>
                             <li>
-                                <a href="Protypes.php">Protype</a>
+                                <a href="protype/Protypes.php">Protype</a>
                             </li>
                         </ul>
                     </li>
