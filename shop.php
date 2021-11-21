@@ -1,9 +1,9 @@
 <?php
-	require_once 'models/ProductModel.php';
+	require_once 'models/HomeModel.php';
 
-	$productModel = new ProductModel();
+	$productModel = new HomeModel();
 
-	$products = $productModel->getProducts();
+	$products = $productModel->getAllProduct();
 	
 ?>
 <!DOCTYPE html>
