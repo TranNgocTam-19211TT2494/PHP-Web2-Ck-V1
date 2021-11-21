@@ -34,6 +34,20 @@ class ProductModel extends BaseAdminModel
         }
       return false;
     }
+    public function rehibilitate($id)
+    {
+        $allProduct = $this->getAllTrashProduct();
+        $now =  strftime('%Y-%m-%d');
+        foreach ($allProduct as $value) {
+            $md5 = md5($value['id'] . "chuyen-de-web-2");
+            if($md5 == $id){
+                $sql = "UPDATE `products` SET `detele_at`= NULL WHERE id = " . $value['id'] ;
+                $bank = $this->update($sql);
+                return $bank;
+             }
+        }
+      return false;
+    }
     public function deleteProduct($id)
     {
         $allProduct = $this->getAllProducts();
