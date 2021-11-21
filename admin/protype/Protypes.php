@@ -64,7 +64,7 @@ $protypes = $protypesModel->getProtype();
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">
-                            <h3 class="title-5 m-b-35">data table</h3>
+                            <h3 class="title-5 m-b-35">Protypes table</h3>
                             <div class="table-data__tool">
                                 <div class="table-data__tool-right">
                                     <button class="au-btn au-btn-icon au-btn--green au-btn--small" onclick="window.location.href='./ViewProtypes.php'" >
