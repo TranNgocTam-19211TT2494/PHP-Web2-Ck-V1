@@ -1,11 +1,16 @@
 <?php
 include '../../models/ManufactureModel.php';
 $manusModel = new ManufactureModel();
-
+if (!empty($_GET['menu_id'])) {
+    $_id = $_GET['menu_id'];
+}
 if (!empty($_POST['submit'])) {
-    // var_dump($_POST);
-    $manusModel->insertManufacture($_POST);
-    
+    if (!empty($_id)) {
+        var_dump($_POST) . die();
+        $manusModel->updateManufacture($_POST);
+    } else {
+        $manusModel->insertManufacture($_POST);
+    }
     header('location: http://localhost:8000/Do-an-w2/Do-an-w2-v1/admin/Manufacture/');
 }
 
@@ -289,8 +294,8 @@ if (!empty($_POST['submit'])) {
                             <strong>Manufacture</strong> Form
                         </div>
                         <div class="card-body card-block">
-                            <form  method="post" class="form-horizontal">
-                                <input type="hidden" name="id" value="">
+                            <form method="post" class="form-horizontal">
+                                <input type="hidden" name="menu_id" value="<?php echo $_id ?>">
                                 <div class="row form-group">
                                     <div class="col col-md-3">
                                         <label for="name" class=" form-control-label">Manufacture Name</label>
