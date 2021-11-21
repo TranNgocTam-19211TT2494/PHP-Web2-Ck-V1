@@ -9,7 +9,7 @@
             <div class="float-right">
                 <ul class="h_social list_style">
                     <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                    <!-- <li><a href="#"><i class="fa fa-twitter"></i></a></li> -->
                     <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
                     <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
                 </ul>
@@ -27,7 +27,7 @@
     <div class="main_menu_area">
         <div class="container">
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <a class="navbar-brand" href="index.php">
+                <a class="navbar-brand" href="index.html">
                     <img src="img/logo.png" alt="">
                     <img src="img/logo-2.png" alt="">
                 </a>
@@ -46,7 +46,11 @@
                             <a class="dropdown-toggle" data-toggle="dropdown" href="index.php" role="button"
                                 aria-haspopup="true" aria-expanded="false">Home</a>
                             <ul class="dropdown-menu">
-                                <li><a href="index.php">Home 1</a></li>
+                                <li><a href="index.php">Home</a></li>
+                                <!-- <li><a href="index-2.html">Home 2</a></li>
+                                <li><a href="index-3.html">Home 3</a></li>
+                                <li><a href="index-4.html">Home 4</a></li>
+                                <li><a href="index-5.html">Home 5</a></li> -->
                             </ul>
                         </li>
                         <li><a href="cake.php">Our Cakes</a></li>
@@ -86,9 +90,9 @@
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button"
                                 aria-haspopup="true" aria-expanded="false">Blog</a>
                             <ul class="dropdown-menu">
-                                <li><a href="blog.php">Blog with sidebar</a></li>
-                                <li><a href="blog-2column.php">Blog 2 column</a></li>
-                                <li><a href="single-blog.php">Blog details</a></li>
+                                <li><a href="blog.html">Blog with sidebar</a></li>
+                                <li><a href="blog-2column.html">Blog 2 column</a></li>
+                                <li><a href="single-blog.html">Blog details</a></li>
                             </ul>
                         </li> -->
                         <li class="dropdown submenu">

@@ -1,11 +1,3 @@
-<?php
-	require_once 'models/ProductModel.php';
-
-	$productModel = new ProductModel();
-
-	$products = $productModel->getProducts();
-	
-?>
 <!DOCTYPE html>
 <html lang="en">
     
