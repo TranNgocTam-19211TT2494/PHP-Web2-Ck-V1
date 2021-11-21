@@ -1,13 +1,19 @@
 <?php
-require_once 'BaseAdminModel.php'; 
-class ManufactureModel extends BaseAdminModel {
+require_once 'BaseAdminModel.php';
+class ManufactureModel extends BaseAdminModel
+{
     public function getManufactures()
     {
         $sql = 'SELECT * FROM `manufactures`';
         $manus = $this->select($sql);
         return $manus;
     }
-
+    public function findManufactureById($id)
+    {
+        $sql = 'SELECT * FROM manufactures WHERE manu_id = ' . $id;
+        $manus = $this->select($sql);
+        return $manus;
+    }
     public function insertManufacture($input)
     {
         $sql = "INSERT INTO manufactures (`manu_name`) VALUES (" .
@@ -15,10 +21,17 @@ class ManufactureModel extends BaseAdminModel {
         $manus = $this->insert($sql);
         return $manus;
     }
-    public function Manufacture($input)
+    public function updateManufacture($input)
     {
-        $sql = "INSERT INTO `manufactures`(`manu_name`) VALUES (' .$input .')'";
-        $manus = $this->insert($sql);
+        $sql = 'UPDATE manufactures SET 
+                manu_name = "' . $input['name'] . '"
+                WHERE id = ' .  $input['id'];
+        $manus = $this->update($sql);
         return $manus;
+    }
+    public function deleteManufacture($input)
+    {
+        $sql = 'DELETE FROM manufactures WHERE id = ' . $input['id'];
+        return $this->delete($sql);
     }
 }
