@@ -1,6 +1,6 @@
 <?php
-require_once 'BaseAdminModel.php'; 
-class ProtypeModel extends BaseAdminModel {
+require_once 'BaseTwoAdmin.php'; 
+class ProtypeModel extends BaseTwoAdmin {
     
    
     

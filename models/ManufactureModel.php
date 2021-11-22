@@ -1,6 +1,6 @@
 <?php
-require_once 'BaseAdminModel.php';
-class ManufactureModel extends BaseAdminModel
+require_once 'BaseTwoAdmin.php';
+class ManufactureModel extends BaseTwoAdmin
 {
     public function getManufactures()
     {
