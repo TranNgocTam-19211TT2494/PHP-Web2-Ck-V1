@@ -1,0 +1,13 @@
+.animsition, .animsition-overlay{
+    opacity: 1;
+}
+.tr-shadow .edit-delete{
+    width: 10%;
+}
+.table {
+    counter-reset: number;
+}
+.table .stt::before{
+    counter-increment: number;
+    content: counter(number) ;
+}

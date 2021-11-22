@@ -1,7 +1,7 @@
 <?php
-require_once 'configs/database.php';
+require_once '../../configs/database.php';
 
-abstract class BaseModel {
+abstract class BaseTwoAdmin {
     // Database connection
     protected static $_connection;
     public function __construct() {

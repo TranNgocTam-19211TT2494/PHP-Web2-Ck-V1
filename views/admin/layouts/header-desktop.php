@@ -50,10 +50,10 @@
                                 <a href="">Orders</a>
                             </li>
                             <li>
-                                <a href="">Manufactures</a>
+                                <a href="../admin/Manufacture/">Manufactures</a>
                             </li>
                             <li>
-                                <a href="">Protype</a>
+                                <a href="protype/Protypes.php">Protype</a>
                             </li>
                         </ul>
                     </li>
