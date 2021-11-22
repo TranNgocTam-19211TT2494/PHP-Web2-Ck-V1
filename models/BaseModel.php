@@ -13,7 +13,6 @@ abstract class BaseModel {
                 exit();
             }
         }
-
     }
 
     /**
