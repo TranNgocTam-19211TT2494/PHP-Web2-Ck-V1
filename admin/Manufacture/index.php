@@ -2,6 +2,33 @@
 include '../../models/ManufactureModel.php';
 $manusModel = new ManufactureModel();
 $manufacture = $manusModel->getManufactures();
+$token = null;
+if (empty($_SESSION['token'])) {
+    $_SESSION['token'] = bin2hex(random_bytes(32));
+}
+$token = $_SESSION['token'];
+
+// if (!empty($_GET['token'])) {
+//     if (hash_equals($_SESSION['token'], $_GET['token'])) {
+
+//         if (isset($_GET['manu_id'])) {
+//             $_id = $_GET['manu_id'];
+//             $manusModel->deleteManufacture($_id);
+//         }
+//     }
+// }
+if (isset($_GET['manu_id'])) {
+    $_id = $_GET['manu_id'];
+    if (!empty($_GET['token'])) {
+        if (hash_equals($_SESSION['token'], $_GET['token'])) {
+            var_dump($_SESSION['token']);
+            var_dump($_GET['token']);
+            die();
+        }
+    }
+    $manusModel->deleteManufacture($_id);
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -342,11 +369,12 @@ $manufacture = $manusModel->getManufactures();
                                                         <!-- <button class="item" data-toggle="tooltip" data-placement="top" title="Send">
                                                             <i class="zmdi zmdi-mail-send"></i>
                                                         </button> -->
-                                                        <a href="add-manu.php?manu_id=<?php echo $item['manu_id']?>" class="item" data-toggle="tooltip" data-placement="top" title="Edit">
+                                                        <a href="add-manu.php?manu_id=<?php echo $item['manu_id'] ?>" class="item" data-toggle="tooltip" data-placement="top" title="Edit">
                                                             <i class="zmdi zmdi-edit"></i>
                                                         </a>
-                                                        <a href="delete-manu.php?manu_id=<?php echo $item['manu_id']?>" class="item" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                        <a href="index.php?manu_id=<?php echo $item['manu_id'] ?>&token=<?php echo $token ?>" class="item" data-toggle="tooltip" data-placement="top" title="Delete">
                                                             <i class="zmdi zmdi-delete"></i>
+                                                            <input type="hidden" name="token" value="<?php echo $token ?>">
                                                         </a>
                                                     </div>
                                                 </td>
