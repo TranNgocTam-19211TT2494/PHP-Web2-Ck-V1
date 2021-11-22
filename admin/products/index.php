@@ -71,31 +71,9 @@
                                     <i class="fas fa-tachometer-alt"></i>Dashboard
                                     <span class="bot-line"></span>
                                 </a>
-                                <!-- <ul class="header3-sub-list list-unstyled">
-                            <li>
-                                <a href="index.html">Dashboard 1</a>
+                           
                             </li>
-                            <li>
-                                <a href="index2.html">Dashboard 2</a>
-                            </li>
-                            <li>
-                                <a href="index3.html">Dashboard 3</a>
-                            </li>
-                            <li>
-                                <a href="index4.html">Dashboard 4</a>
-                            </li>
-                        </ul> -->
-                            </li>
-                            <!-- <li>
-                        <a href="#">
-                            <i class="fas fa-shopping-basket"></i>
-                            <span class="bot-line"></span>eCommerce</a>
-                    </li>
-                    <li>
-                        <a href="table.html">
-                            <i class="fas fa-trophy"></i>
-                            <span class="bot-line"></span>Features</a>
-                    </li> -->
+                         
                             <li class="has-sub">
                                 <a href="#">
                                     <i class="fas fa-copy"></i>
@@ -129,30 +107,7 @@
                                     <li>
                                         <a href="tab.html">Tabs</a>
                                     </li>
-                                    <!-- <li>
-                                <a href="card.html">Cards</a>
-                            </li>
-                            <li>
-                                <a href="alert.html">Alerts</a>
-                            </li>
-                            <li>
-                                <a href="progress-bar.html">Progress Bars</a>
-                            </li>
-                            <li>
-                                <a href="modal.html">Modals</a>
-                            </li>
-                            <li>
-                                <a href="switch.html">Switchs</a>
-                            </li>
-                            <li>
-                                <a href="grid.html">Grids</a>
-                            </li>
-                            <li>
-                                <a href="fontawesome.html">FontAwesome</a>
-                            </li>
-                            <li>
-                                <a href="typo.html">Typography</a>
-                            </li> -->
+                                    
                                 </ul>
                             </li>
                         </ul>
@@ -325,8 +280,8 @@
                                         <tr class="tr-shadow">
                                             <td><?= $product['name']; ?></td>
                                             <td>
-                                                <div class="img-cake" style="width: 50%;">
-                                                    <img src="<?= $product['pro_image']?>" alt="">
+                                                <div class="img-cake" >
+                                                    <img class="anh-tam" src="<?= $product['pro_image']?>" alt="">
                                                 </div>
                                             </td>
                                             <td>
