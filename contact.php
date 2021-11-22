@@ -9,7 +9,7 @@
 <body>
 
     <!--================Main Header Area =================-->
-	<?php include_once("views/header.php");?>
+    <?php include_once("views/header.php");?>
     <!--================End Main Header Area =================-->
 
     <!--================End Main Header Area =================-->
@@ -36,9 +36,7 @@
             </div>
             <div class="row">
                 <div class="col-lg-7">
-                    <form class="row contact_us_form"
-                        action="http://galaxyanalytics.net/demos/cake/theme/cake-html/contact_process.php" method="post"
-                        id="contactForm" novalidate="novalidate">
+                    <form class="row contact_us_form" action="" method="POST" id="test-form" novalidate="novalidate">
                         <div class="form-group col-md-6">
                             <input type="text" class="form-control" id="name" name="name" placeholder="Your name">
                         </div>
@@ -95,12 +93,12 @@
     <!--================End Newsletter Area =================-->
 
     <!--================Footer Area =================-->
-	<?php include_once("views/layouts/footer.php");?>
+    <?php include_once("views/layouts/footer.php");?>
     <!--================End Footer Area =================-->
 
 
     <!--================Search Box Area =================-->
-	<?php include_once("views/layouts/search.php");?>
+    <?php include_once("views/layouts/search.php");?>
     <!--================End Search Box Area =================-->
 
     <!--================Contact Success and Error message Area =================-->
@@ -134,13 +132,56 @@
         </div>
     </div>
     <!--================End Contact Success and Error message Area =================-->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        var submit = $("button[type='submit']");
+        submit.click(function() {
+            var data = $('form#test-form').serialize();
+            var name = $('input#name').val();
+            var email = $('input#email').val();
+            var subject = $('input#subject').val();
+            var message = $('textarea#message').val();
+            if (name != '' && email != '' && subject != '' && message != '') {
+                $.ajax({
+                    type: 'GET',
+                    url: 'https://script.google.com/macros/s/AKfycbxEknthvljEhAgdUtRqYMzTFtwF3SOgaHgp7aIHD5l1iW4DjPzT/exec',
+                    dataType: 'json',
+                    crossDomain: true,
+                    data: data,
+                    success: function(data) {
+                        if (data == 'false') {
+                            alert(
+                                'Thêm không thành công, bạn cũng có thể sử dụng để hiển thị Popup hoặc điều hướng'
+                            );
+                        } else {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Oops...',
+                                text: 'Contact Succes !',
+                            })
+                            $('input#name').val('');
+                            $('input#email').val('');
+                            $('input#subject').val('');
+                            $('textarea#message').val('');
+                        }
+                    }
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Contact Error ! Please enter all fields ',
+                })
+            }
 
+            return false;
+        });
+    });
+    </script>
+    <?php include_once("views/footer.php");?>
 
-
-
-
-
-	<?php include_once("views/footer.php");?>
 </body>
 
 </html>
