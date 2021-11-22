@@ -55,50 +55,23 @@ $proty = $protypeModel->getProtype();
                             <a class="dropdown-toggle" data-toggle="dropdown" href="index.php" role="button" aria-haspopup="true" aria-expanded="false">Home</a>
                             <ul class="dropdown-menu">
                                 <li><a href="index.php">Home</a></li>
-                                <!-- <li><a href="index-2.html">Home 2</a></li>
-                                <li><a href="index-3.html">Home 3</a></li>
-                                <li><a href="index-4.html">Home 4</a></li>
-                                <li><a href="index-5.html">Home 5</a></li> -->
+                             
                             </ul>
                         </li>
                         <li><a href="cake.php">Our Cakes</a></li>
                         <li><a href="menu.php">Menu</a></li>
                         <li class="dropdown submenu">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">About Us</a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Protype Cake</a>
                             <ul class="dropdown-menu">
-                                <li><a href="about-us.php">About Us</a></li>
-                                <li><a href="Protype.php">Gallery</a></li>
-                                <li class="dropdown submenu">
-                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Protype Cake</a>
-                                    <ul class="dropdown-menu">
-                                        <?php foreach ($proty as $pro) { ?>
-                                            <li><a href="Protype.php?type_id=<?= $pro['type_id'] ?>">- <?= $pro['type_name'] ?></a></li>
-                                            <!-- <li><a href="portfolio-full-width.php">- Soft Cream Cake</a></li> -->
-                                        <?php } ?>
-                                    </ul>
-                                </li>
+                                <?php foreach ($proty as $pro) { ?>
+                                <li><a href="Protype.php?type_id=<?= $pro['type_id'] ?>">- <?= $pro['type_name'] ?></a></li>
+                                <?php } ?>
                             </ul>
                         </li>
+                      
                     </ul>
                     <ul class="navbar-nav justify-content-end">
-                        <li class="dropdown submenu">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Pages</a>
-                            <ul class="dropdown-menu">
-                                <li><a href="service.php">Services</a></li>
-                                <li class="dropdown submenu">
-                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Gallery</a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="portfolio.php">- Gallery Classic</a></li>
-                                        <li><a href="portfolio-full-width.php">- Gallery Full width</a></li>
-                                    </ul>
-                                </li>
-                                <!-- <li><a href="faq.html">Faq</a></li>
-                                <li><a href="what-we-make.html">What we make</a></li>
-                                <li><a href="special.html">Special Recipe</a></li> -->
-                                <li><a href="404.php">404 page</a></li>
-                                <!-- <li><a href="comming-soon.html">Coming Soon page</a></li> -->
-                            </ul>
-                        </li>
+                       
                         <!-- Shop -->
                         <li class="dropdown submenu">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Shop</a>

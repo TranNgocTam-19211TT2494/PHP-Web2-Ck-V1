@@ -8,12 +8,8 @@ $proty = $protypeModel->getProtype();
 if (isset($_GET['type_id'])) {
     $typeid = $_GET['type_id'];
     $protype = $protypeModel->getprotypeOnProduct($typeid);
-    
-    
-}
-if(isset($_POST['option'])){
-    var_dump("aaaaaaaaaaaaa");die();
-}
+} 
+
 
 ?>
 <!DOCTYPE html>
@@ -22,20 +18,13 @@ if(isset($_POST['option'])){
 <?php include_once("views/head.php"); ?>
 
 <body>
-
+    
     <!--================Main Header Area =================-->
     <?php include_once("views/header.php"); ?>
     <!--================End Main Header Area =================-->
     <?php
 
-    //$typeid = NULL;
-
-    // if (isset($_GET['type_id'])) {
-    //     $typeid = $_GET['type_id'];
-    //     $protype = $protypeModel->getprotypeOnProduct($typeid);
-    //     var_dump($protype) . die();
-    // }
-
+  
     ?>
     <!--================End Main Header Area =================-->
     <section class="banner_area">
@@ -50,7 +39,7 @@ if(isset($_POST['option'])){
         </div>
     </section>
     <!--================End Main Header Area =================-->
-
+    <?php if(!empty($_GET['type_id'])) {?>
     <!--================Product Area =================-->
     <section class="product_area p_100">
         <div class="container">
@@ -61,17 +50,11 @@ if(isset($_POST['option'])){
                         <div class="row m0 product_task_bar">
                             <div class="product_task_inner">
                                 <div class="float-left">
-                                    <!-- <a class="active" href="#"><i class="fa fa-th-large" aria-hidden="true"></i></a>
-                                        <a href="#"><i class="fa fa-th-list" aria-hidden="true"></i></a>
-                                        <span>Showing 1 - 10 of 55 results</span> -->
+                                  
                                 </div>
                                     <div class="float-right">
                                         <h4>Protype</h4>
-                                        <!-- <select class="short" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
-                                            <option>Sort</option>
-                                            <option value="?field=price&sort=desc">Reduce</option>
-                                            <option value="?field=price&sort=asc">Augment</option>
-                                        </select> -->
+                                      
                                     </div>
                             </div>
                         </div>
@@ -226,6 +209,9 @@ if(isset($_POST['option'])){
             </div>
         </div>
     </section>
+    <?php } else { ?>
+        <?php include "404.php"; ?>
+    <?php } ?>
     <!--================End Product Area =================-->
 
     <!--================Newsletter Area =================-->
