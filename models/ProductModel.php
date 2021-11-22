@@ -34,14 +34,14 @@ class ProductModel extends BaseAdminModel
                
             }
         }
-     
         if(md5($versionOld.'chuyen-de-web-2') == $input['version']){
             if (isset($input) && is_array($input)) {
-                if(!empty($_FILES["image"]['name'])){
+
+                if($_FILES["image"]['type'] == "image/jpeg" || $_FILES["image"]['type'] == "image/jpg" 
+                || $_FILES["image"]['type'] =="image/png"){
                     $url = 'http://localhost/PHP-Web2-Ck-V1.git/public/img/product/';
                     $name = $url . $_FILES["image"]['name'];
                     $time1 = (int)$versionOld + 1;
-                  
                     $sql = 'UPDATE products SET 
                         name = "' . $input['name'] . '", 
                         manu_id = "' . $input['manufacture'] . '", 

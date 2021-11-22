@@ -64,6 +64,8 @@
     
     
     if (!empty($_POST['submit'])) {
+        if(!empty($_POST['name']) && !empty($_POST['price']) && $_POST['manufacture'] !== "0" && $_POST['protype'] !== "0" )
+        {
             $file_ext=$_FILES['image']['type'];
             $expensions= array("image/jpeg","image/jpg","image/png");
             if(in_array($file_ext,$expensions)=== true){
@@ -75,10 +77,12 @@
             $oki = $productModel->updateProduct($_POST);
             if($oki){
                 header('location: index.php');
-            }else{
-                $error = true;
             }
+        }else{
             $error = true;
+        }
+        $error = true;
+         
     }
     ?>
     <div class="page-wrapper">
@@ -327,7 +331,7 @@
                         </div>
                         <?php if(isset($error) && $error == true) {?>
                         <div class="alert alert-danger" role="alert">
-                            ADD PRODUCT UNSUCCESSFUL
+                            UPDATE PRODUCT UNSUCCESSFUL ! PLEASE FIELDS CAN'T BE NULL
                         </div>
                         <?php }?>
                         <div class="card-body card-block">
