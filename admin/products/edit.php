@@ -53,6 +53,37 @@
     require_once("../../models/ProductModel.php");
     $productModel = new ProductModel();
     $allProduct =  $productModel->getProducts();
+    $allManufactures = $productModel->getManufacture();
+    $allProtypes = $productModel->getProtypes();
+    if(isset($_GET['id'])){
+        $id = $_GET['id'];
+        $id_start = substr($id,3);
+        $id_end=substr($id_start,0,-3);
+        $productById = $productModel->getByProductId($id_end);
+    }
+    
+    
+    if (!empty($_POST['submit'])) {
+        if(!empty($_POST['name']) && !empty($_POST['price']) && $_POST['manufacture'] !== "0" && $_POST['protype'] !== "0" )
+        {
+            $file_ext=$_FILES['image']['type'];
+            $expensions= array("image/jpeg","image/jpg","image/png");
+            if(in_array($file_ext,$expensions)=== true){
+                $tmp_name = $_FILES["image"]["tmp_name"];
+                $name = $_FILES["image"]["name"];
+                $uploads_dir = "../../public/img/product";
+                move_uploaded_file($tmp_name, "$uploads_dir/$name");
+            }
+            $oki = $productModel->updateProduct($_POST);
+            if($oki){
+                header('location: index.php');
+            }
+        }else{
+            $error = true;
+        }
+        $error = true;
+         
+    }
     ?>
     <div class="page-wrapper">
         <!-- HEADER DESKTOP-->
@@ -290,93 +321,146 @@
         <!-- PAGE CONTENT-->
         <div class="page-content--bgf7">
             <!-- DATA TABLE-->
-            <section class="p-t-20">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h3 class="title-5 m-b-35">data table</h3>
-                            <div class="active" style="display: flex; justify-content: space-between;">
-                                <div class="table-data__tool">
-                                    <a href="add.php"> <button class="au-btn au-btn-icon au-btn--green au-btn--small">
-                                            <i class="zmdi zmdi-plus"></i>add item</button></a>
-                                </div>
-                                <div class="table-data__tool">
-                                    <a href="trash.php"> <button class="au-btn au-btn-icon au-btn--green au-btn--small">
-                                            <i class="zmdi zmdi-delete"></i>trash</button></a>
-                                </div>
-                            </div>
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
 
-                            <div class="table-responsive table-responsive-data2">
-                                <table class="table table-data2">
-                                    <thead>
-                                        <tr>
-                                            <th>Cake</th>
-                                            <th>Image</th>
-                                            <th>Manufacture</th>
-                                            <th>Protype</th>
-                                            <th>Price</th>
-                                            <th>Feature</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php if(isset($allProduct)) {
-                                            foreach ($allProduct as $product) {?>
-                                        <tr class="tr-shadow">
-                                            <td><?= $product['name']; ?></td>
-                                            <td>
-                                                <div class="img-cake" style="width: 50%;">
-                                                    <img src="<?= $product['pro_image']?>" alt="">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <span
-                                                    class="block-email"><?= $productModel->getManuByProductId($product['manu_id'])[0]['manu_name'] ?></span>
-                                            </td>
-                                            <td class="desc">
-                                                <?= $productModel->getProTypeByProductId($product['type_id'])[0]['type_name'] ?>
-                                            </td>
-                                            <td><?= number_format($product['price']);?> VND</td>
-                                            <td>
-                                                <?php if ($product['feature'] == 1) {?>
-                                                <span class="status--process">Popular</span>
-                                                <?php }else{?>
-                                                <span class="status--denied">Normal</span>
-                                                <?php } ?>
-                                            </td>
-                                            <td>
-                                                <div class="table-data-feature">
-                                                    <a
-                                                        href="edit.php?id=<?= rand(100, 999) . md5($product['id'] . "chuyen-de-web-2") . rand(100, 999)?>">
-                                                        <button class="item" data-toggle="tooltip" data-placement="top"
-                                                            title="Edit">
-                                                            <i class="zmdi zmdi-edit"></i>
-                                                    </a>
-                                                    </button>
-                                                    <a
-                                                        href="delete.php?id=<?php echo rand(100, 999) . md5($product['id'] . "chuyen-de-web-2") . rand(100, 999) ?>"><button
-                                                            class="item" data-toggle="tooltip" data-placement="top"
-                                                            title="Delete">
-                                                            <i class="zmdi zmdi-delete"></i>
-                                                        </button></a>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <?php } } ?>
-                                    </tbody>
-                                </table>
-                            </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <strong>Add Product</strong>
                         </div>
-                    </div>
-                </div>
-            </section>
-            <!-- END DATA TABLE-->
+                        <?php if(isset($error) && $error == true) {?>
+                        <div class="alert alert-danger" role="alert">
+                            UPDATE PRODUCT UNSUCCESSFUL ! PLEASE FIELDS CAN'T BE NULL
+                        </div>
+                        <?php }?>
+                        <div class="card-body card-block">
+                            <form method="POST" class="form-horizontal" enctype="multipart/form-data">
+                                <input value=<?php if(isset($id)) echo $id?> type="text" id="text-input" name="id"
+                                    hidden>
+                                <input
+                                    value=<?php if(isset($productById[0]['version'])) echo md5($productById[0]['version'].'chuyen-de-web-2')?>
+                                    type="text" id="text-input" name="version" hidden>
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="text-input" class=" form-control-label">Name</label>
 
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <input
+                                            value="<?php if(isset($productById[0]['name'])) echo $productById[0]['name']?>"
+                                            type="text" id="text-input" name="name" placeholder="Name"
+                                            class="form-control">
+
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="select" class=" form-control-label">Manufacture</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <select name="manufacture" id="select" class="form-control">
+                                            <option value="0">Please select manufacture</option>
+                                            <?php if(isset($allManufactures)){
+                                                foreach ($allManufactures as $value) {
+                                                if(isset($productById[0]['manu_id']) && $productById[0]['manu_id'] == $value['manu_id']){?>
+                                            <option value="<?= $value['manu_id'] ?>" selected><?= $value['manu_name'] ?>
+                                            </option>
+                                            <?php }else{?>
+                                            <option value="<?= $value['manu_id'] ?>"><?= $value['manu_name'] ?></option>
+                                            <?php } } } ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="select" class=" form-control-label">Protype</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <select name="protype" id="select" class="form-control">
+                                            <option value="0">Please select protype</option>
+                                            <?php if(isset($allProtypes)) {
+                                                foreach ($allProtypes as $value) {
+                                                if(isset($productById[0]['type_id']) && $productById[0]['type_id']==$value['type_id']) {?>
+                                            <option value="<?= $value['type_id']?>" selected><?= $value['type_name']?>
+                                            </option>
+                                            <?php }else{?>
+                                            <option value="<?= $value['type_id']?>"><?= $value['type_name']?></option>
+                                            <?php } } }?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="textarea-input" class=" form-control-label">Description</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <textarea name="description" id="textarea-input" rows="9"
+                                            placeholder="Description..."
+                                            class="form-control"><?php if(isset($productById[0]['description'])) echo $productById[0]['description']?></textarea>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="text-input" class=" form-control-label">Price</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <input
+                                            value="<?php if(isset($productById[0]['price'])) echo $productById[0]['price']?>"
+                                            type="number" id="text-input" name="price" placeholder="Price"
+                                            class="form-control">
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label class=" form-control-label">Feature</label>
+                                    </div>
+                                    <div class="col col-md-9">
+                                        <div class="form-check-inline form-check">
+
+                                            <label for="inline-radio1" class="form-check-label ">
+                                                <input type="radio" id="inline-radio1" name="feature" value="1"
+                                                    class="form-check-input"
+                                                    <?php if( $productById[0]['feature'] == "1") echo 'checked'; ?>>New
+                                            </label>
+                                            <label for="inline-radio2" class="form-check-label ml-2">
+                                                <input type="radio" id="inline-radio2" name="feature" value="2"
+                                                    <?php if( $productById[0]['feature'] == "2") echo 'checked'; ?>
+                                                    class="form-check-input">Hot
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="file-input" class=" form-control-label">Image</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <input type="file" id="file-input" name="image" class="form-control-file">
+                                    </div>
+                                </div>
+                                <div class="img-product" style="margin:15px 0; text-align:center;">
+                                    <img src="<?php if(isset($productById[0]['pro_image'])) echo $productById[0]['pro_image'] ?>"
+                                        alt="">
+                                </div>
+                                <button type="submit" name="submit" value="submit" class="btn btn-primary btn-sm">
+                                    <i class="fa fa-dot-circle-o"></i> Submit
+                                </button>
+                                <button type="reset" class="btn btn-danger btn-sm">
+                                    <i class="fa fa-ban"></i> Reset
+                                </button>
+                            </form>
+                        </div>
+
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+            </div>
+            <!-- END DATA TABLE-->
             <!-- COPYRIGHT-->
             <?php include('../../views/admin/partials/copyright.php')?>
             <!-- END COPYRIGHT-->
         </div>
-
     </div>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="../../public/js/jquery-3.2.1.min.js"></script>
