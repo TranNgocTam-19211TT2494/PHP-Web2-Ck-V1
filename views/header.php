@@ -1,6 +1,14 @@
-<?php 
+<?php
 session_start();
 ob_start();
+require_once 'models/HomeModel.php';
+
+$protypeModel = new HomeModel();
+
+$proty = $protypeModel->getProtype();
+
+// var_dump($typeid) . die();
+
 ?>
 
 <header class="main_header_area">
@@ -34,9 +42,7 @@ ob_start();
                     <img src="img/logo.png" alt="">
                     <img src="img/logo-2.png" alt="">
                 </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse"
-                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                    aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="my_toggle_menu">
                         <span></span>
                         <span></span>
@@ -46,8 +52,7 @@ ob_start();
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
                         <li class="dropdown submenu active">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="index.php" role="button"
-                                aria-haspopup="true" aria-expanded="false">Home</a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="index.php" role="button" aria-haspopup="true" aria-expanded="false">Home</a>
                             <ul class="dropdown-menu">
                                 <li><a href="index.php">Home</a></li>
                                 <!-- <li><a href="index-2.html">Home 2</a></li>
@@ -59,24 +64,29 @@ ob_start();
                         <li><a href="cake.php">Our Cakes</a></li>
                         <li><a href="menu.php">Menu</a></li>
                         <li class="dropdown submenu">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button"
-                                aria-haspopup="true" aria-expanded="false">About Us</a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">About Us</a>
                             <ul class="dropdown-menu">
                                 <li><a href="about-us.php">About Us</a></li>
-                                <li><a href="our-team.php">Our Chefs</a></li>
-                                <!-- <li><a href="testimonials.html">Testimonials</a></li> -->
+                                <li><a href="Protype.php">Gallery</a></li>
+                                <li class="dropdown submenu">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Protype Cake</a>
+                                    <ul class="dropdown-menu">
+                                        <?php foreach ($proty as $pro) { ?>
+                                            <li><a href="Protype.php?type_id=<?= $pro['type_id'] ?>">- <?= $pro['type_name'] ?></a></li>
+                                            <!-- <li><a href="portfolio-full-width.php">- Soft Cream Cake</a></li> -->
+                                        <?php } ?>
+                                    </ul>
+                                </li>
                             </ul>
                         </li>
                     </ul>
                     <ul class="navbar-nav justify-content-end">
                         <li class="dropdown submenu">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button"
-                                aria-haspopup="true" aria-expanded="false">Pages</a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Pages</a>
                             <ul class="dropdown-menu">
                                 <li><a href="service.php">Services</a></li>
                                 <li class="dropdown submenu">
-                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button"
-                                        aria-haspopup="true" aria-expanded="false">Gallery</a>
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Gallery</a>
                                     <ul class="dropdown-menu">
                                         <li><a href="portfolio.php">- Gallery Classic</a></li>
                                         <li><a href="portfolio-full-width.php">- Gallery Full width</a></li>
@@ -91,8 +101,7 @@ ob_start();
                         </li>
                         <!-- Shop -->
                         <li class="dropdown submenu">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button"
-                                aria-haspopup="true" aria-expanded="false">Shop</a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Shop</a>
                             <ul class="dropdown-menu">
                                 <li><a href="shop.php">Main shop</a></li>
                                 <li><a href="product-details.php">Product Details</a></li>
