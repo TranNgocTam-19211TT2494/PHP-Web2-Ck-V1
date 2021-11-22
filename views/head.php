@@ -1,4 +1,5 @@
 <head>
+        
        <?php include_once("meta.php");?>
 
         <!-- Icon css link -->
@@ -8,7 +9,7 @@
         <link href="public/vendors/stroke-icon/style.css" rel="stylesheet">
         <!-- Bootstrap -->
         <link href="public/css/bootstrap.min.css" rel="stylesheet">
-        
+       
         <!-- Rev slider css -->
         <link href="public/vendors/revolution/css/settings.css" rel="stylesheet">
         <link href="public/vendors/revolution/css/layers.css" rel="stylesheet">

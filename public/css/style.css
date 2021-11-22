@@ -759,17 +759,19 @@ i:before {
   position: relative;
   background: #fff;
 }
-
-.main_menu_two:before {
-  content: "";
-  background: url(../img/menu-draw.png) no-repeat scroll center center;
-  height: 19px;
-  width: 100%;
-  position: absolute;
-  left: 0px;
-  bottom: -13px;
-  z-index: 30;
+.icon-whishlist a {
+  color: red;
 }
+.icon-whishlist {
+  position: absolute;
+  font-size: 30px;
+  transition: 0.6s;
+  z-index: 11;
+  opacity: 0;
+  right: 30px;
+  top: 13px;
+}
+
 
 .main_menu_two .navbar.navbar-expand-lg {
   padding: 0px;
@@ -2032,6 +2034,11 @@ i:before {
 }
 
 .cake_feature_item .cake_img:hover:before {
+  opacity: 1;
+}
+
+.cake_feature_item .cake_img:hover .icon-whishlist  {
+  transition: 0.6s;
   opacity: 1;
 }
 
