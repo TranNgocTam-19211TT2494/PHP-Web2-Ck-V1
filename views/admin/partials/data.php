@@ -47,7 +47,7 @@
                                 <th>date</th>
                                 <th>Role</th>
                                 <th>status</th>
-                                <th>Action</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -59,22 +59,22 @@
                                         <span class="au-checkmark"></span>
                                     </label>
                                 </td>
-                                <td><?= $user['username'] ?></td>
+                                <td><?= htmlspecialchars($user['username']) ?></td>
                                 <td>
-                                    <span class="block-email"><?= $user['email'] ?></span>
+                                    <span class="block-email"><?= htmlspecialchars($user['email']) ?></span>
                                 </td>
                                 <?php
                                     $date=date_create($user['date']);
                                 ?>
-                                <td><?= date_format($date ,"d-m-Y | H:i:s" )?></td>
-                                <td class="desc"><?= $user['permission'] ?></td>
+                                <td><?= htmlspecialchars(date_format($date ,"d-m-Y | H:i:s" ))?></td>
+                                <td class="desc"><?= htmlspecialchars($user['permission']) ?></td>
                                 <?php if($user['status'] == 0) {?>
                                 <td>
-                                    <span class="status--process">Inactive</span>
+                                    <span class="status--process">Active</span>
                                 </td>
                                 <?php } else { ?>
                                 <td>
-                                    <span class="status--process">Active</span>
+                                    <span class="status--process">Inactive</span>
                                 </td>
                                 <?php } ?>
                                 <!-- Xóa người dùng -->

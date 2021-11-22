@@ -21,3 +21,5 @@
 
   <!-- Main JS-->
   <script src="../public/backend/js/main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+  <script src="../public/js/xss.js"></script>

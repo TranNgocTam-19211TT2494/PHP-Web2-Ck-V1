@@ -122,10 +122,16 @@ class ProductModel extends BaseTwoAdmin
         $products = $this->select($sql);
         return $products;
     }
-    public function getProducts()
+    public function getProducts($params = [])
     {
-        $sql = 'SELECT * FROM `products` WHERE detele_at IS NULL ORDER BY `id` DESC;';
-        $products = $this->select($sql);
+        if (!empty($params['keyword'])) {
+            $sql = 'SELECT * FROM products 
+            WHERE name LIKE "%' . mysqli_real_escape_string(self::$_connection, $params['keyword']) . '%"';
+            $products = $this->select($sql);
+        }else {
+            $sql = 'SELECT * FROM `products` WHERE detele_at IS NULL ORDER BY `id` DESC;';
+            $products = $this->select($sql);
+        }   
         return $products;
     }
     public function getAllProducts()
