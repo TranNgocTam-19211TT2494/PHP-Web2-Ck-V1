@@ -2,6 +2,7 @@
 
 require_once 'BaseModel.php'; 
 class HomeModel extends BaseModel {
+    //   ------------ User ---------------//
       //Login
       public function login($username, $password)
       {
@@ -57,10 +58,54 @@ class HomeModel extends BaseModel {
             }
            
         }
-        $sql = 'SELECT * FROM products ORDER BY products.price ' . $sort;
-        // var_dump($sql).die();
+
+        $sql = 'SELECT * FROM `products` WHERE detele_at IS NULL price '. $sort;
         $products = $this->select($sql);
         return $products;
+    }
+    public function getWhishlist()
+    {
+        $sql = 'SELECT * FROM `whishlist` ORDER BY `id` DESC;';
+        $whishlist = $this->select($sql);
+        return $whishlist;
+    }
+    public function getWhishlistExist($userid,$pro_id)
+    {
+        $sql = "SELECT * FROM `whishlist` WHERE `user_id` = $userid and `pro_id` = $pro_id";
+        $whishlist = $this->select($sql);
+        return $whishlist;
+    }
+    // WSC
+    public function insertWhishList($id,$userId)
+    {
+        $allProduct = $this->getProducts();
+        foreach ($allProduct as $value) {
+           if(md5($value['id'].'chuyen-de-web-2') == $id){
+            $sql = "INSERT INTO `webbanhkem`.`whishlist` (`user_id` ,`pro_id`) VALUES (" .
+            "'" . $userId
+            . "','" . $value['id'] . "')";
+            $allWhishlist = $this->getWhishlistExist($userId,$value['id']);
+            if(empty($allWhishlist)){
+                $products = $this->insert($sql);
+                return $products;
+            }else{
+                return 2;
+            }
+           }
+        }
+    }
+    public function deleteWhishList($id)
+    {
+        $allWhishlist = $this->getWhishlist();
+        foreach ($allWhishlist as $value) {
+            $md5 = md5($value['id'] . "chuyen-de-web-2");
+            if($md5 == $id){
+                $sql = "DELETE FROM whishlist WHERE id =  " . $value['id'] ;
+                $whishlist = $this->delete($sql);
+                return $whishlist;
+             }
+        }
+      return false;
     }
 }
 
