@@ -2,7 +2,6 @@
 session_start();
 ob_start();
 ?>
-
 <header class="main_header_area">
 
     <div class="top_header_area row m0">
@@ -95,6 +94,7 @@ ob_start();
                                 aria-haspopup="true" aria-expanded="false">Shop</a>
                             <ul class="dropdown-menu">
                                 <li><a href="shop.php">Main shop</a></li>
+                                <li><a href="whishlist.php">Whishlist</a></li>
                                 <li><a href="product-details.php">Product Details</a></li>
                                 <li><a href="cart.php">Cart Page</a></li>
                                 <li><a href="checkout.php">Checkout Page</a></li>
