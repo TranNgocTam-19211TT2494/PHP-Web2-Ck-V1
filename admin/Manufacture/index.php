@@ -1,4 +1,5 @@
 <?php
+session_start();
 include '../../models/ManufactureModel.php';
 $manusModel = new ManufactureModel();
 $manufacture = $manusModel->getManufactures();
@@ -17,17 +18,7 @@ $token = $_SESSION['token'];
 //         }
 //     }
 // }
-if (isset($_GET['manu_id'])) {
-    $_id = $_GET['manu_id'];
-    if (!empty($_GET['token'])) {
-        if (hash_equals($_SESSION['token'], $_GET['token'])) {
-            var_dump($_SESSION['token']);
-            var_dump($_GET['token']);
-            die();
-        }
-    }
-    $manusModel->deleteManufacture($_id);
-}
+
 
 ?>
 <!DOCTYPE html>
@@ -372,7 +363,7 @@ if (isset($_GET['manu_id'])) {
                                                         <a href="add-manu.php?manu_id=<?php echo $item['manu_id'] ?>" class="item" data-toggle="tooltip" data-placement="top" title="Edit">
                                                             <i class="zmdi zmdi-edit"></i>
                                                         </a>
-                                                        <a href="index.php?manu_id=<?php echo $item['manu_id'] ?>&token=<?php echo $token ?>" class="item" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                        <a href="delete-manu.php?manu_id=<?php echo $item['manu_id'] ?>&token=<?php echo $token ?>" class="item" data-toggle="tooltip" data-placement="top" title="Delete">
                                                             <i class="zmdi zmdi-delete"></i>
                                                             <input type="hidden" name="token" value="<?php echo $token ?>">
                                                         </a>
@@ -419,6 +410,11 @@ if (isset($_GET['manu_id'])) {
     <script src="../../public/vendors/lightbox/simpleLightbox.min.js"></script>
 
     <script src="../../public/js/theme.js"></script>
+    <script>
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
+    </script>
 
 </body>
 
