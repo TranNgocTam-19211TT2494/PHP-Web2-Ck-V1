@@ -8,18 +8,6 @@ if (empty($_SESSION['token'])) {
     $_SESSION['token'] = bin2hex(random_bytes(32));
 }
 $token = $_SESSION['token'];
-
-// if (!empty($_GET['token'])) {
-//     if (hash_equals($_SESSION['token'], $_GET['token'])) {
-
-//         if (isset($_GET['manu_id'])) {
-//             $_id = $_GET['manu_id'];
-//             $manusModel->deleteManufacture($_id);
-//         }
-//     }
-// }
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
