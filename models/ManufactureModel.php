@@ -17,7 +17,7 @@ class ManufactureModel extends BaseAdminModel
     public function insertManufacture($input)
     {
         $sql = "INSERT INTO manufactures (`manu_name`) VALUES (" .
-            "'" . $input['name'] . "')";
+            "'" . $input['manu_name'] . "')";
         $manus = $this->insert($sql);
         return $manus;
     }
@@ -29,9 +29,9 @@ class ManufactureModel extends BaseAdminModel
         $manus = $this->update($sql);
         return $manus;
     }
-    public function deleteManufacture($input)
+    public function deleteManufacture($id)
     {
-        $sql = 'DELETE FROM manufactures WHERE id = ' . $input['id'];
+        $sql = 'DELETE FROM manufactures WHERE manu_id = ' .$id;
         return $this->delete($sql);
     }
 }

@@ -2,8 +2,6 @@
 include '../../models/ManufactureModel.php';
 $manusModel = new ManufactureModel();
 $manufacture = $manusModel->getManufactures();
-// var_dump($manufacture);
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -97,7 +95,7 @@ $manufacture = $manusModel->getManufactures();
                                         <a href="">Orders</a>
                                     </li>
                                     <li>
-                                        <a href="">Manufactures</a>
+                                        <a href="../admin/Manufacture/">Manufactures</a>
                                     </li>
                                     <li>
                                         <a href="">Protype</a>
@@ -347,9 +345,9 @@ $manufacture = $manusModel->getManufactures();
                                                         <a href="add-manu.php?manu_id=<?php echo $item['manu_id']?>" class="item" data-toggle="tooltip" data-placement="top" title="Edit">
                                                             <i class="zmdi zmdi-edit"></i>
                                                         </a>
-                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                        <a href="delete-manu.php?manu_id=<?php echo $item['manu_id']?>" class="item" data-toggle="tooltip" data-placement="top" title="Delete">
                                                             <i class="zmdi zmdi-delete"></i>
-                                                        </button>
+                                                        </a>
                                                     </div>
                                                 </td>
                                             </tr>

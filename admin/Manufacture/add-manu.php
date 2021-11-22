@@ -11,7 +11,7 @@ if (!empty($_POST['submit'])) {
     } else {
         $manusModel->insertManufacture($_POST);
     }
-    header('location: http://localhost:8000/Do-an-w2/Do-an-w2-v1/admin/Manufacture/');
+    header('location: ./index.php');
 }
 
 ?>
@@ -107,7 +107,7 @@ if (!empty($_POST['submit'])) {
                                         <a href="">Orders</a>
                                     </li>
                                     <li>
-                                        <a href="">Manufactures</a>
+                                        <a href="../admin/Manufacture/">Manufactures</a>
                                     </li>
                                     <li>
                                         <a href="">Protype</a>
