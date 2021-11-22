@@ -20,9 +20,8 @@
                                             <i class="fa fa-search"></i> Search
                                         </button>
                                     </div>
-                                    <input type="text" id="input1-group2" name="keyword"
-                                        value="<?php echo $keyword ?>" placeholder="Search users"
-                                        class="form-control">
+                                    <input type="text" id="input1-group2" name="keyword" value="<?php echo $keyword ?>"
+                                        placeholder="Search users" class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -48,7 +47,7 @@
                                 <th>date</th>
                                 <th>Role</th>
                                 <th>status</th>
-                                <th></th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -82,17 +81,12 @@
 
                                 <td>
                                     <div class="table-data-feature">
-                                       
                                         <a href="view_user.php?id=<?= $user['id'] ?>" class="item">
                                             <i class="zmdi zmdi-eye"></i>
                                         </a>
-
                                         <a href="delete_user.php?id=<?= $user['id'] ?>" class="item">
                                             <i class="zmdi zmdi-delete"></i>
                                         </a>
-                                        <button class="item" data-toggle="tooltip" data-placement="top" title="More">
-                                            <i class="zmdi zmdi-more"></i>
-                                        </button>
                                     </div>
                                 </td>
                             </tr>
