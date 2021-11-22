@@ -47,7 +47,7 @@
                                 <th>date</th>
                                 <th>Role</th>
                                 <th>status</th>
-                                <th></th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -86,9 +86,6 @@
                                         </a>
                                         <a href="delete_user.php?id=<?= $user['id'] ?>" class="item">
                                             <i class="zmdi zmdi-delete"></i>
-                                        </a>
-                                        <a href="update_user.php?id=<?= $user['id'] ?>" class="item">
-                                            <i class="zmdi zmdi-edit"></i>
                                         </a>
                                     </div>
                                 </td>
