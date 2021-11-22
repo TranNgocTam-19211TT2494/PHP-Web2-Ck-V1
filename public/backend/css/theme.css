@@ -76,7 +76,10 @@ img {
     max-width: 100%;
     height: auto;
 }
-
+.anh-tam {
+    width: 100px;
+    height: auto;
+}
 p {
     margin: 0;
 }
@@ -494,7 +497,6 @@ section {
 .au-btn--green:hover {
     background: #59bd60;
 }
-
 .au-btn-plus {
     position: absolute;
     height: 45px;
@@ -4648,7 +4650,10 @@ section {
     -o-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
 }
-
+.active {
+    display: flex;
+    justify-content: space-between;
+}
 .block-email {
     font-size: 14px;
     color: #808080;

@@ -1,3 +1,23 @@
+<?php 
+// Start the session
+session_start();
+require('../models/UserModel.php');
+
+$userModel = new UserModel();
+$params = [];
+
+if (!empty($_GET['keyword'])) {
+    $params['keyword'] = $_GET['keyword'];
+    //Kiểm tra keyword bằng regex trong PHP
+    // $pattern = '/^[A-Za-z0-9]$/';
+    // if (!preg_match($pattern, $params['keyword'])) {
+    //     echo "Không đúng định dạng";
+    //     $params['keyword'] = null;
+    // }
+}
+$users = $userModel->getUsers($params);
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
