@@ -40,10 +40,20 @@ class HomeModel extends BaseModel {
         return $protypes;
     }
     public function getprotypeOnProduct($typeid){
-        // $sort ='';
-        $sql = 'SELECT * FROM `protypes`,products WHERE protypes.type_id = products.type_id AND protypes.type_id = '.$typeid .' ORDER BY products.id DESC';
-        $protypes = $this->select($sql);
-        return $protypes;
+        $protypes = 'SELECT type_id FROM protypes';
+        $protype = $this->select($protypes);
+        $proty = null;
+        foreach($protype as $idproty){
+            $md5 = md5($idproty['type_id'] . 'chuyen-de-web-2');
+            if($md5 == $typeid){
+                $sql = 'SELECT * FROM `protypes`,products WHERE protypes.type_id = products.type_id AND protypes.type_id = '.$idproty['type_id'] .' ORDER BY products.id DESC';
+            $proty = $this->select($sql);
+            }
+        }
+        
+        // $sql = 'SELECT * FROM `protypes`,products WHERE protypes.type_id = products.type_id AND protypes.type_id = '.$typeid .' ORDER BY products.id DESC';
+        // $protypes = $this->select($sql);
+        return $proty;
     }
 
     public function getProducts()
@@ -59,7 +69,7 @@ class HomeModel extends BaseModel {
            
         }
 
-        $sql = 'SELECT * FROM `products` WHERE detele_at IS NULL price '. $sort;
+        $sql = 'SELECT * FROM `products` WHERE detele_at IS NULL ORDER BY products.price ' . $sort;
         $products = $this->select($sql);
         return $products;
     }

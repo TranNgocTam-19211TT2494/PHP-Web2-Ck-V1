@@ -64,7 +64,7 @@ $proty = $protypeModel->getProtype();
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Protype Cake</a>
                             <ul class="dropdown-menu">
                                 <?php foreach ($proty as $pro) { ?>
-                                <li><a href="Protype.php?type_id=<?= $pro['type_id'] ?>">- <?= $pro['type_name'] ?></a></li>
+                                <li><a href="Protype.php?type_id=<?=md5($pro['type_id'] . 'chuyen-de-web-2') ?>">- <?= $pro['type_name'] ?></a></li>
                                 <?php } ?>
                             </ul>
                         </li>

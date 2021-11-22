@@ -44,7 +44,7 @@
                             <span class="bot-line"></span>Pages</a>
                         <ul class="header3-sub-list list-unstyled">
                             <li>
-                                <a href="">Products</a>
+                                <a href="../admin/products/">Products</a>
                             </li>
                             <li>
                                 <a href="">Orders</a>
@@ -53,7 +53,7 @@
                                 <a href="../admin/Manufacture/">Manufactures</a>
                             </li>
                             <li>
-                                <a href="protype/Protypes.php">Protype</a>
+                                <a href="../admin/protype">Protype</a>
                             </li>
                         </ul>
                     </li>
