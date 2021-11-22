@@ -1,8 +1,8 @@
 <?php
 
-require_once 'BaseModel.php';
+require_once 'BaseTwoAdmin.php';
 
-class ProductModel extends BaseModel
+class ProductModel extends BaseTwoAdmin
 {
     public function getProducts()
     {
