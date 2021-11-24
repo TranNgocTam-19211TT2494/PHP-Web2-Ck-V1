@@ -1,7 +1,13 @@
 <?php
+session_start();
 include '../../models/ManufactureModel.php';
 $manusModel = new ManufactureModel();
 $manufacture = $manusModel->getManufactures();
+$token = null;
+if (empty($_SESSION['token'])) {
+    $_SESSION['token'] = bin2hex(random_bytes(32));
+}
+$token = $_SESSION['token'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -297,11 +303,12 @@ $manufacture = $manusModel->getManufactures();
                                                         <!-- <button class="item" data-toggle="tooltip" data-placement="top" title="Send">
                                                             <i class="zmdi zmdi-mail-send"></i>
                                                         </button> -->
-                                                        <a href="add-manu.php?manu_id=<?php echo $item['manu_id']?>" class="item" data-toggle="tooltip" data-placement="top" title="Edit">
+                                                        <a href="add-manu.php?manu_id=<?php echo $item['manu_id'] ?>" class="item" data-toggle="tooltip" data-placement="top" title="Edit">
                                                             <i class="zmdi zmdi-edit"></i>
                                                         </a>
-                                                        <a href="delete-manu.php?manu_id=<?php echo $item['manu_id']?>" class="item" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                        <a href="delete-manu.php?manu_id=<?php echo $item['manu_id'] ?>&token=<?php echo $token ?>" class="item" data-toggle="tooltip" data-placement="top" title="Delete">
                                                             <i class="zmdi zmdi-delete"></i>
+                                                            <input type="hidden" name="token" value="<?php echo $token ?>">
                                                         </a>
                                                     </div>
                                                 </td>
@@ -346,6 +353,11 @@ $manufacture = $manusModel->getManufactures();
     <script src="../../public/vendors/lightbox/simpleLightbox.min.js"></script>
 
     <script src="../../public/js/theme.js"></script>
+    <script>
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
+    </script>
 
 </body>
 
