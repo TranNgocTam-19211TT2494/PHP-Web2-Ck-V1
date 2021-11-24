@@ -20,7 +20,7 @@ if (!empty($_POST['submit'])) {
     } else {
         $protypesModel->insertProtype($_POST);
     }
-    header('location: ./Protypes.php');
+    header('location: ./index.php');
 }
 
 ?>

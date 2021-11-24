@@ -4,7 +4,6 @@ require_once 'models/HomeModel.php';
 $productModel = new HomeModel();
 
 $products = $productModel->getProducts();
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -52,21 +51,18 @@ $products = $productModel->getProducts();
                             </div>
                             <div class="float-right">
                                 <h4>Sort by :</h4>
-                                <select class="short">
-                                    <option data-display="Default">Default</option>
-                                    <option value="1">Default</option>
-                                    <option value="2">Default</option>
-                                    <option value="4">Default</option>
-                                </select>
+                                <select class="short" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
+									<option>Sort</option>
+									<option value="?field=price&sort=desc">Reduce</option>
+									<option value="?field=price&sort=asc">Augment</option>
+								</select>
                             </div>
                         </div>
                     </div>
                     <div class="row product_item_inner">
                         <?php foreach ($products as $product) { ?>
                         <div class="col-lg-4 col-md-4 col-6">
-
                             <div class="cake_feature_item">
-
                                 <div class="cake_img">
                                     <img src="<?= $product['pro_image']?>" alt="">
                                     <div class="icon-whishlist">

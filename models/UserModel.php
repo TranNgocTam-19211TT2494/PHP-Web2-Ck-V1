@@ -24,13 +24,31 @@ class UserModel extends BaseAdminModel {
     //Xoa người dùng: 
     public function deleteUserById($id)
     {
-        $sql = 'DELETE FROM users WHERE id = ' . $id;
-        return $this->delete($sql);
+        $usermodel = 'SELECT id FROM users';
+        $users = $this->select($usermodel);
+        $user = null;
+        foreach($users as $use){
+            $md5 = md5($use['id'] . 'chuyen-de-web-2');
+            if($md5 == $id){
+                $sql = 'DELETE FROM users WHERE id = ' . $use['id'];
+                $user = $this->delete($sql);
+            }
+        }
+        // $sql = 'DELETE FROM users WHERE id = ' . $id;
+        return $user;
     }
     //Tìm id 
     public function findUserById($id) {
-        $sql = 'SELECT * FROM users WHERE id = '.$id;
-        $user = $this->select($sql);
+        $usermodel = 'SELECT id FROM users';
+        $users = $this->select($usermodel);
+        $user = null;
+        foreach($users as $use){
+            $md5 = md5($use['id'] . 'chuyen-de-web-2');
+            if($md5 == $id){
+                $sql = 'SELECT * FROM users WHERE id = '.$use['id'];
+                $user = $this->select($sql);
+            }
+        }
         return $user;
     }
     public function updateUser($input) {

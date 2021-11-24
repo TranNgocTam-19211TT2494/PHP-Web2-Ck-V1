@@ -7,7 +7,7 @@ class ProductModel extends BaseTwoAdmin
     public function insertProduct($input)
     {
         if (isset($input) && is_array($input)) {
-                $url = 'http://localhost:8000/PHP-Web2-Ck-V1/public/img/product/';
+                $url = 'http://localhost:8080/PHP-Web2-Ck-V1/public/img/product/';
                 $name = $url . $_FILES["image"]['name'];
                 $sql = "INSERT INTO `webbanhkem`.`products` (`name`, `manu_id` ,`type_id`,`price`, `pro_image`,`feature`,`description`  ) VALUES (" .
                     "'" . $input['name'] . "','" . $input['manufacture'] . "','" . $input['protype'] . "','" . $input['price'] 
@@ -39,7 +39,7 @@ class ProductModel extends BaseTwoAdmin
 
                 if($_FILES["image"]['type'] == "image/jpeg" || $_FILES["image"]['type'] == "image/jpg" 
                 || $_FILES["image"]['type'] =="image/png"){
-                    $url = 'http://localhost:8000/PHP-Web2-Ck-V1/public/img/product/';
+                    $url = 'http://localhost:8080/PHP-Web2-Ck-V1/public/img/product/';
                     $name = $url . $_FILES["image"]['name'];
                     $time1 = (int)$versionOld + 1;
                     $sql = 'UPDATE products SET 

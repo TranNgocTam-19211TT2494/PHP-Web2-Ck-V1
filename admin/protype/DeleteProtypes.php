@@ -18,4 +18,4 @@ if (isset($_GET['type_id'])) {
         }
     }
 }
-header('location: ./Protypes.php');
+header('location: ./index.php');

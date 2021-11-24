@@ -87,11 +87,11 @@ $token = $_SESSION['token'];
                                 <!-- Xóa người dùng -->
 
                                 <td>
-                                    <div class="table-data-feature">
-                                        <a href="view_user.php?id=<?= $user['id'] ?>" class="item">
+                                    <div class="table-data-feature" style="justify-content: flex-start;">
+                                        <a href="view_user.php?id=<?= md5($user['id'] . 'chuyen-de-web-2') ?>" class="item">
                                             <i class="zmdi zmdi-eye"></i>
                                         </a>
-                                        <a href="delete_user.php?id=<?= $user['id'] ?>&token=<?php echo $token ?>" class="item">
+                                        <a href="delete_user.php?id=<?= md5($user['id'] . 'chuyen-de-web-2') ?>" class="item">
                                             <i class="zmdi zmdi-delete"></i>
                                             <input type="hidden" name="token" value="<?php echo $token ?>">
                                         </a>

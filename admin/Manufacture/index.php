@@ -308,7 +308,6 @@ $token = $_SESSION['token'];
                                                         </a>
                                                         <a href="delete-manu.php?manu_id=<?php echo $item['manu_id'] ?>&token=<?php echo $token ?>" class="item" data-toggle="tooltip" data-placement="top" title="Delete">
                                                             <i class="zmdi zmdi-delete"></i>
-                                                            <input type="hidden" name="token" value="<?php echo $token ?>">
                                                         </a>
                                                     </div>
                                                 </td>
