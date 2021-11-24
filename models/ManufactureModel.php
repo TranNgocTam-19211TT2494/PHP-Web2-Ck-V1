@@ -23,11 +23,29 @@ class ManufactureModel extends BaseTwoAdmin
     }
     public function updateManufacture($input)
     {
-        $sql = 'UPDATE manufactures SET 
-                manu_name = "' . $input['manu_name'] . '"
-                WHERE manu_id = ' .  $input['manu_id'];
-        $manus = $this->update($sql);
-        return $manus;
+        $versionOld = null;
+        
+        $allManufactures = $this->getManufactures();
+        foreach ($allManufactures as  $value) {
+            if($value['manu_id'] == $input['manu_id']){
+                $idNew = $value['manu_id'];
+                $versionOld = $value['version'];
+               
+            }
+        }
+
+        if(md5($versionOld.'chuyen-de-web-2') == $input['version']){
+            $versionNew = (int)$versionOld + 1;
+            $sql = 'UPDATE manufactures SET 
+            manu_name = "' . $input['manu_name'] . '",
+            version = "' . $versionNew. '"
+            WHERE manu_id = ' .  $input['manu_id'];
+            $manus = $this->update($sql);
+            return $manus;
+        }else{
+            return false;
+        }
+        
     }
     public function deleteManufacture($id)
     {

@@ -5,13 +5,20 @@ if (isset($_GET['manu_id'])) {
     $_id = $_GET['manu_id'];
     $manu = $manusModel->findManufactureById($_id);
 }
+$err=false;
 if (!empty($_POST['submit'])) {
     if (!empty($_id)) {
-        $manusModel->updateManufacture($_POST);
+       $result =  $manusModel->updateManufacture($_POST);
+      if($result == false){
+          $err = true;
+      }else{
+        header('location: ./index.php');
+      }
     } else {
         $manusModel->insertManufacture($_POST);
+        header('location: ./index.php');
+       
     }
-    header('location: ./index.php');
 }
 
 ?>
@@ -33,14 +40,16 @@ if (!empty($_POST['submit'])) {
     <link href="../../public/backend/css/font-face.css" rel="stylesheet" media="all">
     <link href="../../public/backend/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
     <link href="../../public/backend/vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
-    <link href="../../public/backend/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+    <link href="../../public/backend/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet"
+        media="all">
 
     <!-- Bootstrap CSS-->
     <link href="../../public/backend/vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
 
     <!-- Vendor CSS-->
     <link href="../../public/backend/vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
-    <link href="../../public/backend/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
+    <link href="../../public/backend/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet"
+        media="all">
     <link href="../../public/backend/vendor/wow/animate.css" rel="stylesheet" media="all">
     <link href="../../public/backend/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
     <link href="../../public/backend/vendor/slick/slick.css" rel="stylesheet" media="all">
@@ -244,7 +253,8 @@ if (!empty($_POST['submit'])) {
                                     <div class="info clearfix">
                                         <div class="image">
                                             <a href="#">
-                                                <img src="../../public/backend/images/icon/avatar-01.jpg" alt="John Doe" />
+                                                <img src="../../public/backend/images/icon/avatar-01.jpg"
+                                                    alt="John Doe" />
                                             </a>
                                         </div>
                                         <div class="content">
@@ -287,8 +297,15 @@ if (!empty($_POST['submit'])) {
 
         <div class="main-content">
             <div class="row">
+
+
                 <div class="col-md-3"></div>
                 <div class="col-md-6">
+                    <?php if(isset($err) && $err == true) {?>
+                    <div class="alert alert-danger" role="alert">
+                        UPDATE PRODUCT UNSUCCESSFUL
+                    </div>
+                    <?php }?>
                     <div class="card">
                         <div class="card-header">
                             <strong>Manufacture</strong> Form
@@ -296,26 +313,31 @@ if (!empty($_POST['submit'])) {
                         <div class="card-body card-block">
                             <?php if (empty($_id) || $manu) { 
                                 ?>
-                                <form method="post" class="form-horizontal">
-                                    <input type="hidden" name="manu_id" value="<?php echo $_id ?>">
-                                    <div class="row form-group">
-                                        <div class="col col-md-3">
-                                            <label for="name" class=" form-control-label">Manufacture Name</label>
-                                        </div>
-                                        <div class="col-12 col-md-9">
-                                            <input type="text" value="<?php if(!empty($manu[0]['manu_name'])) echo $manu[0]['manu_name']?>"  id="name" name="manu_name" placeholder="Enter Manufacture Name..." class="form-control">
-                                            <span class="help-block">Please enter name</span>
-                                        </div>
+                            <form method="post" class="form-horizontal">
+                                <input type="hidden" name="version"
+                                    value="<?= md5($manu[0]['version'].'chuyen-de-web-2')?>">
+                                <input type="hidden" name="manu_id" value="<?php echo $_id ?>">
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="name" class=" form-control-label">Manufacture Name</label>
                                     </div>
-                                    <div class="card-footer">
-                                        <button type="submit" name="submit" value="submit" class="btn btn-primary btn-sm">
-                                            <i class="fa fa-dot-circle-o"></i> Submit
-                                        </button>
-                                        <button type="reset" class="btn btn-danger btn-sm" >
-                                            <i class="fa fa-ban"></i> Reset
-                                        </button>
+                                    <div class="col-12 col-md-9">
+                                        <input type="text"
+                                            value="<?php if(!empty($manu[0]['manu_name'])) echo $manu[0]['manu_name']?>"
+                                            id="name" name="manu_name" placeholder="Enter Manufacture Name..."
+                                            class="form-control">
+                                        <span class="help-block">Please enter name</span>
                                     </div>
-                                </form>
+                                </div>
+                                <div class="card-footer">
+                                    <button type="submit" name="submit" value="submit" class="btn btn-primary btn-sm">
+                                        <i class="fa fa-dot-circle-o"></i> Submit
+                                    </button>
+                                    <button type="reset" class="btn btn-danger btn-sm">
+                                        <i class="fa fa-ban"></i> Reset
+                                    </button>
+                                </div>
+                            </form>
                             <?php } ?>
                         </div>
 
