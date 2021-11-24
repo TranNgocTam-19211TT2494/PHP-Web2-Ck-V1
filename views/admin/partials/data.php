@@ -1,3 +1,10 @@
+<?php
+$token = null;
+if (empty($_SESSION['token'])) {
+    $_SESSION['token'] = bin2hex(random_bytes(32));
+}
+$token = $_SESSION['token'];
+?>
 <section class="p-t-20">
     <div class="container">
         <div class="row">
@@ -84,8 +91,9 @@
                                         <a href="view_user.php?id=<?= $user['id'] ?>" class="item">
                                             <i class="zmdi zmdi-eye"></i>
                                         </a>
-                                        <a href="delete_user.php?id=<?= $user['id'] ?>" class="item">
+                                        <a href="delete_user.php?id=<?= $user['id'] ?>&token=<?php echo $token ?>" class="item">
                                             <i class="zmdi zmdi-delete"></i>
+                                            <input type="hidden" name="token" value="<?php echo $token ?>">
                                         </a>
                                     </div>
                                 </td>
