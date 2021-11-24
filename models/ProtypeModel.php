@@ -19,16 +19,22 @@ class ProtypeModel extends BaseTwoAdmin
     public function UpdateProtype($input)
     {
 
-        $protypes = 'SELECT type_id FROM protypes';
+        $protypes = 'SELECT * FROM protypes';
         $protype = $this->select($protypes);
         $proty = null;
         foreach($protype as $idprotys){
             $md5 = md5($idprotys['type_id'] . 'chuyen-de-web-2');
-            if($md5 == $input['type_id']){
-                $sql ='UPDATE protypes SET 
-                type_name = "' . $input['name'] . '"
-                WHERE type_id = ' . $idprotys['type_id'];
-                $proty = $this->update($sql);
+            if($md5 == $input['type_id'] ){
+                if($input['version'] == md5($idprotys['version'].'chuyen-de-web-2')){
+                    $versionNew = (int)$idprotys['version'] + 1;
+                    $sql ='UPDATE protypes SET 
+                    type_name = "' . $input['name'] . '",
+                    version = "' . $versionNew. '"
+                    WHERE type_id = ' . $idprotys['type_id'];
+                    $proty = $this->update($sql);
+                }else{
+                    return false;
+                }
             }
         }
         return $proty;
