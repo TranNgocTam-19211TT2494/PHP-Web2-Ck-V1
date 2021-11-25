@@ -1,13 +1,15 @@
 <?php
 session_start();
-include '../../models/ManufactureModel.php';
-$manusModel = new ManufactureModel();
-$manufacture = $manusModel->getManufactures();
+require "../../models/ProtypeModel.php";
+
+$protypesModel = new ProtypeModel();
 $token = null;
 if (empty($_SESSION['token'])) {
     $_SESSION['token'] = bin2hex(random_bytes(32));
 }
 $token = $_SESSION['token'];
+$protypes = $protypesModel->getProtype();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,13 +17,10 @@ $token = $_SESSION['token'];
 <head>
     <!-- Required meta tags-->
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="au theme template">
-    <meta name="author" content="Hau Nguyen">
-    <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
     <title>Dashboard</title>
+    <?php include('../../views/admin/layouts/head.php') ?>
 
     <!-- Fontfaces CSS-->
     <link href="../../public/backend/css/font-face.css" rel="stylesheet" media="all">
@@ -43,10 +42,17 @@ $token = $_SESSION['token'];
 
     <!-- Main CSS-->
     <link href="../../public/backend/css/theme.css" rel="stylesheet" media="all">
-    <link href="../../public/css/manufacture.css" rel="stylesheet" media="all">
-</head>
+    <link href="../../public/backend/css/protype.css" rel="stylesheet" media="all">
 
-<body class="">
+</head>
+<style>
+    .table-data__tool {
+        justify-content: flex-end;
+    }
+</style>
+
+<body class="animsition">
+
     <div class="page-wrapper">
         <!-- HEADER DESKTOP-->
         <header class="header-desktop3 d-none d-lg-block">
@@ -241,78 +247,41 @@ $token = $_SESSION['token'];
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">
-                            <h3 class="title-5 m-b-35">Manufacture Table</h3>
+                            <h3 class="title-5 m-b-35">Protypes table</h3>
                             <div class="table-data__tool">
-                                <div class="table-data__tool-left">
-                                </div>
                                 <div class="table-data__tool-right">
-                                    <a href="add-manu.php" class="au-btn au-btn-icon au-btn--green au-btn--small">
-                                        <i class="zmdi zmdi-plus"></i>add item</a>
+                                    <button class="au-btn au-btn-icon au-btn--green au-btn--small" onclick="window.location.href='./ViewProtypes.php'" >
+                                        <i class="zmdi zmdi-plus"></i>add item</button>
                                 </div>
                             </div>
                             <div class="table-responsive table-responsive-data2">
                                 <table class="table table-data2">
                                     <thead>
                                         <tr>
-                                            <th>
-                                                <label class="au-checkbox">
-                                                    <input type="checkbox">
-                                                    <span class="au-checkmark"></span>
-                                                </label>
-                                            </th>
-                                            <th>ID</th>
-                                            <th>Name</th>
-                                            <th>Create date</th>
-                                            <th>Update date</th>
-                                            <th>Status</th>
-                                            <th>Action</th>
+                                            <th>#</th>
+                                            <th>name</th>
+                                            <th>Create_at</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php foreach ($manufacture as $item) { ?>
+                                        <?php foreach ($protypes as $proty) { ?>
                                             <tr class="tr-shadow">
-                                                <td>
-                                                    <label class="au-checkbox">
-                                                        <input type="checkbox">
-                                                        <span class="au-checkmark"></span>
-                                                    </label>
-                                                </td>
-                                                <td><?php echo htmlspecialchars($item['manu_id']) ?></td>
-                                                <td><?php echo htmlspecialchars($item['manu_name']) ?></td>
-                                                <td>
-                                                    <?php
-                                                    $date = date_create($item['created_at']);
-                                                    echo htmlspecialchars(date_format($date, "d/m/Y"));
-                                                    ?>
-                                                </td>
-                                                <td>
-                                                    <?php
-                                                    $date = date_create($item['update_at']);
-                                                    echo htmlspecialchars(date_format($date, "d/m/Y"));
-                                                    ?>
-                                                </td>
-                                                <td>
-                                                    <?php if ($item['status'] == 1) { ?>
-                                                        <span class="status--process">Active</span>
-                                                    <?php } else { ?>
-                                                        <span class="status--process">Inactive</span>
-                                                    <?php } ?>
-                                                </td>
-                                                <td>
-                                                    <div class="table-data-feature" id="manu-table">
-                                                        <!-- <button class="item" data-toggle="tooltip" data-placement="top" title="Send">
-                                                            <i class="zmdi zmdi-mail-send"></i>
-                                                        </button> -->
-                                                        <a href="add-manu.php?manu_id=<?php echo $item['manu_id'] ?>" class="item" data-toggle="tooltip" data-placement="top" title="Edit">
+                                            <td class="stt"></td>
+                                                <td><?= htmlspecialchars($proty['type_name'])  ?></td>
+                                                <td><?= htmlspecialchars(date( "d-m-Y", strtotime($proty['create_at'])))?> </td>
+                                                <td class="edit-delete">
+                                                    <div class="table-data-feature">
+                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Edit" onclick="window.location.href='./ViewProtypes.php?type_id=<?php echo md5($proty['type_id'] . 'chuyen-de-web-2') ?>'">
                                                             <i class="zmdi zmdi-edit"></i>
-                                                        </a>
-                                                        <a href="delete-manu.php?manu_id=<?php echo $item['manu_id'] ?>&token=<?php echo $token ?>" class="item" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                        </button>
+                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Delete" onclick="window.location.href='./DeleteProtypes.php?type_id=<?php echo md5($proty['type_id'] . 'chuyen-de-web-2')  ?>&token=<?php echo $token ?>'">
                                                             <i class="zmdi zmdi-delete"></i>
-                                                        </a>
+                                                            <input type="hidden" name="token" value="<?php echo $token ?>">
+                                                        </button>
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <tr class="spacer"></tr>
                                         <?php } ?>
                                     </tbody>
                                 </table>
@@ -322,41 +291,11 @@ $token = $_SESSION['token'];
                 </div>
             </section>
             <!-- END DATA TABLE-->
-
-            <!-- COPYRIGHT-->
-            <?php include('../../views/admin/partials/copyright.php') ?>
-            <!-- END COPYRIGHT-->
         </div>
 
     </div>
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="../../public/js/jquery-3.2.1.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="../../public/js/popper.min.js"></script>
-    <script src="../../public/js/bootstrap.min.js"></script>
-    <!-- Rev slider js -->
-    <script src="../../public/vendors/revolution/js/jquery.themepunch.tools.min.js"></script>
-    <script src="../../public/vendors/revolution/js/jquery.themepunch.revolution.min.js"></script>
-    <script src="../../public/vendors/revolution/js/extensions/revolution.extension.actions.min.js"></script>
-    <script src="../../public/vendors/revolution/js/extensions/revolution.extension.video.min.js"></script>
-    <script src="../../public/vendors/revolution/js/extensions/revolution.extension.slideanims.min.js"></script>
-    <script src="../../public/vendors/revolution/js/extensions/revolution.extension.layeranimation.min.js"></script>
-    <script src="../../public/vendors/revolution/js/extensions/revolution.extension.navigation.min.js"></script>
-    <!-- Extra plugin js -->
-    <script src="../../public/vendors/owl-carousel/owl.carousel.min.js"></script>
-    <script src="../../public/vendors/magnifc-popup/jquery.magnific-popup.min.js"></script>
-    <script src="../../public/vendors/datetime-picker/js/moment.min.js"></script>
-    <script src="../../public/vendors/datetime-picker/js/bootstrap-datetimepicker.min.js"></script>
-    <script src="../../public/vendors/nice-select/js/jquery.nice-select.min.js"></script>
-    <script src="../../public/vendors/jquery-ui/jquery-ui.min.js"></script>
-    <script src="../../public/vendors/lightbox/simpleLightbox.min.js"></script>
 
-    <script src="../../public/js/theme.js"></script>
-    <script>
-        if (window.history.replaceState) {
-            window.history.replaceState(null, null, window.location.href);
-        }
-    </script>
+    <?php include('../../views/admin/layouts/footer.php') ?>
 
 </body>
 

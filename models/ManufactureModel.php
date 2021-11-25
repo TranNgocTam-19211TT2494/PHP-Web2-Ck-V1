@@ -10,8 +10,18 @@ class ManufactureModel extends BaseTwoAdmin
     }
     public function findManufactureById($id)
     {
-        $sql = 'SELECT * FROM manufactures WHERE manu_id = ' . $id;
-        $manus = $this->select($sql);
+        $manufac = 'SELECT manu_id FROM manufactures';
+        $manu = $this->select($manufac);
+        $ma = null;
+        foreach ($manu as $man) {
+            $md5 = md5($man['manu_id'] . 'chuyen-de-web-2');
+            if($md5 == $id){
+            $sql = 'SELECT * FROM manufactures WHERE manu_id = ' . $man['manu_id'];
+            $manus = $this->select($sql);
+            }
+        }
+        // $sql = 'SELECT * FROM manufactures WHERE manu_id = ' . $id;
+        // $manus = $this->select($sql);
         return $manus;
     }
     public function insertManufacture($input)
@@ -49,7 +59,17 @@ class ManufactureModel extends BaseTwoAdmin
     }
     public function deleteManufacture($id)
     {
-        $sql = 'DELETE FROM manufactures WHERE manu_id = ' .$id;
-        return $this->delete($sql);
+        $manufac = 'SELECT manu_id FROM manufactures';
+        $manu = $this->select($manufac);
+        $ma = null;
+        foreach ($manu as $man) {
+            $md5 = md5($man['manu_id'] . 'chuyen-de-web-2');
+            if($md5 == $id){
+            $sql = 'DELETE FROM manufactures WHERE manu_id = ' . $man['manu_id'];
+            $ma = $this->delete($sql);
+            }
+        }
+        $sql = 'DELETE FROM manufactures WHERE manu_id = ' . $id;
+        return $ma;
     }
 }
