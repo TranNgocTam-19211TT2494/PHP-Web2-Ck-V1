@@ -1,8 +1,9 @@
-<<<<<<< HEAD
-<?php 
-    require_once('models/HomeModel.php');
+<?php
     require_once('models/ZipcodeModel.php');
-    $HomeModel = new HomeModel();
+    require 'models/FactoryPattent.php';
+    
+    $factory = new FactoryPattent();
+    $HomeModel = $factory->make('home');
 
     if(!empty($_POST['submit'])) {
         if($_POST['username'] != '' && $_POST['email'] != '' && $_POST['password'] != '') {
@@ -14,33 +15,11 @@
                 echo "<div class=\"alert alert-dark\" role=\"alert\">
                 Email already exists!</div>";
             }
-=======
-<?php
-// require_once('models/HomeModel.php');
-// $HomeModel = new HomeModel();
-
-// --------------Factory----------
-require 'models/FactoryPattent.php';
-$factory = new FactoryPattent();
-$HomeModel = $factory->make('home');
-// --------------Factory----------
-
-if (!empty($_POST['submit'])) {
-
-
-    if ($_POST['username'] != '' && $_POST['email'] != '' && $_POST['password'] != '') {
-        $insert = $HomeModel->createNewUser($_POST);
-        if ($insert) {
-            header("location: login.php");
->>>>>>> Nhom-E/master
-        } else {
-            echo "<div class=\"alert alert-dark\" role=\"alert\">
-                username error or pass not!</div>";
         }
     } else {
         echo "<div class=\"alert alert-dark\" role=\"alert\">Trường phải đủ</div>";
     }
-}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
