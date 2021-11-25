@@ -66,4 +66,15 @@ class ManufactureModel extends BaseTwoAdmin
         $sql = 'DELETE FROM manufactures WHERE manu_id = ' . $id;
         return $ma;
     }
+
+    protected static $_instance;
+    public static function getInstance()
+    {
+        if (self::$_instance != null) {
+
+            return self::$_instance;
+        }
+        self::$_instance = new self();
+        return self::$_instance;
+    }
 }

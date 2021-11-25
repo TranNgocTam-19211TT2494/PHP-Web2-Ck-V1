@@ -1,6 +1,13 @@
 <?php
 include '../../models/ManufactureModel.php';
-$manusModel = new ManufactureModel();
+
+// -----------Factory------------------
+require '../../models/FactoryPattentTwoAdmin.php';
+$facrory = new FactoryPattentTwoAdmin();
+$manusModel = $facrory->make('manu');
+// -----------Factory------------------
+
+// $manusModel = new ManufactureModel();
 $manufacture = $manusModel->getManufactures();
 // var_dump($manufacture).die();
 ?>
