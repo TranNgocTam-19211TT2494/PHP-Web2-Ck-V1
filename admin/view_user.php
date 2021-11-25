@@ -1,6 +1,12 @@
 <?php
 require_once '../models/UserModel.php';
-$userModel = new UserModel();
+// $userModel = new UserModel();
+
+// --------------Factory----------
+require '../models/FactoryPattentAdmin.php';
+$factory = new FactoryPattentAdmin();
+$userModel = $factory->make('user');
+// --------------Factory----------
 
 $user = '';
 $id = NULL;
