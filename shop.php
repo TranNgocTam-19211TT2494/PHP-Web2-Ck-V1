@@ -82,13 +82,14 @@ session_start();
 
                                 <div class="cake_img">
                                     <img src="<?= $product['pro_image']?>" alt="">
+                                    <?php if(isset($_SESSION['lgUserID'])) {?>
                                     <?php if(empty($productModel->getWhishlistExist($_SESSION['lgUserID'],$product['id']))) {?>
                                     <div class="icon-whishlist">
                                         <a href="shop.php?id=<?= md5($product['id'].'chuyen-de-web-2')?>">
                                             <i class="fa fa-heart" aria-hidden="true"></i>
                                         </a>
                                     </div>
-                                    <?php }?>
+                                    <?php } }?>
                                 </div>
                                 <div class="cake_text">
                                     <h4>$<?= $product['price']?></h4>
