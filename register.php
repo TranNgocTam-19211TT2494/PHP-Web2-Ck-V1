@@ -1,7 +1,12 @@
 <?php
-// require_once('models/HomeModel.php');
-// $HomeModel = new HomeModel();
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+use PhpParser\Node\Stmt\Echo_;
+use PhpParser\Node\Stmt\Else_;
+
+require 'vendor/autoload.php';
 // --------------Factory----------
 require 'models/FactoryPattent.php';
 $factory = new FactoryPattent();
@@ -14,6 +19,30 @@ if (!empty($_POST['submit'])) {
     if ($_POST['username'] != '' && $_POST['email'] != '' && $_POST['password'] != '') {
         $insert = $HomeModel->createNewUser($_POST);
         if ($insert) {
+            $mail = new PHPMailer(true);
+
+            // $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
+            $mail->isSMTP();                                            //Send using SMTP
+            $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
+            $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+            $mail->Username   = 'shopcake011@gmail.com';                     //SMTP username
+            $mail->Password   = 'shopcake123456';                               //SMTP password
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
+            $mail->Port       = 465;
+            $mail->isHTML(true);
+            $mail->setFrom('shopcake011@gmail.com', 'CakeShop');
+            $mail->addAddress($_POST['email'], 'Joe User');
+            $mail->Subject = '[CAKE] Chao mung ban den voi the gioi cua cake';
+            $mail->Body    = $_POST['username'] . ' Ơi, Chào mừng bạn đến với thế giới của Cake</b>
+            Cảm ơn bạn đã chọn Cake để đồng hành. Mời bạn vào ứng dụng Cake để tìm hiểu và lựa chọn sản phẩm<b><p>Thân mến,<b><p>
+            Cake team';
+            if(!$mail->send()){
+                echo 'MAILER ERROR';
+            }
+            else{
+                echo 'Message has been sent';
+            }
+
             header("location: login.php");
         } else {
             echo "<div class=\"alert alert-dark\" role=\"alert\">
