@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php 
     require_once('models/HomeModel.php');
     require_once('models/ZipcodeModel.php');
@@ -13,11 +14,33 @@
                 echo "<div class=\"alert alert-dark\" role=\"alert\">
                 Email already exists!</div>";
             }
+=======
+<?php
+// require_once('models/HomeModel.php');
+// $HomeModel = new HomeModel();
+
+// --------------Factory----------
+require 'models/FactoryPattent.php';
+$factory = new FactoryPattent();
+$HomeModel = $factory->make('home');
+// --------------Factory----------
+
+if (!empty($_POST['submit'])) {
+
+
+    if ($_POST['username'] != '' && $_POST['email'] != '' && $_POST['password'] != '') {
+        $insert = $HomeModel->createNewUser($_POST);
+        if ($insert) {
+            header("location: login.php");
+>>>>>>> Nhom-E/master
         } else {
-            echo "<div class=\"alert alert-dark\" role=\"alert\">Trường phải đủ</div>";
+            echo "<div class=\"alert alert-dark\" role=\"alert\">
+                username error or pass not!</div>";
         }
-      
+    } else {
+        echo "<div class=\"alert alert-dark\" role=\"alert\">Trường phải đủ</div>";
     }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -44,8 +67,7 @@
 
     <!-- Vendor CSS-->
     <link href="public/backend/vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
-    <link href="public/backend/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet"
-        media="all">
+    <link href="public/backend/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
     <link href="public/backend/vendor/wow/animate.css" rel="stylesheet" media="all">
     <link href="public/backend/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
     <link href="public/backend/vendor/slick/slick.css" rel="stylesheet" media="all">
@@ -73,26 +95,22 @@
                             <form method="post">
                                 <div class="form-group">
                                     <label>Username</label>
-                                    <input class="au-input au-input--full" type="text" name="username"
-                                        placeholder="Username">
+                                    <input class="au-input au-input--full" type="text" name="username" placeholder="Username">
                                 </div>
                                 <div class="form-group">
                                     <label>Email Address</label>
-                                    <input class="au-input au-input--full" type="email" name="email"
-                                        placeholder="Email">
+                                    <input class="au-input au-input--full" type="email" name="email" placeholder="Email">
                                 </div>
                                 <div class="form-group">
                                     <label>Password</label>
-                                    <input class="au-input au-input--full" type="password" name="password"
-                                        placeholder="Password">
+                                    <input class="au-input au-input--full" type="password" name="password" placeholder="Password">
                                 </div>
                                 <div class="login-checkbox">
                                     <label>
                                         <input type="checkbox" name="aggree">Agree the terms and policy
                                     </label>
                                 </div>
-                                <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit" name="submit"
-                                    value="submit">register</button>
+                                <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit" name="submit" value="submit">register</button>
                                 <div class="social-login-content">
                                     <div class="social-button">
                                         <button class="au-btn au-btn--block au-btn--blue m-b-20">register with

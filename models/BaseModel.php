@@ -3,6 +3,7 @@ require_once 'configs/database.php';
 require_once 'UserDecorator.php';
 abstract class BaseModel implements UserDecorator{
     // Database connection
+    // protected static $_instance;
     protected static $_connection;
     public function __construct() {
         if (!isset(self::$_connection)) {
