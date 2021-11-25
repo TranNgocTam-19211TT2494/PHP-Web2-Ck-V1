@@ -3,7 +3,13 @@
 session_start();
 require('../models/UserModel.php');
 
-$userModel = new UserModel();
+// --------------Factory----------
+require '../models/FactoryPattentAdmin.php';
+$factory = new FactoryPattentAdmin();
+$userModel = $factory->make('user');
+// --------------Factory----------
+
+// $userModel = new UserModel();
 $params = [];
 
 if (!empty($_GET['keyword'])) {

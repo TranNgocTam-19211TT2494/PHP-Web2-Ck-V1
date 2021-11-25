@@ -170,4 +170,15 @@ class ProductModel extends BaseTwoAdmin
         $manu = $this->select($sql);
         return $manu;
     }
+
+    protected static $_instance;
+    public static function getInstance()
+    {
+        if (self::$_instance != null) {
+
+            return self::$_instance;
+        }
+        self::$_instance = new self();
+        return self::$_instance;
+    }
 }

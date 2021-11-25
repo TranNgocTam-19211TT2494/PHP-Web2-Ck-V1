@@ -16,16 +16,14 @@
     <link href="../../public/backend/css/font-face.css" rel="stylesheet" media="all">
     <link href="../../public/backend/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
     <link href="../../public/backend/vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
-    <link href="../../public/backend/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet"
-        media="all">
+    <link href="../../public/backend/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
 
     <!-- Bootstrap CSS-->
     <link href="../../public/backend/vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
 
     <!-- Vendor CSS-->
     <link href="../../public/backend/vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
-    <link href="../../public/backend/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet"
-        media="all">
+    <link href="../../public/backend/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
     <link href="../../public/backend/vendor/wow/animate.css" rel="stylesheet" media="all">
     <link href="../../public/backend/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
     <link href="../../public/backend/vendor/slick/slick.css" rel="stylesheet" media="all">
@@ -36,22 +34,29 @@
     <link href="../../public/backend/css/theme.css" rel="stylesheet" media="all">
 </head>
 <style>
-.select2-hidden-accessible {
-    border: 0 !important;
-    clip: rect(0 0 0 0) !important;
-    height: 1 px !important;
-    margin: -1 px !important;
-    overflow: hidden !important;
-    padding: 0 !important;
-    position: absolute !important;
-    width: 1 px !important;
-}
+    .select2-hidden-accessible {
+        border: 0 !important;
+        clip: rect(0 0 0 0) !important;
+        height: 1 px !important;
+        margin: -1 px !important;
+        overflow: hidden !important;
+        padding: 0 !important;
+        position: absolute !important;
+        width: 1 px !important;
+    }
 </style>
 
 <body class="">
     <?php
     require_once("../../models/ProductModel.php");
-    $productModel = new ProductModel();
+    // $productModel = new ProductModel();
+
+    // ----------Factory----------
+    require '../../models/FactoryPattentTwoAdmin.php';
+    $factory = new FactoryPattentTwoAdmin();
+    $productModel = $factory->make('product');
+    // ----------Factory----------
+    
     $allProduct =  $productModel->getProducts();
     ?>
     <div class="page-wrapper">
@@ -71,9 +76,9 @@
                                     <i class="fas fa-tachometer-alt"></i>Dashboard
                                     <span class="bot-line"></span>
                                 </a>
-                           
+
                             </li>
-                         
+
                             <li class="has-sub">
                                 <a href="#">
                                     <i class="fas fa-copy"></i>
@@ -107,7 +112,7 @@
                                     <li>
                                         <a href="tab.html">Tabs</a>
                                     </li>
-                                    
+
                                 </ul>
                             </li>
                         </ul>
@@ -200,8 +205,7 @@
                                     <div class="info clearfix">
                                         <div class="image">
                                             <a href="#">
-                                                <img src="../../public/backend/images/icon/avatar-01.jpg"
-                                                    alt="John Doe" />
+                                                <img src="../../public/backend/images/icon/avatar-01.jpg" alt="John Doe" />
                                             </a>
                                         </div>
                                         <div class="content">
@@ -239,7 +243,7 @@
         <!-- END HEADER DESKTOP-->
 
         <!-- HEADER MOBILE-->
-        <?php include('../../views/admin/layouts/header-mobile.php')?>
+        <?php include('../../views/admin/layouts/header-mobile.php') ?>
         <!-- END HEADER MOBILE -->
 
         <!-- PAGE CONTENT-->
@@ -275,49 +279,44 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php if(isset($allProduct)) {
-                                            foreach ($allProduct as $product) {?>
-                                        <tr class="tr-shadow">
-                                            <td><?= $product['name']; ?></td>
-                                            <td>
-                                                <div class="img-cake" >
-                                                    <img class="anh-tam" src="<?= $product['pro_image']?>" alt="">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <span
-                                                    class="block-email"><?= $productModel->getManuByProductId($product['manu_id'])[0]['manu_name'] ?></span>
-                                            </td>
-                                            <td class="desc">
-                                                <?= $productModel->getProTypeByProductId($product['type_id'])[0]['type_name'] ?>
-                                            </td>
-                                            <td><?= number_format($product['price']);?> VND</td>
-                                            <td>
-                                                <?php if ($product['feature'] == 1) {?>
-                                                <span class="status--process">Popular</span>
-                                                <?php }else{?>
-                                                <span class="status--denied">Normal</span>
-                                                <?php } ?>
-                                            </td>
-                                            <td>
-                                                <div class="table-data-feature">
-                                                    <a
-                                                        href="edit.php?id=<?= rand(100, 999) . md5($product['id'] . "chuyen-de-web-2") . rand(100, 999)?>">
-                                                        <button class="item" data-toggle="tooltip" data-placement="top"
-                                                            title="Edit">
-                                                            <i class="zmdi zmdi-edit"></i>
-                                                    </a>
-                                                    </button>
-                                                    <a
-                                                        href="delete.php?id=<?php echo rand(100, 999) . md5($product['id'] . "chuyen-de-web-2") . rand(100, 999) ?>"><button
-                                                            class="item" data-toggle="tooltip" data-placement="top"
-                                                            title="Delete">
-                                                            <i class="zmdi zmdi-delete"></i>
-                                                        </button></a>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <?php } } ?>
+                                        <?php if (isset($allProduct)) {
+                                            foreach ($allProduct as $product) { ?>
+                                                <tr class="tr-shadow">
+                                                    <td><?= $product['name']; ?></td>
+                                                    <td>
+                                                        <div class="img-cake">
+                                                            <img class="anh-tam" src="<?= $product['pro_image'] ?>" alt="">
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <span class="block-email"><?= $productModel->getManuByProductId($product['manu_id'])[0]['manu_name'] ?></span>
+                                                    </td>
+                                                    <td class="desc">
+                                                        <?= $productModel->getProTypeByProductId($product['type_id'])[0]['type_name'] ?>
+                                                    </td>
+                                                    <td><?= number_format($product['price']); ?> VND</td>
+                                                    <td>
+                                                        <?php if ($product['feature'] == 1) { ?>
+                                                            <span class="status--process">Popular</span>
+                                                        <?php } else { ?>
+                                                            <span class="status--denied">Normal</span>
+                                                        <?php } ?>
+                                                    </td>
+                                                    <td>
+                                                        <div class="table-data-feature">
+                                                            <a href="edit.php?id=<?= rand(100, 999) . md5($product['id'] . "chuyen-de-web-2") . rand(100, 999) ?>">
+                                                                <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
+                                                                    <i class="zmdi zmdi-edit"></i>
+                                                            </a>
+                                                            </button>
+                                                            <a href="delete.php?id=<?php echo rand(100, 999) . md5($product['id'] . "chuyen-de-web-2") . rand(100, 999) ?>"><button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                                    <i class="zmdi zmdi-delete"></i>
+                                                                </button></a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                        <?php }
+                                        } ?>
                                     </tbody>
                                 </table>
                             </div>
@@ -328,7 +327,7 @@
             <!-- END DATA TABLE-->
 
             <!-- COPYRIGHT-->
-            <?php include('../../views/admin/partials/copyright.php')?>
+            <?php include('../../views/admin/partials/copyright.php') ?>
             <!-- END COPYRIGHT-->
         </div>
 
