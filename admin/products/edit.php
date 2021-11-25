@@ -16,16 +16,14 @@
     <link href="../../public/backend/css/font-face.css" rel="stylesheet" media="all">
     <link href="../../public/backend/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
     <link href="../../public/backend/vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
-    <link href="../../public/backend/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet"
-        media="all">
+    <link href="../../public/backend/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
 
     <!-- Bootstrap CSS-->
     <link href="../../public/backend/vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
 
     <!-- Vendor CSS-->
     <link href="../../public/backend/vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
-    <link href="../../public/backend/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet"
-        media="all">
+    <link href="../../public/backend/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
     <link href="../../public/backend/vendor/wow/animate.css" rel="stylesheet" media="all">
     <link href="../../public/backend/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
     <link href="../../public/backend/vendor/slick/slick.css" rel="stylesheet" media="all">
@@ -36,53 +34,58 @@
     <link href="../../public/backend/css/theme.css" rel="stylesheet" media="all">
 </head>
 <style>
-.select2-hidden-accessible {
-    border: 0 !important;
-    clip: rect(0 0 0 0) !important;
-    height: 1 px !important;
-    margin: -1 px !important;
-    overflow: hidden !important;
-    padding: 0 !important;
-    position: absolute !important;
-    width: 1 px !important;
-}
+    .select2-hidden-accessible {
+        border: 0 !important;
+        clip: rect(0 0 0 0) !important;
+        height: 1 px !important;
+        margin: -1 px !important;
+        overflow: hidden !important;
+        padding: 0 !important;
+        position: absolute !important;
+        width: 1 px !important;
+    }
 </style>
 
 <body class="">
     <?php
     require_once("../../models/ProductModel.php");
-    $productModel = new ProductModel();
+    // $productModel = new ProductModel();
+
+    // ----------Factory----------
+    require '../../models/FactoryPattentTwoAdmin.php';
+    $factory = new FactoryPattentTwoAdmin();
+    $productModel = $factory->make('product');
+    // ----------Factory----------
+    
     $allProduct =  $productModel->getProducts();
     $allManufactures = $productModel->getManufacture();
     $allProtypes = $productModel->getProtypes();
-    if(isset($_GET['id'])){
+    if (isset($_GET['id'])) {
         $id = $_GET['id'];
-        $id_start = substr($id,3);
-        $id_end=substr($id_start,0,-3);
+        $id_start = substr($id, 3);
+        $id_end = substr($id_start, 0, -3);
         $productById = $productModel->getByProductId($id_end);
     }
-    
-    
+
+
     if (!empty($_POST['submit'])) {
-        if(!empty($_POST['name']) && !empty($_POST['price']) && $_POST['manufacture'] !== "0" && $_POST['protype'] !== "0" )
-        {
-            $file_ext=$_FILES['image']['type'];
-            $expensions= array("image/jpeg","image/jpg","image/png");
-            if(in_array($file_ext,$expensions)=== true){
+        if (!empty($_POST['name']) && !empty($_POST['price']) && $_POST['manufacture'] !== "0" && $_POST['protype'] !== "0") {
+            $file_ext = $_FILES['image']['type'];
+            $expensions = array("image/jpeg", "image/jpg", "image/png");
+            if (in_array($file_ext, $expensions) === true) {
                 $tmp_name = $_FILES["image"]["tmp_name"];
                 $name = $_FILES["image"]["name"];
                 $uploads_dir = "../../public/img/product";
                 move_uploaded_file($tmp_name, "$uploads_dir/$name");
             }
             $oki = $productModel->updateProduct($_POST);
-            if($oki){
+            if ($oki) {
                 header('location: index.php');
             }
-        }else{
+        } else {
             $error = true;
         }
         $error = true;
-         
     }
     ?>
     <div class="page-wrapper">
@@ -276,8 +279,7 @@
                                     <div class="info clearfix">
                                         <div class="image">
                                             <a href="#">
-                                                <img src="../../public/backend/images/icon/avatar-01.jpg"
-                                                    alt="John Doe" />
+                                                <img src="../../public/backend/images/icon/avatar-01.jpg" alt="John Doe" />
                                             </a>
                                         </div>
                                         <div class="content">
@@ -315,7 +317,7 @@
         <!-- END HEADER DESKTOP-->
 
         <!-- HEADER MOBILE-->
-        <?php include('../../views/admin/layouts/header-mobile.php')?>
+        <?php include('../../views/admin/layouts/header-mobile.php') ?>
         <!-- END HEADER MOBILE -->
 
         <!-- PAGE CONTENT-->
@@ -329,28 +331,22 @@
                         <div class="card-header">
                             <strong>Add Product</strong>
                         </div>
-                        <?php if(isset($error) && $error == true) {?>
-                        <div class="alert alert-danger" role="alert">
-                            UPDATE PRODUCT UNSUCCESSFUL ! PLEASE FIELDS CAN'T BE NULL
-                        </div>
-                        <?php }?>
+                        <?php if (isset($error) && $error == true) { ?>
+                            <div class="alert alert-danger" role="alert">
+                                UPDATE PRODUCT UNSUCCESSFUL ! PLEASE FIELDS CAN'T BE NULL
+                            </div>
+                        <?php } ?>
                         <div class="card-body card-block">
                             <form method="POST" class="form-horizontal" enctype="multipart/form-data">
-                                <input value=<?php if(isset($id)) echo $id?> type="text" id="text-input" name="id"
-                                    hidden>
-                                <input
-                                    value=<?php if(isset($productById[0]['version'])) echo md5($productById[0]['version'].'chuyen-de-web-2')?>
-                                    type="text" id="text-input" name="version" hidden>
+                                <input value=<?php if (isset($id)) echo $id ?> type="text" id="text-input" name="id" hidden>
+                                <input value=<?php if (isset($productById[0]['version'])) echo md5($productById[0]['version'] . 'chuyen-de-web-2') ?> type="text" id="text-input" name="version" hidden>
                                 <div class="row form-group">
                                     <div class="col col-md-3">
                                         <label for="text-input" class=" form-control-label">Name</label>
 
                                     </div>
                                     <div class="col-12 col-md-9">
-                                        <input
-                                            value="<?php if(isset($productById[0]['name'])) echo $productById[0]['name']?>"
-                                            type="text" id="text-input" name="name" placeholder="Name"
-                                            class="form-control">
+                                        <input value="<?php if (isset($productById[0]['name'])) echo $productById[0]['name'] ?>" type="text" id="text-input" name="name" placeholder="Name" class="form-control">
 
                                     </div>
                                 </div>
@@ -361,14 +357,16 @@
                                     <div class="col-12 col-md-9">
                                         <select name="manufacture" id="select" class="form-control">
                                             <option value="0">Please select manufacture</option>
-                                            <?php if(isset($allManufactures)){
+                                            <?php if (isset($allManufactures)) {
                                                 foreach ($allManufactures as $value) {
-                                                if(isset($productById[0]['manu_id']) && $productById[0]['manu_id'] == $value['manu_id']){?>
-                                            <option value="<?= $value['manu_id'] ?>" selected><?= $value['manu_name'] ?>
-                                            </option>
-                                            <?php }else{?>
-                                            <option value="<?= $value['manu_id'] ?>"><?= $value['manu_name'] ?></option>
-                                            <?php } } } ?>
+                                                    if (isset($productById[0]['manu_id']) && $productById[0]['manu_id'] == $value['manu_id']) { ?>
+                                                        <option value="<?= $value['manu_id'] ?>" selected><?= $value['manu_name'] ?>
+                                                        </option>
+                                                    <?php } else { ?>
+                                                        <option value="<?= $value['manu_id'] ?>"><?= $value['manu_name'] ?></option>
+                                            <?php }
+                                                }
+                                            } ?>
                                         </select>
                                     </div>
                                 </div>
@@ -379,14 +377,16 @@
                                     <div class="col-12 col-md-9">
                                         <select name="protype" id="select" class="form-control">
                                             <option value="0">Please select protype</option>
-                                            <?php if(isset($allProtypes)) {
+                                            <?php if (isset($allProtypes)) {
                                                 foreach ($allProtypes as $value) {
-                                                if(isset($productById[0]['type_id']) && $productById[0]['type_id']==$value['type_id']) {?>
-                                            <option value="<?= $value['type_id']?>" selected><?= $value['type_name']?>
-                                            </option>
-                                            <?php }else{?>
-                                            <option value="<?= $value['type_id']?>"><?= $value['type_name']?></option>
-                                            <?php } } }?>
+                                                    if (isset($productById[0]['type_id']) && $productById[0]['type_id'] == $value['type_id']) { ?>
+                                                        <option value="<?= $value['type_id'] ?>" selected><?= $value['type_name'] ?>
+                                                        </option>
+                                                    <?php } else { ?>
+                                                        <option value="<?= $value['type_id'] ?>"><?= $value['type_name'] ?></option>
+                                            <?php }
+                                                }
+                                            } ?>
                                         </select>
                                     </div>
                                 </div>
@@ -395,9 +395,7 @@
                                         <label for="textarea-input" class=" form-control-label">Description</label>
                                     </div>
                                     <div class="col-12 col-md-9">
-                                        <textarea name="description" id="textarea-input" rows="9"
-                                            placeholder="Description..."
-                                            class="form-control"><?php if(isset($productById[0]['description'])) echo $productById[0]['description']?></textarea>
+                                        <textarea name="description" id="textarea-input" rows="9" placeholder="Description..." class="form-control"><?php if (isset($productById[0]['description'])) echo $productById[0]['description'] ?></textarea>
                                     </div>
                                 </div>
                                 <div class="row form-group">
@@ -405,10 +403,7 @@
                                         <label for="text-input" class=" form-control-label">Price</label>
                                     </div>
                                     <div class="col-12 col-md-9">
-                                        <input
-                                            value="<?php if(isset($productById[0]['price'])) echo $productById[0]['price']?>"
-                                            type="number" id="text-input" name="price" placeholder="Price"
-                                            class="form-control">
+                                        <input value="<?php if (isset($productById[0]['price'])) echo $productById[0]['price'] ?>" type="number" id="text-input" name="price" placeholder="Price" class="form-control">
                                     </div>
                                 </div>
                                 <div class="row form-group">
@@ -419,14 +414,10 @@
                                         <div class="form-check-inline form-check">
 
                                             <label for="inline-radio1" class="form-check-label ">
-                                                <input type="radio" id="inline-radio1" name="feature" value="1"
-                                                    class="form-check-input"
-                                                    <?php if( $productById[0]['feature'] == "1") echo 'checked'; ?>>New
+                                                <input type="radio" id="inline-radio1" name="feature" value="1" class="form-check-input" <?php if ($productById[0]['feature'] == "1") echo 'checked'; ?>>New
                                             </label>
                                             <label for="inline-radio2" class="form-check-label ml-2">
-                                                <input type="radio" id="inline-radio2" name="feature" value="2"
-                                                    <?php if( $productById[0]['feature'] == "2") echo 'checked'; ?>
-                                                    class="form-check-input">Hot
+                                                <input type="radio" id="inline-radio2" name="feature" value="2" <?php if ($productById[0]['feature'] == "2") echo 'checked'; ?> class="form-check-input">Hot
                                             </label>
                                         </div>
                                     </div>
@@ -440,8 +431,7 @@
                                     </div>
                                 </div>
                                 <div class="img-product" style="margin:15px 0; text-align:center;">
-                                    <img src="<?php if(isset($productById[0]['pro_image'])) echo $productById[0]['pro_image'] ?>"
-                                        alt="">
+                                    <img src="<?php if (isset($productById[0]['pro_image'])) echo $productById[0]['pro_image'] ?>" alt="">
                                 </div>
                                 <button type="submit" name="submit" value="submit" class="btn btn-primary btn-sm">
                                     <i class="fa fa-dot-circle-o"></i> Submit
@@ -458,7 +448,7 @@
             </div>
             <!-- END DATA TABLE-->
             <!-- COPYRIGHT-->
-            <?php include('../../views/admin/partials/copyright.php')?>
+            <?php include('../../views/admin/partials/copyright.php') ?>
             <!-- END COPYRIGHT-->
         </div>
     </div>

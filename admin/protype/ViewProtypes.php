@@ -1,7 +1,13 @@
 <?php
 require "../../models/ProtypeModel.php";
 
-$protypesModel = new ProtypeModel();
+// -----------Factory------------------
+require "../../models/FactoryPattentTwoAdmin.php";
+$factory = new FactoryPattentTwoAdmin();
+$protypesModel = $factory->make('protype');
+// -----------Factory------------------
+
+// $protypesModel = new ProtypeModel();
 
 
 $protype = NULL; 

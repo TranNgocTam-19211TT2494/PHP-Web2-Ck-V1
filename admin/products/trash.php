@@ -51,7 +51,14 @@
 <body class="">
     <?php
     require_once("../../models/ProductModel.php");
-    $productModel = new ProductModel();
+    // $productModel = new ProductModel();
+
+     // ----------Factory----------
+     require '../../models/FactoryPattentTwoAdmin.php';
+     $factory = new FactoryPattentTwoAdmin();
+     $productModel = $factory->make('product');
+     // ----------Factory----------
+     
     $allProduct =  $productModel->getAllTrashProduct();
     ?>
     <div class="page-wrapper">

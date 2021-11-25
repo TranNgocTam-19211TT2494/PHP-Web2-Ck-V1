@@ -3,6 +3,8 @@ require_once 'BaseTwoAdmin.php';
 
 class ProtypeModel extends BaseTwoAdmin
 {
+    protected static $_instance;
+
     public function getProtype()
     {
         $sql = 'SELECT * FROM protypes';
@@ -65,5 +67,15 @@ class ProtypeModel extends BaseTwoAdmin
         }
         return $proty;
        
+    }
+
+    public static function getInstance()
+    {
+        if (self::$_instance != null) {
+
+            return self::$_instance;
+        }
+        self::$_instance = new self();
+        return self::$_instance;
     }
 }
