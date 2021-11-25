@@ -1,14 +1,15 @@
 <?php
-    require_once('models/ZipcodeModel.php');
     require 'models/FactoryPattent.php';
-    
-    $factory = new FactoryPattent();
-    $HomeModel = $factory->make('home');
+    require_once 'models/Reponsitory.php';
+    $reponsitory = new Reponsitory();
+
+    // $factory = new FactoryPattent();
+    // $HomeModel = $factory->make('home');
 
     if(!empty($_POST['submit'])) {
         if($_POST['username'] != '' && $_POST['email'] != '' && $_POST['password'] != '') {
-            $zipcode = new ZipcodeModel();
-            $insert = $HomeModel->insertUserDecorator($_POST,$zipcode);
+           
+            $insert = $reponsitory->insertRepository($_POST);
             if($insert) {
                 header("location: login.php");
             } else {
