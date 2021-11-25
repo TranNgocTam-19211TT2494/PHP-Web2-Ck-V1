@@ -9,4 +9,4 @@ if (!empty($_GET['type_id'])) {
     $id = $_GET['type_id'];
     $protypesModel->DeleteProtype($id);//Delete existing user
 }
-header('location: ./Protypes.php');
+header('location: ./index.php');

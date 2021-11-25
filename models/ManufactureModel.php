@@ -10,8 +10,18 @@ class ManufactureModel extends BaseTwoAdmin
     }
     public function findManufactureById($id)
     {
-        $sql = 'SELECT * FROM manufactures WHERE manu_id = ' . $id;
-        $manus = $this->select($sql);
+        $manufac = 'SELECT manu_id FROM manufactures';
+        $manu = $this->select($manufac);
+        $ma = null;
+        foreach ($manu as $man) {
+            $md5 = md5($man['manu_id'] . 'chuyen-de-web-2');
+            if($md5 == $id){
+            $sql = 'SELECT * FROM manufactures WHERE manu_id = ' . $man['manu_id'];
+            $manus = $this->select($sql);
+            }
+        }
+        // $sql = 'SELECT * FROM manufactures WHERE manu_id = ' . $id;
+        // $manus = $this->select($sql);
         return $manus;
     }
     public function insertManufacture($input)
@@ -23,15 +33,37 @@ class ManufactureModel extends BaseTwoAdmin
     }
     public function updateManufacture($input)
     {
-        $sql = 'UPDATE manufactures SET 
+        $manufac = 'SELECT manu_id FROM manufactures';
+        $manu = $this->select($manufac);
+        $ma = null;
+        foreach ($manu as $man) {
+            $md5 = md5($man['manu_id'] . 'chuyen-de-web-2');
+            if ($md5 == $input['manu_id']) {
+                $sql = 'UPDATE manufactures SET 
                 manu_name = "' . $input['manu_name'] . '"
-                WHERE manu_id = ' .  $input['manu_id'];
-        $manus = $this->update($sql);
-        return $manus;
+                WHERE manu_id = ' .  $man['manu_id'];
+                $ma = $this->update($sql);
+            }
+        }
+        // $sql = 'UPDATE manufactures SET 
+        // manu_name = "' . $input['manu_name'] . '"
+        // WHERE manu_id = ' .  $input['manu_id'];
+        // $ma = $this->update($sql);
+        return $ma;
     }
     public function deleteManufacture($id)
     {
-        $sql = 'DELETE FROM manufactures WHERE manu_id = ' .$id;
-        return $this->delete($sql);
+        $manufac = 'SELECT manu_id FROM manufactures';
+        $manu = $this->select($manufac);
+        $ma = null;
+        foreach ($manu as $man) {
+            $md5 = md5($man['manu_id'] . 'chuyen-de-web-2');
+            if($md5 == $id){
+            $sql = 'DELETE FROM manufactures WHERE manu_id = ' . $man['manu_id'];
+            $ma = $this->delete($sql);
+            }
+        }
+        $sql = 'DELETE FROM manufactures WHERE manu_id = ' . $id;
+        return $ma;
     }
 }
