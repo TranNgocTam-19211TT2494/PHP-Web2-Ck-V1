@@ -54,10 +54,15 @@
     // ----------Factory----------
     require '../../models/FactoryPattentTwoAdmin.php';
     $factory = new FactoryPattentTwoAdmin();
+    $params = [];
+    if (!empty($_GET['keyword'])) {
+        $params['keyword'] = $_GET['keyword'];
+        
+    }
     $productModel = $factory->make('product');
     // ----------Factory----------
     
-    $allProduct =  $productModel->getProducts();
+    $allProduct =  $productModel->getProducts($params);
     ?>
     <div class="page-wrapper">
         <!-- HEADER DESKTOP-->
@@ -279,7 +284,7 @@
                                                     <i class="fa fa-search"></i> Search
                                                 </button>
                                             </div>
-                                            <input type="text" id="input1-group2" name="keyword" value=""
+                                            <input type="text" id="input1-group2" name="keyword" value="<?= $keyword ?>"
                                                 placeholder="Search users" class="form-control">
                                         </div>
                                     </div>

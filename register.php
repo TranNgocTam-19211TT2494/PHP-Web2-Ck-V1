@@ -1,3 +1,20 @@
+<<<<<<< HEAD
+<?php 
+    require_once('models/HomeModel.php');
+    require_once('models/ZipcodeModel.php');
+    $HomeModel = new HomeModel();
+
+    if(!empty($_POST['submit'])) {
+        if($_POST['username'] != '' && $_POST['email'] != '' && $_POST['password'] != '') {
+            $zipcode = new ZipcodeModel();
+            $insert = $HomeModel->insertUserDecorator($_POST,$zipcode);
+            if($insert) {
+                header("location: login.php");
+            } else {
+                echo "<div class=\"alert alert-dark\" role=\"alert\">
+                Email already exists!</div>";
+            }
+=======
 <?php
 // require_once('models/HomeModel.php');
 // $HomeModel = new HomeModel();
@@ -15,6 +32,7 @@ if (!empty($_POST['submit'])) {
         $insert = $HomeModel->createNewUser($_POST);
         if ($insert) {
             header("location: login.php");
+>>>>>>> Nhom-E/master
         } else {
             echo "<div class=\"alert alert-dark\" role=\"alert\">
                 username error or pass not!</div>";
