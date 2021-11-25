@@ -16,16 +16,14 @@
     <link href="../../public/backend/css/font-face.css" rel="stylesheet" media="all">
     <link href="../../public/backend/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
     <link href="../../public/backend/vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
-    <link href="../../public/backend/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet"
-        media="all">
+    <link href="../../public/backend/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
 
     <!-- Bootstrap CSS-->
     <link href="../../public/backend/vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
 
     <!-- Vendor CSS-->
     <link href="../../public/backend/vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
-    <link href="../../public/backend/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet"
-        media="all">
+    <link href="../../public/backend/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
     <link href="../../public/backend/vendor/wow/animate.css" rel="stylesheet" media="all">
     <link href="../../public/backend/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
     <link href="../../public/backend/vendor/slick/slick.css" rel="stylesheet" media="all">
@@ -36,28 +34,30 @@
     <link href="../../public/backend/css/theme.css" rel="stylesheet" media="all">
 </head>
 <style>
-.select2-hidden-accessible {
-    border: 0 !important;
-    clip: rect(0 0 0 0) !important;
-    height: 1 px !important;
-    margin: -1 px !important;
-    overflow: hidden !important;
-    padding: 0 !important;
-    position: absolute !important;
-    width: 1 px !important;
-}
+    .select2-hidden-accessible {
+        border: 0 !important;
+        clip: rect(0 0 0 0) !important;
+        height: 1 px !important;
+        margin: -1 px !important;
+        overflow: hidden !important;
+        padding: 0 !important;
+        position: absolute !important;
+        width: 1 px !important;
+    }
 </style>
 
 <body class="">
     <?php
     require_once("../../models/ProductModel.php");
-    $productModel = new ProductModel();
-    $params = [];
-    if (!empty($_GET['keyword'])) {
-        $params['keyword'] = $_GET['keyword'];
-        
-    }
-    $allProduct =  $productModel->getProducts($params);
+    // $productModel = new ProductModel();
+
+    // ----------Factory----------
+    require '../../models/FactoryPattentTwoAdmin.php';
+    $factory = new FactoryPattentTwoAdmin();
+    $productModel = $factory->make('product');
+    // ----------Factory----------
+    
+    $allProduct =  $productModel->getProducts();
     ?>
     <div class="page-wrapper">
         <!-- HEADER DESKTOP-->
@@ -205,8 +205,7 @@
                                     <div class="info clearfix">
                                         <div class="image">
                                             <a href="#">
-                                                <img src="../../public/backend/images/icon/avatar-01.jpg"
-                                                    alt="John Doe" />
+                                                <img src="../../public/backend/images/icon/avatar-01.jpg" alt="John Doe" />
                                             </a>
                                         </div>
                                         <div class="content">
@@ -244,7 +243,7 @@
         <!-- END HEADER DESKTOP-->
 
         <!-- HEADER MOBILE-->
-        <?php include('../../views/admin/layouts/header-mobile.php')?>
+        <?php include('../../views/admin/layouts/header-mobile.php') ?>
         <!-- END HEADER MOBILE -->
 
         <!-- PAGE CONTENT-->
@@ -367,7 +366,7 @@
             <!-- END DATA TABLE-->
 
             <!-- COPYRIGHT-->
-            <?php include('../../views/admin/partials/copyright.php')?>
+            <?php include('../../views/admin/partials/copyright.php') ?>
             <!-- END COPYRIGHT-->
         </div>
 

@@ -1,13 +1,14 @@
 <?php
 session_start();
-require "../../models/ProtypeModel.php";
-
-$protypesModel = new ProtypeModel();
+require "../../models/FactoryPattentTwoAdmin.php";
+$factory = new FactoryPattentTwoAdmin();
+$protypesModel = $factory->make('protype');
 $token = null;
 if (empty($_SESSION['token'])) {
     $_SESSION['token'] = bin2hex(random_bytes(32));
 }
 $token = $_SESSION['token'];
+// -----------Factory------------------
 $protypes = $protypesModel->getProtype();
 
 ?>

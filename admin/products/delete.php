@@ -2,7 +2,13 @@
 session_start();
 require_once '../../models/ProductModel.php';
 
-$productModel = new ProductModel();
+// ----------Factory----------
+require '../../models/FactoryPattentTwoAdmin.php';
+$factory = new FactoryPattentTwoAdmin();
+$productModel = $factory->make('product');
+// ----------Factory----------
+
+// $productModel = new ProductModel();
 $user = NULL; //Add new user
 $id = NULL;
 if (!empty($_GET['id'])) {
