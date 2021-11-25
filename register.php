@@ -1,17 +1,17 @@
 <?php 
     require_once('models/HomeModel.php');
+    require_once('models/ZipcodeModel.php');
     $HomeModel = new HomeModel();
 
     if(!empty($_POST['submit'])) {
-
-      
         if($_POST['username'] != '' && $_POST['email'] != '' && $_POST['password'] != '') {
-            $insert = $HomeModel->createNewUser($_POST);
+            $zipcode = new ZipcodeModel();
+            $insert = $HomeModel->insertUserDecorator($_POST,$zipcode);
             if($insert) {
                 header("location: login.php");
             } else {
                 echo "<div class=\"alert alert-dark\" role=\"alert\">
-                username error or pass not!</div>";
+                Email already exists!</div>";
             }
         } else {
             echo "<div class=\"alert alert-dark\" role=\"alert\">Trường phải đủ</div>";
