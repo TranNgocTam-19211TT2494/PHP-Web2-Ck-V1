@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once '../../models/ProductModel.php';
 
 // ----------Factory----------
@@ -10,10 +11,14 @@ $productModel = $factory->make('product');
 // $productModel = new ProductModel();
 $user = NULL; //Add new user
 $id = NULL;
-if (!empty($_GET['id'])) {
+if (isset($_GET['id'])) {
     $id = $_GET['id'];
-    $id_start = substr($id,3);
-    $id_end=substr($id_start,0,-3);
-    $productModel->deleteProduct($id_end);//Delete existing user
+    if (!empty($_GET['token'])) {
+        if (hash_equals($_SESSION['token'], $_GET['token'])) {
+            $id_start = substr($id, 3);
+            $id_end = substr($id_start, 0, -3);
+            $productModel->deleteProduct($id_end);
+        }
+    }
 }
 header('location: trash.php');

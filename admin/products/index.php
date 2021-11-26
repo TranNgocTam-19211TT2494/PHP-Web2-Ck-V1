@@ -54,10 +54,15 @@
     // ----------Factory----------
     require '../../models/FactoryPattentTwoAdmin.php';
     $factory = new FactoryPattentTwoAdmin();
+    $params = [];
+    if (!empty($_GET['keyword'])) {
+        $params['keyword'] = $_GET['keyword'];
+        
+    }
     $productModel = $factory->make('product');
     // ----------Factory----------
     
-    $allProduct =  $productModel->getProducts();
+    $allProduct =  $productModel->getProducts($params);
     ?>
     <div class="page-wrapper">
         <!-- HEADER DESKTOP-->
@@ -85,16 +90,16 @@
                                     <span class="bot-line"></span>Pages</a>
                                 <ul class="header3-sub-list list-unstyled">
                                     <li>
-                                        <a href="">Products</a>
+                                        <a href="../products/index.php">Products</a>
                                     </li>
                                     <li>
                                         <a href="">Orders</a>
                                     </li>
                                     <li>
-                                        <a href="">Manufactures</a>
+                                        <a href="../Manufacture/">Manufactures</a>
                                     </li>
                                     <li>
-                                        <a href="">Protype</a>
+                                        <a href="../protype/Protypes.php">Protype</a>
                                     </li>
                                 </ul>
                             </li>
@@ -264,7 +269,30 @@
                                             <i class="zmdi zmdi-delete"></i>trash</button></a>
                                 </div>
                             </div>
+                            <?php 
+                                $keyword = '';
+                                if(!empty($_GET['keyword'])) {
+                                    $keyword = $_GET['keyword'];
+                                }
+                            ?>
+                            <form method="get" class="form-horizontal">
+                                <div class="row form-group">
+                                    <div class="col col-md-12">
+                                        <div class="input-group">
+                                            <div class="input-group-btn">
+                                                <button type="submit" class="btn" style="background: #63c76a;color:white;">
+                                                    <i class="fa fa-search"></i> Search
+                                                </button>
+                                            </div>
+                                            <input type="text" id="input1-group2" name="keyword" value="<?= $keyword ?>"
+                                                placeholder="Search users" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
 
+
+                            </form>
+                            <?php if(!empty($allProduct)) { ?>
                             <div class="table-responsive table-responsive-data2">
                                 <table class="table table-data2">
                                     <thead>
@@ -278,48 +306,64 @@
                                             <th></th>
                                         </tr>
                                     </thead>
+
                                     <tbody>
-                                        <?php if (isset($allProduct)) {
-                                            foreach ($allProduct as $product) { ?>
-                                                <tr class="tr-shadow">
-                                                    <td><?= $product['name']; ?></td>
-                                                    <td>
-                                                        <div class="img-cake">
-                                                            <img class="anh-tam" src="<?= $product['pro_image'] ?>" alt="">
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <span class="block-email"><?= $productModel->getManuByProductId($product['manu_id'])[0]['manu_name'] ?></span>
-                                                    </td>
-                                                    <td class="desc">
-                                                        <?= $productModel->getProTypeByProductId($product['type_id'])[0]['type_name'] ?>
-                                                    </td>
-                                                    <td><?= number_format($product['price']); ?> VND</td>
-                                                    <td>
-                                                        <?php if ($product['feature'] == 1) { ?>
-                                                            <span class="status--process">Popular</span>
-                                                        <?php } else { ?>
-                                                            <span class="status--denied">Normal</span>
-                                                        <?php } ?>
-                                                    </td>
-                                                    <td>
-                                                        <div class="table-data-feature">
-                                                            <a href="edit.php?id=<?= rand(100, 999) . md5($product['id'] . "chuyen-de-web-2") . rand(100, 999) ?>">
-                                                                <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
-                                                                    <i class="zmdi zmdi-edit"></i>
-                                                            </a>
-                                                            </button>
-                                                            <a href="delete.php?id=<?php echo rand(100, 999) . md5($product['id'] . "chuyen-de-web-2") . rand(100, 999) ?>"><button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
-                                                                    <i class="zmdi zmdi-delete"></i>
-                                                                </button></a>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                        <?php }
-                                        } ?>
+
+                                        <?php  foreach ($allProduct as $product) {?>
+                                        <tr class="tr-shadow">
+                                            <td><?= htmlspecialchars($product['name'] )?></td>
+                                            <td>
+                                                <div class="img-cake">
+                                                    <img class="anh-tam"
+                                                        src="<?= htmlspecialchars($product['pro_image'])?>"
+                                                        alt="<?= htmlspecialchars($product['name'] )?>">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span
+                                                    class="block-email"><?= htmlspecialchars($productModel->getManuByProductId($product['manu_id'])[0]['manu_name']) ?></span>
+                                            </td>
+                                            <td class="desc">
+                                                <?= htmlspecialchars($productModel->getProTypeByProductId($product['type_id'])[0]['type_name']) ?>
+                                            </td>
+                                            <td><?= htmlspecialchars(number_format($product['price']))?> VND</td>
+                                            <td>
+                                                <?php if ($product['feature'] == 1) {?>
+                                                <span class="status--process">Popular</span>
+                                                <?php }else{?>
+                                                <span class="status--denied">Normal</span>
+                                                <?php } ?>
+                                            </td>
+                                            <td>
+                                                <div class="table-data-feature">
+                                                    <a
+                                                        href="edit.php?id=<?= rand(100, 999) . md5($product['id'] . "chuyen-de-web-2") . rand(100, 999)?>">
+                                                        <button class="item" data-toggle="tooltip" data-placement="top"
+                                                            title="Edit">
+                                                            <i class="zmdi zmdi-edit"></i>
+                                                    </a>
+                                                    </button>
+                                                    <a
+                                                        href="delete.php?id=<?php echo rand(100, 999) . md5($product['id'] . "chuyen-de-web-2") . rand(100, 999) ?>"><button
+                                                            class="item" data-toggle="tooltip" data-placement="top"
+                                                            title="Delete">
+                                                            <i class="zmdi zmdi-delete"></i>
+                                                        </button></a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <?php }  ?>
                                     </tbody>
+
                                 </table>
                             </div>
+                            <?php } else { ?>
+                            <!-- Test Reflected XSS bằng htmlspecialchars -->
+                            <?php if (!empty($params['keyword'])) { ?>
+                            <div class="alert alert-warning" role="alert">
+                                <?php echo htmlspecialchars($params['keyword']) ?>
+                            </div>
+                            <?php } } ?>
                         </div>
                     </div>
                 </div>

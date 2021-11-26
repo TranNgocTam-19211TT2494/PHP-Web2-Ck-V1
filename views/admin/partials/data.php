@@ -1,3 +1,10 @@
+<?php
+$token = null;
+if (empty($_SESSION['token'])) {
+    $_SESSION['token'] = bin2hex(random_bytes(32));
+}
+$token = $_SESSION['token'];
+?>
 <section class="p-t-20">
     <div class="container">
         <div class="row">
@@ -47,7 +54,7 @@
                                 <th>date</th>
                                 <th>Role</th>
                                 <th>status</th>
-                                <th>Action</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -59,22 +66,22 @@
                                         <span class="au-checkmark"></span>
                                     </label>
                                 </td>
-                                <td><?= $user['username'] ?></td>
+                                <td><?= htmlspecialchars($user['username']) ?></td>
                                 <td>
-                                    <span class="block-email"><?= $user['email'] ?></span>
+                                    <span class="block-email"><?= htmlspecialchars($user['email']) ?></span>
                                 </td>
                                 <?php
                                     $date=date_create($user['date']);
                                 ?>
-                                <td><?= date_format($date ,"d-m-Y | H:i:s" )?></td>
-                                <td class="desc"><?= $user['permission'] ?></td>
+                                <td><?= htmlspecialchars(date_format($date ,"d-m-Y | H:i:s" ))?></td>
+                                <td class="desc"><?= htmlspecialchars($user['permission']) ?></td>
                                 <?php if($user['status'] == 0) {?>
                                 <td>
-                                    <span class="status--process">Inactive</span>
+                                    <span class="status--process">Active</span>
                                 </td>
                                 <?php } else { ?>
                                 <td>
-                                    <span class="status--process">Active</span>
+                                    <span class="status--process">Inactive</span>
                                 </td>
                                 <?php } ?>
                                 <!-- Xóa người dùng -->
@@ -86,6 +93,7 @@
                                         </a>
                                         <a href="delete_user.php?id=<?= md5($user['id'] . 'chuyen-de-web-2') ?>" class="item">
                                             <i class="zmdi zmdi-delete"></i>
+                                            <input type="hidden" name="token" value="<?php echo $token ?>">
                                         </a>
                                     </div>
                                 </td>

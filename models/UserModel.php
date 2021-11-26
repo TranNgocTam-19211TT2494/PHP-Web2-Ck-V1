@@ -8,7 +8,7 @@ class UserModel extends BaseAdminModel {
         //Keyword
         if (!empty($params['keyword'])) {
             $sql = 'SELECT * FROM users 
-            WHERE name LIKE "%' . mysqli_real_escape_string(self::$_connection, $params['keyword']) . '%"';
+            WHERE username LIKE "%' . mysqli_real_escape_string(self::$_connection, $params['keyword']) . '%"';
             //Keep this line to use Sql Injection
             //Don't change
             //Example keyword: abcef%";TRUNCATE banks;##
@@ -60,7 +60,6 @@ class UserModel extends BaseAdminModel {
         WHERE id = ' . $input['id'];
 
         $user = $this->update($sql);
-
         return $user;
     }
 

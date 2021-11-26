@@ -1,3 +1,11 @@
+<?php
+session_start();
+$token = null;
+if (empty($_SESSION['token'])) {
+    $_SESSION['token'] = bin2hex(random_bytes(32));
+}
+$token = $_SESSION['token'];
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -361,10 +369,11 @@
                                                         </button></a>
 
                                                     <a
-                                                        href="deleteforever.php?id=<?php echo rand(100, 999) . md5($product['id'] . "chuyen-de-web-2") . rand(100, 999) ?>"><button
+                                                        href="deleteforever.php?id=<?php echo rand(100, 999) . md5($product['id'] . "chuyen-de-web-2") . rand(100, 999) ?>&token=<?php echo $token ?>"><button
                                                             class="item" data-toggle="tooltip" data-placement="top"
                                                             title="Delete">
                                                             <i class="zmdi zmdi-delete"></i>
+                                                            <input type="hidden" name="token" value="<?php echo $token ?>">
                                                         </button></a>
                                                 </div>
                                             </td>

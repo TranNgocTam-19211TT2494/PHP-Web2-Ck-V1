@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once '../../models/ProductModel.php';
 
 // ----------Factory----------
@@ -16,4 +17,5 @@ if (!empty($_GET['id'])) {
     $id_end=substr($id_start,0,-3);
     $productModel->trashProduct($id_end);//Delete existing user
 }
+
 header('location: index.php');

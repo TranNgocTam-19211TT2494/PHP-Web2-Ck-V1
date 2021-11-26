@@ -82,6 +82,8 @@ class ProductModel extends BaseTwoAdmin
         foreach ($allProduct as $value) {
             $md5 = md5($value['id'] . "chuyen-de-web-2");
             if($md5 == $id){
+                var_dump($id);
+                var_dump($md5);
                 $sql = "UPDATE `products` SET `detele_at`= CURTIME() WHERE id = " . $value['id'] ;
                 $bank = $this->update($sql);
                 return $bank;
@@ -122,10 +124,16 @@ class ProductModel extends BaseTwoAdmin
         $products = $this->select($sql);
         return $products;
     }
-    public function getProducts()
+    public function getProducts($params = [])
     {
-        $sql = 'SELECT * FROM `products` WHERE detele_at IS NULL ORDER BY `id` DESC;';
-        $products = $this->select($sql);
+        if (!empty($params['keyword'])) {
+            $sql = 'SELECT * FROM products 
+            WHERE name LIKE "%' . mysqli_real_escape_string(self::$_connection, $params['keyword']) . '%"';
+            $products = $this->select($sql);
+        }else {
+            $sql = 'SELECT * FROM `products` WHERE detele_at IS NULL ORDER BY `id` DESC;';
+            $products = $this->select($sql);
+        }   
         return $products;
     }
     public function getAllProducts()

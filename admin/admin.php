@@ -81,7 +81,7 @@ $users = $userModel->getUsers($params);
     </div>
 
     <?php include('../views/admin/layouts/footer.php')?>
-
+   
 </body>
 
 </html>

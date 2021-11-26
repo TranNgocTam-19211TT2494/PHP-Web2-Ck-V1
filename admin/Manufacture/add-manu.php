@@ -318,9 +318,9 @@ if (!empty($_POST['submit'])) {
                                         <button type="submit" name="submit" value="submit" class="btn btn-primary btn-sm">
                                             <i class="fa fa-dot-circle-o"></i> Submit
                                         </button>
-                                        <a type="reset" class="btn btn-danger btn-sm">
+                                        <button type="reset" class="btn btn-danger btn-sm" >
                                             <i class="fa fa-ban"></i> Reset
-                                        </a>
+                                        </button>
                                     </div>
                                 </form>
                             <?php } ?>

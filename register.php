@@ -1,28 +1,26 @@
 <?php
-// require_once('models/HomeModel.php');
-// $HomeModel = new HomeModel();
+    require 'models/FactoryPattent.php';
+    require_once 'models/Reponsitory.php';
+    $reponsitory = new Reponsitory();
 
-// --------------Factory----------
-require 'models/FactoryPattent.php';
-$factory = new FactoryPattent();
-$HomeModel = $factory->make('home');
-// --------------Factory----------
+    // $factory = new FactoryPattent();
+    // $HomeModel = $factory->make('home');
 
-if (!empty($_POST['submit'])) {
-
-
-    if ($_POST['username'] != '' && $_POST['email'] != '' && $_POST['password'] != '') {
-        $insert = $HomeModel->createNewUser($_POST);
-        if ($insert) {
-            header("location: login.php");
-        } else {
-            echo "<div class=\"alert alert-dark\" role=\"alert\">
-                username error or pass not!</div>";
+    if(!empty($_POST['submit'])) {
+        if($_POST['username'] != '' && $_POST['email'] != '' && $_POST['password'] != '') {
+           
+            $insert = $reponsitory->insertRepository($_POST);
+            if($insert) {
+                header("location: login.php");
+            } else {
+                echo "<div class=\"alert alert-dark\" role=\"alert\">
+                Email already exists!</div>";
+            }
         }
     } else {
         echo "<div class=\"alert alert-dark\" role=\"alert\">Trường phải đủ</div>";
     }
-}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
