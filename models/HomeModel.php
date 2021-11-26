@@ -128,7 +128,15 @@ class HomeModel extends BaseModel {
         $whishlist = $this->select($sql);
         return $whishlist;
     }
-    // WSC
+    public function getWhishlistByUserID($userid)
+    {
+        $sql = "SELECT whishlist.id as whishlistId,products.pro_image,products.name,products.price 
+        FROM `whishlist`,products 
+        WHERE whishlist.pro_id = products.id 
+        AND whishlist.user_id = $userid ORDER BY `whishlist`.`id` DESC";
+        $whishlist = $this->select($sql);
+        return $whishlist;
+    }
     public function insertWhishList($id,$userId)
     {
         $allProduct = $this->getProducts();
