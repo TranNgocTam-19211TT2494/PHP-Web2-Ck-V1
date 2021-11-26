@@ -3,9 +3,6 @@
     require_once 'models/Reponsitory.php';
     $reponsitory = new Reponsitory();
 
-    // $factory = new FactoryPattent();
-    // $HomeModel = $factory->make('home');
-
     if(!empty($_POST['submit'])) {
         if($_POST['username'] != '' && $_POST['email'] != '' && $_POST['password'] != '') {
            
@@ -17,8 +14,6 @@
                 Email already exists!</div>";
             }
         }
-    } else {
-        echo "<div class=\"alert alert-dark\" role=\"alert\">Trường phải đủ</div>";
     }
 
 ?>
@@ -91,12 +86,7 @@
                                     </label>
                                 </div>
                                 <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit" name="submit" value="submit">register</button>
-                                <div class="social-login-content">
-                                    <div class="social-button">
-                                        <button class="au-btn au-btn--block au-btn--blue m-b-20">register with
-                                            google</button>
-                                    </div>
-                                </div>
+                              
                             </form>
                             <div class="register-link">
                                 <p>
