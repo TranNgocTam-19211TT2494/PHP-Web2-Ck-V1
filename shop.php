@@ -77,9 +77,7 @@ session_start();
                     <div class="row product_item_inner">
                         <?php foreach ($products as $product) { ?>
                         <div class="col-lg-4 col-md-4 col-6">
-
                             <div class="cake_feature_item">
-
                                 <div class="cake_img">
                                     <img src="<?= $product['pro_image']?>" alt="">
                                     <?php if(isset($_SESSION['lgUserID'])) {?>

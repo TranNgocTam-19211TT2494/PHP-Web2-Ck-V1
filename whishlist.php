@@ -66,7 +66,9 @@ session_start();
                         </div>
                     </div>
                     <div class="row product_item_inner">
-                        <?php foreach ($products as $product) { ?>
+
+                        <?php if(isset($products)){
+                        foreach ($products as $product) { ?>
                         <div class="col-lg-4 col-md-4 col-6">
 
                             <div class="cake_feature_item">
@@ -86,7 +88,7 @@ session_start();
                                 </div>
                             </div>
                         </div>
-                        <?php } ?>
+                        <?php } } ?>
                     </div>
                     <!-- Phân trang -->
                     <div class="product_pagination">
