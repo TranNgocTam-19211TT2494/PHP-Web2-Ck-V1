@@ -33,23 +33,29 @@ class ManufactureModel extends BaseTwoAdmin
     }
     public function updateManufacture($input)
     {
-        $manufac = 'SELECT manu_id FROM manufactures';
-        $manu = $this->select($manufac);
-        $ma = null;
-        foreach ($manu as $man) {
-            $md5 = md5($man['manu_id'] . 'chuyen-de-web-2');
-            if ($md5 == $input['manu_id']) {
-                $sql = 'UPDATE manufactures SET 
-                manu_name = "' . $input['manu_name'] . '"
-                WHERE manu_id = ' .  $man['manu_id'];
-                $ma = $this->update($sql);
+        $versionOld = null;
+        
+        $allManufactures = $this->getManufactures();
+        foreach ($allManufactures as  $value) {
+            if($value['manu_id'] == $input['manu_id']){
+                $idNew = $value['manu_id'];
+                $versionOld = $value['version'];
+               
             }
         }
-        // $sql = 'UPDATE manufactures SET 
-        // manu_name = "' . $input['manu_name'] . '"
-        // WHERE manu_id = ' .  $input['manu_id'];
-        // $ma = $this->update($sql);
-        return $ma;
+
+        if(md5($versionOld.'chuyen-de-web-2') == $input['version']){
+            $versionNew = (int)$versionOld + 1;
+            $sql = 'UPDATE manufactures SET 
+            manu_name = "' . $input['manu_name'] . '",
+            version = "' . $versionNew. '"
+            WHERE manu_id = ' .  $input['manu_id'];
+            $manus = $this->update($sql);
+            return $manus;
+        }else{
+            return false;
+        }
+        
     }
     public function deleteManufacture($id)
     {
