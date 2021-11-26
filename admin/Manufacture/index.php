@@ -310,10 +310,10 @@ $token = $_SESSION['token'];
                                                         <!-- <button class="item" data-toggle="tooltip" data-placement="top" title="Send">
                                                             <i class="zmdi zmdi-mail-send"></i>
                                                         </button> -->
-                                                        <a href="add-manu.php?manu_id=<?php echo $item['manu_id'] ?>" class="item" data-toggle="tooltip" data-placement="top" title="Edit">
+                                                        <a href="add-manu.php?manu_id=<?php echo md5($item['manu_id'] . 'chuyen-de-web-2')?>" class="item" data-toggle="tooltip" data-placement="top" title="Edit">
                                                             <i class="zmdi zmdi-edit"></i>
                                                         </a>
-                                                        <a href="delete-manu.php?manu_id=<?php echo $item['manu_id'] ?>&token=<?php echo $token ?>" class="item" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                        <a href="delete-manu.php?manu_id=<?php echo md5($item['manu_id'] . 'chuyen-de-web-2') ?>&token=<?php echo $token ?>" class="item" data-toggle="tooltip" data-placement="top" title="Delete">
                                                             <i class="zmdi zmdi-delete"></i>
                                                         </a>
                                                     </div>
