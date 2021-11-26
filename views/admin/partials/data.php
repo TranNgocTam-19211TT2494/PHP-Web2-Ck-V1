@@ -91,7 +91,7 @@ $token = $_SESSION['token'];
                                         <a href="view_user.php?id=<?= md5($user['id'] . 'chuyen-de-web-2') ?>" class="item">
                                             <i class="zmdi zmdi-eye"></i>
                                         </a>
-                                        <a href="delete_user.php?id=<?= md5($user['id'] . 'chuyen-de-web-2') ?>" class="item">
+                                        <a href="delete_user.php?id=<?= md5($user['id'] . 'chuyen-de-web-2') ?>&token=<?php echo $token?>" class="item">
                                             <i class="zmdi zmdi-delete"></i>
                                             <input type="hidden" name="token" value="<?php echo $token ?>">
                                         </a>
