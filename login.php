@@ -1,11 +1,10 @@
 <?php
 
 session_start();
-// require_once('models/HomeModel.php');
-// $HomeModel = new HomeModel();
-// --------------Factory----------
 require 'models/FactoryPattent.php';
 $factory = new FactoryPattent();
+// --------------Factory----------
+
 $HomeModel = $factory->make('home');
 // --------------Factory----------
 

@@ -2,7 +2,7 @@
 require_once 'HomeModel.php';
 
 class FactoryPattent{
-    public function make ($model){
+    public function make($model){
         if($model == 'home'){
             return HomeModel::getInstance();
         }
