@@ -8,6 +8,7 @@ use PHPMailer\PHPMailer\Exception;
 require 'vendor/autoload.php';
 
 class HomeModel extends BaseModel {
+    protected static $_instance;
     //   ------------ User ---------------//
       //Login
       public function login($username, $password)
@@ -224,8 +225,38 @@ class HomeModel extends BaseModel {
         }
       return false;
     }
-
-    protected static $_instance;
+    // --------------------- Manufacture ------------------ //
+    // Hien thi data bang manufactures:
+    public function getManufactures()
+    {
+        $sql = "SELECT * FROM manufactures";
+        $manufactures = $this->select($sql);
+        return $manufactures;
+    }
+    // Hien thi san pham theo danh 
+    public function getManufactureById($id)
+    {
+        $manufacture = 'SELECT manu_id FROM manufactures';
+        $manufactures = $this->select($manufacture);
+        $manu = null;
+        foreach($manufactures as $manufac){
+            $md5 = md5($manufac['manu_id'] . 'chuyen-de-web-2');
+            if($md5 == $id){
+                $sql = 'SELECT * FROM `products` , manufactures WHERE products.manu_id = manufactures.manu_id AND products.manu_id =  '.$manufac['manu_id'].' ';
+            $manu = $this->select($sql);
+            }
+        }
+        
+      
+        return $manu;
+    }
+    // Dem so san pham theo danh muc:
+    public function countProductWithManufacture()
+    {
+        $sql = 'SELECT * FROM `products` , manufactures WHERE products.manu_id = manufactures.manu_id';
+        $manufactures = $this->select($sql);
+        return $manufactures;
+    }
     public static function getInstance()
     {
         if (self::$_instance != null) {
