@@ -1,6 +1,12 @@
 <?php
-
 require_once 'BaseModel.php'; 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+//Load Composer's autoloader
+require 'vendor/autoload.php';
+
 class HomeModel extends BaseModel {
     //   ------------ User ---------------//
       //Login
@@ -66,9 +72,59 @@ class HomeModel extends BaseModel {
           $user = $this->insert($sql);
           return $user;
       }
-      //Google
-  
-      //Forget password
+      //Forget Password
+      public function checkMail($email)
+      {
+        $sql = 'SELECT * FROM users WHERE email = "' . $email . '"';
+        $user = $this->select($sql);
+        return $user;
+      }
+      //Update password cho user: 
+      public function UpdatePassword($password , $email) 
+      {
+        $sql = 'UPDATE users SET 
+        password = "' . md5($password) . '"
+        WHERE email = "' . $email. '" ';
+        $user = $this->update($sql);
+        return $user;
+      }
+      //Send mail password cho nguoi dung:
+      public function sendMail($email , $password)
+      {
+        $mail = new PHPMailer(true);//true:enables exceptions
+        try {
+            $mail->SMTPDebug = 0; //0,1,2: chế độ debug
+            $mail->isSMTP();  
+            $mail->CharSet  = "utf-8";
+            $mail->Host = 'smtp.gmail.com';  //SMTP servers
+            $mail->SMTPAuth = true; // Enable authentication
+            $mail->Username = 'phantinh1209@gmail.com'; // SMTP username
+            $mail->Password = 'zexpotcxbxkuspaq';   // SMTP password
+            $mail->SMTPSecure = 'ssl';  // encryption TLS/SSL 
+            $mail->Port = 465;  // port to connect to                
+            $mail->setFrom('phantinh1209@gmail.com', 'AnhTam' ); 
+            $mail->addAddress($email);
+            $mail->isHTML(true);  // Set email format to HTML
+            $mail->Subject = 'Thư gửi lại mật khẩu';
+            $noidungthu = "<p>Bạn nhận được mail này, do bạn hoặc ai đó yêu cầu mật khẩu mới cho website...</p>
+                                Mật khẩu mới của bạn là {$password}
+            "; 
+            $mail->Body = $noidungthu;
+            $mail->smtpConnect( array(
+                "ssl" => array(
+                    "verify_peer" => false,
+                    "verify_peer_name" => false,
+                    "allow_self_signed" => true
+                )
+            ));
+            $mail->send();
+            echo "Đã gửi mail xong";
+        } catch (Exception $e) {
+            echo 'Error: ', $mail->ErrorInfo;
+        }
+      
+            
+      }
     //   ---------------------- Protype ---------------- //
     public function getProtype()
     {
@@ -180,5 +236,3 @@ class HomeModel extends BaseModel {
         return self::$_instance;
     }
 }
-
-
