@@ -1,6 +1,7 @@
 <?php
-require_once 'BaseAdminModel.php'; 
-class UserModel extends BaseAdminModel {
+require_once 'BaseUserModel.php'; 
+
+class UserModel extends BaseUserModel {
     
     // Lay danh sach: 
     public function getUsers($params = [])
