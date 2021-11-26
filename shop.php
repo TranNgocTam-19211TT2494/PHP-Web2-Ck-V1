@@ -1,15 +1,20 @@
 <?php
-require_once 'models/HomeModel.php';
-
+session_start();
 // --------------Factory----------
 require 'models/FactoryPattent.php';
 $factory = new FactoryPattent();
 $productModel = $factory->make('home');
 // --------------Factory----------
-
-// $productModel = new HomeModel();
-
-$products = $productModel->getProducts();
+	$noti = 0;
+	$products = $productModel->getProducts(); 
+    if(!empty($_SESSION["lgUserID"])){
+        if(!empty($_GET['id'])){
+            $inserWhishlist = $productModel->insertWhishList($_GET['id'],$_SESSION['lgUserID']);
+            $noti = 1;
+        }
+    }else{
+        $noti = 2;
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -46,6 +51,10 @@ $products = $productModel->getProducts();
                     <div class="alert alert-success" role="alert">
                         ADD WHISHLIST SUCCESS
                     </div>
+                    <?php }else if($noti == 2){?>
+                    <div class="alert alert-success" role="alert">
+                        YOU CAN LOGIN
+                    </div>
                     <?php }?>
                     <div class="row m0 product_task_bar">
 
@@ -61,7 +70,7 @@ $products = $productModel->getProducts();
 									<option>Sort</option>
 									<option value="?field=price&sort=desc">Reduce</option>
 									<option value="?field=price&sort=asc">Augment</option>
-								</select>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -71,11 +80,14 @@ $products = $productModel->getProducts();
                             <div class="cake_feature_item">
                                 <div class="cake_img">
                                     <img src="<?= $product['pro_image']?>" alt="">
+                                    <?php if(isset($_SESSION['lgUserID'])) {?>
+                                    <?php if(empty($productModel->getWhishlistExist($_SESSION['lgUserID'],$product['id']))) {?>
                                     <div class="icon-whishlist">
                                         <a href="shop.php?id=<?= md5($product['id'].'chuyen-de-web-2')?>">
                                             <i class="fa fa-heart" aria-hidden="true"></i>
                                         </a>
                                     </div>
+                                    <?php } }?>
                                 </div>
                                 <div class="cake_text">
                                     <h4>$<?= $product['price']?></h4>

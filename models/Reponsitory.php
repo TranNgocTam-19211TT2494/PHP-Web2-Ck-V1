@@ -1,9 +1,9 @@
 <?php
 require_once 'models/FactoryPattent.php';
-require_once 'models/BaseModel.php';
+
 require_once('models/ZipcodeModel.php');
 
-class Reponsitory extends BaseModel
+class Reponsitory 
 {
     public function insertRepository($data)
     {
