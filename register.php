@@ -21,13 +21,13 @@ if (!empty($_POST['submit'])) {
         if ($insert) {
             $mail = new PHPMailer(true);
 
-            // $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
-            $mail->isSMTP();                                            //Send using SMTP
-            $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
-            $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-            $mail->Username   = 'shopcake011@gmail.com';                     //SMTP username
-            $mail->Password   = 'shopcake123456';                               //SMTP password
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
+            // $mail->SMTPDebug = SMTP::DEBUG_SERVER;                     
+            $mail->isSMTP();
+            $mail->Host       = 'smtp.gmail.com';
+            $mail->SMTPAuth   = true;
+            $mail->Username   = 'shopcake011@gmail.com';
+            $mail->Password   = 'shopcake123456';
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
             $mail->Port       = 465;
             $mail->isHTML(true);
             $mail->setFrom('shopcake011@gmail.com', 'CakeShop');
@@ -36,14 +36,12 @@ if (!empty($_POST['submit'])) {
             $mail->Body    = $_POST['username'] . ' Ơi, Chào mừng bạn đến với thế giới của Cake</b>
             Cảm ơn bạn đã chọn Cake để đồng hành. Mời bạn vào ứng dụng Cake để tìm hiểu và lựa chọn sản phẩm<b><p>Thân mến,<b><p>
             Cake team';
-            if(!$mail->send()){
+            if (!$mail->send()) {
                 echo 'MAILER ERROR';
-            }
-            else{
+            } else {
                 echo 'Message has been sent';
+                header("location: login.php");
             }
-
-            header("location: login.php");
         } else {
             echo "<div class=\"alert alert-dark\" role=\"alert\">
                 username error or pass not!</div>";
