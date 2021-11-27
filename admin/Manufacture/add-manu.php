@@ -1,6 +1,13 @@
 <?php
 include '../../models/ManufactureModel.php';
-$manusModel = new ManufactureModel();
+
+// -----------Factory------------------
+require '../../models/FactoryPattentTwoAdmin.php';
+$facrory = new FactoryPattentTwoAdmin();
+$manusModel = $facrory->make('manu');
+// -----------Factory------------------
+
+// $manusModel = new ManufactureModel();
 if (isset($_GET['manu_id'])) {
     $_id = $_GET['manu_id'];
     $manu = $manusModel->findManufactureById($_id);

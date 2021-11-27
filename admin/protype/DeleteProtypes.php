@@ -1,7 +1,14 @@
 <?php 
 session_start();
 require "../../models/ProtypeModel.php";
-$protypesModel = new ProtypeModel();
+
+// -----------Factory------------------
+require "../../models/FactoryPattentTwoAdmin.php";
+$factory = new FactoryPattentTwoAdmin();
+$protypesModel = $factory->make('protype');
+// -----------Factory------------------
+
+// $protypesModel = new ProtypeModel();
 
 $protype = NULL; 
 $id = NULL;
@@ -18,4 +25,4 @@ if (isset($_GET['type_id'])) {
         }
     }
 }
-header('location: ./Protypes.php');
+header('location: ./index.php');
