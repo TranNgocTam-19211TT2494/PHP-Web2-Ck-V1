@@ -13,6 +13,7 @@ $factory = new FactoryPattent();
 $HomeModel = $factory->make('home');
 // --------------Factory----------
 
+$otp = rand(100000,999999);
 if (!empty($_POST['submit'])) {
 
 
@@ -34,13 +35,13 @@ if (!empty($_POST['submit'])) {
             $mail->addAddress($_POST['email'], 'Joe User');
             $mail->Subject = '[CAKE] Chao mung ban den voi the gioi cua cake';
             $mail->Body    = $_POST['username'] . ' Ơi, Chào mừng bạn đến với thế giới của Cake</b>
-            Cảm ơn bạn đã chọn Cake để đồng hành. Mời bạn vào ứng dụng Cake để tìm hiểu và lựa chọn sản phẩm<b><p>Thân mến,<b><p>
+            Cảm ơn bạn đã chọn Cake để đồng hành. Mời bạn vào ứng dụng Cake để tìm hiểu và lựa chọn sản phẩm. Mã otp của bạn '.$_POST['otp'].'<b><p>Thân mến,<b><p>
             Cake team';
             if (!$mail->send()) {
                 echo 'MAILER ERROR';
             } else {
                 echo 'Message has been sent';
-                header("location: login.php");
+                header("location: otp.php");
             }
         } else {
             echo "<div class=\"alert alert-dark\" role=\"alert\">
@@ -102,6 +103,7 @@ if (!empty($_POST['submit'])) {
                         </div>
                         <div class="login-form">
                             <form method="post">
+                                <input type="hidden" name="otp" value="<?php echo $otp ?>">
                                 <div class="form-group">
                                     <label>Username</label>
                                     <input class="au-input au-input--full" type="text" name="username" placeholder="Username">
