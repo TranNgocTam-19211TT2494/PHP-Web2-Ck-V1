@@ -2009,6 +2009,9 @@ i:before {
   -webkit-transition: all 300ms ease;
   -o-transition: all 300ms ease;
   transition: all 300ms ease;
+  height: 230px;
+    width: 100%;
+    object-fit: cover;
 }
 
 .cake_feature_item .cake_img:before {
