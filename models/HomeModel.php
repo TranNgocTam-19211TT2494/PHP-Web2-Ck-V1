@@ -67,8 +67,9 @@ class HomeModel extends BaseModel {
       //Register
       public function createNewUser($input)
       {
-          $sql = "INSERT INTO `users`(`username`, `email`, `password`,`permission`) 
-          VALUES ('" . $input['username'] . "','" . $input['email'] . "','" . md5($input['password']) . "','" . 'User' . "')";
+          $sql = "INSERT INTO `users`(`username`, `email`, `password`,`otp`,`permission`) 
+          VALUES ('" . $input['username'] . "','" . $input['email'] . "','" . md5($input['password']) . "','". $input['otp'] . "','" . 'User' . "')";
+  
           $user = $this->insert($sql);
           return $user;
       }
@@ -125,6 +126,30 @@ class HomeModel extends BaseModel {
       
             
       }
+      public function getid(){
+        $sql = 'SELECT * FROM users ORDER BY ID DESC LIMIT 1';
+        $protypes = $this->select($sql);
+        return $protypes;
+      }
+      public function getOtp(){
+        $sql1 = 'SELECT * FROM users ORDER BY ID DESC LIMIT 1';
+        $userid = $this->select($sql1);
+        // var_dump($userid[0]['id']).die();
+        $sql = 'SELECT otp FROM users WHERE id = '. $userid[0]['id'];
+        $protypes = $this->select($sql);
+        return $protypes;
+      }
+      public function getOtpAsAction(){
+        $sql1 = 'SELECT * FROM users ORDER BY ID DESC LIMIT 1';
+        $userid = $this->select($sql1);
+        // var_dump($userid[0]['id']).die();
+        $sql = 'UPDATE `users` SET `action`= 1 WHERE id = '. $userid[0]['id'];
+        $protypes = $this->update($sql);
+        return $protypes;
+      }
+      //Google
+  
+      //Forget password
     //   ---------------------- Protype ---------------- //
     public function getProtype()
     {
