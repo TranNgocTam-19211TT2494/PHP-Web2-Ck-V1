@@ -54,7 +54,7 @@ $token = $_SESSION['token'];
                                 <th>date</th>
                                 <th>Role</th>
                                 <th>status</th>
-                                <th>Action</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -66,32 +66,32 @@ $token = $_SESSION['token'];
                                         <span class="au-checkmark"></span>
                                     </label>
                                 </td>
-                                <td><?= $user['username'] ?></td>
+                                <td><?= htmlspecialchars($user['username']) ?></td>
                                 <td>
-                                    <span class="block-email"><?= $user['email'] ?></span>
+                                    <span class="block-email"><?= htmlspecialchars($user['email']) ?></span>
                                 </td>
                                 <?php
                                     $date=date_create($user['date']);
                                 ?>
-                                <td><?= date_format($date ,"d-m-Y | H:i:s" )?></td>
-                                <td class="desc"><?= $user['permission'] ?></td>
+                                <td><?= htmlspecialchars(date_format($date ,"d-m-Y | H:i:s" ))?></td>
+                                <td class="desc"><?= htmlspecialchars($user['permission']) ?></td>
                                 <?php if($user['status'] == 0) {?>
                                 <td>
-                                    <span class="status--process">Inactive</span>
+                                    <span class="status--process">Active</span>
                                 </td>
                                 <?php } else { ?>
                                 <td>
-                                    <span class="status--process">Active</span>
+                                    <span class="status--process">Inactive</span>
                                 </td>
                                 <?php } ?>
                                 <!-- Xóa người dùng -->
 
                                 <td>
-                                    <div class="table-data-feature">
-                                        <a href="view_user.php?id=<?= $user['id'] ?>" class="item">
+                                    <div class="table-data-feature" style="justify-content: flex-start;">
+                                        <a href="view_user.php?id=<?= md5($user['id'] . 'chuyen-de-web-2') ?>" class="item">
                                             <i class="zmdi zmdi-eye"></i>
                                         </a>
-                                        <a href="delete_user.php?id=<?= $user['id'] ?>&token=<?php echo $token ?>" class="item">
+                                        <a href="delete_user.php?id=<?= md5($user['id'] . 'chuyen-de-web-2') ?>&token=<?php echo $token?>" class="item">
                                             <i class="zmdi zmdi-delete"></i>
                                             <input type="hidden" name="token" value="<?php echo $token ?>">
                                         </a>

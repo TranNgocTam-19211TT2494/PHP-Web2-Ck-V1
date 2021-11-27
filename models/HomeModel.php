@@ -1,6 +1,12 @@
 <?php
-
 require_once 'BaseModel.php'; 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+//Load Composer's autoloader
+require 'vendor/autoload.php';
+
 class HomeModel extends BaseModel {
     //   ------------ User ---------------//
       //Login
@@ -12,20 +18,113 @@ class HomeModel extends BaseModel {
           $user = $this->select($sql);
           return $user;
       }
-  
+    public function insertUserDecorator($input,$zipcode)
+    {
+        $allUser = $this->getAllUser();
+        foreach ($allUser as  $value) {
+           if($input['email'] == $value['email']){
+               return false;
+           }
+        }
+        $sql = "INSERT INTO `users`(`username`, `email`, `password`,`permission`) 
+        VALUES ('" . $input['username'] . "','" . $input['email'] . "','" . md5($input['password']) . "','" . 'User' . "')";
+        $user = $this->insert($sql);
+
+        $lastUserId = $this->lastUserId();
+       
+        $data = [
+            'zipcode' =>$this->getToken(8),
+            'user_id' => $lastUserId
+        ];
+        $sql1 = "INSERT INTO `zipcode`(`zipcode`, `user_id`) 
+        VALUES ('" . $data['zipcode'] . "','" . $data['user_id'] . "')";
+        $zipcode = $this->insert($sql1);
+
+        return $user;
+    }
+    public function getToken($length){
+        $token = "";
+        $codeAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        $codeAlphabet.= "0123456789";
+        $max = strlen($codeAlphabet);
+        for ($i=0; $i < $length; $i++) {
+            $token .= $codeAlphabet[random_int(0, $max-1)];
+        }
+        return $token;
+    }
+    public function getAllUser()
+    {
+        $sql = 'SELECT * FROM users';
+        $users = $this->select($sql);
+        return $users;
+    }
+    public function lastUserId()
+    {
+        $sql = "SELECT MAX(id) FROM users";
+        $id = $this->select($sql);
+        return $id[0]['MAX(id)'];
+    }
       //Register
       public function createNewUser($input)
       {
           $sql = "INSERT INTO `users`(`username`, `email`, `password`,`permission`) 
           VALUES ('" . $input['username'] . "','" . $input['email'] . "','" . md5($input['password']) . "','" . 'User' . "')";
-  
           $user = $this->insert($sql);
-  
           return $user;
       }
-      //Google
-  
-      //Forget password
+      //Forget Password
+      public function checkMail($email)
+      {
+        $sql = 'SELECT * FROM users WHERE email = "' . $email . '"';
+        $user = $this->select($sql);
+        return $user;
+      }
+      //Update password cho user: 
+      public function UpdatePassword($password , $email) 
+      {
+        $sql = 'UPDATE users SET 
+        password = "' . md5($password) . '"
+        WHERE email = "' . $email. '" ';
+        $user = $this->update($sql);
+        return $user;
+      }
+      //Send mail password cho nguoi dung:
+      public function sendMail($email , $password)
+      {
+        $mail = new PHPMailer(true);//true:enables exceptions
+        try {
+            $mail->SMTPDebug = 0; //0,1,2: chế độ debug
+            $mail->isSMTP();  
+            $mail->CharSet  = "utf-8";
+            $mail->Host = 'smtp.gmail.com';  //SMTP servers
+            $mail->SMTPAuth = true; // Enable authentication
+            $mail->Username = 'phantinh1209@gmail.com'; // SMTP username
+            $mail->Password = 'zexpotcxbxkuspaq';   // SMTP password
+            $mail->SMTPSecure = 'ssl';  // encryption TLS/SSL 
+            $mail->Port = 465;  // port to connect to                
+            $mail->setFrom('phantinh1209@gmail.com', 'AnhTam' ); 
+            $mail->addAddress($email);
+            $mail->isHTML(true);  // Set email format to HTML
+            $mail->Subject = 'Thư gửi lại mật khẩu';
+            $noidungthu = "<p>Bạn nhận được mail này, do bạn hoặc ai đó yêu cầu mật khẩu mới cho website...</p>
+                                Mật khẩu mới của bạn là {$password}
+            "; 
+            $mail->Body = $noidungthu;
+            $mail->smtpConnect( array(
+                "ssl" => array(
+                    "verify_peer" => false,
+                    "verify_peer_name" => false,
+                    "allow_self_signed" => true
+                )
+            ));
+            $mail->send();
+            echo "Đã gửi mail xong";
+        } catch (Exception $e) {
+            echo 'Error: ', $mail->ErrorInfo;
+        }
+      
+            
+      }
     //   ---------------------- Protype ---------------- //
     public function getProtype()
     {
@@ -40,10 +139,20 @@ class HomeModel extends BaseModel {
         return $protypes;
     }
     public function getprotypeOnProduct($typeid){
-        // $sort ='';
-        $sql = 'SELECT * FROM `protypes`,products WHERE protypes.type_id = products.type_id AND protypes.type_id = '.$typeid .' ORDER BY products.id DESC';
-        $protypes = $this->select($sql);
-        return $protypes;
+        $protypes = 'SELECT type_id FROM protypes';
+        $protype = $this->select($protypes);
+        $proty = null;
+        foreach($protype as $idproty){
+            $md5 = md5($idproty['type_id'] . 'chuyen-de-web-2');
+            if($md5 == $typeid){
+                $sql = 'SELECT * FROM `protypes`,products WHERE protypes.type_id = products.type_id AND protypes.type_id = '.$idproty['type_id'] .' ORDER BY products.id DESC';
+            $proty = $this->select($sql);
+            }
+        }
+        
+        // $sql = 'SELECT * FROM `protypes`,products WHERE protypes.type_id = products.type_id AND protypes.type_id = '.$typeid .' ORDER BY products.id DESC';
+        // $protypes = $this->select($sql);
+        return $proty;
     }
 
     public function getProducts()
@@ -59,7 +168,7 @@ class HomeModel extends BaseModel {
            
         }
 
-        $sql = 'SELECT * FROM `products` WHERE detele_at IS NULL price '. $sort;
+        $sql = 'SELECT * FROM `products` WHERE detele_at IS NULL ORDER BY products.price ' . $sort;
         $products = $this->select($sql);
         return $products;
     }
@@ -75,7 +184,15 @@ class HomeModel extends BaseModel {
         $whishlist = $this->select($sql);
         return $whishlist;
     }
-    // WSC
+    public function getWhishlistByUserID($userid)
+    {
+        $sql = "SELECT whishlist.id as whishlistId,products.pro_image,products.name,products.price 
+        FROM `whishlist`,products 
+        WHERE whishlist.pro_id = products.id 
+        AND whishlist.user_id = $userid ORDER BY `whishlist`.`id` DESC";
+        $whishlist = $this->select($sql);
+        return $whishlist;
+    }
     public function insertWhishList($id,$userId)
     {
         $allProduct = $this->getProducts();
@@ -107,6 +224,15 @@ class HomeModel extends BaseModel {
         }
       return false;
     }
+
+    protected static $_instance;
+    public static function getInstance()
+    {
+        if (self::$_instance != null) {
+
+            return self::$_instance;
+        }
+        self::$_instance = new self();
+        return self::$_instance;
+    }
 }
-
-

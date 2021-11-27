@@ -1,7 +1,14 @@
 <?php
 session_start();
 include '../../models/ManufactureModel.php';
-$manusModel = new ManufactureModel();
+
+// -----------Factory------------------
+require '../../models/FactoryPattentTwoAdmin.php';
+$facrory = new FactoryPattentTwoAdmin();
+$manusModel = $facrory->make('manu');
+// -----------Factory------------------
+
+// $manusModel = new ManufactureModel();
 $manufacture = $manusModel->getManufactures();
 $token = null;
 if (empty($_SESSION['token'])) {
@@ -64,47 +71,25 @@ $token = $_SESSION['token'];
                                     <i class="fas fa-tachometer-alt"></i>Dashboard
                                     <span class="bot-line"></span>
                                 </a>
-                                <!-- <ul class="header3-sub-list list-unstyled">
-                            <li>
-                                <a href="index.html">Dashboard 1</a>
+                            
                             </li>
-                            <li>
-                                <a href="index2.html">Dashboard 2</a>
-                            </li>
-                            <li>
-                                <a href="index3.html">Dashboard 3</a>
-                            </li>
-                            <li>
-                                <a href="index4.html">Dashboard 4</a>
-                            </li>
-                        </ul> -->
-                            </li>
-                            <!-- <li>
-                        <a href="#">
-                            <i class="fas fa-shopping-basket"></i>
-                            <span class="bot-line"></span>eCommerce</a>
-                    </li>
-                    <li>
-                        <a href="table.html">
-                            <i class="fas fa-trophy"></i>
-                            <span class="bot-line"></span>Features</a>
-                    </li> -->
+                       
                             <li class="has-sub">
                                 <a href="#">
                                     <i class="fas fa-copy"></i>
                                     <span class="bot-line"></span>Pages</a>
                                 <ul class="header3-sub-list list-unstyled">
                                     <li>
-                                        <a href="../admin/products/index.php">Products</a>
+                                        <a href="../products/index.php">Products</a>
                                     </li>
                                     <li>
                                         <a href="">Orders</a>
                                     </li>
                                     <li>
-                                        <a href="../admin/Manufacture/">Manufactures</a>
+                                        <a href="../Manufacture/">Manufactures</a>
                                     </li>
                                     <li>
-                                        <a href="">Protype</a>
+                                        <a href="../protype/Protypes.php">Protype</a>
                                     </li>
                                 </ul>
                             </li>
@@ -122,30 +107,7 @@ $token = $_SESSION['token'];
                                     <li>
                                         <a href="tab.html">Tabs</a>
                                     </li>
-                                    <!-- <li>
-                                <a href="card.html">Cards</a>
-                            </li>
-                            <li>
-                                <a href="alert.html">Alerts</a>
-                            </li>
-                            <li>
-                                <a href="progress-bar.html">Progress Bars</a>
-                            </li>
-                            <li>
-                                <a href="modal.html">Modals</a>
-                            </li>
-                            <li>
-                                <a href="switch.html">Switchs</a>
-                            </li>
-                            <li>
-                                <a href="grid.html">Grids</a>
-                            </li>
-                            <li>
-                                <a href="fontawesome.html">FontAwesome</a>
-                            </li>
-                            <li>
-                                <a href="typo.html">Typography</a>
-                            </li> -->
+                                   
                                 </ul>
                             </li>
                         </ul>
@@ -322,18 +284,18 @@ $token = $_SESSION['token'];
                                                         <span class="au-checkmark"></span>
                                                     </label>
                                                 </td>
-                                                <td><?php echo $item['manu_id'] ?></td>
-                                                <td><?php echo $item['manu_name'] ?></td>
+                                                <td><?php echo htmlspecialchars($item['manu_id']) ?></td>
+                                                <td><?php echo htmlspecialchars($item['manu_name']) ?></td>
                                                 <td>
                                                     <?php
                                                     $date = date_create($item['created_at']);
-                                                    echo date_format($date, "d/m/Y");
+                                                    echo htmlspecialchars(date_format($date, "d/m/Y"));
                                                     ?>
                                                 </td>
                                                 <td>
                                                     <?php
                                                     $date = date_create($item['update_at']);
-                                                    echo date_format($date, "d/m/Y");
+                                                    echo htmlspecialchars(date_format($date, "d/m/Y"));
                                                     ?>
                                                 </td>
                                                 <td>
@@ -348,12 +310,11 @@ $token = $_SESSION['token'];
                                                         <!-- <button class="item" data-toggle="tooltip" data-placement="top" title="Send">
                                                             <i class="zmdi zmdi-mail-send"></i>
                                                         </button> -->
-                                                        <a href="add-manu.php?manu_id=<?php echo $item['manu_id'] ?>" class="item" data-toggle="tooltip" data-placement="top" title="Edit">
+                                                        <a href="add-manu.php?manu_id=<?php echo md5($item['manu_id'] . 'chuyen-de-web-2')?>" class="item" data-toggle="tooltip" data-placement="top" title="Edit">
                                                             <i class="zmdi zmdi-edit"></i>
                                                         </a>
-                                                        <a href="delete-manu.php?manu_id=<?php echo $item['manu_id'] ?>&token=<?php echo $token ?>" class="item" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                        <a href="delete-manu.php?manu_id=<?php echo md5($item['manu_id'] . 'chuyen-de-web-2') ?>&token=<?php echo $token ?>" class="item" data-toggle="tooltip" data-placement="top" title="Delete">
                                                             <i class="zmdi zmdi-delete"></i>
-                                                            <input type="hidden" name="token" value="<?php echo $token ?>">
                                                         </a>
                                                     </div>
                                                 </td>

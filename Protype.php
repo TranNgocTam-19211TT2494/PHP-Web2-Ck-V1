@@ -1,7 +1,13 @@
 <?php
 require_once 'models/HomeModel.php';
 
-$protypeModel = new HomeModel();
+// $protypeModel = new HomeModel();
+
+// --------------Factory----------
+require 'models/FactoryPattent.php';
+$factory = new FactoryPattent();
+$protypeModel = $factory->make('home');
+// --------------Factory----------
 
 $proty = $protypeModel->getProtype();
 

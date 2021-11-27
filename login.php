@@ -1,37 +1,35 @@
-<?php 
+<?php
 
 session_start();
-    require_once('models/HomeModel.php');
-    $HomeModel = new HomeModel();
-    
-    if (!empty($_POST['submit'])) {
-        $userName=trim($_POST["username"]);
-        $passWord=trim($_POST["password"]);
-        if ($userName!="" && $passWord!="") {
-            
-            $rows=$HomeModel->login($userName, $passWord);
-            
-            
-           
-            if (!empty($rows)) {
-               foreach($rows as $row) {
-                    $_SESSION["lgUserName"]=$userName;
-                    
-                    $_SESSION["lgUserID"]=$row['id'];
-                   
-               }
-                header("location:index.php");
-            } else {
-                echo "<p class=\"error\" style = 'color: red;
-				text-align: center;'>Tên đăng nhập hoặc mật khẩu không đúng</p>";
+require 'models/FactoryPattent.php';
+$factory = new FactoryPattent();
+// --------------Factory----------
+
+$HomeModel = $factory->make('home');
+// --------------Factory----------
+
+if (!empty($_POST['submit'])) {
+    $userName = trim($_POST["username"]);
+    $passWord = trim($_POST["password"]);
+    if ($userName != "" && $passWord != "") {
+
+        $rows = $HomeModel->login($userName, $passWord);
+
+
+
+        if (!empty($rows)) {
+            foreach ($rows as $row) {
+                $_SESSION["lgUserName"] = $userName;
+
+                $_SESSION["lgUserID"] = $row['id'];
             }
-            
+            header("location:index.php");
+        } else {
+            echo "<p class=\"error\" style = 'color: red;
+				text-align: center;'>Tên đăng nhập hoặc mật khẩu không đúng</p>";
         }
-     
-       
-        
-    
     }
+}
 
 ?>
 <!DOCTYPE html>
@@ -59,14 +57,13 @@ session_start();
 
     <!-- Vendor CSS-->
     <link href="public/backend/vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
-    <link href="public/backend/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet"
-        media="all">
+    <link href="public/backend/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
     <link href="public/backend/vendor/wow/animate.css" rel="stylesheet" media="all">
     <link href="public/backend/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
     <link href="public/backend/vendor/slick/slick.css" rel="stylesheet" media="all">
     <link href="public/backend/vendor/select2/select2.min.css" rel="stylesheet" media="all">
     <link href="public/backend/vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all">
-    
+
     <!-- Main CSS-->
     <link href="public/backend/css/theme.css" rel="stylesheet" media="all">
 
@@ -87,13 +84,11 @@ session_start();
                             <form method="post">
                                 <div class="form-group">
                                     <label>Enter Name</label>
-                                    <input class="au-input au-input--full" type="text" name="username"
-                                        placeholder="Name">
+                                    <input class="au-input au-input--full" type="text" name="username" placeholder="Name">
                                 </div>
                                 <div class="form-group">
                                     <label>Password</label>
-                                    <input class="au-input au-input--full" type="password" name="password"
-                                        placeholder="Password">
+                                    <input class="au-input au-input--full" type="password" name="password" placeholder="Password">
                                 </div>
                                 <div class="login-checkbox">
                                     <label>
@@ -103,8 +98,7 @@ session_start();
                                         <a href="forgot-password.php">Forgotten Password?</a>
                                     </label>
                                 </div>
-                                <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit" name="submit"
-                                    value="submit">sign in</button>
+                                <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit" name="submit" value="submit">sign in</button>
                                 <div class="social-login-content">
                                     <div class="social-button">
                                         <button class="au-btn au-btn--block au-btn--blue m-b-20">sign in with

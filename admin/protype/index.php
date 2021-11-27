@@ -1,16 +1,27 @@
+<?php
+session_start();
+require "../../models/FactoryPattentTwoAdmin.php";
+$factory = new FactoryPattentTwoAdmin();
+$protypesModel = $factory->make('protype');
+$token = null;
+if (empty($_SESSION['token'])) {
+    $_SESSION['token'] = bin2hex(random_bytes(32));
+}
+$token = $_SESSION['token'];
+// -----------Factory------------------
+$protypes = $protypesModel->getProtype();
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <!-- Required meta tags-->
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="au theme template">
-    <meta name="author" content="Hau Nguyen">
-    <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
     <title>Dashboard</title>
+    <?php include('../../views/admin/layouts/head.php') ?>
 
     <!-- Fontfaces CSS-->
     <link href="../../public/backend/css/font-face.css" rel="stylesheet" media="all">
@@ -32,38 +43,17 @@
 
     <!-- Main CSS-->
     <link href="../../public/backend/css/theme.css" rel="stylesheet" media="all">
+    <link href="../../public/backend/css/protype.css" rel="stylesheet" media="all">
+
 </head>
 <style>
-    .select2-hidden-accessible {
-        border: 0 !important;
-        clip: rect(0 0 0 0) !important;
-        height: 1 px !important;
-        margin: -1 px !important;
-        overflow: hidden !important;
-        padding: 0 !important;
-        position: absolute !important;
-        width: 1 px !important;
+    .table-data__tool {
+        justify-content: flex-end;
     }
 </style>
 
-<body class="">
-    <?php
-    require_once("../../models/ProductModel.php");
-    // $productModel = new ProductModel();
+<body class="animsition">
 
-    // ----------Factory----------
-    require '../../models/FactoryPattentTwoAdmin.php';
-    $factory = new FactoryPattentTwoAdmin();
-    $params = [];
-    if (!empty($_GET['keyword'])) {
-        $params['keyword'] = $_GET['keyword'];
-        
-    }
-    $productModel = $factory->make('product');
-    // ----------Factory----------
-    
-    $allProduct =  $productModel->getProducts($params);
-    ?>
     <div class="page-wrapper">
         <!-- HEADER DESKTOP-->
         <header class="header-desktop3 d-none d-lg-block">
@@ -81,9 +71,9 @@
                                     <i class="fas fa-tachometer-alt"></i>Dashboard
                                     <span class="bot-line"></span>
                                 </a>
-
+                            
                             </li>
-
+                       
                             <li class="has-sub">
                                 <a href="#">
                                     <i class="fas fa-copy"></i>
@@ -117,7 +107,7 @@
                                     <li>
                                         <a href="tab.html">Tabs</a>
                                     </li>
-
+                                   
                                 </ul>
                             </li>
                         </ul>
@@ -258,147 +248,55 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">
-                            <h3 class="title-5 m-b-35">data table</h3>
-                            <div class="active" style="display: flex; justify-content: space-between;">
-                                <div class="table-data__tool">
-                                    <a href="add.php"> <button class="au-btn au-btn-icon au-btn--green au-btn--small">
-                                            <i class="zmdi zmdi-plus"></i>add item</button></a>
-                                </div>
-                                <div class="table-data__tool">
-                                    <a href="trash.php"> <button class="au-btn au-btn-icon au-btn--green au-btn--small">
-                                            <i class="zmdi zmdi-delete"></i>trash</button></a>
+                            <h3 class="title-5 m-b-35">Protypes table</h3>
+                            <div class="table-data__tool">
+                                <div class="table-data__tool-right">
+                                    <button class="au-btn au-btn-icon au-btn--green au-btn--small" onclick="window.location.href='./ViewProtypes.php'" >
+                                        <i class="zmdi zmdi-plus"></i>add item</button>
                                 </div>
                             </div>
-                            <?php 
-                                $keyword = '';
-                                if(!empty($_GET['keyword'])) {
-                                    $keyword = $_GET['keyword'];
-                                }
-                            ?>
-                            <form method="get" class="form-horizontal">
-                                <div class="row form-group">
-                                    <div class="col col-md-12">
-                                        <div class="input-group">
-                                            <div class="input-group-btn">
-                                                <button type="submit" class="btn" style="background: #63c76a;color:white;">
-                                                    <i class="fa fa-search"></i> Search
-                                                </button>
-                                            </div>
-                                            <input type="text" id="input1-group2" name="keyword" value="<?= $keyword ?>"
-                                                placeholder="Search users" class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                            </form>
-                            <?php if(!empty($allProduct)) { ?>
                             <div class="table-responsive table-responsive-data2">
                                 <table class="table table-data2">
                                     <thead>
                                         <tr>
-                                            <th>Cake</th>
-                                            <th>Image</th>
-                                            <th>Manufacture</th>
-                                            <th>Protype</th>
-                                            <th>Price</th>
-                                            <th>Feature</th>
+                                            <th>#</th>
+                                            <th>name</th>
+                                            <th>Create_at</th>
                                             <th></th>
                                         </tr>
                                     </thead>
-
                                     <tbody>
-
-                                        <?php  foreach ($allProduct as $product) {?>
-                                        <tr class="tr-shadow">
-                                            <td><?= htmlspecialchars($product['name'] )?></td>
-                                            <td>
-                                                <div class="img-cake">
-                                                    <img class="anh-tam"
-                                                        src="<?= htmlspecialchars($product['pro_image'])?>"
-                                                        alt="<?= htmlspecialchars($product['name'] )?>">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <span
-                                                    class="block-email"><?= htmlspecialchars($productModel->getManuByProductId($product['manu_id'])[0]['manu_name']) ?></span>
-                                            </td>
-                                            <td class="desc">
-                                                <?= htmlspecialchars($productModel->getProTypeByProductId($product['type_id'])[0]['type_name']) ?>
-                                            </td>
-                                            <td><?= htmlspecialchars(number_format($product['price']))?> VND</td>
-                                            <td>
-                                                <?php if ($product['feature'] == 1) {?>
-                                                <span class="status--process">Popular</span>
-                                                <?php }else{?>
-                                                <span class="status--denied">Normal</span>
-                                                <?php } ?>
-                                            </td>
-                                            <td>
-                                                <div class="table-data-feature">
-                                                    <a
-                                                        href="edit.php?id=<?= rand(100, 999) . md5($product['id'] . "chuyen-de-web-2") . rand(100, 999)?>">
-                                                        <button class="item" data-toggle="tooltip" data-placement="top"
-                                                            title="Edit">
+                                        <?php foreach ($protypes as $proty) { ?>
+                                            <tr class="tr-shadow">
+                                            <td class="stt"></td>
+                                                <td><?= htmlspecialchars($proty['type_name'])  ?></td>
+                                                <td><?= htmlspecialchars(date( "d-m-Y", strtotime($proty['create_at'])))?> </td>
+                                                <td class="edit-delete">
+                                                    <div class="table-data-feature">
+                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Edit" onclick="window.location.href='./ViewProtypes.php?type_id=<?php echo md5($proty['type_id'] . 'chuyen-de-web-2') ?>'">
                                                             <i class="zmdi zmdi-edit"></i>
-                                                    </a>
-                                                    </button>
-                                                    <a
-                                                        href="delete.php?id=<?php echo rand(100, 999) . md5($product['id'] . "chuyen-de-web-2") . rand(100, 999) ?>"><button
-                                                            class="item" data-toggle="tooltip" data-placement="top"
-                                                            title="Delete">
+                                                        </button>
+                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Delete" onclick="window.location.href='./DeleteProtypes.php?type_id=<?php echo md5($proty['type_id'] . 'chuyen-de-web-2')  ?>&token=<?php echo $token ?>'">
                                                             <i class="zmdi zmdi-delete"></i>
-                                                        </button></a>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <?php }  ?>
+                                                            <input type="hidden" name="token" value="<?php echo $token ?>">
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        <?php } ?>
                                     </tbody>
-
                                 </table>
                             </div>
-                            <?php } else { ?>
-                            <!-- Test Reflected XSS bằng htmlspecialchars -->
-                            <?php if (!empty($params['keyword'])) { ?>
-                            <div class="alert alert-warning" role="alert">
-                                <?php echo htmlspecialchars($params['keyword']) ?>
-                            </div>
-                            <?php } } ?>
                         </div>
                     </div>
                 </div>
             </section>
             <!-- END DATA TABLE-->
-
-            <!-- COPYRIGHT-->
-            <?php include('../../views/admin/partials/copyright.php') ?>
-            <!-- END COPYRIGHT-->
         </div>
 
     </div>
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="../../public/js/jquery-3.2.1.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="../../public/js/popper.min.js"></script>
-    <script src="../../public/js/bootstrap.min.js"></script>
-    <!-- Rev slider js -->
-    <script src="../../public/vendors/revolution/js/jquery.themepunch.tools.min.js"></script>
-    <script src="../../public/vendors/revolution/js/jquery.themepunch.revolution.min.js"></script>
-    <script src="../../public/vendors/revolution/js/extensions/revolution.extension.actions.min.js"></script>
-    <script src="../../public/vendors/revolution/js/extensions/revolution.extension.video.min.js"></script>
-    <script src="../../public/vendors/revolution/js/extensions/revolution.extension.slideanims.min.js"></script>
-    <script src="../../public/vendors/revolution/js/extensions/revolution.extension.layeranimation.min.js"></script>
-    <script src="../../public/vendors/revolution/js/extensions/revolution.extension.navigation.min.js"></script>
-    <!-- Extra plugin js -->
-    <script src="../../public/vendors/owl-carousel/owl.carousel.min.js"></script>
-    <script src="../../public/vendors/magnifc-popup/jquery.magnific-popup.min.js"></script>
-    <script src="../../public/vendors/datetime-picker/js/moment.min.js"></script>
-    <script src="../../public/vendors/datetime-picker/js/bootstrap-datetimepicker.min.js"></script>
-    <script src="../../public/vendors/nice-select/js/jquery.nice-select.min.js"></script>
-    <script src="../../public/vendors/jquery-ui/jquery-ui.min.js"></script>
-    <script src="../../public/vendors/lightbox/simpleLightbox.min.js"></script>
 
-    <script src="../../public/js/theme.js"></script>
+    <?php include('../../views/admin/layouts/footer.php') ?>
 
 </body>
 

@@ -1,7 +1,14 @@
 <?php
 session_start();
 include '../../models/ManufactureModel.php';
-$manusModel = new ManufactureModel();
+
+// -----------Factory------------------
+require '../../models/FactoryPattentTwoAdmin.php';
+$facrory = new FactoryPattentTwoAdmin();
+$manusModel = $facrory->make('manu');
+// -----------Factory------------------
+
+// $manusModel = new ManufactureModel();
 // var_dump($manufacture);
 $_id = null;
 // if (isset($_GET['manu_id'])) {
