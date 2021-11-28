@@ -1,3 +1,10 @@
+<?php
+$token = null;
+if (empty($_SESSION['token'])) {
+    $_SESSION['token'] = bin2hex(random_bytes(32));
+}
+$token = $_SESSION['token'];
+?>
 <section class="p-t-20">
     <div class="container">
         <div class="row">
@@ -20,9 +27,8 @@
                                             <i class="fa fa-search"></i> Search
                                         </button>
                                     </div>
-                                    <input type="text" id="input1-group2" name="keyword"
-                                        value="<?php echo $keyword ?>" placeholder="Search users"
-                                        class="form-control">
+                                    <input type="text" id="input1-group2" name="keyword" value="<?php echo $keyword ?>"
+                                        placeholder="Search users" class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -60,76 +66,35 @@
                                         <span class="au-checkmark"></span>
                                     </label>
                                 </td>
-                                <td>Lori Lynch</td>
+                                <td><?= htmlspecialchars($user['username']) ?></td>
                                 <td>
-                                    <span class="block-email">lyn@example.com</span>
-                                </td>
-                                <td class="desc">iPhone X 256Gb Black</td>
-                                <td>2018-09-25 19:03</td>
-                                <td>
-                                    <span class="status--denied">Denied</span>
-                                </td>
-                                <td>$1199.00</td>
-                                <td>
-                                    <div class="table-data-feature">
-                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Send">
-                                            <i class="zmdi zmdi-mail-send"></i>
-                                        </button>
-                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
-                                            <i class="zmdi zmdi-edit"></i>
-                                        </button>
-                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
-                                            <i class="zmdi zmdi-delete"></i>
-                                        </button>
-                                        <button class="item" data-toggle="tooltip" data-placement="top" title="More">
-                                            <i class="zmdi zmdi-more"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr class="spacer"></tr>
-                            <tr class="tr-shadow">
-                                <td>
-                                    <label class="au-checkbox">
-                                        <input type="checkbox">
-                                        <span class="au-checkmark"></span>
-                                    </label>
-                                </td>
-                                <td>Lori Lynch</td>
-                                <td>
-                                <td><?= $user['username'] ?></td>
-                                <td>
-                                    <span class="block-email"><?= $user['email'] ?></span>
+                                    <span class="block-email"><?= htmlspecialchars($user['email']) ?></span>
                                 </td>
                                 <?php
                                     $date=date_create($user['date']);
                                 ?>
-                                <td><?= date_format($date ,"d-m-Y | H:i:s" )?></td>
-                                <td class="desc"><?= $user['permission'] ?></td>
+                                <td><?= htmlspecialchars(date_format($date ,"d-m-Y | H:i:s" ))?></td>
+                                <td class="desc"><?= htmlspecialchars($user['permission']) ?></td>
                                 <?php if($user['status'] == 0) {?>
                                 <td>
-                                    <span class="status--process">Inactive</span>
+                                    <span class="status--process">Active</span>
                                 </td>
                                 <?php } else { ?>
                                 <td>
-                                    <span class="status--process">Active</span>
+                                    <span class="status--process">Inactive</span>
                                 </td>
                                 <?php } ?>
                                 <!-- Xóa người dùng -->
 
                                 <td>
-                                    <div class="table-data-feature">
-                                       
-                                        <a href="view_user.php?id=<?= $user['id'] ?>" class="item">
+                                    <div class="table-data-feature" style="justify-content: flex-start;">
+                                        <a href="view_user.php?id=<?= md5($user['id'] . 'chuyen-de-web-2') ?>" class="item">
                                             <i class="zmdi zmdi-eye"></i>
                                         </a>
-
-                                        <a href="delete_user.php?id=<?= $user['id'] ?>" class="item">
+                                        <a href="delete_user.php?id=<?= md5($user['id'] . 'chuyen-de-web-2') ?>&token=<?php echo $token?>" class="item">
                                             <i class="zmdi zmdi-delete"></i>
+                                            <input type="hidden" name="token" value="<?php echo $token ?>">
                                         </a>
-                                        <button class="item" data-toggle="tooltip" data-placement="top" title="More">
-                                            <i class="zmdi zmdi-more"></i>
-                                        </button>
                                     </div>
                                 </td>
                             </tr>

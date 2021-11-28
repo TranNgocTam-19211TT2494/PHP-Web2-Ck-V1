@@ -1,3 +1,27 @@
+<?php
+    require "./models/FactoryPattent.php";
+    $factory = new FactoryPattent();
+    $HomeModel = $factory->make('home');
+    $loi = "";
+    if(isset($_POST['submit']) == true) {
+        
+        $email = $_POST['email'];
+
+        $mail = $HomeModel->checkMail($_POST['email']);
+        $count = count($mail);
+        // print_r(count($mail));
+        if($count == 0) {
+            $loi = "Email ban chua duoc dang ky thanh vien";
+        }else {
+            //New Pass
+            $randPassword = rand(0,999999);
+            //var_dump($randPassword);
+            $HomeModel->UpdatePassword($randPassword , $email);
+            //send mail
+            $HomeModel->sendMail($email , $randPassword);
+        }
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,7 +35,7 @@
 
     <!-- Title Page-->
     <title>Forget Password</title>
-    
+
     <!-- Fontfaces CSS-->
     <link href="public/backend/css/font-face.css" rel="stylesheet" media="all">
     <link href="public/backend/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
@@ -47,16 +71,27 @@
                                 <img src="public/backend/images/icon/logo.png" alt="CoolAdmin">
                             </a>
                         </div>
+                        <?php if($loi != "") {?>
+                        <div class="alert alert-danger"><?= $loi ?></div>
+
+                        <?php } ?>
                         <div class="login-form">
-                            <form action="" method="post">
+                            <form method="post">
                                 <div class="form-group">
                                     <label>Email Address</label>
                                     <input class="au-input au-input--full" type="email" name="email"
-                                        placeholder="Email">
+                                        value="<?php if(isset($email)) echo $email ?>" placeholder="Email">
                                 </div>
-                                <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">submit</button>
+                                <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit"
+                                    name="submit">submit</button>
                             </form>
                         </div>
+                        <div class="register-link">
+                                <p>
+                                    Already have account?
+                                    <a href="login.php">Sign In</a>
+                                </p>
+                            </div>
                     </div>
                 </div>
             </div>

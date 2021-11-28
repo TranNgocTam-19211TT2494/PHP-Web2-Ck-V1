@@ -1,6 +1,12 @@
 <?php
 require_once '../models/UserModel.php';
-$userModel = new UserModel();
+// $userModel = new UserModel();
+
+// --------------Factory----------
+require '../models/FactoryPattentAdmin.php';
+$factory = new FactoryPattentAdmin();
+$userModel = $factory->make('user');
+// --------------Factory----------
 
 $user = '';
 $id = NULL;
@@ -36,7 +42,7 @@ if (!empty($_GET['id'])) {
         <!-- END HEADER MOBILE-->
 
         <!-- MENU SIDEBAR-->
-       
+
         <!-- END MENU SIDEBAR-->
 
         <!-- PAGE CONTAINER-->
@@ -50,16 +56,22 @@ if (!empty($_GET['id'])) {
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
                         <div class="row">
-                        <?php if ($user || empty($id)) { ?>
-                            <div class="col-lg-12">
+                            <div class="col-lg-3">
+
+                            </div>
+                            <?php if ($user || empty($id)) { ?>
+                            <div class="col-lg-6">
                                 <div class="card">
-                                    <div class="card-header">User <?php if (!empty($user[0]['username'])) echo $user[0]['username'] ?></div>
+                                    <div class="card-header">User
+                                        <?php if (!empty($user[0]['username'])) echo $user[0]['username'] ?></div>
                                     <div class="card-body card-block">
-                                        <form  method="post" class="">
+                                        <form method="post" class="">
                                             <div class="form-group">
                                                 <div class="input-group">
                                                     <div class="input-group-addon">Username</div>
-                                                    <input type="text" id="username3" name="username3" value="<?php if (!empty($user[0]['username'])) echo $user[0]['username'] ?>" class="form-control">
+                                                    <input type="text" id="username3" name="username3"
+                                                        value="<?php if (!empty($user[0]['username'])) echo $user[0]['username'] ?>"
+                                                        class="form-control">
                                                     <div class="input-group-addon">
                                                         <i class="fa fa-user"></i>
                                                     </div>
@@ -68,7 +80,9 @@ if (!empty($_GET['id'])) {
                                             <div class="form-group">
                                                 <div class="input-group">
                                                     <div class="input-group-addon">Email</div>
-                                                    <input type="email" id="email3" name="email3" value="<?php if (!empty($user[0]['email'])) echo $user[0]['email'] ?>" class="form-control">
+                                                    <input type="email" id="email3" name="email3"
+                                                        value="<?php if (!empty($user[0]['email'])) echo $user[0]['email'] ?>"
+                                                        class="form-control">
                                                     <div class="input-group-addon">
                                                         <i class="fa fa-envelope"></i>
                                                     </div>
@@ -77,7 +91,9 @@ if (!empty($_GET['id'])) {
                                             <div class="form-group">
                                                 <div class="input-group">
                                                     <div class="input-group-addon">Date</div>
-                                                    <input type="text" id="password3" name="date" value="<?php if (!empty($user[0]['date'])) echo $user[0]['date'] ?>" class="form-control">
+                                                    <input type="text" id="password3" name="date"
+                                                        value="<?php if (!empty($user[0]['date'])) echo $user[0]['date'] ?>"
+                                                        class="form-control">
                                                     <div class="input-group-addon">
                                                         <i class="fa fa-asterisk"></i>
                                                     </div>
@@ -90,12 +106,16 @@ if (!empty($_GET['id'])) {
                                     </div>
                                 </div>
                             </div>
-                        <?php } ?>
+                            <?php } ?>
+                            <div class="col-lg-3">
+
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="copyright">
-                                    <p>Copyright © 2018 Colorlib. All rights reserved. Template by <a href="https://colorlib.com">Colorlib</a>.</p>
+                                    <p>Copyright © 2018 Colorlib. All rights reserved. Template by <a
+                                            href="https://colorlib.com">Colorlib</a>.</p>
                                 </div>
                             </div>
                         </div>

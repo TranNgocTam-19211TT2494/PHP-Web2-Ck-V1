@@ -1,103 +1,82 @@
 <?php
-session_start();
-// --------------Factory----------
 require 'models/FactoryPattent.php';
 $factory = new FactoryPattent();
-$productModel = $factory->make('home');
+
 // --------------Factory----------
-	$noti = 0;
-	$products = $productModel->getProducts(); 
-    if(!empty($_SESSION["lgUserID"])){
-        if(!empty($_GET['id'])){
-            $inserWhishlist = $productModel->insertWhishList($_GET['id'],$_SESSION['lgUserID']);
-            $noti = 1;
-        }
-    }else{
-        $noti = 2;
-    }
+$productModel = $factory->make('home');
+
+$manufactures = $productModel->getManufactures();
+// --------------Factory----------
+if (isset($_GET['manu_id'])) {
+    $id = $_GET['manu_id'];
+    $manu = $productModel->getManufactureById($id);
+} 
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
 
-<?php include_once("views/head.php");?>
+<?php include_once("views/head.php"); ?>
 
 <body>
 
     <!--================Main Header Area =================-->
-    <?php include_once("views/header.php");?>
+    <?php include_once("views/header.php"); ?>
     <!--================End Main Header Area =================-->
+    <?php
 
+  
+    ?>
     <!--================End Main Header Area =================-->
     <section class="banner_area">
         <div class="container">
             <div class="banner_text">
-                <h3>Shop</h3>
+                <h3>Protype</h3>
                 <ul>
                     <li><a href="index.php">Home</a></li>
-                    <li><a href="shop.php">Shop</a></li>
+                    <li><a href="shop.php">Protype</a></li>
                 </ul>
             </div>
         </div>
     </section>
     <!--================End Main Header Area =================-->
-
+    <?php if(!empty($_GET['manu_id'])) {?>
     <!--================Product Area =================-->
     <section class="product_area p_100">
         <div class="container">
             <div class="row product_inner_row">
-
                 <div class="col-lg-9">
-                    <?php if(isset($noti) && $noti == 1) {?>
-                    <div class="alert alert-success" role="alert">
-                        ADD WHISHLIST SUCCESS
-                    </div>
-                    <?php }else if($noti == 2){?>
-                    <div class="alert alert-success" role="alert">
-                        YOU CAN LOGIN
-                    </div>
-                    <?php }?>
+                    <!-- </?php if ($protype) { ?> -->
+                    <input type="hidden" name="type_id" value="<?php echo $typeid ?>">
                     <div class="row m0 product_task_bar">
-
                         <div class="product_task_inner">
-                            <!-- <div class="float-left">
-                                <a class="active" href="#"><i class="fa fa-th-large" aria-hidden="true"></i></a>
-                                <a href="#"><i class="fa fa-th-list" aria-hidden="true"></i></a>
-                                <span>Showing 1 - 10 of 55 results</span>
-                            </div> -->
+                            <div class="float-left">
+
+                            </div>
                             <div class="float-right">
-                                <h4>Sort by :</h4>
-                                <select class="short" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
-									<option>Sort</option>
-									<option value="?field=price&sort=desc">Reduce</option>
-									<option value="?field=price&sort=asc">Augment</option>
-                                </select>
+                                <h4>Manufactures</h4>
+
                             </div>
                         </div>
                     </div>
                     <div class="row product_item_inner">
-                        <?php foreach ($products as $product) { ?>
+                        <?php foreach ($manu as $manufacture) { ?>
                         <div class="col-lg-4 col-md-4 col-6">
                             <div class="cake_feature_item">
                                 <div class="cake_img">
-                                    <img src="<?= $product['pro_image']?>" alt="">
-                                    <?php if(isset($_SESSION['lgUserID'])) {?>
-                                    <?php if(empty($productModel->getWhishlistExist($_SESSION['lgUserID'],$product['id']))) {?>
-                                    <div class="icon-whishlist">
-                                        <a href="shop.php?id=<?= md5($product['id'].'chuyen-de-web-2')?>">
-                                            <i class="fa fa-heart" aria-hidden="true"></i>
-                                        </a>
-                                    </div>
-                                    <?php } }?>
+                                    <img src="<?= $manufacture['pro_image'] ?>" >
                                 </div>
                                 <div class="cake_text">
-                                    <h4>$<?= $product['price']?></h4>
-                                    <h3><?= $product['name']?></h3>
+                                    <h4>$<?= $manufacture['price'] ?></h4>
+                                    <h3><?= $manufacture['name'] ?></h3>
                                     <a class="pest_btn" href="#">Add to cart</a>
                                 </div>
                             </div>
                         </div>
                         <?php } ?>
                     </div>
+                    <!-- </?php } ?> -->
                     <!-- Phân trang -->
                     <div class="product_pagination">
                         <div class="left_btn">
@@ -132,18 +111,17 @@ $productModel = $factory->make('home');
                             <div class="p_w_title">
                                 <h3>Product Categories</h3>
                             </div>
-                            <?php 
-                                $manufactures = $productModel->getManufactures();
-                                
-                            ?>
+                           
                             <ul class="list_style">
                                 <?php foreach ($manufactures as $manufacture) { ?>
-                                <li><a href="manufacture-shop.php?manu_id=<?=md5($manufacture['manu_id'] . 'chuyen-de-web-2') ?>"><?= $manufacture['manu_name'] ?> (<?= count($productModel->countProductWithManufacture($manufacture['manu_id'])) ?>)</a></li>
+                                <li><a
+                                        href="manufacture-shop.php?manu_id=<?=md5($manufacture['manu_id'] . 'chuyen-de-web-2') ?>"><?= $manufacture['manu_name'] ?>
+                                        (<?= count($productModel->countProductWithManufacture($manufacture['manu_id']))?>)</a></li>
                                 <?php } ?>
-                              
+
                             </ul>
                         </aside>
-                        
+
                         <aside class="left_sidebar p_sale_widget">
                             <div class="p_w_title">
                                 <h3>Top Sale Products</h3>
@@ -226,26 +204,29 @@ $productModel = $factory->make('home');
             </div>
         </div>
     </section>
+    <?php } else { ?>
+    <?php include "404.php"; ?>
+    <?php } ?>
     <!--================End Product Area =================-->
 
     <!--================Newsletter Area =================-->
-    <?php include_once("views/layouts/news.php");?>
+    <?php include_once("views/layouts/news.php"); ?>
     <!--================End Newsletter Area =================-->
 
     <!--================Footer Area =================-->
-    <?php include_once("views/layouts/footer.php");?>
+    <?php include_once("views/layouts/footer.php"); ?>
     <!--================End Footer Area =================-->
 
 
     <!--================Search Box Area =================-->
-    <?php include_once("views/layouts/search.php");?>
+    <?php include_once("views/layouts/search.php"); ?>
     <!--================End Search Box Area =================-->
 
 
 
 
 
-    <?php include_once("views/footer.php");?>
+    <?php include_once("views/footer.php"); ?>
 </body>
 
 </html>

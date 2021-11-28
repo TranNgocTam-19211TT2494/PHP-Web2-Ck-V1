@@ -93,12 +93,12 @@
     <!--================End Newsletter Area =================-->
 
     <!--================Footer Area =================-->
-    <?php include_once("views/layouts/footer.php");?>
+	<?php include_once("views/layouts/footer.php");?>
     <!--================End Footer Area =================-->
 
 
     <!--================Search Box Area =================-->
-    <?php include_once("views/layouts/search.php");?>
+	<?php include_once("views/layouts/search.php");?>
     <!--================End Search Box Area =================-->
 
     <!--================Contact Success and Error message Area =================-->

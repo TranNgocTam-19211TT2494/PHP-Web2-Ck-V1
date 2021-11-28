@@ -44,7 +44,7 @@
                             <span class="bot-line"></span>Pages</a>
                         <ul class="header3-sub-list list-unstyled">
                             <li>
-                                <a href="../admin/products/index.php">Products</a>
+                                <a href="products/index.php">Products</a>
                             </li>
                             <li>
                                 <a href="../admin/zipcode/index.php">ZipCode</a>
@@ -53,10 +53,10 @@
                                 <a href="">Orders</a>
                             </li>
                             <li>
-                                <a href="">Manufactures</a>
+                                <a href="Manufacture/">Manufactures</a>
                             </li>
                             <li>
-                                <a href="">Protype</a>
+                                <a href="../admin/protype">Protype</a>
                             </li>
                         </ul>
                     </li>
