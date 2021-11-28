@@ -235,4 +235,22 @@ class HomeModel extends BaseModel {
         self::$_instance = new self();
         return self::$_instance;
     }
+    public function searchProduct($search)
+    {
+        $sql = "SELECT * FROM products WHERE name LIKE '%$search%' OR description LIKE '%$search%' ORDER BY id DESC;";
+        $searchResult = $this->select($sql);
+        return $searchResult;
+    }
+    //hàm đếm kết quả trả về
+    public function num_result($search)
+    {
+        return count($this->searchProduct($search));
+    }
+    // Hàm tìm kiếm theo tên của category(manufacture)
+    public function searchCategories($search)
+    {
+        $sql = "SELECT * FROM products,manufactures WHERE products.manu_id=manufactures.manu_id AND manufactures.manu_name like '%$search%' ORDER BY products.id DESC;";
+        $searchResult = $this->select($sql);
+        return $searchResult;
+    }
 }
