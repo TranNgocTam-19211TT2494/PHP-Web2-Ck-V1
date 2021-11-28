@@ -19,6 +19,7 @@ class HomeModel extends BaseModel {
           $user = $this->select($sql);
           return $user;
       }
+    //   Register:
     public function insertUserDecorator($input,$zipcode)
     {
         $allUser = $this->getAllUser();
@@ -65,14 +66,7 @@ class HomeModel extends BaseModel {
         $id = $this->select($sql);
         return $id[0]['MAX(id)'];
     }
-      //Register
-      public function createNewUser($input)
-      {
-          $sql = "INSERT INTO `users`(`username`, `email`, `password`,`permission`) 
-          VALUES ('" . $input['username'] . "','" . $input['email'] . "','" . md5($input['password']) . "','" . 'User' . "')";
-          $user = $this->insert($sql);
-          return $user;
-      }
+    
       //Forget Password
       public function checkMail($email)
       {
