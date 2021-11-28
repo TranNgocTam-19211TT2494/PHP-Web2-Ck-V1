@@ -36,8 +36,8 @@ class ZipCodeModel extends BaseTwoAdmin {
          . "','" . $input['user_id'] 
          . "','" . $input['discount'] 
          . "','" . $input['status'] . "')";
-        $bank = $this->insert($sql);
-        return $bank;
+    $bank = $this->insert($sql);
+    return $bank;
     }
     public function getToken($length){
         $token = "";
