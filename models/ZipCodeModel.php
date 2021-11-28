@@ -1,7 +1,7 @@
 <?php
-require_once 'BaseTwoAdmin.php'; 
+require_once 'BaseAdminModel.php'; 
 
-class ZipCodeModel extends BaseTwoAdmin {
+class ZipCodeModel extends BaseAdminModel {
     
     // Lay danh sach: 
     public function getZipCode()

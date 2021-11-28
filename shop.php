@@ -59,11 +59,11 @@ $productModel = $factory->make('home');
                     <div class="row m0 product_task_bar">
 
                         <div class="product_task_inner">
-                            <div class="float-left">
+                            <!-- <div class="float-left">
                                 <a class="active" href="#"><i class="fa fa-th-large" aria-hidden="true"></i></a>
                                 <a href="#"><i class="fa fa-th-list" aria-hidden="true"></i></a>
                                 <span>Showing 1 - 10 of 55 results</span>
-                            </div>
+                            </div> -->
                             <div class="float-right">
                                 <h4>Sort by :</h4>
                                 <select class="short" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
@@ -127,29 +127,23 @@ $productModel = $factory->make('home');
                                 </div>
                             </div>
                         </aside>
+                        <!-- Manufacture -->
                         <aside class="left_sidebar p_catgories_widget">
                             <div class="p_w_title">
                                 <h3>Product Categories</h3>
                             </div>
+                            <?php 
+                                $manufactures = $productModel->getManufactures();
+                                
+                            ?>
                             <ul class="list_style">
-                                <li><a href="#">Cupcake (17)</a></li>
-                                <li><a href="#">Chocolate (15)</a></li>
-                                <li><a href="#">Celebration (14)</a></li>
-                                <li><a href="#">Wedding Cake (8)</a></li>
-                                <li><a href="#">Desserts (11)</a></li>
+                                <?php foreach ($manufactures as $manufacture) { ?>
+                                <li><a href="manufacture-shop.php?manu_id=<?=md5($manufacture['manu_id'] . 'chuyen-de-web-2') ?>"><?= $manufacture['manu_name'] ?> (<?= count($productModel->countProductWithManufacture($manufacture['manu_id'])) ?>)</a></li>
+                                <?php } ?>
+                              
                             </ul>
                         </aside>
-                        <aside class="left_sidebar p_price_widget">
-                            <div class="p_w_title">
-                                <h3>Filter By Price</h3>
-                            </div>
-                            <div class="filter_price">
-                                <div id="slider-range"></div>
-                                <label for="amount">Price range:</label>
-                                <input type="text" id="amount" readonly />
-                                <a href="#">Filter</a>
-                            </div>
-                        </aside>
+                        
                         <aside class="left_sidebar p_sale_widget">
                             <div class="p_w_title">
                                 <h3>Top Sale Products</h3>

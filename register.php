@@ -1,42 +1,46 @@
 <?php
-
+require 'models/Reponsitory.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
-use PhpParser\Node\Stmt\Echo_;
-use PhpParser\Node\Stmt\Else_;
+
 
 require 'vendor/autoload.php';
 // --------------Factory----------
-require 'models/FactoryPattent.php';
-$factory = new FactoryPattent();
-$HomeModel = $factory->make('home');
-// --------------Factory----------
 
+$reponsitory = new Reponsitory();
 $otp = rand(100000,999999);
 if (!empty($_POST['submit'])) {
 
 
     if ($_POST['username'] != '' && $_POST['email'] != '' && $_POST['password'] != '') {
-        $insert = $HomeModel->createNewUser($_POST);
+        $insert = $reponsitory->insertRepository($_POST);
         if ($insert) {
             $mail = new PHPMailer(true);
 
             // $mail->SMTPDebug = SMTP::DEBUG_SERVER;                     
             $mail->isSMTP();
+            $mail->CharSet  = "utf-8";
             $mail->Host       = 'smtp.gmail.com';
             $mail->SMTPAuth   = true;
-            $mail->Username   = 'shopcake011@gmail.com';
-            $mail->Password   = 'shopcake123456';
+            $mail->Username   = 'phantinh1209@gmail.com';
+            $mail->Password   = 'zexpotcxbxkuspaq';
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
             $mail->Port       = 465;
             $mail->isHTML(true);
-            $mail->setFrom('shopcake011@gmail.com', 'CakeShop');
+            $mail->setFrom('phantinh1209@gmail.com', 'CakeShop');
             $mail->addAddress($_POST['email'], 'Joe User');
-            $mail->Subject = '[CAKE] Chao mung ban den voi the gioi cua cake';
+            $mail->Subject = "[CAKE] CHÀO MỪNG BẠN ĐẾN VỚI THẾ GIỚI CỦA CAKE";
             $mail->Body    = $_POST['username'] . ' Ơi, Chào mừng bạn đến với thế giới của Cake</b>
             Cảm ơn bạn đã chọn Cake để đồng hành. Mời bạn vào ứng dụng Cake để tìm hiểu và lựa chọn sản phẩm. Mã otp của bạn '.$_POST['otp'].'<b><p>Thân mến,<b><p>
             Cake team';
+            $mail->smtpConnect( array(
+                "ssl" => array(
+                    "verify_peer" => false,
+                    "verify_peer_name" => false,
+                    "allow_self_signed" => true
+                )
+            ));
             if (!$mail->send()) {
                 echo 'MAILER ERROR';
             } else {
