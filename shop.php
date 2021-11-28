@@ -138,7 +138,7 @@ $productModel = $factory->make('home');
                             ?>
                             <ul class="list_style">
                                 <?php foreach ($manufactures as $manufacture) { ?>
-                                <li><a href="manufacture-shop.php?manu_id=<?=md5($manufacture['manu_id'] . 'chuyen-de-web-2') ?>"><?= $manufacture['manu_name'] ?> (<?= count($productModel->countProductWithManufacture()) ?>)</a></li>
+                                <li><a href="manufacture-shop.php?manu_id=<?=md5($manufacture['manu_id'] . 'chuyen-de-web-2') ?>"><?= $manufacture['manu_name'] ?> (<?= count($productModel->countProductWithManufacture($manufacture['manu_id'])) ?>)</a></li>
                                 <?php } ?>
                               
                             </ul>

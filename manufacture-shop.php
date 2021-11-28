@@ -116,7 +116,7 @@ if (isset($_GET['manu_id'])) {
                                 <?php foreach ($manufactures as $manufacture) { ?>
                                 <li><a
                                         href="manufacture-shop.php?manu_id=<?=md5($manufacture['manu_id'] . 'chuyen-de-web-2') ?>"><?= $manufacture['manu_name'] ?>
-                                        (17)</a></li>
+                                        (<?= count($productModel->countProductWithManufacture($manufacture['manu_id']))?>)</a></li>
                                 <?php } ?>
 
                             </ul>

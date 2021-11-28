@@ -251,9 +251,9 @@ class HomeModel extends BaseModel {
         return $manu;
     }
     // Dem so san pham theo danh muc:
-    public function countProductWithManufacture()
+    public function countProductWithManufacture($id)
     {
-        $sql = 'SELECT * FROM `products` , manufactures WHERE products.manu_id = manufactures.manu_id';
+        $sql = 'SELECT * FROM `products` WHERE products.manu_id = '.$id;
         $manufactures = $this->select($sql);
         return $manufactures;
     }
