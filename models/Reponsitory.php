@@ -1,13 +1,14 @@
 <?php
 require_once 'models/FactoryPattent.php';
 
-require_once('models/ZipcodeModel.php');
+require_once('models/ZipcodeModel2.php');
 
 class Reponsitory 
 {
     public function insertRepository($data)
-    {
-        $zipcode = new ZipcodeModel();
+    { 
+        $zipcode = null;
+        // $zipcode = new ZipcodeModel();
         //Application pass Factory
         $factory = new FactoryPattent();
         $user = $factory->make('home');

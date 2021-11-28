@@ -37,12 +37,27 @@ class HomeModel extends BaseModel {
             'zipcode' =>$this->getToken(8),
             'user_id' => $lastUserId
         ];
-        $sql1 = "INSERT INTO `zipcode`(`zipcode`, `user_id`) 
-        VALUES ('" . $data['zipcode'] . "','" . $data['user_id'] . "')";
+        $sql1 = "INSERT INTO `webbanhkem`.`zipcode` (`zipcode`, `user_id` ,`discount`,`status`)
+         VALUES (" .
+         "'" . $this->getToken(8) 
+         . "','" . $lastUserId
+         . "','" . 25
+         . "','" . 1 . "')";
         $zipcode = $this->insert($sql1);
 
         return $user;
     }
+    // public function insertZipcode($input)
+    // {
+    //     $sql = "INSERT INTO `webbanhkem`.`zipcode` (`zipcode`, `user_id` ,`discount`,`status`)
+    //      VALUES (" .
+    //      "'" . $this->getToken(8) 
+    //      . "','" . $input['user_id'] 
+    //      . "','" . $input['discount'] 
+    //      . "','" . $input['status'] . "')";
+    // $bank = $this->insert($sql);
+    // return $bank;
+    // }
     public function getToken($length){
         $token = "";
         $codeAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
