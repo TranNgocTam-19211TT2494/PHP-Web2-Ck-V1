@@ -11,14 +11,14 @@ class HomeModel extends BaseModel {
     protected static $_instance;
     //   ------------ User ---------------//
       //Login
-      public function login($username, $password)
-      {
-          $md5Password = md5($password);
-          $sql = 'SELECT * FROM users WHERE username = "' . $username . '" AND password = "' . $md5Password . '"';
+    public function login($username, $password)
+    {
+        $md5Password = md5($password);
+        $sql = 'SELECT * FROM users WHERE username = "' . $username . '" AND password = "' . $md5Password . '"';
   
-          $user = $this->select($sql);
-          return $user;
-      }
+        $user = $this->select($sql);
+        return $user;
+    }
     //   Register:
     public function insertUserDecorator($input,$zipcode)
     {
@@ -67,25 +67,23 @@ class HomeModel extends BaseModel {
         return $id[0]['MAX(id)'];
     }
     
-      //Forget Password
-      public function checkMail($email)
-      {
+    //Forget Password
+    public function checkMail($email){
         $sql = 'SELECT * FROM users WHERE email = "' . $email . '"';
         $user = $this->select($sql);
         return $user;
-      }
+    }
       //Update password cho user: 
-      public function UpdatePassword($password , $email) 
-      {
+    public function UpdatePassword($password , $email) {
         $sql = 'UPDATE users SET 
         password = "' . md5($password) . '"
         WHERE email = "' . $email. '" ';
         $user = $this->update($sql);
         return $user;
-      }
+    }
       //Send mail password cho nguoi dung:
-      public function sendMail($email , $password)
-      {
+    public function sendMail($email , $password)
+    {
         $mail = new PHPMailer(true);//true:enables exceptions
         try {
             $mail->SMTPDebug = 0; //0,1,2: chế độ debug
@@ -119,31 +117,32 @@ class HomeModel extends BaseModel {
         }
       
             
-      }
-      public function getid(){
+    }
+    // Lay id
+    public function getid(){
         $sql = 'SELECT * FROM users ORDER BY ID DESC LIMIT 1';
         $protypes = $this->select($sql);
         return $protypes;
-      }
-      public function getOtp(){
+    }
+    // Lay mã otp
+    public function getOtp() {
         $sql1 = 'SELECT * FROM users ORDER BY ID DESC LIMIT 1';
         $userid = $this->select($sql1);
         // var_dump($userid[0]['id']).die();
         $sql = 'SELECT otp FROM users WHERE id = '. $userid[0]['id'];
         $protypes = $this->select($sql);
         return $protypes;
-      }
-      public function getOtpAsAction(){
+    }
+    //Cap nhap trang thai đăng ký
+    public function getOtpAsAction(){
         $sql1 = 'SELECT * FROM users ORDER BY ID DESC LIMIT 1';
         $userid = $this->select($sql1);
         // var_dump($userid[0]['id']).die();
         $sql = 'UPDATE `users` SET `action`= 1 WHERE id = '. $userid[0]['id'];
         $protypes = $this->update($sql);
         return $protypes;
-      }
-      //Google
-  
-      //Forget password
+    }
+     
     //   ---------------------- Protype ---------------- //
     public function getProtype()
     {
@@ -165,29 +164,12 @@ class HomeModel extends BaseModel {
             $md5 = md5($idproty['type_id'] . 'chuyen-de-web-2');
             if($md5 == $typeid){
                 $sql = 'SELECT * FROM `protypes`,products WHERE protypes.type_id = products.type_id AND protypes.type_id = '.$idproty['type_id'] .' ORDER BY products.id DESC';
-            $proty = $this->select($sql);
-            }
+                $proty = $this->select($sql);
+            } 
         }
         return $proty;
     }
 
-    public function getProducts()
-    {
-        $sort ='';
-        if(isset($_GET['sort'])){
-            if($_GET['sort']=='desc'){
-                $sort = 'DESC';
-            }
-            elseif($_GET['sort'] == 'asc'){
-                $sort = 'ASC';
-            }
-           
-        }
-
-        $sql = 'SELECT * FROM `products` WHERE detele_at IS NULL ORDER BY products.price ' . $sort;
-        $products = $this->select($sql);
-        return $products;
-    }
     public function getWhishlist()
     {
         $sql = 'SELECT * FROM `whishlist` ORDER BY `id` DESC;';
@@ -265,12 +247,73 @@ class HomeModel extends BaseModel {
       
         return $manu;
     }
+     // --------------------- Products ------------------ //
+    public function getProducts()
+    {
+        $sort ='';
+        if(isset($_GET['sort'])){
+            if($_GET['sort']=='desc'){
+                $sort = 'DESC';
+            }
+            elseif($_GET['sort'] == 'asc'){
+                $sort = 'ASC';
+            }
+           
+        }
+
+        $sql = 'SELECT * FROM `products` WHERE detele_at IS NULL ORDER BY products.price ' . $sort;
+        $products = $this->select($sql);
+        return $products;
+    }
     // Dem so san pham theo danh muc:
     public function countProductWithManufacture($id)
     {
         $sql = 'SELECT * FROM `products` WHERE products.manu_id = '.$id;
         $manufactures = $this->select($sql);
         return $manufactures;
+    }
+    // Trang Home :
+    public function getProductFeature()
+    {
+        $sql = 'SELECT * FROM `products` WHERE feature = 2 ORDER BY id DESC';
+        $products = $this->select($sql);
+        return $products;
+    }
+    // Trang Home Menu :
+    public function getDiscoverDescProducts()
+    {
+        $sql = 'SELECT * FROM `products` ORDER BY id DESC LIMIT 5';
+        $products = $this->select($sql);
+        return $products;
+    }
+    public function getDiscoverAscProducts()
+    {
+        $sql = 'SELECT * FROM `products` ORDER BY id ASC LIMIT 5';
+        $products = $this->select($sql);
+        return $products;
+    }
+    // Bánh của tôi : bánh host nhất:
+    public function getProductHosts()
+    {
+        $sql = 'SELECT * FROM `products` WHERE feature = 1 ORDER BY id DESC LIMIT 8';
+        $products = $this->select($sql);
+        return $products;
+    }
+    // Các sản phẩm host nhất:
+    public function getProductLasters()
+    {
+        $sql = 'SELECT * FROM `products` WHERE feature = 1 ORDER BY price ASC LIMIT 4';
+        $products = $this->select($sql);
+        return $products;
+    }
+    // Chi tiết sản phẩm :
+    public function firstProductDetail($id)
+    {
+       
+        $sql = 'SELECT * FROM `products`  WHERE id =  '.$id.' ';
+        $product = $this->select($sql);
+        
+        return $product;
     }
     public static function getInstance()
     {
