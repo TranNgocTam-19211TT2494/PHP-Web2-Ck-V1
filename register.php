@@ -1,18 +1,53 @@
 <?php
-    require 'models/FactoryPattent.php';
-    require_once 'models/Reponsitory.php';
-    $reponsitory = new Reponsitory();
 
-    if(!empty($_POST['submit'])) {
-        if($_POST['username'] != '' && $_POST['email'] != '' && $_POST['password'] != '') {
-           
-            $insert = $reponsitory->insertRepository($_POST);
-            if($insert) {
-                header("location: login.php");
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+use PhpParser\Node\Stmt\Echo_;
+use PhpParser\Node\Stmt\Else_;
+
+require 'vendor/autoload.php';
+// --------------Factory----------
+require 'models/FactoryPattent.php';
+$factory = new FactoryPattent();
+$HomeModel = $factory->make('home');
+// --------------Factory----------
+
+$otp = rand(100000,999999);
+if (!empty($_POST['submit'])) {
+
+
+    if ($_POST['username'] != '' && $_POST['email'] != '' && $_POST['password'] != '') {
+        $insert = $HomeModel->createNewUser($_POST);
+        if ($insert) {
+            $mail = new PHPMailer(true);
+
+            // $mail->SMTPDebug = SMTP::DEBUG_SERVER;                     
+            $mail->isSMTP();
+            $mail->Host       = 'smtp.gmail.com';
+            $mail->SMTPAuth   = true;
+            $mail->Username   = 'shopcake011@gmail.com';
+            $mail->Password   = 'shopcake123456';
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+            $mail->Port       = 465;
+            $mail->isHTML(true);
+            $mail->setFrom('shopcake011@gmail.com', 'CakeShop');
+            $mail->addAddress($_POST['email'], 'Joe User');
+            $mail->Subject = '[CAKE] Chao mung ban den voi the gioi cua cake';
+            $mail->Body    = $_POST['username'] . ' Ơi, Chào mừng bạn đến với thế giới của Cake</b>
+            Cảm ơn bạn đã chọn Cake để đồng hành. Mời bạn vào ứng dụng Cake để tìm hiểu và lựa chọn sản phẩm. Mã otp của bạn '.$_POST['otp'].'<b><p>Thân mến,<b><p>
+            Cake team';
+            if (!$mail->send()) {
+                echo 'MAILER ERROR';
             } else {
-                echo "<div class=\"alert alert-dark\" role=\"alert\">
-                Email already exists!</div>";
+                echo 'Message has been sent';
+                header("location: otp.php");
             }
+        } else {
+            echo "<div class=\"alert alert-dark\" role=\"alert\">
+                username error or pass not!</div>";
+        }
+    } else {
         }
     }
 
@@ -68,6 +103,7 @@
                         </div>
                         <div class="login-form">
                             <form method="post">
+                                <input type="hidden" name="otp" value="<?php echo $otp ?>">
                                 <div class="form-group">
                                     <label>Username</label>
                                     <input class="au-input au-input--full" type="text" name="username" placeholder="Username">
