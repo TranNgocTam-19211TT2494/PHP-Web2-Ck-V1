@@ -4,7 +4,7 @@
     </IfModule>
 
     RewriteEngine On
-    ErrorDocument 404 http://localhost:8080/PHP-Web2-Ck-V1/404.php
+    ErrorDocument 404 http://localhost/PHP-Web2-Ck-V1/404.php
    
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
