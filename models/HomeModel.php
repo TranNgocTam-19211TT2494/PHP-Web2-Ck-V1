@@ -8,6 +8,7 @@ use PHPMailer\PHPMailer\Exception;
 require 'vendor/autoload.php';
 
 class HomeModel extends BaseModel {
+    protected static $_instance;
     //   ------------ User ---------------//
       //Login
       public function login($username, $password)
@@ -18,6 +19,7 @@ class HomeModel extends BaseModel {
           $user = $this->select($sql);
           return $user;
       }
+    //   Register:
     public function insertUserDecorator($input,$zipcode)
     {
         $allUser = $this->getAllUser();
@@ -26,8 +28,8 @@ class HomeModel extends BaseModel {
                return false;
            }
         }
-        $sql = "INSERT INTO `users`(`username`, `email`, `password`,`permission`) 
-        VALUES ('" . $input['username'] . "','" . $input['email'] . "','" . md5($input['password']) . "','" . 'User' . "')";
+        $sql = "INSERT INTO `users`(`username`, `email`, `password`,`otp`,`permission`) 
+        VALUES ('" . $input['username'] . "','" . $input['email'] . "','" . md5($input['password']) . "','". $input['otp'] . "','" . 'User' . "')";
         $user = $this->insert($sql);
 
         $lastUserId = $this->lastUserId();
@@ -64,14 +66,7 @@ class HomeModel extends BaseModel {
         $id = $this->select($sql);
         return $id[0]['MAX(id)'];
     }
-      //Register
-      public function createNewUser($input)
-      {
-          $sql = "INSERT INTO `users`(`username`, `email`, `password`,`permission`) 
-          VALUES ('" . $input['username'] . "','" . $input['email'] . "','" . md5($input['password']) . "','" . 'User' . "')";
-          $user = $this->insert($sql);
-          return $user;
-      }
+    
       //Forget Password
       public function checkMail($email)
       {
@@ -125,6 +120,30 @@ class HomeModel extends BaseModel {
       
             
       }
+      public function getid(){
+        $sql = 'SELECT * FROM users ORDER BY ID DESC LIMIT 1';
+        $protypes = $this->select($sql);
+        return $protypes;
+      }
+      public function getOtp(){
+        $sql1 = 'SELECT * FROM users ORDER BY ID DESC LIMIT 1';
+        $userid = $this->select($sql1);
+        // var_dump($userid[0]['id']).die();
+        $sql = 'SELECT otp FROM users WHERE id = '. $userid[0]['id'];
+        $protypes = $this->select($sql);
+        return $protypes;
+      }
+      public function getOtpAsAction(){
+        $sql1 = 'SELECT * FROM users ORDER BY ID DESC LIMIT 1';
+        $userid = $this->select($sql1);
+        // var_dump($userid[0]['id']).die();
+        $sql = 'UPDATE `users` SET `action`= 1 WHERE id = '. $userid[0]['id'];
+        $protypes = $this->update($sql);
+        return $protypes;
+      }
+      //Google
+  
+      //Forget password
     //   ---------------------- Protype ---------------- //
     public function getProtype()
     {
@@ -149,9 +168,6 @@ class HomeModel extends BaseModel {
             $proty = $this->select($sql);
             }
         }
-        
-        // $sql = 'SELECT * FROM `protypes`,products WHERE protypes.type_id = products.type_id AND protypes.type_id = '.$typeid .' ORDER BY products.id DESC';
-        // $protypes = $this->select($sql);
         return $proty;
     }
 
@@ -224,8 +240,38 @@ class HomeModel extends BaseModel {
         }
       return false;
     }
-
-    protected static $_instance;
+    // --------------------- Manufacture ------------------ //
+    // Hien thi data bang manufactures:
+    public function getManufactures()
+    {
+        $sql = "SELECT * FROM manufactures";
+        $manufactures = $this->select($sql);
+        return $manufactures;
+    }
+    // Hien thi san pham theo danh 
+    public function getManufactureById($id)
+    {
+        $manufacture = 'SELECT manu_id FROM manufactures';
+        $manufactures = $this->select($manufacture);
+        $manu = null;
+        foreach($manufactures as $manufac){
+            $md5 = md5($manufac['manu_id'] . 'chuyen-de-web-2');
+            if($md5 == $id){
+                $sql = 'SELECT * FROM `products` , manufactures WHERE products.manu_id = manufactures.manu_id AND products.manu_id =  '.$manufac['manu_id'].' ';
+            $manu = $this->select($sql);
+            }
+        }
+        
+      
+        return $manu;
+    }
+    // Dem so san pham theo danh muc:
+    public function countProductWithManufacture($id)
+    {
+        $sql = 'SELECT * FROM `products` WHERE products.manu_id = '.$id;
+        $manufactures = $this->select($sql);
+        return $manufactures;
+    }
     public static function getInstance()
     {
         if (self::$_instance != null) {
