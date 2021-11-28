@@ -10,7 +10,7 @@
                         <h4>Special Recipe</h4>
                         <p>Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam,
                             nisi ut aliquid ex ea commodi equatur uis autem vel eum.</p>
-                        <a class="w_view_btn" href="#">View Details</a>
+                        <a class="w_view_btn" href="shop.php">View Details</a>
                     </div>
                 </div>
             </div>
@@ -23,7 +23,7 @@
                         <h4>Special Recipe</h4>
                         <p>Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam,
                             nisi ut aliquid ex ea commodi equatur uis autem vel eum.</p>
-                        <a class="w_view_btn" href="#">View Details</a>
+                        <a class="w_view_btn" href="shop.php">View Details</a>
                     </div>
                 </div>
             </div>
@@ -36,7 +36,7 @@
                         <h4>Special Recipe</h4>
                         <p>Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam,
                             nisi ut aliquid ex ea commodi equatur uis autem vel eum.</p>
-                        <a class="w_view_btn" href="#">View Details</a>
+                        <a class="w_view_btn" href="shop.php">View Details</a>
                     </div>
                 </div>
             </div>
@@ -49,7 +49,7 @@
                         <h4>Special Recipe</h4>
                         <p>Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam,
                             nisi ut aliquid ex ea commodi equatur uis autem vel eum.</p>
-                        <a class="w_view_btn" href="#">View Details</a>
+                        <a class="w_view_btn" href="shop.php">View Details</a>
                     </div>
                 </div>
             </div>

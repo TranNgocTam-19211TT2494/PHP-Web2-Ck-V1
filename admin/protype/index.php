@@ -27,14 +27,16 @@ $protypes = $protypesModel->getProtype();
     <link href="../../public/backend/css/font-face.css" rel="stylesheet" media="all">
     <link href="../../public/backend/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
     <link href="../../public/backend/vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
-    <link href="../../public/backend/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+    <link href="../../public/backend/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet"
+        media="all">
 
     <!-- Bootstrap CSS-->
     <link href="../../public/backend/vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
 
     <!-- Vendor CSS-->
     <link href="../../public/backend/vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
-    <link href="../../public/backend/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
+    <link href="../../public/backend/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet"
+        media="all">
     <link href="../../public/backend/vendor/wow/animate.css" rel="stylesheet" media="all">
     <link href="../../public/backend/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
     <link href="../../public/backend/vendor/slick/slick.css" rel="stylesheet" media="all">
@@ -47,9 +49,9 @@ $protypes = $protypesModel->getProtype();
 
 </head>
 <style>
-    .table-data__tool {
-        justify-content: flex-end;
-    }
+.table-data__tool {
+    justify-content: flex-end;
+}
 </style>
 
 <body class="animsition">
@@ -71,9 +73,9 @@ $protypes = $protypesModel->getProtype();
                                     <i class="fas fa-tachometer-alt"></i>Dashboard
                                     <span class="bot-line"></span>
                                 </a>
-                            
+
                             </li>
-                       
+
                             <li class="has-sub">
                                 <a href="#">
                                     <i class="fas fa-copy"></i>
@@ -83,13 +85,16 @@ $protypes = $protypesModel->getProtype();
                                         <a href="../products/index.php">Products</a>
                                     </li>
                                     <li>
+                                        <a href="../zipcode/index.php">ZipCode</a>
+                                    </li>
+                                    <li>
                                         <a href="">Orders</a>
                                     </li>
                                     <li>
                                         <a href="../Manufacture/">Manufactures</a>
                                     </li>
                                     <li>
-                                        <a href="../protype/Protypes.php">Protype</a>
+                                        <a href="../protype/index.php">Protype</a>
                                     </li>
                                 </ul>
                             </li>
@@ -107,7 +112,7 @@ $protypes = $protypesModel->getProtype();
                                     <li>
                                         <a href="tab.html">Tabs</a>
                                     </li>
-                                   
+
                                 </ul>
                             </li>
                         </ul>
@@ -200,7 +205,8 @@ $protypes = $protypesModel->getProtype();
                                     <div class="info clearfix">
                                         <div class="image">
                                             <a href="#">
-                                                <img src="../../public/backend/images/icon/avatar-01.jpg" alt="John Doe" />
+                                                <img src="../../public/backend/images/icon/avatar-01.jpg"
+                                                    alt="John Doe" />
                                             </a>
                                         </div>
                                         <div class="content">
@@ -251,7 +257,8 @@ $protypes = $protypesModel->getProtype();
                             <h3 class="title-5 m-b-35">Protypes table</h3>
                             <div class="table-data__tool">
                                 <div class="table-data__tool-right">
-                                    <button class="au-btn au-btn-icon au-btn--green au-btn--small" onclick="window.location.href='./ViewProtypes.php'" >
+                                    <button class="au-btn au-btn-icon au-btn--green au-btn--small"
+                                        onclick="window.location.href='./ViewProtypes.php'">
                                         <i class="zmdi zmdi-plus"></i>add item</button>
                                 </div>
                             </div>
@@ -267,22 +274,27 @@ $protypes = $protypesModel->getProtype();
                                     </thead>
                                     <tbody>
                                         <?php foreach ($protypes as $proty) { ?>
-                                            <tr class="tr-shadow">
+                                        <tr class="tr-shadow">
                                             <td class="stt"></td>
-                                                <td><?= htmlspecialchars($proty['type_name'])  ?></td>
-                                                <td><?= htmlspecialchars(date( "d-m-Y", strtotime($proty['create_at'])))?> </td>
-                                                <td class="edit-delete">
-                                                    <div class="table-data-feature">
-                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Edit" onclick="window.location.href='./ViewProtypes.php?type_id=<?php echo md5($proty['type_id'] . 'chuyen-de-web-2') ?>'">
-                                                            <i class="zmdi zmdi-edit"></i>
-                                                        </button>
-                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Delete" onclick="window.location.href='./DeleteProtypes.php?type_id=<?php echo md5($proty['type_id'] . 'chuyen-de-web-2')  ?>&token=<?php echo $token ?>'">
-                                                            <i class="zmdi zmdi-delete"></i>
-                                                            <input type="hidden" name="token" value="<?php echo $token ?>">
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                            <td><?= htmlspecialchars($proty['type_name'])  ?></td>
+                                            <td><?= htmlspecialchars(date( "d-m-Y", strtotime($proty['create_at'])))?>
+                                            </td>
+                                            <td class="edit-delete">
+                                                <div class="table-data-feature">
+                                                    <button class="item" data-toggle="tooltip" data-placement="top"
+                                                        title="Edit"
+                                                        onclick="window.location.href='./ViewProtypes.php?type_id=<?php echo md5($proty['type_id'] . 'chuyen-de-web-2') ?>'">
+                                                        <i class="zmdi zmdi-edit"></i>
+                                                    </button>
+                                                    <button class="item" data-toggle="tooltip" data-placement="top"
+                                                        title="Delete"
+                                                        onclick="window.location.href='./DeleteProtypes.php?type_id=<?php echo md5($proty['type_id'] . 'chuyen-de-web-2')  ?>&token=<?php echo $token ?>'">
+                                                        <i class="zmdi zmdi-delete"></i>
+                                                        <input type="hidden" name="token" value="<?php echo $token ?>">
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
                                         <?php } ?>
                                     </tbody>
                                 </table>
