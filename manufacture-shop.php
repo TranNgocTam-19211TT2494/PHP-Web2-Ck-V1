@@ -1,19 +1,15 @@
 <?php
-require_once 'models/HomeModel.php';
-
-// $protypeModel = new HomeModel();
-
-// --------------Factory----------
 require 'models/FactoryPattent.php';
 $factory = new FactoryPattent();
-$protypeModel = $factory->make('home');
+
 // --------------Factory----------
+$productModel = $factory->make('home');
 
-$proty = $protypeModel->getProtype();
-
-if (isset($_GET['type_id'])) {
-    $typeid = $_GET['type_id'];
-    $protype = $protypeModel->getprotypeOnProduct($typeid);
+$manufactures = $productModel->getManufactures();
+// --------------Factory----------
+if (isset($_GET['manu_id'])) {
+    $id = $_GET['manu_id'];
+    $manu = $productModel->getManufactureById($id);
 } 
 
 
@@ -24,7 +20,7 @@ if (isset($_GET['type_id'])) {
 <?php include_once("views/head.php"); ?>
 
 <body>
-    
+
     <!--================Main Header Area =================-->
     <?php include_once("views/header.php"); ?>
     <!--================End Main Header Area =================-->
@@ -45,41 +41,41 @@ if (isset($_GET['type_id'])) {
         </div>
     </section>
     <!--================End Main Header Area =================-->
-    <?php if(!empty($_GET['type_id'])) {?>
+    <?php if(!empty($_GET['manu_id'])) {?>
     <!--================Product Area =================-->
     <section class="product_area p_100">
         <div class="container">
             <div class="row product_inner_row">
                 <div class="col-lg-9">
                     <!-- </?php if ($protype) { ?> -->
-                        <input type="hidden" name="type_id" value="<?php echo $typeid ?>">
-                        <div class="row m0 product_task_bar">
-                            <div class="product_task_inner">
-                                <div class="float-left">
-                                  
-                                </div>
-                                    <div class="float-right">
-                                        <h4>Protype</h4>
-                                      
-                                    </div>
+                    <input type="hidden" name="type_id" value="<?php echo $typeid ?>">
+                    <div class="row m0 product_task_bar">
+                        <div class="product_task_inner">
+                            <div class="float-left">
+
+                            </div>
+                            <div class="float-right">
+                                <h4>Manufactures</h4>
+
                             </div>
                         </div>
-                        <div class="row product_item_inner">
-                            <?php foreach ($protype as $pro) { ?>
-                                <div class="col-lg-4 col-md-4 col-6">
-                                    <div class="cake_feature_item">
-                                        <div class="cake_img">
-                                            <img src="<?= $pro['pro_image'] ?>" >
-                                        </div>
-                                        <div class="cake_text">
-                                            <h4>$<?= $pro['price'] ?></h4>
-                                            <h3><?= $pro['name'] ?></h3>
-                                            <a class="pest_btn" href="#">Add to cart</a>
-                                        </div>
-                                    </div>
+                    </div>
+                    <div class="row product_item_inner">
+                        <?php foreach ($manu as $manufacture) { ?>
+                        <div class="col-lg-4 col-md-4 col-6">
+                            <div class="cake_feature_item">
+                                <div class="cake_img">
+                                    <img src="<?= $manufacture['pro_image'] ?>" >
                                 </div>
-                            <?php } ?>
+                                <div class="cake_text">
+                                    <h4>$<?= $manufacture['price'] ?></h4>
+                                    <h3><?= $manufacture['name'] ?></h3>
+                                    <a class="pest_btn" href="#">Add to cart</a>
+                                </div>
+                            </div>
                         </div>
+                        <?php } ?>
+                    </div>
                     <!-- </?php } ?> -->
                     <!-- Phân trang -->
                     <div class="product_pagination">
@@ -110,24 +106,22 @@ if (isset($_GET['type_id'])) {
                                 </div>
                             </div>
                         </aside>
+                        <!-- Manufacture -->
                         <aside class="left_sidebar p_catgories_widget">
                             <div class="p_w_title">
                                 <h3>Product Categories</h3>
                             </div>
-                            <?php 
-                                $manufactures = $protypeModel->getManufactures();
-                                
-                            ?>
+                           
                             <ul class="list_style">
                                 <?php foreach ($manufactures as $manufacture) { ?>
                                 <li><a
                                         href="manufacture-shop.php?manu_id=<?=md5($manufacture['manu_id'] . 'chuyen-de-web-2') ?>"><?= $manufacture['manu_name'] ?>
-                                        (<?= count($protypeModel->countProductWithManufacture($manufacture['manu_id']))?>)</a></li>
+                                        (<?= count($productModel->countProductWithManufacture($manufacture['manu_id']))?>)</a></li>
                                 <?php } ?>
 
                             </ul>
                         </aside>
-                        
+
                         <aside class="left_sidebar p_sale_widget">
                             <div class="p_w_title">
                                 <h3>Top Sale Products</h3>
@@ -211,7 +205,7 @@ if (isset($_GET['type_id'])) {
         </div>
     </section>
     <?php } else { ?>
-        <?php include "404.php"; ?>
+    <?php include "404.php"; ?>
     <?php } ?>
     <!--================End Product Area =================-->
 
