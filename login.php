@@ -1,11 +1,10 @@
 <?php
 
 session_start();
-// require_once('models/HomeModel.php');
-// $HomeModel = new HomeModel();
-// --------------Factory----------
 require 'models/FactoryPattent.php';
 $factory = new FactoryPattent();
+// --------------Factory----------
+
 $HomeModel = $factory->make('home');
 // --------------Factory----------
 
@@ -100,13 +99,7 @@ if (!empty($_POST['submit'])) {
                                     </label>
                                 </div>
                                 <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit" name="submit" value="submit">sign in</button>
-                                <div class="social-login-content">
-                                    <div class="social-button">
-                                        <button class="au-btn au-btn--block au-btn--blue m-b-20">sign in with
-                                            facebook</button>
-                                        <button class="au-btn au-btn--block au-btn--blue2">sign in with twitter</button>
-                                    </div>
-                                </div>
+                                
                             </form>
                             <div class="register-link">
                                 <p>

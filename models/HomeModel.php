@@ -1,7 +1,14 @@
 <?php
-
 require_once 'BaseModel.php'; 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+//Load Composer's autoloader
+require 'vendor/autoload.php';
+
 class HomeModel extends BaseModel {
+    protected static $_instance;
     //   ------------ User ---------------//
       //Login
       public function login($username, $password)
@@ -66,9 +73,59 @@ class HomeModel extends BaseModel {
           $user = $this->insert($sql);
           return $user;
       }
-      //Google
-  
-      //Forget password
+      //Forget Password
+      public function checkMail($email)
+      {
+        $sql = 'SELECT * FROM users WHERE email = "' . $email . '"';
+        $user = $this->select($sql);
+        return $user;
+      }
+      //Update password cho user: 
+      public function UpdatePassword($password , $email) 
+      {
+        $sql = 'UPDATE users SET 
+        password = "' . md5($password) . '"
+        WHERE email = "' . $email. '" ';
+        $user = $this->update($sql);
+        return $user;
+      }
+      //Send mail password cho nguoi dung:
+      public function sendMail($email , $password)
+      {
+        $mail = new PHPMailer(true);//true:enables exceptions
+        try {
+            $mail->SMTPDebug = 0; //0,1,2: chế độ debug
+            $mail->isSMTP();  
+            $mail->CharSet  = "utf-8";
+            $mail->Host = 'smtp.gmail.com';  //SMTP servers
+            $mail->SMTPAuth = true; // Enable authentication
+            $mail->Username = 'phantinh1209@gmail.com'; // SMTP username
+            $mail->Password = 'zexpotcxbxkuspaq';   // SMTP password
+            $mail->SMTPSecure = 'ssl';  // encryption TLS/SSL 
+            $mail->Port = 465;  // port to connect to                
+            $mail->setFrom('phantinh1209@gmail.com', 'AnhTam' ); 
+            $mail->addAddress($email);
+            $mail->isHTML(true);  // Set email format to HTML
+            $mail->Subject = 'Thư gửi lại mật khẩu';
+            $noidungthu = "<p>Bạn nhận được mail này, do bạn hoặc ai đó yêu cầu mật khẩu mới cho website...</p>
+                                Mật khẩu mới của bạn là {$password}
+            "; 
+            $mail->Body = $noidungthu;
+            $mail->smtpConnect( array(
+                "ssl" => array(
+                    "verify_peer" => false,
+                    "verify_peer_name" => false,
+                    "allow_self_signed" => true
+                )
+            ));
+            $mail->send();
+            echo "Đã gửi mail xong";
+        } catch (Exception $e) {
+            echo 'Error: ', $mail->ErrorInfo;
+        }
+      
+            
+      }
     //   ---------------------- Protype ---------------- //
     public function getProtype()
     {
@@ -168,8 +225,38 @@ class HomeModel extends BaseModel {
         }
       return false;
     }
-
-    protected static $_instance;
+    // --------------------- Manufacture ------------------ //
+    // Hien thi data bang manufactures:
+    public function getManufactures()
+    {
+        $sql = "SELECT * FROM manufactures";
+        $manufactures = $this->select($sql);
+        return $manufactures;
+    }
+    // Hien thi san pham theo danh 
+    public function getManufactureById($id)
+    {
+        $manufacture = 'SELECT manu_id FROM manufactures';
+        $manufactures = $this->select($manufacture);
+        $manu = null;
+        foreach($manufactures as $manufac){
+            $md5 = md5($manufac['manu_id'] . 'chuyen-de-web-2');
+            if($md5 == $id){
+                $sql = 'SELECT * FROM `products` , manufactures WHERE products.manu_id = manufactures.manu_id AND products.manu_id =  '.$manufac['manu_id'].' ';
+            $manu = $this->select($sql);
+            }
+        }
+        
+      
+        return $manu;
+    }
+    // Dem so san pham theo danh muc:
+    public function countProductWithManufacture($id)
+    {
+        $sql = 'SELECT * FROM `products` WHERE products.manu_id = '.$id;
+        $manufactures = $this->select($sql);
+        return $manufactures;
+    }
     public static function getInstance()
     {
         if (self::$_instance != null) {
@@ -180,5 +267,3 @@ class HomeModel extends BaseModel {
         return self::$_instance;
     }
 }
-
-
