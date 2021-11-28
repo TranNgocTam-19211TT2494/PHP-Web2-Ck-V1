@@ -69,7 +69,7 @@ if (isset($_GET['type_id'])) {
                                 <div class="col-lg-4 col-md-4 col-6">
                                     <div class="cake_feature_item">
                                         <div class="cake_img">
-                                            <img src="public/img/product/<?= $pro['pro_image'] ?>" with="100" height="100">
+                                            <img src="<?= $pro['pro_image'] ?>" >
                                         </div>
                                         <div class="cake_text">
                                             <h4>$<?= $pro['price'] ?></h4>
@@ -114,25 +114,20 @@ if (isset($_GET['type_id'])) {
                             <div class="p_w_title">
                                 <h3>Product Categories</h3>
                             </div>
+                            <?php 
+                                $manufactures = $protypeModel->getManufactures();
+                                
+                            ?>
                             <ul class="list_style">
-                                <li><a href="#">Cupcake (17)</a></li>
-                                <li><a href="#">Chocolate (15)</a></li>
-                                <li><a href="#">Celebration (14)</a></li>
-                                <li><a href="#">Wedding Cake (8)</a></li>
-                                <li><a href="#">Desserts (11)</a></li>
+                                <?php foreach ($manufactures as $manufacture) { ?>
+                                <li><a
+                                        href="manufacture-shop.php?manu_id=<?=md5($manufacture['manu_id'] . 'chuyen-de-web-2') ?>"><?= $manufacture['manu_name'] ?>
+                                        (<?= count($protypeModel->countProductWithManufacture($manufacture['manu_id']))?>)</a></li>
+                                <?php } ?>
+
                             </ul>
                         </aside>
-                        <aside class="left_sidebar p_price_widget">
-                            <div class="p_w_title">
-                                <h3>Filter By Price</h3>
-                            </div>
-                            <div class="filter_price">
-                                <div id="slider-range"></div>
-                                <label for="amount">Price range:</label>
-                                <input type="text" id="amount" readonly />
-                                <a href="#">Filter</a>
-                            </div>
-                        </aside>
+                        
                         <aside class="left_sidebar p_sale_widget">
                             <div class="p_w_title">
                                 <h3>Top Sale Products</h3>
