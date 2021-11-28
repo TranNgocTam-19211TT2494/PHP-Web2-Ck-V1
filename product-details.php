@@ -6,8 +6,15 @@ $HomeModel = $factory->make('home');
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
     $product = $HomeModel->firstProductDetail($id);
-    
-} 
+    //các sản phẩm liên quan:
+    if($product) {
+        $ManuID = $product[0]['manu_id'];
+        $products = $HomeModel->getProductManufactures($id , $ManuID);
+
+    }
+} else {
+    echo "<br><center><h3>Vui lòng chọn 1 sản phẩm bất kỳ để xem thông tin chi tiết!</h3><center><br>";
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -19,7 +26,7 @@ if (isset($_GET['id'])) {
 <body>
 
     <!--================Main Header Area =================-->
-	<?php include_once("views/header.php");?>
+    <?php include_once("views/header.php");?>
     <!--================End Main Header Area =================-->
 
     <!--================End Main Header Area =================-->
@@ -29,7 +36,7 @@ if (isset($_GET['id'])) {
                 <h3>Product Details</h3>
                 <ul>
                     <li><a href="index.php">Home</a></li>
-                   
+
                 </ul>
             </div>
         </div>
@@ -42,7 +49,8 @@ if (isset($_GET['id'])) {
         <div class="container">
             <div class="row product_d_price">
                 <div class="col-lg-6">
-                    <div class="product_img"><img class="img-fluid" src="<?= $product[0]['pro_image']?>" alt="<?= $product[0]['name']?>" style="width: 100%;">
+                    <div class="product_img"><img class="img-fluid" src="<?= $product[0]['pro_image']?>"
+                            alt="<?= $product[0]['name']?>" style="width: 100%;">
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -64,7 +72,7 @@ if (isset($_GET['id'])) {
                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
                         <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home"
                             role="tab" aria-controls="nav-home" aria-selected="true">Descripton</a>
-                  
+
                         <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact"
                             role="tab" aria-controls="nav-contact" aria-selected="false">Comment (0)</a>
                     </div>
@@ -72,9 +80,9 @@ if (isset($_GET['id'])) {
                 <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                         <p><?= $product[0]['description']?></p>
-                    
+
                     </div>
-                   
+
                     <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
                             labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
@@ -92,6 +100,7 @@ if (isset($_GET['id'])) {
         </div>
     </section>
     <?php } ?>
+
     <!--================End Product Details Area =================-->
 
     <!--================Similar Product Area =================-->
@@ -101,70 +110,40 @@ if (isset($_GET['id'])) {
                 <h2>Similar Products</h2>
             </div>
             <div class="row similar_product_inner">
+                <?php
+                    if(!empty($products)) { 
+                        foreach ($products as $product) {
+                            
+                ?>
                 <div class="col-lg-3 col-md-4 col-6">
                     <div class="cake_feature_item">
                         <div class="cake_img">
-                            <img src="img/cake-feature/c-feature-1.jpg" alt="">
+                            <img src="<?= $product['pro_image'] ?>" alt="<?= $product['name'] ?>">
                         </div>
                         <div class="cake_text">
-                            <h4>$29</h4>
-                            <h3>Strawberry Cupcakes</h3>
+                            <h4>$<?= $product['price'] ?></h4>
+                            <h3><?= $product['name'] ?></h3>
                             <a class="pest_btn" href="#">Add to cart</a>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-4 col-6">
-                    <div class="cake_feature_item">
-                        <div class="cake_img">
-                            <img src="img/cake-feature/c-feature-2.jpg" alt="">
-                        </div>
-                        <div class="cake_text">
-                            <h4>$29</h4>
-                            <h3>Strawberry Cupcakes</h3>
-                            <a class="pest_btn" href="#">Add to cart</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-6">
-                    <div class="cake_feature_item">
-                        <div class="cake_img">
-                            <img src="img/cake-feature/c-feature-3.jpg" alt="">
-                        </div>
-                        <div class="cake_text">
-                            <h4>$29</h4>
-                            <h3>Strawberry Cupcakes</h3>
-                            <a class="pest_btn" href="#">Add to cart</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-6">
-                    <div class="cake_feature_item">
-                        <div class="cake_img">
-                            <img src="img/cake-feature/c-feature-4.jpg" alt="">
-                        </div>
-                        <div class="cake_text">
-                            <h4>$29</h4>
-                            <h3>Strawberry Cupcakes</h3>
-                            <a class="pest_btn" href="#">Add to cart</a>
-                        </div>
-                    </div>
-                </div>
+                <?php } } ?>
             </div>
         </div>
     </section>
     <!--================End Similar Product Area =================-->
 
     <!--================Newsletter Area =================-->
-	<?php include_once("views/layouts/news.php");?>
+    <?php include_once("views/layouts/news.php");?>
     <!--================End Newsletter Area =================-->
 
     <!--================Footer Area =================-->
-	<?php include_once("views/layouts/footer.php");?>
+    <?php include_once("views/layouts/footer.php");?>
     <!--================End Footer Area =================-->
 
 
     <!--================Search Box Area =================-->
-	<?php include_once("views/layouts/search.php");?>
+    <?php include_once("views/layouts/search.php");?>
     <!--================End Search Box Area =================-->
 
 

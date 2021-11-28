@@ -309,11 +309,18 @@ class HomeModel extends BaseModel {
     // Chi tiết sản phẩm :
     public function firstProductDetail($id)
     {
-       
+        
         $sql = 'SELECT * FROM `products`  WHERE id =  '.$id.' ';
         $product = $this->select($sql);
         
         return $product;
+    }
+    // Các sản phẩm có liên quan thuộc danh mục:
+    public function getProductManufactures($id , $ManuID)
+    {
+        $sql = 'Select * from products where id <> '.$id.'  and manu_id = '.$ManuID.' LIMIT 4';
+        $products = $this->select($sql);
+        return $products;
     }
     public static function getInstance()
     {
@@ -324,4 +331,5 @@ class HomeModel extends BaseModel {
         self::$_instance = new self();
         return self::$_instance;
     }
+
 }
