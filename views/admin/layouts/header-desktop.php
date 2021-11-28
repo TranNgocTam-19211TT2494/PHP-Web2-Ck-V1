@@ -47,6 +47,9 @@
                                 <a href="../admin/products/index.php">Products</a>
                             </li>
                             <li>
+                                <a href="../admin/zipcode/index.php">ZipCode</a>
+                            </li>
+                            <li>
                                 <a href="">Orders</a>
                             </li>
                             <li>
