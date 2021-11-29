@@ -33,10 +33,10 @@ if (isset($_GET['type_id'])) {
     <section class="banner_area">
         <div class="container">
             <div class="banner_text">
-                <h3>Protype</h3>
+                <h3>Thể loại</h3>
                 <ul>
-                    <li><a href="index.php">Home</a></li>
-                    <li><a href="shop.php">Protype</a></li>
+                    <li><a href="index.php">Nhà</a></li>
+                    <li><a href="shop.php">Cửu tiệm</a></li>
                 </ul>
             </div>
         </div>
@@ -56,7 +56,7 @@ if (isset($_GET['type_id'])) {
                                   
                                 </div>
                                     <div class="float-right">
-                                        <h4>Protype</h4>
+                                        <h4>Thể loại</h4>
                                       
                                     </div>
                             </div>
@@ -74,7 +74,7 @@ if (isset($_GET['type_id'])) {
                                         <div class="cake_text">
                                             <h4>$<?= $pro['price'] ?></h4>
                                             <h3><?= $pro['name'] ?></h3>
-                                            <a class="pest_btn" href="#">Add to cart</a>
+                                            <a class="pest_btn" href="#">Thêm vào giỏ hàng</a>
                                         </div>
                                     </div>
                                 </div>
@@ -105,7 +105,7 @@ if (isset($_GET['type_id'])) {
                     <div class="product_left_sidebar">
                         <aside class="left_sidebar search_widget">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Enter Search Keywords">
+                                <input type="text" class="form-control" placeholder="Nhập từ khóa tìm kiếm">
                                 <div class="input-group-append">
                                     <button class="btn" type="button"><i class="icon icon-Search"></i></button>
                                 </div>
@@ -113,7 +113,7 @@ if (isset($_GET['type_id'])) {
                         </aside>
                         <aside class="left_sidebar p_catgories_widget">
                             <div class="p_w_title">
-                                <h3>Product Categories</h3>
+                                <h3>Danh mục sản phẩm</h3>
                             </div>
                             <?php 
                                 $manufactures = $protypeModel->getManufactures();
@@ -131,7 +131,7 @@ if (isset($_GET['type_id'])) {
                         
                         <aside class="left_sidebar p_sale_widget">
                             <div class="p_w_title">
-                                <h3>Top Sale Products</h3>
+                                <h3>Sản phẩm mới nhất</h3>
                             </div>
                             <?php
                                 $latests = $protypeModel->getProductLasters();
