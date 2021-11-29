@@ -7,7 +7,7 @@ $protypeModel = new HomeModel();
 
 $proty = $protypeModel->getProtype();
 
-// var_dump($typeid) . die();
+
 
 ?>
 <header class="main_header_area">
@@ -27,8 +27,23 @@ $proty = $protypeModel->getProtype();
                     <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
                 </ul>
                 <ul class="h_search list_style">
-                    <li class="shop_cart"><a href="#"><i class="lnr lnr-cart"></i></a></li>
-                    <li><a class="popup-with-zoom-anim" href="#test-search"><i class="fa fa-search"></i></a></li>
+                <?php
+                    $dem = 0;
+                    if (isset($_SESSION['mycart'])) {
+                        $sum=0;
+                        foreach ($_SESSION["mycart"] as $item) {
+                            $sum+=$item;
+                        }
+
+                         $dem = count($_SESSION["mycart"]);
+                    } else {
+                         $dem = 0;
+                    }
+                ?>
+                    <!-- Cart -->
+                    <li id="ssl"><a href="cart.php" ><i class="lnr lnr-cart"></i> <?= $dem ?></a></li>
+                    <!-- Search -->
+                    <li><a class="popup-with-zoom-anim" href="cart.php"><i class="fa fa-search"></i></a></li>
                 </ul>
 
             </div>
@@ -82,7 +97,6 @@ $proty = $protypeModel->getProtype();
                             <ul class="dropdown-menu">
                                 <li><a href="shop.php">Cửa hàng</a></li>
                                 <li><a href="whishlist.php">Danh sách yêu thích</a></li>
-                                <li><a href="cart.php">Cart Page</a></li>
                                 <li><a href="checkout.php">Checkout Page</a></li>
                             </ul>
                         </li>
@@ -119,3 +133,22 @@ EOD;
         </div>
     </div>
 </header>
+<script>
+      
+      function insertCart(id) {
+          
+          var xmlhttp = new XMLHttpRequest();
+          var url = "cart.php?id=" + id + "&cache=" + parseInt(Math.random() * 10000);
+          xmlhttp.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                  document.getElementById("sss").innerHTML = this.responseText;
+              }
+          }
+          
+          xmlhttp.open("GET", url, true);
+          xmlhttp.send();
+          
+          return false;
+      }
+      
+  </script>
