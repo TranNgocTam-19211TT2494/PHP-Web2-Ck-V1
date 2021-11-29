@@ -1,3 +1,9 @@
+<?php 
+	require_once 'models/FactoryPattent.php';
+	$factory = new FactoryPattent();
+	$HomeModel = $factory->make('home');
+	$products = $HomeModel->getProductHosts();
+?>
 <!DOCTYPE html>
 <html lang="en">
     
@@ -16,7 +22,7 @@
         		<div class="banner_text">
         			<h3>Our Cakes</h3>
         			<ul>
-        				<li><a href="index.html">Home</a></li>
+        				<li><a href="index.php">Home</a></li>
         				<li><a href="cakes.html">Services</a></li>
         			</ul>
         		</div>
@@ -32,150 +38,24 @@
         			<h5>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</h5>
         		</div>
         		<div class="cake_feature_row row">
+					<?php 
+						if(!empty($products)) { 
+						foreach ($products as $product) {
+							
+					?>
 					<div class="col-lg-3 col-md-4 col-6">
 						<div class="cake_feature_item">
 							<div class="cake_img">
-								<img src="img/cake-feature/c-feature-1.jpg" alt="">
+								<img src="<?= $product['pro_image']?>" alt="<?= $product['name']?>">
 							</div>
 							<div class="cake_text">
-								<h4>$29</h4>
-								<h3>Strawberry Cupcakes</h3>
+								<h4>$<?= $product['price']?></h4>
+								<h3><?= $product['name']?></h3>
 								<a class="pest_btn" href="#">Add to cart</a>
 							</div>
 						</div>
 					</div>
-					<div class="col-lg-3 col-md-4 col-6">
-						<div class="cake_feature_item">
-							<div class="cake_img">
-								<img src="img/cake-feature/c-feature-2.jpg" alt="">
-							</div>
-							<div class="cake_text">
-								<h4>$29</h4>
-								<h3>Strawberry Cupcakes</h3>
-								<a class="pest_btn" href="#">Add to cart</a>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 col-md-4 col-6">
-						<div class="cake_feature_item">
-							<div class="cake_img">
-								<img src="img/cake-feature/c-feature-3.jpg" alt="">
-							</div>
-							<div class="cake_text">
-								<h4>$29</h4>
-								<h3>Strawberry Cupcakes</h3>
-								<a class="pest_btn" href="#">Add to cart</a>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 col-md-4 col-6">
-						<div class="cake_feature_item">
-							<div class="cake_img">
-								<img src="img/cake-feature/c-feature-9.jpg" alt="">
-							</div>
-							<div class="cake_text">
-								<h4>$29</h4>
-								<h3>Strawberry Cupcakes</h3>
-								<a class="pest_btn" href="#">Add to cart</a>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 col-md-4 col-6">
-						<div class="cake_feature_item">
-							<div class="cake_img">
-								<img src="img/cake-feature/c-feature-4.jpg" alt="">
-							</div>
-							<div class="cake_text">
-								<h4>$29</h4>
-								<h3>Strawberry Cupcakes</h3>
-								<a class="pest_btn" href="#">Add to cart</a>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 col-md-4 col-6">
-						<div class="cake_feature_item">
-							<div class="cake_img">
-								<img src="img/cake-feature/c-feature-5.jpg" alt="">
-							</div>
-							<div class="cake_text">
-								<h4>$29</h4>
-								<h3>Strawberry Cupcakes</h3>
-								<a class="pest_btn" href="#">Add to cart</a>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 col-md-4 col-6">
-						<div class="cake_feature_item">
-							<div class="cake_img">
-								<img src="img/cake-feature/c-feature-6.jpg" alt="">
-							</div>
-							<div class="cake_text">
-								<h4>$29</h4>
-								<h3>Strawberry Cupcakes</h3>
-								<a class="pest_btn" href="#">Add to cart</a>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 col-md-4 col-6">
-						<div class="cake_feature_item">
-							<div class="cake_img">
-								<img src="img/cake-feature/c-feature-7.jpg" alt="">
-							</div>
-							<div class="cake_text">
-								<h4>$29</h4>
-								<h3>Strawberry Cupcakes</h3>
-								<a class="pest_btn" href="#">Add to cart</a>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 col-md-4 col-6">
-						<div class="cake_feature_item">
-							<div class="cake_img">
-								<img src="img/cake-feature/c-feature-8.jpg" alt="">
-							</div>
-							<div class="cake_text">
-								<h4>$29</h4>
-								<h3>Strawberry Cupcakes</h3>
-								<a class="pest_btn" href="#">Add to cart</a>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 col-md-4 col-6">
-						<div class="cake_feature_item">
-							<div class="cake_img">
-								<img src="img/cake-feature/c-feature-9.jpg" alt="">
-							</div>
-							<div class="cake_text">
-								<h4>$29</h4>
-								<h3>Strawberry Cupcakes</h3>
-								<a class="pest_btn" href="#">Add to cart</a>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 col-md-4 col-6">
-						<div class="cake_feature_item">
-							<div class="cake_img">
-								<img src="img/cake-feature/c-feature-3.jpg" alt="">
-							</div>
-							<div class="cake_text">
-								<h4>$29</h4>
-								<h3>Strawberry Cupcakes</h3>
-								<a class="pest_btn" href="#">Add to cart</a>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 col-md-4 col-6">
-						<div class="cake_feature_item">
-							<div class="cake_img">
-								<img src="img/cake-feature/c-feature-5.jpg" alt="">
-							</div>
-							<div class="cake_text">
-								<h4>$29</h4>
-								<h3>Strawberry Cupcakes</h3>
-								<a class="pest_btn" href="#">Add to cart</a>
-							</div>
-						</div>
-					</div>
+					<?php } } ?>
 				</div>
         	</div>
         </section>
