@@ -41,7 +41,9 @@ $proty = $protypeModel->getProtype();
                     <img src="img/logo.png" alt="">
                     <img src="img/logo-2.png" alt="">
                 </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
                     <span class="my_toggle_menu">
                         <span></span>
                         <span></span>
@@ -51,41 +53,44 @@ $proty = $protypeModel->getProtype();
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
                         <li class="dropdown submenu active">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="index.php" role="button" aria-haspopup="true" aria-expanded="false">Home</a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="index.php" role="button"
+                                aria-haspopup="true" aria-expanded="false">Trang chủ</a>
                             <ul class="dropdown-menu">
-                                <li><a href="index.php">Home</a></li>
-                             
+                                <li><a href="index.php">Trang chủ</a></li>
+
                             </ul>
                         </li>
-                        <li><a href="cake.php">Our Cakes</a></li>
-                        <li><a href="menu.php">Menu</a></li>
+                        <li><a href="cake.php">Bánh của chúng tôi</a></li>
+                        <li><a href="menu.php">Thực đơn</a></li>
                         <li class="dropdown submenu">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Protype Cake</a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                                aria-haspopup="true" aria-expanded="false">Thể loại bánh</a>
                             <ul class="dropdown-menu">
                                 <?php foreach ($proty as $pro) { ?>
-                                <li><a href="Protype.php?type_id=<?=md5($pro['type_id'] . 'chuyen-de-web-2') ?>">- <?= $pro['type_name'] ?></a></li>
+                                <li><a href="Protype.php?type_id=<?=md5($pro['type_id'] . 'chuyen-de-web-2') ?>">-
+                                        <?= $pro['type_name'] ?></a></li>
                                 <?php } ?>
                             </ul>
                         </li>
                     </ul>
                     <ul class="navbar-nav justify-content-end">
-                       
+
                         <!-- Shop -->
                         <li class="dropdown submenu">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Shop</a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                                aria-haspopup="true" aria-expanded="false">Cửa tiệm</a>
                             <ul class="dropdown-menu">
-                                <li><a href="shop.php">Main shop</a></li>
-                                <li><a href="whishlist.php">Whishlist</a></li>
-                                <li><a href="product-details.php">Product Details</a></li>
+                                <li><a href="shop.php">Cửa hàng</a></li>
+                                <li><a href="whishlist.php">Danh sách yêu thích</a></li>
                                 <li><a href="cart.php">Cart Page</a></li>
                                 <li><a href="checkout.php">Checkout Page</a></li>
                             </ul>
                         </li>
-                        <li><a href="contact.php">Contact Us</a></li>
+                        <li><a href="contact.php">Liên hệ chúng tôi</a></li>
                         <!-- account -->
                         <li class="dropdown submenu">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button"
-                                aria-haspopup="true" aria-expanded="false">Account</a>
+                                aria-haspopup="true" aria-expanded="false">Tài khoản</a>
                             <ul class="dropdown-menu">
                                 <?php
                             if (!empty($_SESSION["lgUserID"])) {

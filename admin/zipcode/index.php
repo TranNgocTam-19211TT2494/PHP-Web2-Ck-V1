@@ -81,16 +81,19 @@
                                     <span class="bot-line"></span>Pages</a>
                                 <ul class="header3-sub-list list-unstyled">
                                     <li>
-                                        <a href="">Products</a>
+                                        <a href="../products/index.php">Products</a>
+                                    </li>
+                                    <li>
+                                        <a href="../zipcode/index.php">ZipCode</a>
                                     </li>
                                     <li>
                                         <a href="">Orders</a>
                                     </li>
                                     <li>
-                                        <a href="">Manufactures</a>
+                                        <a href="../Manufacture/">Manufactures</a>
                                     </li>
                                     <li>
-                                        <a href="">Protype</a>
+                                        <a href="../protype/index.php">Protype</a>
                                     </li>
                                 </ul>
                             </li>
@@ -279,25 +282,23 @@
                                             </td>
                                             <td><?= $product['discount']; ?>%</td>
                                             <td>
-                                            <?php
+                                                <?php
                                                 if($product['status'] == 0){?>
-                                            <p > PENDING</p>
-                                            <?php }else { ?>
-                                               <p>ACTIVE</p> 
-                                            <?php } ?>
+                                                <p> PENDING</p>
+                                                <?php }else { ?>
+                                                <p>ACTIVE</p>
+                                                <?php } ?>
                                             </td>
                                             <td><?= $product['created_at']; ?></td>
                                             <td>
                                                 <div class="table-data-feature">
-                                                    <a
-                                                        href="add.php?id=<?= $product['id'] ?>">
+                                                    <a href="add.php?id=<?= $product['id'] ?>">
                                                         <button class="item" data-toggle="tooltip" data-placement="top"
                                                             title="Edit">
                                                             <i class="zmdi zmdi-edit"></i>
                                                     </a>
                                                     </button>
-                                                    <a
-                                                        href="delete.php?id=<?php echo $product['id'] ?>"><button
+                                                    <a href="delete.php?id=<?php echo $product['id'] ?>"><button
                                                             class="item" data-toggle="tooltip" data-placement="top"
                                                             title="Delete">
                                                             <i class="zmdi zmdi-delete"></i>
