@@ -20,10 +20,10 @@
         <section class="banner_area">
         	<div class="container">
         		<div class="banner_text">
-        			<h3>Our Cakes</h3>
+        			<h3>Bánh của chúng tôi</h3>
         			<ul>
-        				<li><a href="index.php">Home</a></li>
-        				<li><a href="cakes.html">Services</a></li>
+        				<li><a href="index.php">Nhà</a></li>
+        				<li><a href="cakes.html">Dịch vụ</a></li>
         			</ul>
         		</div>
         	</div>
@@ -34,8 +34,8 @@
         <section class="our_cakes_area p_100">
         	<div class="container">
         		<div class="main_title">
-        			<h2>Our Cakes</h2>
-        			<h5>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</h5>
+        			<h2>Bánh của chúng tôi</h2>
+        			<h5>Nhưng để bạn có thể hiểu rằng mọi lỗi lầm bẩm sinh đều là niềm vui khi buộc tội và ca ngợi nỗi đau, tôi sẽ mở ra toàn bộ vấn đề, và sẽ giải thích chính những điều đã được nói bởi người phát minh ra sự thật và như nó là kiến ​​trúc sư của cuộc sống may mắn.</h5>
         		</div>
         		<div class="cake_feature_row row">
 					<?php 
@@ -51,7 +51,7 @@
 							<div class="cake_text">
 								<h4>$<?= $product['price']?></h4>
 								<h3><?= $product['name']?></h3>
-								<a class="pest_btn" href="#">Add to cart</a>
+								<a class="pest_btn" href="#">Thêm vào giỏ hàng</a>
 							</div>
 						</div>
 					</div>

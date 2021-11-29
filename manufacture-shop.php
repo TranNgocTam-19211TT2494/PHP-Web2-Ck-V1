@@ -32,10 +32,10 @@ if (isset($_GET['manu_id'])) {
     <section class="banner_area">
         <div class="container">
             <div class="banner_text">
-                <h3>Protype</h3>
+                <h3>Danh mục</h3>
                 <ul>
-                    <li><a href="index.php">Home</a></li>
-                    <li><a href="shop.php">Protype</a></li>
+                    <li><a href="index.php">Nhà</a></li>
+                    <li><a href="shop.php">Cửu hàng</a></li>
                 </ul>
             </div>
         </div>
@@ -55,7 +55,7 @@ if (isset($_GET['manu_id'])) {
 
                             </div>
                             <div class="float-right">
-                                <h4>Manufactures</h4>
+                                <h4>Danh mục</h4>
 
                             </div>
                         </div>
@@ -70,7 +70,7 @@ if (isset($_GET['manu_id'])) {
                                 <div class="cake_text">
                                     <h4>$<?= $manufacture['price'] ?></h4>
                                     <h3><?= $manufacture['name'] ?></h3>
-                                    <a class="pest_btn" href="#">Add to cart</a>
+                                    <a class="pest_btn" href="#">Thêm vào giỏ hàng</a>
                                 </div>
                             </div>
                         </div>
@@ -100,7 +100,7 @@ if (isset($_GET['manu_id'])) {
                     <div class="product_left_sidebar">
                         <aside class="left_sidebar search_widget">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Enter Search Keywords">
+                                <input type="text" class="form-control" placeholder="Nhập từ khóa tìm kiếm">
                                 <div class="input-group-append">
                                     <button class="btn" type="button"><i class="icon icon-Search"></i></button>
                                 </div>
@@ -109,7 +109,7 @@ if (isset($_GET['manu_id'])) {
                         <!-- Manufacture -->
                         <aside class="left_sidebar p_catgories_widget">
                             <div class="p_w_title">
-                                <h3>Product Categories</h3>
+                                <h3>Danh mục sản phẩm</h3>
                             </div>
                            
                             <ul class="list_style">
@@ -124,7 +124,7 @@ if (isset($_GET['manu_id'])) {
 
                         <aside class="left_sidebar p_sale_widget">
                             <div class="p_w_title">
-                                <h3>Latest Products</h3>
+                                <h3>Sản phẩm mới nhất</h3>
                             </div>
                             <?php
                                 $latests = $productModel->getProductLasters();
