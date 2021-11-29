@@ -1,6 +1,5 @@
 <?php
-session_start();
-ob_start();
+
 require_once 'models/HomeModel.php';
 
 $protypeModel = new HomeModel();
@@ -27,7 +26,7 @@ $proty = $protypeModel->getProtype();
                     <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
                 </ul>
                 <ul class="h_search list_style">
-                <?php
+                    <?php
                     $dem = 0;
                     if (isset($_SESSION['mycart'])) {
                         $sum=0;
@@ -41,9 +40,9 @@ $proty = $protypeModel->getProtype();
                     }
                 ?>
                     <!-- Cart -->
-                    <li id="ssl"><a href="cart.php" ><i class="lnr lnr-cart"></i> <?= $dem ?></a></li>
+                    <li id="ssl"><a href="cart.php"><i class="lnr lnr-cart"></i> <?= $dem ?></a></li>
                     <!-- Search -->
-                    <li><a class="popup-with-zoom-anim" href="cart.php"><i class="fa fa-search"></i></a></li>
+                    <li><a class="popup-with-zoom-anim" href="#test-search"><i class="fa fa-search"></i></a></li>
                 </ul>
 
             </div>
@@ -67,14 +66,8 @@ $proty = $protypeModel->getProtype();
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
-                        <li class="dropdown submenu active">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="index.php" role="button"
-                                aria-haspopup="true" aria-expanded="false">Trang chủ</a>
-                            <ul class="dropdown-menu">
-                                <li><a href="index.php">Trang chủ</a></li>
+                        <li><a href="index.php">Trang chủ</a></li>
 
-                            </ul>
-                        </li>
                         <li><a href="cake.php">Bánh của chúng tôi</a></li>
                         <li><a href="menu.php">Thực đơn</a></li>
                         <li class="dropdown submenu">
@@ -97,7 +90,6 @@ $proty = $protypeModel->getProtype();
                             <ul class="dropdown-menu">
                                 <li><a href="shop.php">Cửa hàng</a></li>
                                 <li><a href="whishlist.php">Danh sách yêu thích</a></li>
-                                <li><a href="checkout.php">Checkout Page</a></li>
                             </ul>
                         </li>
                         <li><a href="contact.php">Liên hệ chúng tôi</a></li>
@@ -109,15 +101,18 @@ $proty = $protypeModel->getProtype();
                                 <?php
                             if (!empty($_SESSION["lgUserID"])) {
                                 $chuoi1 = <<<EOD
-                            <li><a href="logout.php"><i class="fa fa-user"></i>Đăng xuất</a></li>
+                                <li><a href="">Tài Khoản</a></li>
+                                <li><a href="">Đổi mật khẩu</a></li>
+                                <li><a href="logout.php">Đăng xuất</a></li>
+                                
 EOD;
                                 echo $chuoi1;
                           
                             } else {
                             $chuoi1 = <<<EOD
                             
-                            <li><a href="login.php"><i class="fa fa-user"></i>Đăng Nhập</a></li>
-                            <li><a href="register.php"><i class="fa fa-user"></i>Đăng Ký</a></li>
+                            <li><a href="login.php">Đăng Nhập</a></li>
+                            <li><a href="register.php">Đăng Ký</a></li>
 EOD;
                             echo $chuoi1;
                         }
@@ -134,21 +129,19 @@ EOD;
     </div>
 </header>
 <script>
-      
-      function insertCart(id) {
-          
-          var xmlhttp = new XMLHttpRequest();
-          var url = "cart.php?id=" + id + "&cache=" + parseInt(Math.random() * 10000);
-          xmlhttp.onreadystatechange = function() {
-              if (this.readyState == 4 && this.status == 200) {
-                  document.getElementById("sss").innerHTML = this.responseText;
-              }
-          }
-          
-          xmlhttp.open("GET", url, true);
-          xmlhttp.send();
-          
-          return false;
-      }
-      
-  </script>
+function insertCart(id) {
+
+    var xmlhttp = new XMLHttpRequest();
+    var url = "cart.php?id=" + id + "&cache=" + parseInt(Math.random() * 10000);
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            document.getElementById("sss").innerHTML = this.responseText;
+        }
+    }
+
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+
+    return false;
+}
+</script>
