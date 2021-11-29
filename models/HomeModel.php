@@ -315,12 +315,35 @@ class HomeModel extends BaseModel {
         
         return $product;
     }
+   
     // Các sản phẩm có liên quan thuộc danh mục:
     public function getProductManufactures($id , $ManuID)
     {
         $sql = 'Select * from products where id <> '.$id.'  and manu_id = '.$ManuID.' LIMIT 4';
         $products = $this->select($sql);
         return $products;
+    }
+    // ------------------ Giỏ hàng -------------------- //
+    // Thêm vào giỏ hàng:
+    public function insertCart($id)
+    {
+        if (isset($_SESSION['mycart'][$id])) {
+            $_SESSION['mycart'][$id]++;
+        } else {
+            $_SESSION['mycart'][$id]=1;
+        }
+    }
+    public static function deleteCart($id)
+    {
+        if (isset($_SESSION["mycart"][$id])) {
+            unset($_SESSION['mycart'][$id]);
+        }
+    }
+    public static function updateCart($id, $quantity)
+    {
+        if (isset($_SESSION["mycart"][$id])) {
+            $_SESSION['mycart'][$id] = $quantity;
+        }
     }
     public static function getInstance()
     {

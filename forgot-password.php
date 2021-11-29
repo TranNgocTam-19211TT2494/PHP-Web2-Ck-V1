@@ -68,7 +68,7 @@
                     <div class="login-content">
                         <div class="login-logo">
                             <a href="#">
-                                <img src="public/backend/images/icon/logo.png" alt="CoolAdmin">
+                                <img src="public/img/logo-2.png" alt="CoolAdmin">
                             </a>
                         </div>
                         <?php if($loi != "") {?>
