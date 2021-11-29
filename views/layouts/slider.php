@@ -1,4 +1,4 @@
-<section class="main_slider_area">
+<section class="main_slider_area" style="padding-top: 100px;">
     <div id="main_slider" class="rev_slider" data-version="5.3.1.6">
         <ul>
             <li data-index="rs-1587" data-transition="fade" data-slotamount="default" data-hideafterloop="0"
@@ -27,8 +27,7 @@
                         data-height="none" data-whitespace="normal" data-type="text" data-responsive_offset="on"
                         data-transform_idle="o:1;"
                         data-frames="[{&quot;delay&quot;:10,&quot;speed&quot;:1500,&quot;frame&quot;:&quot;0&quot;,&quot;from&quot;:&quot;y:[100%];z:0;rX:0deg;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;opacity:0;&quot;,&quot;mask&quot;:&quot;x:0px;y:[100%];s:inherit;e:inherit;&quot;,&quot;to&quot;:&quot;o:1;&quot;,&quot;ease&quot;:&quot;Power2.easeInOut&quot;},{&quot;delay&quot;:&quot;wait&quot;,&quot;speed&quot;:1500,&quot;frame&quot;:&quot;999&quot;,&quot;to&quot;:&quot;y:[175%];&quot;,&quot;mask&quot;:&quot;x:inherit;y:inherit;s:inherit;e:inherit;&quot;,&quot;ease&quot;:&quot;Power2.easeInOut&quot;}]">
-                        Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit quia consequuntur
-                        magni dolores eos qui ratione
+                       
                     </div>
 
                     <div class="tp-caption tp-resizeme slider_button" data-x="['left','left','left','15','15']"
@@ -69,8 +68,7 @@
                         data-height="none" data-whitespace="normal" data-type="text" data-responsive_offset="on"
                         data-transform_idle="o:1;"
                         data-frames="[{&quot;delay&quot;:10,&quot;speed&quot;:1500,&quot;frame&quot;:&quot;0&quot;,&quot;from&quot;:&quot;y:[100%];z:0;rX:0deg;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;opacity:0;&quot;,&quot;mask&quot;:&quot;x:0px;y:[100%];s:inherit;e:inherit;&quot;,&quot;to&quot;:&quot;o:1;&quot;,&quot;ease&quot;:&quot;Power2.easeInOut&quot;},{&quot;delay&quot;:&quot;wait&quot;,&quot;speed&quot;:1500,&quot;frame&quot;:&quot;999&quot;,&quot;to&quot;:&quot;y:[175%];&quot;,&quot;mask&quot;:&quot;x:inherit;y:inherit;s:inherit;e:inherit;&quot;,&quot;ease&quot;:&quot;Power2.easeInOut&quot;}]">
-                        Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit quia consequuntur
-                        magni dolores eos qui ratione
+                       
                     </div>
 
                     <div class="tp-caption tp-resizeme slider_button" data-x="['left','left','left','15','15']"
