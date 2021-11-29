@@ -15,6 +15,7 @@ $productModel = $factory->make('home');
     }else{
         $noti = 2;
     }
+   
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -66,10 +67,11 @@ $productModel = $factory->make('home');
                             </div> -->
                             <div class="float-right">
                                 <h4>Sắp xếp theo :</h4>
-                                <select class="short" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
-									<option>Loại</option>
-									<option value="?field=price&sort=desc">Giảm (A - Z)</option>
-									<option value="?field=price&sort=asc">Tăng (Z - A)</option>
+                                <select class="short"
+                                    onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
+                                    <option>Loại</option>
+                                    <option value="?field=price&sort=desc">Giảm (A - Z)</option>
+                                    <option value="?field=price&sort=asc">Tăng (Z - A)</option>
                                 </select>
                             </div>
                         </div>
@@ -92,7 +94,7 @@ $productModel = $factory->make('home');
                                 <div class="cake_text">
                                     <h4>$<?= $product['price']?></h4>
                                     <h3><?= $product['name']?></h3>
-                                    <a class="pest_btn" href="#">Thêm vào giỏ hàng</a>
+                                    <a class="pest_btn" href="cart.php?id=<?= $product['id'] ?>" onclick="return insertCart(<?= $product['id'] ?>)">Thêm vào giỏ hàng</a>
                                 </div>
                             </div>
                         </div>
@@ -138,12 +140,15 @@ $productModel = $factory->make('home');
                             ?>
                             <ul class="list_style">
                                 <?php foreach ($manufactures as $manufacture) { ?>
-                                <li><a href="manufacture-shop.php?manu_id=<?=md5($manufacture['manu_id'] . 'chuyen-de-web-2') ?>"><?= $manufacture['manu_name'] ?> (<?= count($productModel->countProductWithManufacture($manufacture['manu_id'])) ?>)</a></li>
+                                <li><a
+                                        href="manufacture-shop.php?manu_id=<?=md5($manufacture['manu_id'] . 'chuyen-de-web-2') ?>"><?= $manufacture['manu_name'] ?>
+                                        (<?= count($productModel->countProductWithManufacture($manufacture['manu_id'])) ?>)</a>
+                                </li>
                                 <?php } ?>
-                              
+
                             </ul>
                         </aside>
-                        
+
                         <aside class="left_sidebar p_sale_widget">
                             <div class="p_w_title">
                                 <h3>Sản phẩm mới nhất</h3>
@@ -159,13 +164,14 @@ $productModel = $factory->make('home');
                             ?>
                             <div class="media">
                                 <div class="d-flex">
-                                    <img src="<?= $latest['pro_image'] ?>" alt="<?= $latest['name'] ?>" style="max-width: 100px;">
+                                    <img src="<?= $latest['pro_image'] ?>" alt="<?= $latest['name'] ?>"
+                                        style="max-width: 100px;">
                                 </div>
                                 <div class="media-body">
                                     <a href="product-details.php?id=<?=$latest['id'] ?>">
                                         <h4><?= $latest['name'] ?></h4>
                                     </a>
-                                    
+
                                     <h5>$<?= $latest['price'] ?></h5>
                                 </div>
                             </div>
@@ -196,6 +202,7 @@ $productModel = $factory->make('home');
 
 
     <?php include_once("views/footer.php");?>
+    
 </body>
 
 </html>

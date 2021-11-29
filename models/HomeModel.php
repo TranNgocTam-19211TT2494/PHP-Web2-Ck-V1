@@ -315,12 +315,49 @@ class HomeModel extends BaseModel {
         
         return $product;
     }
+   
     // Các sản phẩm có liên quan thuộc danh mục:
     public function getProductManufactures($id , $ManuID)
     {
         $sql = 'Select * from products where id <> '.$id.'  and manu_id = '.$ManuID.' LIMIT 4';
         $products = $this->select($sql);
         return $products;
+    }
+    // ------------------ Giỏ hàng -------------------- //
+    // Thêm vào giỏ hàng:
+    public function getOrderItemByOrder($id)
+    {
+        $sql = 'SELECT carts.pro_id , products.name , products.price , carts.quantity FROM `carts` INNER JOIN products ON carts.pro_id = products.id WHERE carts.order_id = '.$id;
+        $cart = $this->select($sql);
+        return $cart;
+    }
+    // Thêm danh sách giỏ hàng
+    public function insertOrderItem($OrderID , $ProductID , $Quantity)
+    {
+        $sql="Insert into carts (order_id,pro_id,quantity) values($OrderID,$ProductID,$Quantity)";
+        $product = $this->insert($sql);
+        return $product;
+    }
+    // -------------- Checkout ---------------- //
+    public function insertOrder($userID, $Firstname , $Lastname ,$address, $email, $phone,$notes)
+    {
+        $sql="Insert into checkouts(user_id,firstname,lastname,addedDate,address,email,phone,notes) values('$userID','$Firstname','$Lastname',now(),'$address','$email','$phone','$notes')";
+        $product = $this->insert($sql);
+        return $product;
+    }
+    // Lấy id mới nhất của đơn hàng:
+    public function getOrderMaxById()
+    {
+        $sql = "SELECT MAX(id) FROM checkouts";
+        $id = $this->select($sql);
+        return $id[0]['MAX(id)'];
+    }
+    // Cập nhập Tổng tiền:
+    public function updateSum($OrderID , $Sum)
+    {
+        $sql = "Update checkouts set sum = $Sum where id = $OrderID";
+        $checkout = $this->update($sql);
+        return $checkout;
     }
     public static function getInstance()
     {

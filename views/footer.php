@@ -21,3 +21,4 @@
   <script src="public/vendors/lightbox/simpleLightbox.min.js"></script>
 
   <script src="public/js/theme.js"></script>
+ 
