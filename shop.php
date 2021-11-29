@@ -31,10 +31,10 @@ $productModel = $factory->make('home');
     <section class="banner_area">
         <div class="container">
             <div class="banner_text">
-                <h3>Shop</h3>
+                <h3>Cửa hàng</h3>
                 <ul>
-                    <li><a href="index.php">Home</a></li>
-                    <li><a href="shop.php">Shop</a></li>
+                    <li><a href="index.php">Nhà</a></li>
+                    <li><a href="shop.php">Cửa hàng</a></li>
                 </ul>
             </div>
         </div>
@@ -49,11 +49,11 @@ $productModel = $factory->make('home');
                 <div class="col-lg-9">
                     <?php if(isset($noti) && $noti == 1) {?>
                     <div class="alert alert-success" role="alert">
-                        ADD WHISHLIST SUCCESS
+                        Thêm vào danh sách thành công.
                     </div>
                     <?php }else if($noti == 2){?>
                     <div class="alert alert-success" role="alert">
-                        YOU CAN LOGIN
+                        Bạn cần phải đăng nhập
                     </div>
                     <?php }?>
                     <div class="row m0 product_task_bar">
@@ -65,11 +65,11 @@ $productModel = $factory->make('home');
                                 <span>Showing 1 - 10 of 55 results</span>
                             </div> -->
                             <div class="float-right">
-                                <h4>Sort by :</h4>
+                                <h4>Sắp xếp theo :</h4>
                                 <select class="short" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
-									<option>Sort</option>
-									<option value="?field=price&sort=desc">Reduce</option>
-									<option value="?field=price&sort=asc">Augment</option>
+									<option>Loại</option>
+									<option value="?field=price&sort=desc">Giảm (A - Z)</option>
+									<option value="?field=price&sort=asc">Tăng (Z - A)</option>
                                 </select>
                             </div>
                         </div>
@@ -92,7 +92,7 @@ $productModel = $factory->make('home');
                                 <div class="cake_text">
                                     <h4>$<?= $product['price']?></h4>
                                     <h3><?= $product['name']?></h3>
-                                    <a class="pest_btn" href="#">Add to cart</a>
+                                    <a class="pest_btn" href="#">Thêm vào giỏ hàng</a>
                                 </div>
                             </div>
                         </div>
@@ -121,7 +121,7 @@ $productModel = $factory->make('home');
                     <div class="product_left_sidebar">
                         <aside class="left_sidebar search_widget">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Enter Search Keywords">
+                                <input type="text" class="form-control" placeholder="Nhập từ khóa tìm kiếm">
                                 <div class="input-group-append">
                                     <button class="btn" type="button"><i class="icon icon-Search"></i></button>
                                 </div>
@@ -130,7 +130,7 @@ $productModel = $factory->make('home');
                         <!-- Manufacture -->
                         <aside class="left_sidebar p_catgories_widget">
                             <div class="p_w_title">
-                                <h3>Product Categories</h3>
+                                <h3>Danh mục sản phẩm</h3>
                             </div>
                             <?php 
                                 $manufactures = $productModel->getManufactures();
@@ -146,7 +146,7 @@ $productModel = $factory->make('home');
                         
                         <aside class="left_sidebar p_sale_widget">
                             <div class="p_w_title">
-                                <h3>Top Sale Products</h3>
+                                <h3>Sản phẩm mới nhất</h3>
                             </div>
                             <?php
                                 $latests = $productModel->getProductLasters();

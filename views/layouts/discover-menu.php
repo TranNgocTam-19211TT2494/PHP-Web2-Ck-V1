@@ -2,8 +2,8 @@
     <div class="discover_menu_inner">
         <div class="container">
             <div class="main_title">
-                <h2>Discover Menu</h2>
-                <h5>Duis aute irure dolor in reprehenderit voluptate</h5>
+                <h2>Menu Khám phá</h2>
+                <h5>Nỗi đau sẽ lên án niềm vui</h5>
             </div>
             <div class="row">
                 <div class="col-lg-6">

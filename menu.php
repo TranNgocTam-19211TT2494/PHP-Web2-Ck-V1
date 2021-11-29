@@ -23,10 +23,10 @@
     <section class="banner_area">
         <div class="container">
             <div class="banner_text">
-                <h3>Menu</h3>
+                <h3>Thực đơn</h3>
                 <ul>
-                    <li><a href="index.php">Home</a></li>
-                    <li><a href="menu.php">Menu</a></li>
+                    <li><a href="index.php">Nhà</a></li>
+                    <li><a href="menu.php">Thực đơn</a></li>
                 </ul>
             </div>
         </div>
@@ -38,21 +38,22 @@
         <div class="container">
             <div class="price_list_inner">
                 <div class="single_pest_title">
-                    <h2>Our Price List</h2>
-                    <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
-                        totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
-                        dicta sunt explicabo.</p>
+                    <h2>Bảng giá của chúng tôi</h2>
+                    <p>Nhưng để bạn có thể hiểu rằng mọi lỗi lầm bẩm sinh đều là niềm vui khi buộc tội và ca ngợi nỗi
+                        đau, tôi sẽ mở ra toàn bộ vấn đề, và sẽ giải thích chính những điều đã được nói bởi người phát
+                        minh ra sự thật và như nó là kiến ​​trúc sư của cuộc sống may mắn.</p>
                 </div>
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="discover_item_inner">
-                            
+
                             <?php if(!empty($productsDesc)) {
                             foreach ($productsDesc as $product) {?>
                             <div class="discover_item">
                                 <h4><?= $product['name'] ?></h4>
                                 <p><?= substr($product['description'], 0 , 77) ?>...
-                                    <span>$<?= $product['price'] ?></span></p>
+                                    <span>$<?= $product['price'] ?></span>
+                                </p>
                             </div>
                             <?php }
                         }?>
@@ -60,13 +61,14 @@
                     </div>
                     <div class="col-lg-6">
                         <div class="discover_item_inner">
-                          
+
                             <?php if(!empty($productsAsc)) {
                             foreach ($productsAsc as $product) {?>
                             <div class="discover_item">
                                 <h4><?= $product['name'] ?></h4>
                                 <p><?= substr($product['description'], 0 , 70) ?>...
-                                    <span>$<?= $product['price'] ?></span></p>
+                                    <span>$<?= $product['price'] ?></span>
+                                </p>
                             </div>
                             <?php }
                         }?>
