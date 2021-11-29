@@ -325,25 +325,39 @@ class HomeModel extends BaseModel {
     }
     // ------------------ Giỏ hàng -------------------- //
     // Thêm vào giỏ hàng:
-    public function insertCart($id)
+    public function getOrderItemByOrder($id)
     {
-        if (isset($_SESSION['mycart'][$id])) {
-            $_SESSION['mycart'][$id]++;
-        } else {
-            $_SESSION['mycart'][$id]=1;
-        }
+        $sql = 'SELECT carts.pro_id , products.name , products.price , carts.quantity FROM `carts` INNER JOIN products ON carts.pro_id = products.id WHERE carts.order_id = '.$id;
+        $cart = $this->select($sql);
+        return $cart;
     }
-    public static function deleteCart($id)
+    // Thêm danh sách giỏ hàng
+    public function insertOrderItem($OrderID , $ProductID , $Quantity)
     {
-        if (isset($_SESSION["mycart"][$id])) {
-            unset($_SESSION['mycart'][$id]);
-        }
+        $sql="Insert into carts (order_id,pro_id,quantity) values($OrderID,$ProductID,$Quantity)";
+        $product = $this->insert($sql);
+        return $product;
     }
-    public static function updateCart($id, $quantity)
+    // -------------- Checkout ---------------- //
+    public function insertOrder($userID, $Firstname , $Lastname ,$address, $email, $phone,$notes)
     {
-        if (isset($_SESSION["mycart"][$id])) {
-            $_SESSION['mycart'][$id] = $quantity;
-        }
+        $sql="Insert into checkouts(user_id,firstname,lastname,addedDate,address,email,phone,notes) values('$userID','$Firstname','$Lastname',now(),'$address','$email','$phone','$notes')";
+        $product = $this->insert($sql);
+        return $product;
+    }
+    // Lấy id mới nhất của đơn hàng:
+    public function getOrderMaxById()
+    {
+        $sql = "SELECT MAX(id) FROM checkouts";
+        $id = $this->select($sql);
+        return $id[0]['MAX(id)'];
+    }
+    // Cập nhập Tổng tiền:
+    public function updateSum($OrderID , $Sum)
+    {
+        $sql = "Update checkouts set sum = $Sum where id = $OrderID";
+        $checkout = $this->update($sql);
+        return $checkout;
     }
     public static function getInstance()
     {

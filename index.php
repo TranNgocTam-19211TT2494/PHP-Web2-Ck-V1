@@ -1,4 +1,6 @@
 <?php
+session_start();
+ob_start();
     require_once "models/HomeModel.php";
 
     $HomeModel = new HomeModel();
@@ -36,15 +38,15 @@
     <!--================End Discover Menu Area =================-->
 
     <!--================Client Says Area =================-->
-    
+
     <!--================End Client Says Area =================-->
 
     <!--================End Client Says Area =================-->
-    
+
     <!--================End Client Says Area =================-->
 
     <!--================Latest News Area =================-->
-    
+
     <!--================End Latest News Area =================-->
 
     <!--================Newsletter Area =================-->

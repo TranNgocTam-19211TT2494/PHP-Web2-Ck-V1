@@ -1,4 +1,5 @@
-<?php 
+<?php
+	session_start();
 	require_once 'models/FactoryPattent.php';
 	$factory = new FactoryPattent();
 	$HomeModel = $factory->make('home');
@@ -51,7 +52,7 @@
 							<div class="cake_text">
 								<h4>$<?= $product['price']?></h4>
 								<h3><?= $product['name']?></h3>
-								<a class="pest_btn" href="#">Thêm vào giỏ hàng</a>
+								<a class="pest_btn" href="cart.php?id=<?= $product['id'] ?>" onclick="return insertCart(<?= $product['id'] ?>)">Thêm vào giỏ hàng</a>
 							</div>
 						</div>
 					</div>

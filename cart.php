@@ -137,7 +137,7 @@
                         </div>
                         <?php } else { ?>
                         <div class="cart_footer">
-                            <a class="pest_btn" href="#">Tiến hành đặt hàng</a>
+                            <a class="pest_btn" href="checkout.php">Tiến hành đặt hàng</a>
                         </div>
                         <?php } ?>
                     </div>
