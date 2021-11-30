@@ -21,14 +21,13 @@ if (isset($_GET['submit'])) {
     if (!empty($_GET['search'])) {
         $search = $_GET['search'];
         $products = $productModel->searchProduct($search);
-        $num_result = $productModel->num_result($search);
+        $num_result = count($products);
     }
     if (!empty($_GET['search-cate'])) {
         $searchCate = $_GET['search-cate'];
         $products = $productModel->searchCategories($searchCate);
-        // var_dump($products);
-        // die();
-        $num_result_cate = $productModel->num_result($searchCate);
+      
+        $num_result_cate = count($products);
     }
 } else {
     $products = $productModel->getProducts();
@@ -76,12 +75,12 @@ if (isset($_GET['submit'])) {
                     <?php } ?>
                     <div class="row m0 product_task_bar">
                         <div class="product_task_inner">
-                            <!-- <div class="float-left">
+                            <div class="float-left">
                                 <a class="active" href="#"><i class="fa fa-th-large" aria-hidden="true"></i></a>
                                 <a href="#"><i class="fa fa-th-list" aria-hidden="true"></i></a>
                                 <?php if (isset($num_result)) { ?>
                                     <span>Showing 1 - 6 of <?php echo $num_result ?> results</span>
-                                <?php } else { ?>
+                                <?php } if (isset($num_result_cate))  { ?>
                                     <span>Showing 1 - 6 of <?php echo $num_result_cate ?> results</span>
                                 <?php } ?>
                             </div>
