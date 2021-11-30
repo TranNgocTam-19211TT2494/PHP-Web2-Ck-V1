@@ -48,10 +48,10 @@ if (isset($_GET['submit'])) {
     <section class="banner_area">
         <div class="container">
             <div class="banner_text">
-                <h3>Shop</h3>
+                <h3>Cửa hàng</h3>
                 <ul>
-                    <li><a href="index.php">Home</a></li>
-                    <li><a href="shop.php">Shop</a></li>
+                    <li><a href="index.php">Nhà</a></li>
+                    <li><a href="shop.php">Cửa hàng</a></li>
                 </ul>
             </div>
         </div>
@@ -64,15 +64,15 @@ if (isset($_GET['submit'])) {
             <div class="row product_inner_row">
 
                 <div class="col-lg-9">
-                    <?php if (isset($noti) && $noti == 1) { ?>
-                        <div class="alert alert-success" role="alert">
-                            ADD WHISHLIST SUCCESS
-                        </div>
-                    <?php } else if ($noti == 2) { ?>
-                        <div class="alert alert-success" role="alert">
-                            YOU CAN LOGIN
-                        </div>
-                    <?php } ?>
+                    <?php if(isset($noti) && $noti == 1) {?>
+                    <div class="alert alert-success" role="alert">
+                        Thêm vào danh sách thành công.
+                    </div>
+                    <?php }else if($noti == 2){?>
+                    <div class="alert alert-success" role="alert">
+                        Bạn cần phải đăng nhập
+                    </div>
+                    <?php }?>
                     <div class="row m0 product_task_bar">
                         <div class="product_task_inner">
                             <div class="float-left">
@@ -85,11 +85,12 @@ if (isset($_GET['submit'])) {
                                 <?php } ?>
                             </div>
                             <div class="float-right">
-                                <h4>Sort by :</h4>
-                                <select class="short" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
-                                    <option>Sort</option>
-                                    <option value="?field=price&sort=desc">Reduce</option>
-                                    <option value="?field=price&sort=asc">Augment</option>
+                                <h4>Sắp xếp theo :</h4>
+                                <select class="short"
+                                    onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
+                                    <option>Loại</option>
+                                    <option value="?field=price&sort=desc">Giảm (A - Z)</option>
+                                    <option value="?field=price&sort=asc">Tăng (Z - A)</option>
                                 </select>
                             </div>
                         </div>
@@ -115,6 +116,15 @@ if (isset($_GET['submit'])) {
                                         <h3><?= $product['name'] ?></h3>
                                         <a class="pest_btn" href="#">Add to cart</a>
                                     </div>
+                                        </a>
+                                    </div>
+                                    <?php } }?>
+                                </div>
+                                <div class="cake_text">
+                                    <h4>$<?= $product['price']?></h4>
+                                    <h3><?= $product['name']?></h3>
+                                    <a class="pest_btn" href="cart.php?id=<?= $product['id'] ?>" onclick="return insertCart(<?= $product['id'] ?>)">Thêm vào giỏ hàng</a>
+                                </div>
                                 </div>
                             </div>
                         <?php } ?>
@@ -151,7 +161,7 @@ if (isset($_GET['submit'])) {
                         <!-- Manufacture -->
                         <aside class="left_sidebar p_catgories_widget">
                             <div class="p_w_title">
-                                <h3>Product Categories</h3>
+                                <h3>Danh mục sản phẩm</h3>
                             </div>
                             <?php 
                                 $manufactures = $productModel->getManufactures();
@@ -159,88 +169,42 @@ if (isset($_GET['submit'])) {
                             ?>
                             <ul class="list_style">
                                 <?php foreach ($manufactures as $manufacture) { ?>
-                                <li><a href="manufacture-shop.php?manu_id=<?=md5($manufacture['manu_id'] . 'chuyen-de-web-2') ?>"><?= $manufacture['manu_name'] ?> (<?= count($productModel->countProductWithManufacture($manufacture['manu_id'])) ?>)</a></li>
+                                <li><a
+                                        href="manufacture-shop.php?manu_id=<?=md5($manufacture['manu_id'] . 'chuyen-de-web-2') ?>"><?= $manufacture['manu_name'] ?>
+                                        (<?= count($productModel->countProductWithManufacture($manufacture['manu_id'])) ?>)</a>
+                                </li>
                                 <?php } ?>
-                              
+
                             </ul>
                         </aside>
-                        
+
                         <aside class="left_sidebar p_sale_widget">
                             <div class="p_w_title">
-                                <h3>Top Sale Products</h3>
+                                <h3>Sản phẩm mới nhất</h3>
                             </div>
+                            <?php
+                                $latests = $productModel->getProductLasters();
+                            
+                            ?>
+                            <?php
+                                if(!empty($latests)) {
+                                    foreach ($latests as $latest) {
+                                      
+                            ?>
                             <div class="media">
                                 <div class="d-flex">
-                                    <img src="img/product/sale-product/s-product-1.jpg" alt="">
+                                    <img src="<?= $latest['pro_image'] ?>" alt="<?= $latest['name'] ?>"
+                                        style="max-width: 100px;">
                                 </div>
                                 <div class="media-body">
-                                    <a href="#">
-                                        <h4>Brown Cake</h4>
+                                    <a href="product-details.php?id=<?=$latest['id'] ?>">
+                                        <h4><?= $latest['name'] ?></h4>
                                     </a>
-                                    <ul class="list_style">
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                    </ul>
-                                    <h5>$29</h5>
+
+                                    <h5>$<?= $latest['price'] ?></h5>
                                 </div>
                             </div>
-                            <div class="media">
-                                <div class="d-flex">
-                                    <img src="img/product/sale-product/s-product-2.jpg" alt="">
-                                </div>
-                                <div class="media-body">
-                                    <a href="#">
-                                        <h4>Brown Cake</h4>
-                                    </a>
-                                    <ul class="list_style">
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                    </ul>
-                                    <h5>$29</h5>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="d-flex">
-                                    <img src="img/product/sale-product/s-product-3.jpg" alt="">
-                                </div>
-                                <div class="media-body">
-                                    <a href="#">
-                                        <h4>Brown Cake</h4>
-                                    </a>
-                                    <ul class="list_style">
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                    </ul>
-                                    <h5>$29</h5>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="d-flex">
-                                    <img src="img/product/sale-product/s-product-4.jpg" alt="">
-                                </div>
-                                <div class="media-body">
-                                    <a href="#">
-                                        <h4>Brown Cake</h4>
-                                    </a>
-                                    <ul class="list_style">
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                    </ul>
-                                    <h5>$29</h5>
-                                </div>
-                            </div>
+                            <?php } } ?>
                         </aside>
                     </div>
                 </div>
@@ -266,7 +230,8 @@ if (isset($_GET['submit'])) {
 
 
 
-    <?php include_once("views/footer.php"); ?>
+    <?php include_once("views/footer.php");?>
+    
 </body>
 
 </html>

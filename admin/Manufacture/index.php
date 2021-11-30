@@ -34,14 +34,16 @@ $token = $_SESSION['token'];
     <link href="../../public/backend/css/font-face.css" rel="stylesheet" media="all">
     <link href="../../public/backend/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
     <link href="../../public/backend/vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
-    <link href="../../public/backend/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+    <link href="../../public/backend/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet"
+        media="all">
 
     <!-- Bootstrap CSS-->
     <link href="../../public/backend/vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
 
     <!-- Vendor CSS-->
     <link href="../../public/backend/vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
-    <link href="../../public/backend/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
+    <link href="../../public/backend/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet"
+        media="all">
     <link href="../../public/backend/vendor/wow/animate.css" rel="stylesheet" media="all">
     <link href="../../public/backend/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
     <link href="../../public/backend/vendor/slick/slick.css" rel="stylesheet" media="all">
@@ -71,9 +73,9 @@ $token = $_SESSION['token'];
                                     <i class="fas fa-tachometer-alt"></i>Dashboard
                                     <span class="bot-line"></span>
                                 </a>
-                            
+
                             </li>
-                       
+
                             <li class="has-sub">
                                 <a href="#">
                                     <i class="fas fa-copy"></i>
@@ -83,13 +85,16 @@ $token = $_SESSION['token'];
                                         <a href="../products/index.php">Products</a>
                                     </li>
                                     <li>
+                                        <a href="../zipcode/">ZipCode</a>
+                                    </li>
+                                    <li>
                                         <a href="">Orders</a>
                                     </li>
                                     <li>
                                         <a href="../Manufacture/">Manufactures</a>
                                     </li>
                                     <li>
-                                        <a href="../protype/Protypes.php">Protype</a>
+                                        <a href="../protype/index.php">Protype</a>
                                     </li>
                                 </ul>
                             </li>
@@ -107,7 +112,7 @@ $token = $_SESSION['token'];
                                     <li>
                                         <a href="tab.html">Tabs</a>
                                     </li>
-                                   
+
                                 </ul>
                             </li>
                         </ul>
@@ -200,7 +205,8 @@ $token = $_SESSION['token'];
                                     <div class="info clearfix">
                                         <div class="image">
                                             <a href="#">
-                                                <img src="../../public/backend/images/icon/avatar-01.jpg" alt="John Doe" />
+                                                <img src="../../public/backend/images/icon/avatar-01.jpg"
+                                                    alt="John Doe" />
                                             </a>
                                         </div>
                                         <div class="content">
@@ -277,49 +283,53 @@ $token = $_SESSION['token'];
                                     </thead>
                                     <tbody>
                                         <?php foreach ($manufacture as $item) { ?>
-                                            <tr class="tr-shadow">
-                                                <td>
-                                                    <label class="au-checkbox">
-                                                        <input type="checkbox">
-                                                        <span class="au-checkmark"></span>
-                                                    </label>
-                                                </td>
-                                                <td><?php echo htmlspecialchars($item['manu_id']) ?></td>
-                                                <td><?php echo htmlspecialchars($item['manu_name']) ?></td>
-                                                <td>
-                                                    <?php
+                                        <tr class="tr-shadow">
+                                            <td>
+                                                <label class="au-checkbox">
+                                                    <input type="checkbox">
+                                                    <span class="au-checkmark"></span>
+                                                </label>
+                                            </td>
+                                            <td><?php echo htmlspecialchars($item['manu_id']) ?></td>
+                                            <td><?php echo htmlspecialchars($item['manu_name']) ?></td>
+                                            <td>
+                                                <?php
                                                     $date = date_create($item['created_at']);
                                                     echo htmlspecialchars(date_format($date, "d/m/Y"));
                                                     ?>
-                                                </td>
-                                                <td>
-                                                    <?php
+                                            </td>
+                                            <td>
+                                                <?php
                                                     $date = date_create($item['update_at']);
                                                     echo htmlspecialchars(date_format($date, "d/m/Y"));
                                                     ?>
-                                                </td>
-                                                <td>
-                                                    <?php if ($item['status'] == 1) { ?>
-                                                        <span class="status--process">Active</span>
-                                                    <?php } else { ?>
-                                                        <span class="status--process">Inactive</span>
-                                                    <?php } ?>
-                                                </td>
-                                                <td>
-                                                    <div class="table-data-feature" id="manu-table">
-                                                        <!-- <button class="item" data-toggle="tooltip" data-placement="top" title="Send">
+                                            </td>
+                                            <td>
+                                                <?php if ($item['status'] == 1) { ?>
+                                                <span class="status--process">Active</span>
+                                                <?php } else { ?>
+                                                <span class="status--process">Inactive</span>
+                                                <?php } ?>
+                                            </td>
+                                            <td>
+                                                <div class="table-data-feature" id="manu-table">
+                                                    <!-- <button class="item" data-toggle="tooltip" data-placement="top" title="Send">
                                                             <i class="zmdi zmdi-mail-send"></i>
                                                         </button> -->
-                                                        <a href="add-manu.php?manu_id=<?php echo md5($item['manu_id'] . 'chuyen-de-web-2')?>" class="item" data-toggle="tooltip" data-placement="top" title="Edit">
-                                                            <i class="zmdi zmdi-edit"></i>
-                                                        </a>
-                                                        <a href="delete-manu.php?manu_id=<?php echo md5($item['manu_id'] . 'chuyen-de-web-2') ?>&token=<?php echo $token ?>" class="item" data-toggle="tooltip" data-placement="top" title="Delete">
-                                                            <i class="zmdi zmdi-delete"></i>
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr class="spacer"></tr>
+                                                    <a href="add-manu.php?manu_id=<?php echo md5($item['manu_id'] . 'chuyen-de-web-2')?>"
+                                                        class="item" data-toggle="tooltip" data-placement="top"
+                                                        title="Edit">
+                                                        <i class="zmdi zmdi-edit"></i>
+                                                    </a>
+                                                    <a href="delete-manu.php?manu_id=<?php echo md5($item['manu_id'] . 'chuyen-de-web-2') ?>&token=<?php echo $token ?>"
+                                                        class="item" data-toggle="tooltip" data-placement="top"
+                                                        title="Delete">
+                                                        <i class="zmdi zmdi-delete"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="spacer"></tr>
                                         <?php } ?>
                                     </tbody>
                                 </table>
@@ -360,9 +370,9 @@ $token = $_SESSION['token'];
 
     <script src="../../public/js/theme.js"></script>
     <script>
-        if (window.history.replaceState) {
-            window.history.replaceState(null, null, window.location.href);
-        }
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }
     </script>
 
 </body>
