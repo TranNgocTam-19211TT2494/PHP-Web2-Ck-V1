@@ -79,9 +79,9 @@ if (isset($_GET['submit'])) {
                                 <a class="active" href="#"><i class="fa fa-th-large" aria-hidden="true"></i></a>
                                 <a href="#"><i class="fa fa-th-list" aria-hidden="true"></i></a>
                                 <?php if (isset($num_result)) { ?>
-                                    <span>Showing 1 - 6 of <?php echo $num_result ?> results</span>
+                                <span>Showing 1 - 6 of <?php echo $num_result ?> results</span>
                                 <?php } if (isset($num_result_cate))  { ?>
-                                    <span>Showing 1 - 6 of <?php echo $num_result_cate ?> results</span>
+                                <span>Showing 1 - 6 of <?php echo $num_result_cate ?> results</span>
                                 <?php } ?>
                             </div>
                             <div class="float-right">
@@ -97,37 +97,30 @@ if (isset($_GET['submit'])) {
                     </div>
                     <div class="row product_item_inner">
                         <?php foreach ($products as $product) { ?>
-                            <div class="col-lg-4 col-md-4 col-6">
-                                <div class="cake_feature_item">
-                                    <div class="cake_img">
-                                        <img src="<?= $product['pro_image'] ?>" alt="">
-                                        <?php if (isset($_SESSION['lgUserID'])) { ?>
-                                            <?php if (empty($productModel->getWhishlistExist($_SESSION['lgUserID'], $product['id']))) { ?>
-                                                <div class="icon-whishlist">
-                                                    <a href="shop.php?id=<?= md5($product['id'] . 'chuyen-de-web-2') ?>">
-                                                        <i class="fa fa-heart" aria-hidden="true"></i>
-                                                    </a>
-                                                </div>
-                                        <?php }
-                                        } ?>
-                                    </div>
-                                    <div class="cake_text">
-                                        <h4>$<?= $product['price'] ?></h4>
-                                        <h3><?= $product['name'] ?></h3>
-                                        <a class="pest_btn" href="#">Add to cart</a>
-                                    </div>
+                        <div class="col-lg-4 col-md-4 col-6">
+                            <div class="cake_feature_item">
+                                <div class="cake_img">
+                                    <img src="<?= $product['pro_image'] ?>" alt="">
+                                    <?php if (isset($_SESSION['lgUserID'])) { ?>
+                                    <?php if (empty($productModel->getWhishlistExist($_SESSION['lgUserID'], $product['id']))) { ?>
+                                    <div class="icon-whishlist">
+                                        <a href="shop.php?id=<?= md5($product['id'] . 'chuyen-de-web-2') ?>">
+                                            <i class="fa fa-heart" aria-hidden="true"></i>
                                         </a>
                                     </div>
-                                    <?php } }?>
+                                    <?php } } ?>
                                 </div>
                                 <div class="cake_text">
                                     <h4>$<?= $product['price']?></h4>
                                     <h3><?= $product['name']?></h3>
-                                    <a class="pest_btn" href="cart.php?id=<?= $product['id'] ?>" onclick="return insertCart(<?= $product['id'] ?>)">Thêm vào giỏ hàng</a>
-                                </div>
+                                    <a class="pest_btn" href="cart.php?id=<?= $product['id'] ?>"
+                                        onclick="return insertCart(<?= $product['id'] ?>)">Thêm vào giỏ hàng</a>
                                 </div>
                             </div>
+                        </div>
                         <?php } ?>
+
+
                     </div>
                     <!-- Phân trang -->
                     <div class="product_pagination">
@@ -152,9 +145,11 @@ if (isset($_GET['submit'])) {
                     <div class="product_left_sidebar">
                         <aside class="left_sidebar search_widget">
                             <form method="get" class="input-group">
-                                <input type="text" name="search-cate" value="<?= $searchCate ?>" class="form-control" placeholder="Enter Search Keywords">
+                                <input type="text" name="search-cate" value="<?= $searchCate ?>" class="form-control"
+                                    placeholder="Nhập từ khóa tìm kiếm">
                                 <div class="input-group-append">
-                                    <button class="btn" type="submit" name="submit" value="submit"><i class="icon icon-Search"></i></button>
+                                    <button class="btn" type="submit" name="submit" value="submit"><i
+                                            class="icon icon-Search"></i></button>
                                 </div>
                             </form>
                         </aside>
@@ -182,15 +177,12 @@ if (isset($_GET['submit'])) {
                             <div class="p_w_title">
                                 <h3>Sản phẩm mới nhất</h3>
                             </div>
+                            <?php $latests = $productModel->getProductLasters();?>
                             <?php
-                                $latests = $productModel->getProductLasters();
-                            
-                            ?>
-                            <?php
-                                if(!empty($latests)) {
-                                    foreach ($latests as $latest) {
+                        if(!empty($latests)) {
+                            foreach ($latests as $latest) {
                                       
-                            ?>
+                    ?>
                             <div class="media">
                                 <div class="d-flex">
                                     <img src="<?= $latest['pro_image'] ?>" alt="<?= $latest['name'] ?>"
@@ -208,8 +200,7 @@ if (isset($_GET['submit'])) {
                         </aside>
                     </div>
                 </div>
-            </div>
-        </div>
+
     </section>
     <!--================End Product Area =================-->
 
@@ -231,7 +222,7 @@ if (isset($_GET['submit'])) {
 
 
     <?php include_once("views/footer.php");?>
-    
+
 </body>
 
 </html>
