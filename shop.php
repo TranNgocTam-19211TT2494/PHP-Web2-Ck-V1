@@ -79,9 +79,9 @@ if (isset($_GET['submit'])) {
                                 <a class="active" href="#"><i class="fa fa-th-large" aria-hidden="true"></i></a>
                                 <a href="#"><i class="fa fa-th-list" aria-hidden="true"></i></a>
                                 <?php if (isset($num_result)) { ?>
-                                <span>Showing 1 - 6 of <?php echo $num_result ?> results</span>
+                                <span>Hiển thị 1 - 6 sản phẩm trong <?php echo $num_result ?> kết quả</span>
                                 <?php } if (isset($num_result_cate))  { ?>
-                                <span>Showing 1 - 6 of <?php echo $num_result_cate ?> results</span>
+                                <span>Hiển thị 1 - 6 sản phẩm trong <?php echo $num_result_cate ?> kết quả</span>
                                 <?php } ?>
                             </div>
                             <div class="float-right">
