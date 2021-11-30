@@ -1,3 +1,10 @@
+<?php
+	session_start();
+	require_once 'models/FactoryPattent.php';
+	$factory = new FactoryPattent();
+	$HomeModel = $factory->make('home');
+	$products = $HomeModel->getProductHosts();
+?>
 <!DOCTYPE html>
 <html lang="en">
     
@@ -14,10 +21,10 @@
         <section class="banner_area">
         	<div class="container">
         		<div class="banner_text">
-        			<h3>Our Cakes</h3>
+        			<h3>Bánh của chúng tôi</h3>
         			<ul>
-        				<li><a href="index.html">Home</a></li>
-        				<li><a href="cakes.html">Services</a></li>
+        				<li><a href="index.php">Nhà</a></li>
+        				<li><a href="cakes.html">Dịch vụ</a></li>
         			</ul>
         		</div>
         	</div>
@@ -28,154 +35,28 @@
         <section class="our_cakes_area p_100">
         	<div class="container">
         		<div class="main_title">
-        			<h2>Our Cakes</h2>
-        			<h5>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</h5>
+        			<h2>Bánh của chúng tôi</h2>
+        			<h5>Nhưng để bạn có thể hiểu rằng mọi lỗi lầm bẩm sinh đều là niềm vui khi buộc tội và ca ngợi nỗi đau, tôi sẽ mở ra toàn bộ vấn đề, và sẽ giải thích chính những điều đã được nói bởi người phát minh ra sự thật và như nó là kiến ​​trúc sư của cuộc sống may mắn.</h5>
         		</div>
         		<div class="cake_feature_row row">
+					<?php 
+						if(!empty($products)) { 
+						foreach ($products as $product) {
+							
+					?>
 					<div class="col-lg-3 col-md-4 col-6">
 						<div class="cake_feature_item">
 							<div class="cake_img">
-								<img src="img/cake-feature/c-feature-1.jpg" alt="">
+								<img src="<?= $product['pro_image']?>" alt="<?= $product['name']?>">
 							</div>
 							<div class="cake_text">
-								<h4>$29</h4>
-								<h3>Strawberry Cupcakes</h3>
-								<a class="pest_btn" href="#">Add to cart</a>
+								<h4>$<?= $product['price']?></h4>
+								<h3><?= $product['name']?></h3>
+								<a class="pest_btn" href="cart.php?id=<?= $product['id'] ?>" onclick="return insertCart(<?= $product['id'] ?>)">Thêm vào giỏ hàng</a>
 							</div>
 						</div>
 					</div>
-					<div class="col-lg-3 col-md-4 col-6">
-						<div class="cake_feature_item">
-							<div class="cake_img">
-								<img src="img/cake-feature/c-feature-2.jpg" alt="">
-							</div>
-							<div class="cake_text">
-								<h4>$29</h4>
-								<h3>Strawberry Cupcakes</h3>
-								<a class="pest_btn" href="#">Add to cart</a>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 col-md-4 col-6">
-						<div class="cake_feature_item">
-							<div class="cake_img">
-								<img src="img/cake-feature/c-feature-3.jpg" alt="">
-							</div>
-							<div class="cake_text">
-								<h4>$29</h4>
-								<h3>Strawberry Cupcakes</h3>
-								<a class="pest_btn" href="#">Add to cart</a>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 col-md-4 col-6">
-						<div class="cake_feature_item">
-							<div class="cake_img">
-								<img src="img/cake-feature/c-feature-9.jpg" alt="">
-							</div>
-							<div class="cake_text">
-								<h4>$29</h4>
-								<h3>Strawberry Cupcakes</h3>
-								<a class="pest_btn" href="#">Add to cart</a>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 col-md-4 col-6">
-						<div class="cake_feature_item">
-							<div class="cake_img">
-								<img src="img/cake-feature/c-feature-4.jpg" alt="">
-							</div>
-							<div class="cake_text">
-								<h4>$29</h4>
-								<h3>Strawberry Cupcakes</h3>
-								<a class="pest_btn" href="#">Add to cart</a>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 col-md-4 col-6">
-						<div class="cake_feature_item">
-							<div class="cake_img">
-								<img src="img/cake-feature/c-feature-5.jpg" alt="">
-							</div>
-							<div class="cake_text">
-								<h4>$29</h4>
-								<h3>Strawberry Cupcakes</h3>
-								<a class="pest_btn" href="#">Add to cart</a>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 col-md-4 col-6">
-						<div class="cake_feature_item">
-							<div class="cake_img">
-								<img src="img/cake-feature/c-feature-6.jpg" alt="">
-							</div>
-							<div class="cake_text">
-								<h4>$29</h4>
-								<h3>Strawberry Cupcakes</h3>
-								<a class="pest_btn" href="#">Add to cart</a>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 col-md-4 col-6">
-						<div class="cake_feature_item">
-							<div class="cake_img">
-								<img src="img/cake-feature/c-feature-7.jpg" alt="">
-							</div>
-							<div class="cake_text">
-								<h4>$29</h4>
-								<h3>Strawberry Cupcakes</h3>
-								<a class="pest_btn" href="#">Add to cart</a>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 col-md-4 col-6">
-						<div class="cake_feature_item">
-							<div class="cake_img">
-								<img src="img/cake-feature/c-feature-8.jpg" alt="">
-							</div>
-							<div class="cake_text">
-								<h4>$29</h4>
-								<h3>Strawberry Cupcakes</h3>
-								<a class="pest_btn" href="#">Add to cart</a>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 col-md-4 col-6">
-						<div class="cake_feature_item">
-							<div class="cake_img">
-								<img src="img/cake-feature/c-feature-9.jpg" alt="">
-							</div>
-							<div class="cake_text">
-								<h4>$29</h4>
-								<h3>Strawberry Cupcakes</h3>
-								<a class="pest_btn" href="#">Add to cart</a>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 col-md-4 col-6">
-						<div class="cake_feature_item">
-							<div class="cake_img">
-								<img src="img/cake-feature/c-feature-3.jpg" alt="">
-							</div>
-							<div class="cake_text">
-								<h4>$29</h4>
-								<h3>Strawberry Cupcakes</h3>
-								<a class="pest_btn" href="#">Add to cart</a>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 col-md-4 col-6">
-						<div class="cake_feature_item">
-							<div class="cake_img">
-								<img src="img/cake-feature/c-feature-5.jpg" alt="">
-							</div>
-							<div class="cake_text">
-								<h4>$29</h4>
-								<h3>Strawberry Cupcakes</h3>
-								<a class="pest_btn" href="#">Add to cart</a>
-							</div>
-						</div>
-					</div>
+					<?php } } ?>
 				</div>
         	</div>
         </section>

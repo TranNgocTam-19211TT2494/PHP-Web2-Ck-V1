@@ -1,41 +1,24 @@
 <?php
 
-session_start();
+require 'vendor/autoload.php';
+// --------------Factory----------
 require 'models/FactoryPattent.php';
 $factory = new FactoryPattent();
-// --------------Factory----------
-
 $HomeModel = $factory->make('home');
 // --------------Factory----------
 
 if (!empty($_POST['submit'])) {
-    $userName = trim($_POST["username"]);
-    $passWord = trim($_POST["password"]);
-    if ($userName != "" && $passWord != "") {
-
-        $rows = $HomeModel->login($userName, $passWord);
-
-        if (!empty($rows)) {
-            foreach ($rows as $row) {
-                $_SESSION["lgUserName"] = $userName;
-
-                $_SESSION["lgUserID"] = $row['id'];
-
-            }
-            if($rows[0]['action'] == 1){
-                header("location:index.php");
-            }
-            else{
-                echo "<p class=\"error\" style = 'color: red;
-				text-align: center;'>Tài khoản chưa được xác thực</p>";
-            }
-        } else {
-            echo "<p class=\"error\" style = 'color: red;
-				text-align: center;'>Tên đăng nhập hoặc mật khẩu không đúng</p>";
-        }
+    $insert = $HomeModel->getOtp($_POST);
+    
+    if ($insert[0]['otp'] == $_POST['otp']) {
+        // var_dump($insert[0]['otp']);die();
+        $updateOtp = $HomeModel->getOtpAsAction();
+        header("location: login.php");
+    } else {
+        echo "<div class=\"alert alert-dark\" role=\"alert\">
+                OTP error!</div>";
     }
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -49,7 +32,7 @@ if (!empty($_POST['submit'])) {
     <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
-    <title>Login</title>
+    <title>Register</title>
 
     <!-- Fontfaces CSS-->
     <link href="public/backend/css/font-face.css" rel="stylesheet" media="all">
@@ -79,6 +62,7 @@ if (!empty($_POST['submit'])) {
         <div class="page-content--bge5">
             <div class="container">
                 <div class="login-wrap">
+
                     <div class="login-content">
                         <div class="login-logo">
                             <a href="#">
@@ -88,30 +72,12 @@ if (!empty($_POST['submit'])) {
                         <div class="login-form">
                             <form method="post">
                                 <div class="form-group">
-                                    <label>Enter Name</label>
-                                    <input class="au-input au-input--full" type="text" name="username" placeholder="Name">
+                                    <label>OTP</label>
+                                    <input class="au-input au-input--full" type="text" name="otp" placeholder="OTP">
                                 </div>
-                                <div class="form-group">
-                                    <label>Password</label>
-                                    <input class="au-input au-input--full" type="password" name="password" placeholder="Password">
-                                </div>
-                                <div class="login-checkbox">
-                                    <label>
-                                        <input type="checkbox" name="remember">Remember Me
-                                    </label>
-                                    <label>
-                                        <a href="forgot-password.php">Forgotten Password?</a>
-                                    </label>
-                                </div>
-                                <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit" name="submit" value="submit">sign in</button>
-                                
+                                <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit" name="submit" value="submit">Check</button>
                             </form>
-                            <div class="register-link">
-                                <p>
-                                    Don't you have account?
-                                    <a href="register.php">Sign Up Here</a>
-                                </p>
-                            </div>
+
                         </div>
                     </div>
                 </div>
