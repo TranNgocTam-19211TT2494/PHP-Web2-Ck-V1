@@ -1,8 +1,5 @@
 <?php
-require_once 'models/HomeModel.php';
-
-// $protypeModel = new HomeModel();
-
+session_start();
 // --------------Factory----------
 require 'models/FactoryPattent.php';
 $factory = new FactoryPattent();
@@ -36,16 +33,16 @@ if (isset($_GET['type_id'])) {
     <section class="banner_area">
         <div class="container">
             <div class="banner_text">
-                <h3>Protype</h3>
+                <h3>Thể loại</h3>
                 <ul>
-                    <li><a href="index.php">Home</a></li>
-                    <li><a href="shop.php">Protype</a></li>
+                    <li><a href="index.php">Nhà</a></li>
+                    <li><a href="shop.php">Cửu tiệm</a></li>
                 </ul>
             </div>
         </div>
     </section>
     <!--================End Main Header Area =================-->
-    <?php if(!empty($_GET['type_id'])) {?>
+    <?php if(isset($_GET['type_id'])) {?>
     <!--================Product Area =================-->
     <section class="product_area p_100">
         <div class="container">
@@ -59,13 +56,16 @@ if (isset($_GET['type_id'])) {
                                   
                                 </div>
                                     <div class="float-right">
-                                        <h4>Protype</h4>
+                                        <h4>Thể loại</h4>
                                       
                                     </div>
                             </div>
                         </div>
                         <div class="row product_item_inner">
-                            <?php foreach ($protype as $pro) { ?>
+                            
+                            <?php 
+                            if (!empty($protype)) {
+                                foreach ($protype as $pro) { ?>
                                 <div class="col-lg-4 col-md-4 col-6">
                                     <div class="cake_feature_item">
                                         <div class="cake_img">
@@ -74,11 +74,12 @@ if (isset($_GET['type_id'])) {
                                         <div class="cake_text">
                                             <h4>$<?= $pro['price'] ?></h4>
                                             <h3><?= $pro['name'] ?></h3>
-                                            <a class="pest_btn" href="#">Add to cart</a>
+                                            <a class="pest_btn" href="cart.php?id=<?= $pro['id'] ?>" onclick="return insertCart(<?= $pro['id'] ?>)">Thêm vào giỏ hàng</a>
                                         </div>
                                     </div>
                                 </div>
-                            <?php } ?>
+                            <?php }
+                            }?>
                         </div>
                     <!-- </?php } ?> -->
                     <!-- Phân trang -->
@@ -104,7 +105,7 @@ if (isset($_GET['type_id'])) {
                     <div class="product_left_sidebar">
                         <aside class="left_sidebar search_widget">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Enter Search Keywords">
+                                <input type="text" class="form-control" placeholder="Nhập từ khóa tìm kiếm">
                                 <div class="input-group-append">
                                     <button class="btn" type="button"><i class="icon icon-Search"></i></button>
                                 </div>
@@ -112,7 +113,7 @@ if (isset($_GET['type_id'])) {
                         </aside>
                         <aside class="left_sidebar p_catgories_widget">
                             <div class="p_w_title">
-                                <h3>Product Categories</h3>
+                                <h3>Danh mục sản phẩm</h3>
                             </div>
                             <?php 
                                 $manufactures = $protypeModel->getManufactures();
@@ -130,80 +131,30 @@ if (isset($_GET['type_id'])) {
                         
                         <aside class="left_sidebar p_sale_widget">
                             <div class="p_w_title">
-                                <h3>Top Sale Products</h3>
+                                <h3>Sản phẩm mới nhất</h3>
                             </div>
+                            <?php
+                                $latests = $protypeModel->getProductLasters();
+                            
+                            ?>
+                            <?php
+                                if(!empty($latests)) {
+                                    foreach ($latests as $latest) {
+                                      
+                            ?>
                             <div class="media">
                                 <div class="d-flex">
-                                    <img src="img/product/sale-product/s-product-1.jpg" alt="">
+                                    <img src="<?= $latest['pro_image'] ?>" alt="<?= $latest['name'] ?>" style="max-width: 100px;">
                                 </div>
                                 <div class="media-body">
-                                    <a href="#">
-                                        <h4>Brown Cake</h4>
+                                    <a href="product-details.php?id=<?=$latest['id'] ?>">
+                                        <h4><?= $latest['name'] ?></h4>
                                     </a>
-                                    <ul class="list_style">
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                    </ul>
-                                    <h5>$29</h5>
+                                    
+                                    <h5>$<?= $latest['price'] ?></h5>
                                 </div>
                             </div>
-                            <div class="media">
-                                <div class="d-flex">
-                                    <img src="img/product/sale-product/s-product-2.jpg" alt="">
-                                </div>
-                                <div class="media-body">
-                                    <a href="#">
-                                        <h4>Brown Cake</h4>
-                                    </a>
-                                    <ul class="list_style">
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                    </ul>
-                                    <h5>$29</h5>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="d-flex">
-                                    <img src="img/product/sale-product/s-product-3.jpg" alt="">
-                                </div>
-                                <div class="media-body">
-                                    <a href="#">
-                                        <h4>Brown Cake</h4>
-                                    </a>
-                                    <ul class="list_style">
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                    </ul>
-                                    <h5>$29</h5>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="d-flex">
-                                    <img src="img/product/sale-product/s-product-4.jpg" alt="">
-                                </div>
-                                <div class="media-body">
-                                    <a href="#">
-                                        <h4>Brown Cake</h4>
-                                    </a>
-                                    <ul class="list_style">
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                    </ul>
-                                    <h5>$29</h5>
-                                </div>
-                            </div>
+                            <?php } } ?>
                         </aside>
                     </div>
                 </div>

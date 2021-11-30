@@ -1,4 +1,11 @@
+<?php
+session_start();
+ob_start();
+    require_once "models/HomeModel.php";
 
+    $HomeModel = new HomeModel();
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -31,15 +38,15 @@
     <!--================End Discover Menu Area =================-->
 
     <!--================Client Says Area =================-->
-    <?php include_once("views/layouts/client-says.php");?>
+
     <!--================End Client Says Area =================-->
 
     <!--================End Client Says Area =================-->
-    <?php include_once("views/layouts/our-chef-area.php");?>
+
     <!--================End Client Says Area =================-->
 
     <!--================Latest News Area =================-->
-    <?php include_once("views/layouts/latest-news.php");?>
+
     <!--================End Latest News Area =================-->
 
     <!--================Newsletter Area =================-->

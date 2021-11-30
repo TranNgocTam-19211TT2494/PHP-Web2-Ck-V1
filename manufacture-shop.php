@@ -1,4 +1,5 @@
 <?php
+session_start();
 require 'models/FactoryPattent.php';
 $factory = new FactoryPattent();
 
@@ -32,10 +33,10 @@ if (isset($_GET['manu_id'])) {
     <section class="banner_area">
         <div class="container">
             <div class="banner_text">
-                <h3>Protype</h3>
+                <h3>Danh mục</h3>
                 <ul>
-                    <li><a href="index.php">Home</a></li>
-                    <li><a href="shop.php">Protype</a></li>
+                    <li><a href="index.php">Nhà</a></li>
+                    <li><a href="shop.php">Cửu hàng</a></li>
                 </ul>
             </div>
         </div>
@@ -55,13 +56,13 @@ if (isset($_GET['manu_id'])) {
 
                             </div>
                             <div class="float-right">
-                                <h4>Manufactures</h4>
+                                <h4>Danh mục</h4>
 
                             </div>
                         </div>
                     </div>
                     <div class="row product_item_inner">
-                        <?php foreach ($manu as $manufacture) { ?>
+                        <?php if(!empty($manu)) { foreach ($manu as $manufacture) { ?>
                         <div class="col-lg-4 col-md-4 col-6">
                             <div class="cake_feature_item">
                                 <div class="cake_img">
@@ -70,11 +71,11 @@ if (isset($_GET['manu_id'])) {
                                 <div class="cake_text">
                                     <h4>$<?= $manufacture['price'] ?></h4>
                                     <h3><?= $manufacture['name'] ?></h3>
-                                    <a class="pest_btn" href="#">Add to cart</a>
+                                    <a class="pest_btn" href="cart.php?id=<?= $manufacture['id'] ?>" onclick="return insertCart(<?= $manufacture['id'] ?>)">Thêm vào giỏ hàng</a>
                                 </div>
                             </div>
                         </div>
-                        <?php } ?>
+                        <?php } } ?>
                     </div>
                     <!-- </?php } ?> -->
                     <!-- Phân trang -->
@@ -100,7 +101,7 @@ if (isset($_GET['manu_id'])) {
                     <div class="product_left_sidebar">
                         <aside class="left_sidebar search_widget">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Enter Search Keywords">
+                                <input type="text" class="form-control" placeholder="Nhập từ khóa tìm kiếm">
                                 <div class="input-group-append">
                                     <button class="btn" type="button"><i class="icon icon-Search"></i></button>
                                 </div>
@@ -109,7 +110,7 @@ if (isset($_GET['manu_id'])) {
                         <!-- Manufacture -->
                         <aside class="left_sidebar p_catgories_widget">
                             <div class="p_w_title">
-                                <h3>Product Categories</h3>
+                                <h3>Danh mục sản phẩm</h3>
                             </div>
                            
                             <ul class="list_style">
@@ -124,80 +125,31 @@ if (isset($_GET['manu_id'])) {
 
                         <aside class="left_sidebar p_sale_widget">
                             <div class="p_w_title">
-                                <h3>Top Sale Products</h3>
+                                <h3>Sản phẩm mới nhất</h3>
                             </div>
+                            <?php
+                                $latests = $productModel->getProductLasters();
+                            
+                            ?>
+                            <?php
+                                if(!empty($latests)) {
+                                    foreach ($latests as $latest) {
+                                      
+                            ?>
                             <div class="media">
                                 <div class="d-flex">
-                                    <img src="img/product/sale-product/s-product-1.jpg" alt="">
+                                    <img src="<?= $latest['pro_image'] ?>" alt="<?= $latest['name'] ?>" style="max-width: 100px;">
                                 </div>
                                 <div class="media-body">
-                                    <a href="#">
-                                        <h4>Brown Cake</h4>
+                                    <a href="product-details.php?id=<?=$latest['id'] ?>">
+                                        <h4><?= $latest['name'] ?></h4>
                                     </a>
-                                    <ul class="list_style">
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                    </ul>
-                                    <h5>$29</h5>
+                                    
+                                    <h5>$<?= $latest['price'] ?></h5>
                                 </div>
                             </div>
-                            <div class="media">
-                                <div class="d-flex">
-                                    <img src="img/product/sale-product/s-product-2.jpg" alt="">
-                                </div>
-                                <div class="media-body">
-                                    <a href="#">
-                                        <h4>Brown Cake</h4>
-                                    </a>
-                                    <ul class="list_style">
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                    </ul>
-                                    <h5>$29</h5>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="d-flex">
-                                    <img src="img/product/sale-product/s-product-3.jpg" alt="">
-                                </div>
-                                <div class="media-body">
-                                    <a href="#">
-                                        <h4>Brown Cake</h4>
-                                    </a>
-                                    <ul class="list_style">
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                    </ul>
-                                    <h5>$29</h5>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="d-flex">
-                                    <img src="img/product/sale-product/s-product-4.jpg" alt="">
-                                </div>
-                                <div class="media-body">
-                                    <a href="#">
-                                        <h4>Brown Cake</h4>
-                                    </a>
-                                    <ul class="list_style">
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                    </ul>
-                                    <h5>$29</h5>
-                                </div>
-                            </div>
+                            <?php } } ?>
+                           
                         </aside>
                     </div>
                 </div>

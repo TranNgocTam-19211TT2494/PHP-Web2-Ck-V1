@@ -1752,6 +1752,7 @@ i:before {
 .banner_area {
   background: url(../img/banner/banner-bg.jpg) no-repeat scroll center center;
   background-size: cover;
+  padding-top: 55px;
 }
 
 .banner_text {
@@ -5934,7 +5935,7 @@ i:before {
 }
 
 .cart_table_area .table-responsive .table tbody tr:last-child td .form-inline .form-group input {
-  width: 130px;
+  width: 125px;
   border: 1px solid #dddddd;
   border-radius: 3px;
   height: 33px;
