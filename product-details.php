@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once 'models/FactoryPattent.php';
 $factory = new FactoryPattent();
 $HomeModel = $factory->make('home');
@@ -33,10 +34,10 @@ if (isset($_GET['id'])) {
     <section class="banner_area">
         <div class="container">
             <div class="banner_text">
-                <h3>Product Details</h3>
+                <h3>Thông tin chi tiết sản phẩm</h3>
                 <ul>
-                    <li><a href="index.php">Home</a></li>
-
+                    <li><a href="index.php">Nhà</a></li>
+                    <li><a href="shop.php">Cửa hàng</a></li>
                 </ul>
             </div>
         </div>
@@ -44,7 +45,7 @@ if (isset($_GET['id'])) {
     <!--================End Main Header Area =================-->
 
     <!--================Product Details Area =================-->
-    <?php if($id || !empty($product)) { ?>
+    <?php if(isset($id)) { ?>
     <section class="product_details_area p_100">
         <div class="container">
             <div class="row product_d_price">
@@ -59,11 +60,9 @@ if (isset($_GET['id'])) {
                         <p><?= $product[0]['description']?>
                         </p>
                         <h5>Price :<span>$<?= $product[0]['price']?></span></h5>
-                        <div class="quantity_box">
-                            <label for="quantity">Quantity :</label>
-                            <input type="text" placeholder="1" id="quantity">
-                        </div>
-                        <a class="pink_more" href="#">Add to Cart</a>
+
+                        <a class="pink_more" href="cart.php?id=<?= $product[0]['id'] ?>" onclick="return insertCart(<?= $product[0]['id'] ?>)">Thêm vào giỏ hàng</a>
+                        <a class="pink_more" href="#">Yêu thích</a>
                     </div>
                 </div>
             </div>
@@ -71,10 +70,10 @@ if (isset($_GET['id'])) {
                 <nav>
                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
                         <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home"
-                            role="tab" aria-controls="nav-home" aria-selected="true">Descripton</a>
+                            role="tab" aria-controls="nav-home" aria-selected="true">Mô tả</a>
 
                         <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact"
-                            role="tab" aria-controls="nav-contact" aria-selected="false">Comment (0)</a>
+                            role="tab" aria-controls="nav-contact" aria-selected="false">Nhận xét (0)</a>
                     </div>
                 </nav>
                 <div class="tab-content" id="nav-tabContent">
@@ -84,30 +83,34 @@ if (isset($_GET['id'])) {
                     </div>
 
                     <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                            labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                            laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-                            voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-                        <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-                            anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                            et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                            nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-                            velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                            proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+                        <p>Nỗi đau chính là tình yêu của nỗi đau, những vấn đề sinh thái chính, nhưng tôi cho loại thời
+                            gian này để rơi xuống, để một số nỗi đau và nỗi đau lớn. Vì mục đích tối thiểu, ai trong
+                            chúng ta nên thực hiện bất kỳ công việc nào ngoại trừ việc tận dụng những hậu quả từ việc
+                            đó. Nhưng nỗi đau trong phim là không thể lên án, trong niềm vui sướng nó muốn thoát khỏi
+                            nỗi đau bị co cụm trong đau đớn, không có kết quả.</p>
+                        <p>Excepteur, họ bị mù quáng bởi mong muốn không xuất hiện, họ là lỗi của những người rời bỏ văn
+                            phòng của họ, xoa dịu tâm hồn, tức là những người lao động của tầng lớp đại học chính quy,
+                            nhưng họ làm loại thời gian này, khi họ sa ngã. vào một số lao động và đau đớn lớn. Vì vậy,
+                            phần lớn, bất kỳ ai trong chúng ta cũng sẽ thực hiện bất kỳ loại công việc nào ngoại trừ để
+                            tận dụng các mục tiêu từ nó. Nhưng nỗi đau trong phim là không thể lên án, trong niềm vui
+                            sướng nó muốn thoát khỏi nỗi đau bị co cụm trong đau đớn, không có kết quả. Những kẻ thèm
+                            khát đen đủi là ngoại lệ, họ không nhìn thấy, họ là những người rũ bỏ trách nhiệm một cách
+                            có lỗi đang xoa dịu nỗi vất vả.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <?php } ?>
-
+    <?php } else { ?>
+    <div class="alert alert-danger">Vui lòng chọn 1 sản phẩm bất kỳ để xem thông tin chi tiết!</div>
+    <?php }  ?>
     <!--================End Product Details Area =================-->
 
     <!--================Similar Product Area =================-->
     <section class="similar_product_area p_100">
         <div class="container">
             <div class="main_title">
-                <h2>Similar Products</h2>
+                <h2>Sản phẩm liên quan</h2>
             </div>
             <div class="row similar_product_inner">
                 <?php
@@ -123,7 +126,7 @@ if (isset($_GET['id'])) {
                         <div class="cake_text">
                             <h4>$<?= $product['price'] ?></h4>
                             <h3><?= $product['name'] ?></h3>
-                            <a class="pest_btn" href="#">Add to cart</a>
+                            <a class="pest_btn" href="cart.php?id=<?= $product['id'] ?>" onclick="return insertCart(<?= $product['id'] ?>)">Thêm vào giỏ hàng</a>
                         </div>
                     </div>
                 </div>

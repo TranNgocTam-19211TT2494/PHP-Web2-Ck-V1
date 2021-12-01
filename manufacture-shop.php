@@ -1,4 +1,5 @@
 <?php
+session_start();
 require 'models/FactoryPattent.php';
 $factory = new FactoryPattent();
 
@@ -70,7 +71,7 @@ if (isset($_GET['manu_id'])) {
                                 <div class="cake_text">
                                     <h4>$<?= $manufacture['price'] ?></h4>
                                     <h3><?= $manufacture['name'] ?></h3>
-                                    <a class="pest_btn" href="#">Thêm vào giỏ hàng</a>
+                                    <a class="pest_btn" href="cart.php?id=<?= $manufacture['id'] ?>" onclick="return insertCart(<?= $manufacture['id'] ?>)">Thêm vào giỏ hàng</a>
                                 </div>
                             </div>
                         </div>

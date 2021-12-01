@@ -5,26 +5,43 @@ require 'models/FactoryPattent.php';
 $factory = new FactoryPattent();
 $productModel = $factory->make('home');
 // --------------Factory----------
-	$noti = 0;
-	$products = $productModel->getProducts(); 
-    if(!empty($_SESSION["lgUserID"])){
-        if(!empty($_GET['id'])){
-            $inserWhishlist = $productModel->insertWhishList($_GET['id'],$_SESSION['lgUserID']);
-            $noti = 1;
-        }
-    }else{
-        $noti = 2;
+$noti = 0;
+//$products = $productModel->getProducts();
+if (!empty($_SESSION["lgUserID"])) {
+    if (!empty($_GET['id'])) {
+        $inserWhishlist = $productModel->insertWhishList($_GET['id'], $_SESSION['lgUserID']);
+        $noti = 1;
     }
+} else {
+    $noti = 2;
+}
+$search  = '';
+$searchCate  = '';
+if (isset($_GET['submit'])) {
+    if (!empty($_GET['search'])) {
+        $search = $_GET['search'];
+        $products = $productModel->searchProduct($search);
+        $num_result = count($products);
+    }
+    if (!empty($_GET['search-cate'])) {
+        $searchCate = $_GET['search-cate'];
+        $products = $productModel->searchCategories($searchCate);
+      
+        $num_result_cate = count($products);
+    }
+} else {
+    $products = $productModel->getProducts();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
 
-<?php include_once("views/head.php");?>
+<?php include_once("views/head.php"); ?>
 
 <body>
 
     <!--================Main Header Area =================-->
-    <?php include_once("views/header.php");?>
+    <?php include_once("views/header.php"); ?>
     <!--================End Main Header Area =================-->
 
     <!--================End Main Header Area =================-->
@@ -57,19 +74,23 @@ $productModel = $factory->make('home');
                     </div>
                     <?php }?>
                     <div class="row m0 product_task_bar">
-
                         <div class="product_task_inner">
-                            <!-- <div class="float-left">
+                            <div class="float-left">
                                 <a class="active" href="#"><i class="fa fa-th-large" aria-hidden="true"></i></a>
                                 <a href="#"><i class="fa fa-th-list" aria-hidden="true"></i></a>
-                                <span>Showing 1 - 10 of 55 results</span>
-                            </div> -->
+                                <?php if (isset($num_result)) { ?>
+                                <span>Showing 1 - 6 of <?php echo $num_result ?> results</span>
+                                <?php } if (isset($num_result_cate))  { ?>
+                                <span>Showing 1 - 6 of <?php echo $num_result_cate ?> results</span>
+                                <?php } ?>
+                            </div>
                             <div class="float-right">
                                 <h4>Sắp xếp theo :</h4>
-                                <select class="short" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
-									<option>Loại</option>
-									<option value="?field=price&sort=desc">Giảm (A - Z)</option>
-									<option value="?field=price&sort=asc">Tăng (Z - A)</option>
+                                <select class="short"
+                                    onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
+                                    <option>Loại</option>
+                                    <option value="?field=price&sort=desc">Giảm (A - Z)</option>
+                                    <option value="?field=price&sort=asc">Tăng (Z - A)</option>
                                 </select>
                             </div>
                         </div>
@@ -79,24 +100,27 @@ $productModel = $factory->make('home');
                         <div class="col-lg-4 col-md-4 col-6">
                             <div class="cake_feature_item">
                                 <div class="cake_img">
-                                    <img src="<?= $product['pro_image']?>" alt="">
-                                    <?php if(isset($_SESSION['lgUserID'])) {?>
-                                    <?php if(empty($productModel->getWhishlistExist($_SESSION['lgUserID'],$product['id']))) {?>
+                                    <img src="<?= $product['pro_image'] ?>" alt="">
+                                    <?php if (isset($_SESSION['lgUserID'])) { ?>
+                                    <?php if (empty($productModel->getWhishlistExist($_SESSION['lgUserID'], $product['id']))) { ?>
                                     <div class="icon-whishlist">
-                                        <a href="shop.php?id=<?= md5($product['id'].'chuyen-de-web-2')?>">
+                                        <a href="shop.php?id=<?= md5($product['id'] . 'chuyen-de-web-2') ?>">
                                             <i class="fa fa-heart" aria-hidden="true"></i>
                                         </a>
                                     </div>
-                                    <?php } }?>
+                                    <?php } } ?>
                                 </div>
                                 <div class="cake_text">
                                     <h4>$<?= $product['price']?></h4>
                                     <h3><?= $product['name']?></h3>
-                                    <a class="pest_btn" href="#">Thêm vào giỏ hàng</a>
+                                    <a class="pest_btn" href="cart.php?id=<?= $product['id'] ?>"
+                                        onclick="return insertCart(<?= $product['id'] ?>)">Thêm vào giỏ hàng</a>
                                 </div>
                             </div>
                         </div>
                         <?php } ?>
+
+
                     </div>
                     <!-- Phân trang -->
                     <div class="product_pagination">
@@ -120,12 +144,14 @@ $productModel = $factory->make('home');
                 <div class="col-lg-3">
                     <div class="product_left_sidebar">
                         <aside class="left_sidebar search_widget">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Nhập từ khóa tìm kiếm">
+                            <form method="get" class="input-group">
+                                <input type="text" name="search-cate" value="<?= $searchCate ?>" class="form-control"
+                                    placeholder="Nhập từ khóa tìm kiếm">
                                 <div class="input-group-append">
-                                    <button class="btn" type="button"><i class="icon icon-Search"></i></button>
+                                    <button class="btn" type="submit" name="submit" value="submit"><i
+                                            class="icon icon-Search"></i></button>
                                 </div>
-                            </div>
+                            </form>
                         </aside>
                         <!-- Manufacture -->
                         <aside class="left_sidebar p_catgories_widget">
@@ -138,34 +164,35 @@ $productModel = $factory->make('home');
                             ?>
                             <ul class="list_style">
                                 <?php foreach ($manufactures as $manufacture) { ?>
-                                <li><a href="manufacture-shop.php?manu_id=<?=md5($manufacture['manu_id'] . 'chuyen-de-web-2') ?>"><?= $manufacture['manu_name'] ?> (<?= count($productModel->countProductWithManufacture($manufacture['manu_id'])) ?>)</a></li>
+                                <li><a
+                                        href="manufacture-shop.php?manu_id=<?=md5($manufacture['manu_id'] . 'chuyen-de-web-2') ?>"><?= $manufacture['manu_name'] ?>
+                                        (<?= count($productModel->countProductWithManufacture($manufacture['manu_id'])) ?>)</a>
+                                </li>
                                 <?php } ?>
-                              
+
                             </ul>
                         </aside>
-                        
+
                         <aside class="left_sidebar p_sale_widget">
                             <div class="p_w_title">
                                 <h3>Sản phẩm mới nhất</h3>
                             </div>
+                            <?php $latests = $productModel->getProductLasters();?>
                             <?php
-                                $latests = $productModel->getProductLasters();
-                            
-                            ?>
-                            <?php
-                                if(!empty($latests)) {
-                                    foreach ($latests as $latest) {
+                        if(!empty($latests)) {
+                            foreach ($latests as $latest) {
                                       
-                            ?>
+                    ?>
                             <div class="media">
                                 <div class="d-flex">
-                                    <img src="<?= $latest['pro_image'] ?>" alt="<?= $latest['name'] ?>" style="max-width: 100px;">
+                                    <img src="<?= $latest['pro_image'] ?>" alt="<?= $latest['name'] ?>"
+                                        style="max-width: 100px;">
                                 </div>
                                 <div class="media-body">
                                     <a href="product-details.php?id=<?=$latest['id'] ?>">
                                         <h4><?= $latest['name'] ?></h4>
                                     </a>
-                                    
+
                                     <h5>$<?= $latest['price'] ?></h5>
                                 </div>
                             </div>
@@ -173,22 +200,21 @@ $productModel = $factory->make('home');
                         </aside>
                     </div>
                 </div>
-            </div>
-        </div>
+
     </section>
     <!--================End Product Area =================-->
 
     <!--================Newsletter Area =================-->
-    <?php include_once("views/layouts/news.php");?>
+    <?php include_once("views/layouts/news.php"); ?>
     <!--================End Newsletter Area =================-->
 
     <!--================Footer Area =================-->
-    <?php include_once("views/layouts/footer.php");?>
+    <?php include_once("views/layouts/footer.php"); ?>
     <!--================End Footer Area =================-->
 
 
     <!--================Search Box Area =================-->
-    <?php include_once("views/layouts/search.php");?>
+    <?php include_once("views/layouts/search.php"); ?>
     <!--================End Search Box Area =================-->
 
 
@@ -196,6 +222,7 @@ $productModel = $factory->make('home');
 
 
     <?php include_once("views/footer.php");?>
+
 </body>
 
 </html>
