@@ -76,7 +76,7 @@ class HomeModel extends BaseModel
         $user = $this->select($sql);
         return $user;
     }
-      //Update password cho user: 
+    //Update password cho user;: 
     public function UpdatePassword($password , $email) {
         $sql = 'UPDATE users SET 
         password = "' . md5($password) . '"
@@ -84,42 +84,29 @@ class HomeModel extends BaseModel
         $user = $this->update($sql);
         return $user;
     }
-      //Send mail password cho nguoi dung:
-    public function sendMail($email , $password)
+    // Tìm id của người dùng:
+    public function getUserById($id)
     {
-        $mail = new PHPMailer(true);//true:enables exceptions
-        try {
-            $mail->SMTPDebug = 0; //0,1,2: chế độ debug
-            $mail->isSMTP();
-            $mail->CharSet  = "utf-8";
-            $mail->Host = 'smtp.gmail.com';  //SMTP servers
-            $mail->SMTPAuth = true; // Enable authentication
-            $mail->Username = 'phantinh1209@gmail.com'; // SMTP username
-            $mail->Password = 'zexpotcxbxkuspaq';   // SMTP password
-            $mail->SMTPSecure = 'ssl';  // encryption TLS/SSL 
-            $mail->Port = 465;  // port to connect to                
-            $mail->setFrom('phantinh1209@gmail.com', 'AnhTam');
-            $mail->addAddress($email);
-            $mail->isHTML(true);  // Set email format to HTML
-            $mail->Subject = 'Thư gửi lại mật khẩu';
-            $noidungthu = "<p>Bạn nhận được mail này, do bạn hoặc ai đó yêu cầu mật khẩu mới cho website...</p>
-                                Mật khẩu mới của bạn là {$password}
-            ";
-            $mail->Body = $noidungthu;
-            $mail->smtpConnect(array(
-                "ssl" => array(
-                    "verify_peer" => false,
-                    "verify_peer_name" => false,
-                    "allow_self_signed" => true
-                )
-            ));
-            $mail->send();
-            echo "Đã gửi mail xong";
-        } catch (Exception $e) {
-            echo 'Error: ', $mail->ErrorInfo;
-        }
-      
-            
+        $sql = "SELECT * FROM users WHERE id = $id";
+        return $this->select($sql);
+    }
+    // Kiểm tra mật khẩu cũ:
+    public function checkOldPassword($name , $oldPassword)
+    {
+        $sql = 'SELECT * FROM users WHERE username = "' . $name . '" AND password = "' . md5($oldPassword) . '"';
+        return $this->select($sql);
+    }
+    // Change Password:
+    public function changePassword($name , $newPassword)
+    {   
+        $md5Password = md5($newPassword);
+        $sql = 'UPDATE users SET 
+        password = "' .$md5Password . '"
+        WHERE username = "' . $name . '" ';
+
+        $user = $this->update($sql);
+        return $user;
+        
     }
     // Lay id
     public function getid(){
@@ -389,33 +376,34 @@ class HomeModel extends BaseModel
     {
         $numPage = ceil(count($this->select($sql)) / $num);
 ?>
-        <div class="product_pagination">
-            <div class="left_btn">
-                <a href="<?php echo $_SERVER['REQUEST_URI'] ?>&page=<?php if ($page > 1) echo $page - 1;
+<div class="product_pagination">
+    <div class="left_btn">
+        <a href="<?php echo $_SERVER['REQUEST_URI'] ?>&page=<?php if ($page > 1) echo $page - 1;
                                                                     else echo 1 ?>">
-                    <i class="lnr lnr-arrow-left"></i> New posts</a>
-            </div>
-            <div class="middle_list">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination">
-                        <?php
+            <i class="lnr lnr-arrow-left"></i> New posts</a>
+    </div>
+    <div class="middle_list">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <?php
                         for ($i = 1; $i <= $numPage; $i++) {
                         ?>
-                            <li class="page-item">
-                                <a class="page-link" href="<?php echo $_SERVER['REQUEST_URI'] ?>&page=<?php echo $i ?>"><?php echo $i ?></a>
-                            </li>
-                        <?php
+                <li class="page-item">
+                    <a class="page-link"
+                        href="<?php echo $_SERVER['REQUEST_URI'] ?>&page=<?php echo $i ?>"><?php echo $i ?></a>
+                </li>
+                <?php
                         }
                         ?>
-                    </ul>
-                </nav>
-            </div>
-            <div class="right_btn">
-                <a href="<?php echo $_SERVER['REQUEST_URI'] ?>&page=<?php if ($page < $numPage) echo $page + 1;
+            </ul>
+        </nav>
+    </div>
+    <div class="right_btn">
+        <a href="<?php echo $_SERVER['REQUEST_URI'] ?>&page=<?php if ($page < $numPage) echo $page + 1;
                                                                     else echo $numPage ?>">
-                    Older posts <i class="lnr lnr-arrow-right"></i></a>
-            </div>
-        </div>
+            Older posts <i class="lnr lnr-arrow-right"></i></a>
+    </div>
+</div>
 <?php
     }
 }
