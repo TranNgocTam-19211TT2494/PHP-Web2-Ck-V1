@@ -1,10 +1,12 @@
 <?php
 session_start();
-$token = null;
-if (empty($_SESSION['token'])) {
-    $_SESSION['token'] = bin2hex(random_bytes(32));
-}
-$token = $_SESSION['token'];
+require "../../models/FactoryPattentTwoAdmin.php";
+$factory = new FactoryPattentTwoAdmin();
+$OrderModel = $factory->make('order');
+
+// -----------Factory------------------
+$orders = $OrderModel->getOrders();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,13 +14,10 @@ $token = $_SESSION['token'];
 <head>
     <!-- Required meta tags-->
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="au theme template">
-    <meta name="author" content="Hau Nguyen">
-    <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
     <title>Dashboard</title>
+    <?php include('../../views/admin/layouts/head.php') ?>
 
     <!-- Fontfaces CSS-->
     <link href="../../public/backend/css/font-face.css" rel="stylesheet" media="all">
@@ -42,34 +41,18 @@ $token = $_SESSION['token'];
 
     <!-- Main CSS-->
     <link href="../../public/backend/css/theme.css" rel="stylesheet" media="all">
+    <link href="../../public/backend/css/protype.css" rel="stylesheet" media="all">
+
 </head>
 <style>
-.select2-hidden-accessible {
-    border: 0 !important;
-    clip: rect(0 0 0 0) !important;
-    height: 1 px !important;
-    margin: -1 px !important;
-    overflow: hidden !important;
-    padding: 0 !important;
-    position: absolute !important;
-    width: 1 px !important;
+.table-data__tool {
+    justify-content: flex-end;
 }
 </style>
 
-<body class="">
-    <?php
-    require_once("../../models/ProductModel.php");
-    // $productModel = new ProductModel();
+<body class="animsition">
 
-     // ----------Factory----------
-     require '../../models/FactoryPattentTwoAdmin.php';
-     $factory = new FactoryPattentTwoAdmin();
-     $productModel = $factory->make('product');
-     // ----------Factory----------
-     
-    $allProduct =  $productModel->getAllTrashProduct();
-    ?>
-    <div class="page-wrapper">
+    <div class="page-wrapper-1">
         <!-- HEADER DESKTOP-->
         <header class="header-desktop3 d-none d-lg-block">
             <div class="section__content section__content--p35">
@@ -183,7 +166,7 @@ $token = $_SESSION['token'];
         <!-- END HEADER DESKTOP-->
 
         <!-- HEADER MOBILE-->
-        <?php include('../../views/admin/layouts/header-mobile.php')?>
+        <?php include('../../views/admin/layouts/header-mobile.php') ?>
         <!-- END HEADER MOBILE -->
 
         <!-- PAGE CONTENT-->
@@ -193,75 +176,98 @@ $token = $_SESSION['token'];
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">
-                            <h3 class="title-5 m-b-35">data table</h3>
-                            <div class="active" style="display: flex; justify-content: space-between;">
-                                <div class="table-data__tool">
-                                    <a href="add.php"> <button class="au-btn au-btn-icon au-btn--green au-btn--small">
-                                            <i class="zmdi zmdi-plus"></i>add item</button></a>
-                                </div>
-                                <div class="table-data__tool">
-                                    <a href="trash.php"> <button class="au-btn au-btn-icon au-btn--green au-btn--small">
-                                            <i class="zmdi zmdi-delete"></i>trash</button></a>
-                                </div>
-                            </div>
+                            <h3 class="title-5 m-b-35">Orders table</h3>
 
                             <div class="table-responsive table-responsive-data2">
                                 <table class="table table-data2">
                                     <thead>
                                         <tr>
-                                            <th>Cake</th>
-                                            <th>Image</th>
-                                            <th>Manufacture</th>
-                                            <th>Protype</th>
+                                            <th>#</th>
+                                            <th>First name</th>
+                                            <th>Last name</th>
+                                            <th>Product name</th>
+                                            <th>Address</th>
+                                            <th>Quantity</th>
                                             <th>Price</th>
-                                            <th>Feature</th>
+                                            <th>Total</th>
+                                            <th>Notes</th>
+                                            <th>Order date</th>
+                                            <th>Status</th>
                                             <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php if(isset($allProduct)) {
-                                            foreach ($allProduct as $product) {?>
+                                        <?php if(!empty($orders)) { foreach ($orders as $order) { ?>
+                                        <!-- products -->
+                                        <?php 
+                                            $item = $OrderModel->getOrderItemById($order['id']);
+                                            //print_r($item);
+                                            $sum = 0;
+                                            $soluong = 0;
+                                            $gia = 0;
+                                            foreach ($item as $key) {
+                                                $soluong += $key['quantity'];
+                                                $gia += $key['price'];
+                                                //print_r($gia);
+                                                $sum = $item[0]['quantity'] * $gia;
+                                                
+                                            }
+                                            
+                                        ?>
                                         <tr class="tr-shadow">
-                                            <td><?= $product['name']; ?></td>
+                                            <td class="stt"></td>
                                             <td>
-                                                <div class="img-cake" style="width: 50%;">
-                                                    <img src="<?= $product['pro_image']?>" alt="">
-                                                </div>
+                                                <?= htmlspecialchars($order['firstname'])  ?>
                                             </td>
                                             <td>
-                                                <span
-                                                    class="block-email"><?= $productModel->getManuByProductId($product['manu_id'])[0]['manu_name'] ?></span>
-                                            </td>
-                                            <td class="desc">
-                                                <?= $productModel->getProTypeByProductId($product['type_id'])[0]['type_name'] ?>
-                                            </td>
-                                            <td><?= number_format($product['price']);?> VND</td>
-                                            <td>
-                                                <?php if ($product['feature'] == 1) {?>
-                                                <span class="status--process">Popular</span>
-                                                <?php }else{?>
-                                                <span class="status--denied">Normal</span>
-                                                <?php } ?>
+                                                <?= htmlspecialchars($order['lastname'])  ?>
                                             </td>
                                             <td>
+                                                <?= htmlspecialchars($item[0]['name'])  ?>
+                                            </td>
+                                            <td>
+                                                <?= htmlspecialchars($order['address'])  ?>
+                                            </td>
+                                            <td>
+                                                <?= htmlspecialchars($soluong)  ?>
+                                            </td>
+                                            <td>
+                                                $<?= htmlspecialchars($gia)  ?>
+                                            </td>
+                                            <td>
+                                                $<?= htmlspecialchars($order['sum'])  ?>
+                                            </td>
+                                            <td>
+                                                <?= htmlspecialchars($order['notes'])  ?>
+                                            </td>
+                                            <td>
+                                                <?= htmlspecialchars(date( "d-m-Y", strtotime($order['addedDate'])))?>
+                                            </td>
+                                            <?php if($order['status'] == 0) {?>
+                                            <td>
+                                                <span class="status--process">Inactive</span>
+                                            </td>
+                                            <?php } else { ?>
+                                            <td>
+                                                <span class="status--process">Active</span>
+                                            </td>
+                                            <?php } ?>
+                                            <td class="edit-delete">
                                                 <div class="table-data-feature">
-                                                    <a
-                                                        href="rehibilitate.php?id=<?php echo rand(100, 999) . md5($product['id'] . "chuyen-de-web-2") . rand(100, 999) ?>"><button
-                                                            class="item" data-toggle="tooltip" data-placement="top"
-                                                            title="Rehibilitate">
-                                                            <i class="zmdi zmdi-mail-send"></i>
-                                                        </button></a>
-
-                                                    <a
-                                                        href="deleteforever.php?id=<?php echo rand(100, 999) . md5($product['id'] . "chuyen-de-web-2") . rand(100, 999) ?>&token=<?php echo $token ?>"><button
-                                                            class="item" data-toggle="tooltip" data-placement="top"
-                                                            title="Delete">
-                                                            <i class="zmdi zmdi-delete"></i>
-                                                            <input type="hidden" name="token" value="<?php echo $token ?>">
-                                                        </button></a>
+                                                    <button class="item" data-toggle="tooltip" data-placement="top"
+                                                        title="Edit"
+                                                        onclick="window.location.href='./update.php?id=<?php echo md5($order['id'] . 'chuyen-de-web-2') ?>'">
+                                                        <i class="zmdi zmdi-edit"></i>
+                                                    </button>
+                                                    <button class="item" data-toggle="tooltip" data-placement="top"
+                                                        title="Delete"
+                                                        onclick="window.location.href='./delete.php?id=<?php echo md5($order['id'] . 'chuyen-de-web-2')  ?>'">
+                                                        <i class="zmdi zmdi-delete"></i>
+                                                    </button>
                                                 </div>
                                             </td>
                                         </tr>
+
                                         <?php } } ?>
                                     </tbody>
                                 </table>
@@ -271,15 +277,12 @@ $token = $_SESSION['token'];
                 </div>
             </section>
             <!-- END DATA TABLE-->
-
-            <!-- COPYRIGHT-->
-            <?php include('../../views/admin/partials/copyright.php')?>
-            <!-- END COPYRIGHT-->
         </div>
 
     </div>
-     <!-- Jquery JS-->
-     <script src="../../public/backend/vendor/jquery-3.2.1.min.js"></script>
+
+    <!-- Jquery JS-->
+    <script src="../../public/backend/vendor/jquery-3.2.1.min.js"></script>
     <!-- Bootstrap JS-->
     <script src="../../public/backend/vendor/bootstrap-4.1/popper.min.js"></script>
     <script src="../../public/backend/vendor/bootstrap-4.1/bootstrap.min.js"></script>

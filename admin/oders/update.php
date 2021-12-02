@@ -1,45 +1,31 @@
 <?php
-session_start();
-    require_once("../../models/ProductModel.php");
-    // $productModel = new ProductModel();
-
-    // ----------Factory----------
+    session_start();
     require '../../models/FactoryPattentTwoAdmin.php';
     $factory = new FactoryPattentTwoAdmin();
-    $productModel = $factory->make('product');
-    // ----------Factory----------
-    
-    $allProduct =  $productModel->getProducts();
-    $allManufactures = $productModel->getManufacture();
-    $allProtypes = $productModel->getProtypes();
-    if (isset($_GET['id'])) {
-        $id = $_GET['id'];
-        $id_start = substr($id, 3);
-        $id_end = substr($id_start, 0, -3);
-        $productById = $productModel->getByProductId($id_end);
+    $orders = $factory->make('order');
+    $checkout = null;
+    $check_id = null;
+    if (!empty($_GET['id'])) {
+        $check_id = $_GET['id'];
+        $checkout = $orders->getCheckoutById($check_id);
+        
     }
-
-
+   
     if (!empty($_POST['submit'])) {
-        if (!empty($_POST['name']) && !empty($_POST['price']) && $_POST['manufacture'] !== "0" && $_POST['protype'] !== "0") {
-            $file_ext = $_FILES['image']['type'];
-            $expensions = array("image/jpeg", "image/jpg", "image/png");
-            if (in_array($file_ext, $expensions) === true) {
-                $tmp_name = $_FILES["image"]["tmp_name"];
-                $name = $_FILES["image"]["name"];
-                $uploads_dir = "../../public/img/product";
-                move_uploaded_file($tmp_name, "$uploads_dir/$name");
+        if(!empty($check_id)){
+            $result = $orders->updateCheckout($_POST);
+            if($result==false){
+                $err = true;
+            }else{
+                header('location: ./index.php');
             }
-            $oki = $productModel->updateProduct($_POST);
-            if ($oki) {
-                header('location: index.php');
-            }
+           
+           
         } else {
-            $error = true;
+            header('location: ./index.php');
         }
-        $error = true;
     }
-    ?>
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -58,14 +44,16 @@ session_start();
     <link href="../../public/backend/css/font-face.css" rel="stylesheet" media="all">
     <link href="../../public/backend/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
     <link href="../../public/backend/vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
-    <link href="../../public/backend/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+    <link href="../../public/backend/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet"
+        media="all">
 
     <!-- Bootstrap CSS-->
     <link href="../../public/backend/vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
 
     <!-- Vendor CSS-->
     <link href="../../public/backend/vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
-    <link href="../../public/backend/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
+    <link href="../../public/backend/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet"
+        media="all">
     <link href="../../public/backend/vendor/wow/animate.css" rel="stylesheet" media="all">
     <link href="../../public/backend/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
     <link href="../../public/backend/vendor/slick/slick.css" rel="stylesheet" media="all">
@@ -76,20 +64,20 @@ session_start();
     <link href="../../public/backend/css/theme.css" rel="stylesheet" media="all">
 </head>
 <style>
-    .select2-hidden-accessible {
-        border: 0 !important;
-        clip: rect(0 0 0 0) !important;
-        height: 1 px !important;
-        margin: -1 px !important;
-        overflow: hidden !important;
-        padding: 0 !important;
-        position: absolute !important;
-        width: 1 px !important;
-    }
+.select2-hidden-accessible {
+    border: 0 !important;
+    clip: rect(0 0 0 0) !important;
+    height: 1 px !important;
+    margin: -1 px !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    position: absolute !important;
+    width: 1 px !important;
+}
 </style>
 
 <body class="">
-   
+
     <div class="page-wrapper">
         <!-- HEADER DESKTOP-->
         <header class="header-desktop3 d-none d-lg-block">
@@ -169,7 +157,7 @@ session_start();
                 ?>
                                         <div class="content">
                                             <h5 class="name">
-                                                <a href="../../profile.php"><?= $_SESSION['lgUserName'] ?></a>
+                                                <a href="../profile.php"><?= $_SESSION['lgUserName'] ?></a>
                                             </h5>
                                             <span class="email">ngoctam2303001@gmail.com</span>
                                         </div>
@@ -180,11 +168,11 @@ session_start();
             if (!empty($_SESSION["lgUserID"])) {
                 $chuoi1 = <<<EOD
                 <div class="account-dropdown__item">
-                    <a href="../../profile.php">
+                    <a href="../profile.php">
                         <i class="zmdi zmdi-account"></i>Account</a>
                 </div>
                 <div class="account-dropdown__footer">
-                    <a href="../../logout.php">
+                    <a href="../logout.php">
                     <i class="zmdi zmdi-power"></i>Logout</a>
                  </div>
                 EOD;
@@ -204,7 +192,7 @@ session_start();
         <!-- END HEADER DESKTOP-->
 
         <!-- HEADER MOBILE-->
-        <?php include('../../views/admin/layouts/header-mobile.php') ?>
+        <?php include('../../views/admin/layouts/header-mobile.php')?>
         <!-- END HEADER MOBILE -->
 
         <!-- PAGE CONTENT-->
@@ -215,117 +203,118 @@ session_start();
                 <div class="col-md-6">
 
                     <div class="card">
-                        <div class="card-header">
-                            <strong>Add Product</strong>
-                        </div>
-                        <?php if (isset($error) && $error == true) { ?>
-                            <div class="alert alert-danger" role="alert">
-                                UPDATE PRODUCT UNSUCCESSFUL ! PLEASE FIELDS CAN'T BE NULL
-                            </div>
-                        <?php } ?>
+
+
                         <div class="card-body card-block">
-                            <form method="POST" class="form-horizontal" enctype="multipart/form-data">
-                                <input value=<?php if (isset($id)) echo $id ?> type="text" id="text-input" name="id" hidden>
-                                <input value=<?php if (isset($productById[0]['version'])) echo md5($productById[0]['version'] . 'chuyen-de-web-2') ?> type="text" id="text-input" name="version" hidden>
-                                <div class="row form-group">
-                                    <div class="col col-md-3">
-                                        <label for="text-input" class=" form-control-label">Name</label>
+                            <form method="POST" class="form-horizontal">
+                                <input value="<?= $check_id ?>" type="hidden" id="text-input" name="id">
+                                <input type="hidden" name="version"
+                                    value="<?= md5($checkout[0]['version'].'chuyen-de-web-2') ?>">
 
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="text-input" class=" form-control-label">First name</label>
                                     </div>
                                     <div class="col-12 col-md-9">
-                                        <input value="<?php if (isset($productById[0]['name'])) echo $productById[0]['name'] ?>" type="text" id="text-input" name="name" placeholder="Name" class="form-control">
-
+                                        <input value="<?php if(isset($checkout)) echo $checkout[0]['firstname']?>"
+                                            type="text" id="text-input" placeholder="First name" class="form-control"
+                                            readonly>
                                     </div>
                                 </div>
                                 <div class="row form-group">
                                     <div class="col col-md-3">
-                                        <label for="select" class=" form-control-label">Manufacture</label>
+                                        <label for="text-input" class=" form-control-label">Last name</label>
                                     </div>
                                     <div class="col-12 col-md-9">
-                                        <select name="manufacture" id="select" class="form-control">
-                                            <option value="0">Please select manufacture</option>
-                                            <?php if (isset($allManufactures)) {
-                                                foreach ($allManufactures as $value) {
-                                                    if (isset($productById[0]['manu_id']) && $productById[0]['manu_id'] == $value['manu_id']) { ?>
-                                                        <option value="<?= $value['manu_id'] ?>" selected><?= $value['manu_name'] ?>
-                                                        </option>
-                                                    <?php } else { ?>
-                                                        <option value="<?= $value['manu_id'] ?>"><?= $value['manu_name'] ?></option>
-                                            <?php }
-                                                }
-                                            } ?>
-                                        </select>
+                                        <input value="<?php if(isset($checkout)) echo $checkout[0]['lastname']?>"
+                                            type="text" id="text-input" placeholder="First name" class="form-control"
+                                            readonly>
                                     </div>
                                 </div>
                                 <div class="row form-group">
                                     <div class="col col-md-3">
-                                        <label for="select" class=" form-control-label">Protype</label>
+                                        <label for="text-input" class=" form-control-label">Address</label>
                                     </div>
                                     <div class="col-12 col-md-9">
-                                        <select name="protype" id="select" class="form-control">
-                                            <option value="0">Please select protype</option>
-                                            <?php if (isset($allProtypes)) {
-                                                foreach ($allProtypes as $value) {
-                                                    if (isset($productById[0]['type_id']) && $productById[0]['type_id'] == $value['type_id']) { ?>
-                                                        <option value="<?= $value['type_id'] ?>" selected><?= $value['type_name'] ?>
-                                                        </option>
-                                                    <?php } else { ?>
-                                                        <option value="<?= $value['type_id'] ?>"><?= $value['type_name'] ?></option>
-                                            <?php }
-                                                }
-                                            } ?>
-                                        </select>
+                                        <input value="<?php if(isset($checkout)) echo $checkout[0]['address']?>"
+                                            type="text" id="text-input" placeholder="First name" class="form-control"
+                                            readonly>
                                     </div>
                                 </div>
                                 <div class="row form-group">
                                     <div class="col col-md-3">
-                                        <label for="textarea-input" class=" form-control-label">Description</label>
+                                        <label for="text-input" class=" form-control-label">Phone</label>
                                     </div>
                                     <div class="col-12 col-md-9">
-                                        <textarea name="description" id="textarea-input" rows="9" placeholder="Description..." class="form-control"><?php if (isset($productById[0]['description'])) echo $productById[0]['description'] ?></textarea>
+                                        <input value="<?php if(isset($checkout)) echo $checkout[0]['phone']?>"
+                                            type="text" id="text-input" placeholder="First name" class="form-control"
+                                            readonly>
                                     </div>
                                 </div>
                                 <div class="row form-group">
                                     <div class="col col-md-3">
-                                        <label for="text-input" class=" form-control-label">Price</label>
+                                        <label for="text-input" class=" form-control-label">Notes</label>
                                     </div>
                                     <div class="col-12 col-md-9">
-                                        <input value="<?php if (isset($productById[0]['price'])) echo $productById[0]['price'] ?>" type="number" id="text-input" name="price" placeholder="Price" class="form-control">
+                                        <input value="<?php if(isset($checkout)) echo $checkout[0]['notes']?>"
+                                            type="text" id="text-input" placeholder="First name" class="form-control"
+                                            readonly>
                                     </div>
                                 </div>
                                 <div class="row form-group">
                                     <div class="col col-md-3">
-                                        <label class=" form-control-label">Feature</label>
+                                        <label for="text-input" class=" form-control-label">Sum</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <input value="<?php if(isset($checkout)) echo $checkout[0]['sum']?>" type="text"
+                                            id="text-input" placeholder="First name" class="form-control" readonly>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="text-input" class=" form-control-label">Date</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <input
+                                            value="<?php if(isset($checkout)) echo date( "d-m-Y", strtotime($checkout[0]['addedDate']));?>"
+                                            type="text" id="text-input" placeholder="First name" class="form-control"
+                                            readonly>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label class=" form-control-label">Status</label>
                                     </div>
                                     <div class="col col-md-9">
                                         <div class="form-check-inline form-check">
-
+                                            <?php if(isset($checkout)) {
+                                                if($checkout[0]['status'] == "0"){?>
                                             <label for="inline-radio1" class="form-check-label ">
-                                                <input type="radio" id="inline-radio1" name="feature" value="1" class="form-check-input" <?php if ($productById[0]['feature'] == "1") echo 'checked'; ?>>New
+                                                <input type="radio" id="inline-radio1" name="status" value="0"
+                                                    class="form-check-input" checked>Pending
                                             </label>
                                             <label for="inline-radio2" class="form-check-label ml-2">
-                                                <input type="radio" id="inline-radio2" name="feature" value="2" <?php if ($productById[0]['feature'] == "2") echo 'checked'; ?> class="form-check-input">Hot
+                                                <input type="radio" id="inline-radio2" name="status" value="1"
+                                                    class="form-check-input">Active
                                             </label>
+                                            <?php }else{?>
+                                            <label for="inline-radio1" class="form-check-label ">
+                                                <input type="radio" id="inline-radio1" name="status" value="0"
+                                                    class="form-check-input">Pending
+                                            </label>
+                                            <label for="inline-radio2" class="form-check-label ml-2">
+                                                <input type="radio" id="inline-radio2" name="status" value="1"
+                                                    class="form-check-input" checked>Active
+                                            </label>
+                                            <?php } }?>
+
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row form-group">
-                                    <div class="col col-md-3">
-                                        <label for="file-input" class=" form-control-label">Image</label>
-                                    </div>
-                                    <div class="col-12 col-md-9">
-                                        <input type="file" id="file-input" name="image" class="form-control-file">
-                                    </div>
-                                </div>
-                                <div class="img-product" style="margin:15px 0; text-align:center;">
-                                    <img src="<?php if (isset($productById[0]['pro_image'])) echo $productById[0]['pro_image'] ?>" alt="">
                                 </div>
                                 <button type="submit" name="submit" value="submit" class="btn btn-primary btn-sm">
                                     <i class="fa fa-dot-circle-o"></i> Submit
                                 </button>
-                                <button type="reset" class="btn btn-danger btn-sm">
-                                    <i class="fa fa-ban"></i> Reset
-                                </button>
+
                             </form>
                         </div>
 
@@ -335,7 +324,7 @@ session_start();
             </div>
             <!-- END DATA TABLE-->
             <!-- COPYRIGHT-->
-            <?php include('../../views/admin/partials/copyright.php') ?>
+            <?php include('../../views/admin/partials/copyright.php')?>
             <!-- END COPYRIGHT-->
         </div>
     </div>
