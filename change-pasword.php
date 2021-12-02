@@ -1,69 +1,35 @@
 <?php
-    require "./models/FactoryPattent.php";
-    use PHPMailer\PHPMailer\PHPMailer;
-    use PHPMailer\PHPMailer\SMTP;
-    use PHPMailer\PHPMailer\Exception;
+    session_start();
+    require 'models/FactoryPattent.php';
     $factory = new FactoryPattent();
     $HomeModel = $factory->make('home');
+    $error = "";
+    //$id = $_SESSION['lgUserID'];
+    $row = $HomeModel->getUserById($_SESSION['lgUserID']);
     
-    require 'vendor/autoload.php';
-   
-    $loi = "";
     if(isset($_POST['submit']) == true) {
+        $maukhaucu = $_POST['password'];
+        $matkhaumoi = $_POST['newpassword'];
+        $matkhaulai = $_POST['comrfimpassword'];
         
-        $email = $_POST['email'];
+        $check = $HomeModel->checkOldPassword($row[0]['username'] , $maukhaucu);
+        //print_r(count($check));
+        if(count($check) == 0) { $error .= "Mật khẩu cũ sai!";}
 
-        $mail = $HomeModel->checkMail($_POST['email']);
-        $count = count($mail);
-        // print_r($mail[0]['password']);
-        // die();
-        if($count == 0) {
-            $loi = "Email ban chua duoc dang ky thanh vien";
-        }else {
-            //New Pass
-            //$randPassword = rand(0,999999);
-            $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            $charactersLength = strlen($characters);
-            $randPassword = '';
-            for ($i = 0; $i < 8; $i++) {
-                $randPassword .= $characters[rand(0, $charactersLength - 1)];
-            }
+        if(strlen($matkhaumoi) < 6) {$error .= "Mật khẩu quá ngắn!";}
+
+        if($matkhaumoi != $matkhaulai) {$error .= "Sai mật khẩu mới";}
+
+        if(empty($error)) {
+            $HomeModel->changePassword($row[0]['username'] , $matkhaumoi);
             
-            //var_dump($randPassword);
-            $HomeModel->UpdatePassword($randPassword , $email);
-            //send mail
-            $mail = new PHPMailer(true);//true:enables exceptions
-            try {
-                $mail->SMTPDebug = 0; //0,1,2: chế độ debug
-                $mail->isSMTP();
-                $mail->CharSet  = "utf-8";
-                $mail->Host = 'smtp.gmail.com';  //SMTP servers
-                $mail->SMTPAuth = true; // Enable authentication
-                $mail->Username = 'phantinh1209@gmail.com'; // SMTP username
-                $mail->Password = 'zexpotcxbxkuspaq';   // SMTP password
-                $mail->SMTPSecure = 'ssl';  // encryption TLS/SSL 
-                $mail->Port = 465;  // port to connect to                
-                $mail->setFrom('phantinh1209@gmail.com', 'CAKE SHOP');
-                $mail->addAddress($email);
-                $mail->isHTML(true);  // Set email format to HTML
-                $mail->Subject = 'Thư gửi lại mật khẩu';
-                $noidungthu = "<p>Bạn nhận được mail này, do bạn hoặc ai đó yêu cầu mật khẩu mới cho website...</p>
-                                    Mật khẩu mới của bạn là {$randPassword}";
-                $mail->Body = $noidungthu;
-                $mail->smtpConnect(array(
-                    "ssl" => array(
-                        "verify_peer" => false,
-                        "verify_peer_name" => false,
-                        "allow_self_signed" => true
-                    )
-                ));
-                $mail->send();
-                $loi .= "Đã gửi mail xong";
-            } catch (Exception $e) {
-                echo 'Error: ', $mail->ErrorInfo;
-            }
+            
+            header("location:login.php");
+            exit();
         }
+       
     }
+    
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -77,7 +43,7 @@
     <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
-    <title>Forget Password</title>
+    <title>Thay Đổi Mật Khẩu</title>
 
     <!-- Fontfaces CSS-->
     <link href="public/backend/css/font-face.css" rel="stylesheet" media="all">
@@ -108,33 +74,53 @@
         <div class="page-content--bge5">
             <div class="container">
                 <div class="login-wrap">
+
                     <div class="login-content">
                         <div class="login-logo">
                             <a href="#">
                                 <img src="public/img/logo-2.png" alt="CoolAdmin">
                             </a>
                         </div>
-                        <?php if($loi != "") {?>
-                        <div class="alert alert-danger"><?= $loi ?></div>
 
-                        <?php } ?>
                         <div class="login-form">
+                            <p id="error" class="error"></p>
                             <form method="post">
+                                <?php  if($error != "") { ?>
+                                    <div class="alert alert-danger"><?= $error ?></div>
+                                <?php } ?>
+                                <!-- email -->
                                 <div class="form-group">
-                                    <label>Email Address</label>
-                                    <input class="au-input au-input--full" type="email" name="email"
-                                        value="<?php if(isset($email)) echo $email ?>" placeholder="Email">
+                                    <label>Tên đăng nhập</label>
+                                    <input class="au-input au-input--full" type="text" name="username" value="<?= $_SESSION['lgUserName'] ?>" id="password"
+                                        placeholder="Mật khẩu cũ" readonly>
                                 </div>
+                                <div class="form-group">
+                                    <label>Mật khẩu cũ</label>
+                                    <input class="au-input au-input--full" type="password" name="password" value="<?php if(isset($maukhaucu)== true) echo $maukhaucu?>" id="password"
+                                        placeholder="Mật khẩu cũ">
+                                </div>
+                                <div class="form-group">
+                                    <label>Mật khẩu mới</label>
+                                    <input class="au-input au-input--full" type="password" name="newpassword"
+                                        id="new_password" value="<?php if(isset($matkhaumoi)== true) echo $matkhaumoi?>" placeholder="Mật khẩu mới">
+                                </div>
+                                <div class="form-group">
+                                    <label>Xác nhận mật khẩu</label>
+                                    <input class="au-input au-input--full" type="password" name="comrfimpassword"
+                                        id="comrfim_password" value="<?php if(isset($matkhaulai)== true) echo $matkhaulai?>" placeholder="Xác nhận mật khẩu">
+                                </div>
+
                                 <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit"
-                                    name="submit">submit</button>
+                                    name="submit" value="submit">Lưu thay đổi</button>
+
                             </form>
-                        </div>
-                        <div class="register-link">
+                            <div class="register-link">
                                 <p>
                                     Already have account?
                                     <a href="login.php">Sign In</a>
                                 </p>
                             </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -165,7 +151,27 @@
 
     <!-- Main JS-->
     <script src="public/backend/js/main.js"></script>
-
+    <script>
+    function IsChangePass() {
+        if (IsNull("password")) {
+            $("error").innerHTML = "Vui lòng nhập mật khẩu cũ";
+            return false;
+        }
+        if (IsNull("newpassword")) {
+            $("error").innerHTML = "Vui lòng nhập mật khẩu mới";
+            return false;
+        }
+        if (IsNull("comrfimpassword")) {
+            $("error").innerHTML = "Vui lòng xác nhận mật khẩu";
+            return false;
+        }
+        if ($("newpassword").value != $("comrfimpassword").value) {
+            $("error").innerHTML = "Mật khẩu xác nhận không đúng";
+            return false;
+        }
+        return true;
+    }
+    </script>
 </body>
 
 </html>
