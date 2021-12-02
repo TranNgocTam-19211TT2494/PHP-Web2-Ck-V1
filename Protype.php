@@ -71,7 +71,8 @@ if (!isset($_GET['page'])) {
                         <?php
                         if (isset($_GET['submit'])) {
                             // search categories
-                            if (!empty($_GET['search-cate'])) { ?>
+                            if (!empty($_GET['search-cate'])) {
+                                ?>
                                 <div class="row product_item_inner">
                                     <?php
                                     $searchCate = $_GET['search-cate'];
@@ -105,7 +106,7 @@ if (!isset($_GET['page'])) {
                                 <!-- Phân trang -->
                                 <?php
                                 $number_of_pages = ceil($num_result_cate / 6);
-                                if ($number_of_pages <= 1) { ?>
+                                if ($number_of_pages > 1) { ?>
                                     <div class="product_pagination">
                                         <div class="left_btn">
                                         </div>
@@ -137,8 +138,7 @@ if (!isset($_GET['page'])) {
                                 $products = $productModel->paginationProtype($typeid, $page, 6);
                                 if (count($products) > 0) {
 
-                                    foreach ($products as $product) {
-                                        var_dump($product); ?>
+                                    foreach ($products as $product) { ?>
                                         <div class="col-lg-4 col-md-4 col-6">
                                             <div class="cake_feature_item">
                                                 <div class="cake_img">
@@ -146,7 +146,7 @@ if (!isset($_GET['page'])) {
                                                     <?php if (isset($_SESSION['lgUserID'])) { ?>
                                                         <?php if (empty($productModel->getWhishlistExist($_SESSION['lgUserID'], $product['id']))) { ?>
                                                             <div class="icon-whishlist">
-                                                                <a href="whishlist.php?id=<?= md5($product['id'] . 'chuyen-de-web-2') ?>">
+                                                                <a href="shop.php?id=<?= md5($product['id'] . 'chuyen-de-web-2') ?>">
                                                                     <i class="fa fa-heart" aria-hidden="true"></i>
                                                                 </a>
                                                             </div>
@@ -171,31 +171,10 @@ if (!isset($_GET['page'])) {
                             $number_of_result = count($result);
                             $number_of_pages = ceil($number_of_result / 6);
                             if ($number_of_pages <= 1) { ?>
-                                <div class="product_pagination">
-                                    <div class="left_btn">
-                                    </div>
-                                    <div class="middle_list">
-                                        <nav aria-label="Page navigation example">
-                                            <ul class="pagination">
-                                                <?php
-                                                for ($i = 1; $i <= $number_of_pages; $i++) {
-                                                ?>
-                                                    <li class="page-item">
-                                                        <a class="page-link" href="whishlist.php?page=<?php echo $i ?>"><?php echo $i ?></a>
-                                                    </li>
-                                                <?php
-                                                }
-                                                ?>
-                                            </ul>
-                                        </nav>
-                                    </div>
-                                    <div class="right_btn">
-                                    </div>
-                                </div>
                             <?php } else { ?>
                                 <div class="product_pagination">
                                     <div class="left_btn">
-                                        <a href="whishlist.php?page=<?php if ($page > 1) echo $page - 1;
+                                        <a href="Protype.php?type_id=<?php echo $typeid; ?>&page=<?php if ($page > 1) echo $page - 1;
                                                                     else echo 1 ?>">
                                             <i class="lnr lnr-arrow-left"></i> Trước
                                         </a>
@@ -207,7 +186,7 @@ if (!isset($_GET['page'])) {
                                                 for ($i = 1; $i <= $number_of_pages; $i++) {
                                                 ?>
                                                     <li class="page-item">
-                                                        <a class="page-link" href="whishlist.php?page=<?php echo $i ?>"><?php echo $i ?></a>
+                                                        <a class="page-link" href="Protype.php?type_id=<?php echo $typeid; ?>&page=<?php echo $i ?>"><?php echo $i ?></a>
                                                     </li>
                                                 <?php
                                                 }
@@ -216,7 +195,7 @@ if (!isset($_GET['page'])) {
                                         </nav>
                                     </div>
                                     <div class="right_btn">
-                                        <a href="whishlist.php?page=<?php if ($page < $number_of_pages) echo $page + 1;
+                                        <a href="Protype.php?type_id=<?php echo $typeid; ?>&page=<?php if ($page < $number_of_pages) echo $page + 1;
                                                                     else echo $number_of_pages ?>">
                                             Sau <i class="lnr lnr-arrow-right"></i>
                                         </a>
@@ -229,6 +208,7 @@ if (!isset($_GET['page'])) {
                         <div class="product_left_sidebar">
                             <aside class="left_sidebar search_widget">
                                 <form method="get" class="input-group">
+                                    <input type="hidden" name="type_id" value="<?php echo $typeid ?>">
                                     <input type="text" name="search-cate" value="<?= $searchCate ?>" class="form-control" placeholder="Nhập từ khóa tìm kiếm">
                                     <div class="input-group-append">
                                         <button class="btn" type="submit" name="submit" value="submit"><i class="icon icon-Search"></i></button>

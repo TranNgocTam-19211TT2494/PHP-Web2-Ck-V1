@@ -116,7 +116,7 @@ if (!isset($_GET['page'])) {
                             <!-- Phân trang -->
                             <?php
                             $number_of_pages = ceil($num_result_cate / 6);
-                            if ($number_of_pages <= 1) { ?>
+                            if ($number_of_pages > 1) { ?>
                                 <div class="product_pagination">
                                     <div class="left_btn">
                                     </div>
@@ -139,14 +139,16 @@ if (!isset($_GET['page'])) {
                                     </div>
                                 </div>
                             <?php }
-                        } 
+                        }
                         // search products
                         if (!empty($_GET['search'])) { ?>
                             <div class="row product_item_inner">
                                 <?php
                                 $search = $_GET['search'];
-                                $products = $productModel->searchProduct($search);
+                                $sql = "SELECT * FROM products WHERE name LIKE '%$search%' OR description LIKE '%$search%' ORDER BY products.price DESC";
+                                $products = $productModel->pagination($sql, $page, 6);
                                 $num_result = count($products);
+                                if(count($products) > 0){
                                 foreach ($products as $product) { ?>
                                     <div class="col-lg-4 col-md-4 col-6">
                                         <div class="cake_feature_item">
@@ -169,16 +171,23 @@ if (!isset($_GET['page'])) {
                                             </div>
                                         </div>
                                     </div>
-                                <?php }
+                                <?php } }
                                 ?>
                             </div>
                             <!-- Phân trang -->
                             <?php
-                            $number_of_pages = ceil($num_result / 6);
-                            if ($number_of_pages <= 1) { ?>
+                            // $number_of_pages = ceil($num_result / 6);
+                            $result = $productModel->searchProduct($search);
+                            $number_of_result = count($result);
+                            $number_of_pages = ceil($number_of_result / 6);
+                            if ($number_of_pages > 1) { ?>
                                 <div class="product_pagination">
-                                    <div class="left_btn">
-                                    </div>
+                                <div class="left_btn">
+                                <a href="shop.php?<?php if (isset($search)) ?>search=<?php echo $search ?>&<?php if (isset($_GET['submit'])) ?>submit=<?php echo $_GET['submit'] ?>&page=<?php if ($page > 1) echo $page - 1;
+                                                        else echo 1 ?>">
+                                    <i class="lnr lnr-arrow-left"></i>Trước
+                                </a>
+                            </div>
                                     <div class="middle_list">
                                         <nav aria-label="Page navigation example">
                                             <ul class="pagination">
@@ -186,7 +195,7 @@ if (!isset($_GET['page'])) {
                                                 for ($i = 1; $i <= $number_of_pages; $i++) {
                                                 ?>
                                                     <li class="page-item">
-                                                        <a class="page-link" href="shop.php?page=<?php echo $i ?>"><?php echo $i ?></a>
+                                                        <a class="page-link" href="shop.php?<?php if (isset($search)) ?>search=<?php echo $search ?>&<?php if (isset($_GET['submit'])) ?>submit=<?php echo $_GET['submit'] ?>&page=<?php echo $i ?>"><?php echo $i ?></a>
                                                     </li>
                                                 <?php
                                                 }
@@ -195,38 +204,14 @@ if (!isset($_GET['page'])) {
                                         </nav>
                                     </div>
                                     <div class="right_btn">
-                                    </div>
-                                </div>
-                            <?php } else { ?>
-                                <div class="product_pagination">
-                                    <div class="left_btn">
-                                        <a href="shop.php?page=<?php if ($page > 1) echo $page - 1;
-                                                                else echo 1 ?>">
-                                            <i class="lnr lnr-arrow-left"></i> Trước
-                                        </a>
-                                    </div>
-                                    <div class="middle_list">
-                                        <nav aria-label="Page navigation example">
-                                            <ul class="pagination">
-                                                <?php
-                                                for ($i = 1; $i <= $number_of_pages; $i++) {
-                                                ?>
-                                                    <li class="page-item">
-                                                        <a class="page-link" href="shop.php?page=<?php echo $i ?>"><?php echo $i ?></a>
-                                                    </li>
-                                                <?php
-                                                }
-                                                ?>
-                                            </ul>
-                                        </nav>
-                                    </div>
-                                    <div class="right_btn">
-                                        <a href="shop.php?page=<?php if ($page < $number_of_pages) echo $page + 1;
+                                        <a href="shop.php?<?php if (isset($search)) ?>search=<?php echo $search ?>&<?php if (isset($_GET['submit'])) ?>submit=<?php echo $_GET['submit'] ?>&page=<?php if ($page < $number_of_pages) echo $page + 1;
                                                                 else echo $number_of_pages ?>">
                                             Sau <i class="lnr lnr-arrow-right"></i>
                                         </a>
                                     </div>
                                 </div>
+                            <?php } else { ?>
+
                         <?php  }
                         }
                     } else { ?>
@@ -242,7 +227,7 @@ if (!isset($_GET['page'])) {
                                     $sort = 'ASC';
                                 }
                             }
-                            $sql = 'SELECT * FROM `products` WHERE detele_at IS NULL ORDER BY products.price ' .$sort;
+                            $sql = 'SELECT * FROM `products` WHERE detele_at IS NULL ORDER BY products.price ' . $sort;
                             $products = $productModel->pagination($sql, $page, 6);
                             if (count($products) > 0) {
 
@@ -254,7 +239,7 @@ if (!isset($_GET['page'])) {
                                                 <?php if (isset($_SESSION['lgUserID'])) { ?>
                                                     <?php if (empty($productModel->getWhishlistExist($_SESSION['lgUserID'], $product['id']))) { ?>
                                                         <div class="icon-whishlist">
-                                                            <a href="whishlist.php?id=<?= md5($product['id'] . 'chuyen-de-web-2') ?>">
+                                                            <a href="shop.php?id=<?= md5($product['id'] . 'chuyen-de-web-2') ?>">
                                                                 <i class="fa fa-heart" aria-hidden="true"></i>
                                                             </a>
                                                         </div>

@@ -106,7 +106,7 @@ if (!isset($_GET['page'])) {
                             <!-- Phân trang -->
                             <?php
                             $number_of_pages = ceil($num_result_cate / 6);
-                            if ($number_of_pages <= 1) { ?>
+                            if ($number_of_pages > 1) { ?>
                                 <div class="product_pagination">
                                     <div class="left_btn">
                                     </div>
@@ -172,27 +172,6 @@ if (!isset($_GET['page'])) {
                         $number_of_result = count($result);
                         $number_of_pages = ceil($number_of_result / 6);
                         if ($number_of_pages <= 1) { ?>
-                            <div class="product_pagination">
-                                <div class="left_btn">
-                                </div>
-                                <div class="middle_list">
-                                    <nav aria-label="Page navigation example">
-                                        <ul class="pagination">
-                                            <?php
-                                            for ($i = 1; $i <= $number_of_pages; $i++) {
-                                            ?>
-                                                <li class="page-item">
-                                                    <a class="page-link" href="whishlist.php?page=<?php echo $i ?>"><?php echo $i ?></a>
-                                                </li>
-                                            <?php
-                                            }
-                                            ?>
-                                        </ul>
-                                    </nav>
-                                </div>
-                                <div class="right_btn">
-                                </div>
-                            </div>
                         <?php } else { ?>
                             <div class="product_pagination">
                                 <div class="left_btn">

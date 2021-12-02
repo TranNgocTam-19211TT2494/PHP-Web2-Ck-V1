@@ -431,4 +431,33 @@ class HomeModel extends BaseModel
         $sql = $sql . ' LIMIT ' . $star . ',' . $num;
         return $this->select($sql);
     }
+    public function paginationManu($manuid, $page,$num)
+    {
+        if ($page < 2) {
+            $star = 0;
+        } else {
+            $star = ($page * $num) - $num;
+        }
+        $manufacture = 'SELECT manu_id FROM manufactures';
+        $manufactures = $this->select($manufacture);
+        foreach ($manufactures as $manufac) {
+            $md5 = md5($manufac['manu_id'] . 'chuyen-de-web-2');
+            if ($md5 == $manuid) {
+                $sql = 'SELECT * FROM `products` , manufactures WHERE products.manu_id = manufactures.manu_id AND products.manu_id =  ' . $manufac['manu_id'] . ' ';
+            }
+        }
+        $sql = $sql . ' LIMIT ' . $star . ',' . $num;
+        return $this->select($sql);
+    }
+    // public function paginationSearchProduct($search,$page,$num)
+    // {
+    //     if ($page < 2) {
+    //         $star = 0;
+    //     } else {
+    //         $star = ($page * $num) - $num;
+    //     }
+    //     $sqlF = "SELECT * FROM products WHERE name LIKE '%$search%' OR description LIKE '%$search%' ORDER BY products.price DESC";
+    //     $sql = $sqlF . ' LIMIT ' . $star . ',' . $num;
+    //     return $this->select($sql);
+    // }
 }
