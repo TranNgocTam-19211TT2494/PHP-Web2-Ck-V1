@@ -136,7 +136,13 @@ class HomeModel extends BaseModel
         $protypes = $this->update($sql);
         return $protypes;
     }
-
+    // Mã khuyến mãi:
+    public function getCouponByID($id)
+    {
+        $sql = 'SELECT  zipcode.status,zipcode.discount,zipcode.created_at,zipcode.zipcode FROM zipcode , users WHERE zipcode.user_id = users.id AND zipcode.user_id = '.$id;
+        $coupon = $this->select($sql);
+        return $coupon;
+    }
     //   ---------------------- Protype ---------------- //
     public function getProtype()
     {
