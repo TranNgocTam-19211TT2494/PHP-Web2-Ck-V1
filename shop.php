@@ -179,17 +179,17 @@ if (isset($_GET['submit'])) {
                             </div>
                             <?php $latests = $productModel->getProductLasters();?>
                             <?php
-                        if(!empty($latests)) {
-                            foreach ($latests as $latest) {
+                            if(!empty($latests)) {
+                                foreach ($latests as $latest) {
                                       
-                    ?>
+                            ?>
                             <div class="media">
                                 <div class="d-flex">
                                     <img src="<?= $latest['pro_image'] ?>" alt="<?= $latest['name'] ?>"
                                         style="max-width: 100px;">
                                 </div>
                                 <div class="media-body">
-                                    <a href="product-details.php?id=<?=$latest['id'] ?>">
+                                    <a href="product-details.php?id=<?= md5($latest['id'].'chuyen-de-web-2') ?>">
                                         <h4><?= $latest['name'] ?></h4>
                                     </a>
 

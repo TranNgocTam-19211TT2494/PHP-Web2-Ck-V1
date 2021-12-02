@@ -304,11 +304,16 @@ class HomeModel extends BaseModel
     // Chi tiết sản phẩm :
     public function firstProductDetail($id)
     {
-        
-        $sql = 'SELECT * FROM `products`  WHERE id =  '.$id.' ';
-        $product = $this->select($sql);
-        
-        return $product;
+
+        $allProduct =  $this->getProducts();
+        foreach ($allProduct as $value) {
+           if(md5($value['id'].'chuyen-de-web-2') == $id){
+            $sql = 'SELECT * FROM `products`  WHERE id =  '.$value['id'].' ';
+            $product = $this->select($sql);      
+            return $product;
+           }
+        }
+       
     }
    
     // Các sản phẩm có liên quan thuộc danh mục:

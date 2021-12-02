@@ -146,4 +146,5 @@ function insertCart(id) {
 
     return false;
 }
+
 </script>
