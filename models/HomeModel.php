@@ -375,14 +375,31 @@ class HomeModel extends BaseModel
     }
     public function searchProduct($search)
     {
-        $sql = "SELECT * FROM products WHERE name LIKE '%$search%' OR description LIKE '%$search%' ORDER BY id DESC;";
+        $sort = '';
+        if (isset($_GET['sort'])) {
+            if ($_GET['sort'] == 'desc') {
+                $sort = 'DESC';
+            } elseif ($_GET['sort'] == 'asc') {
+                $sort = 'ASC';
+            }
+        }
+        $sql = "SELECT * FROM products WHERE name LIKE '%$search%' OR description LIKE '%$search%' ORDER BY products.price " .$sort;
         $searchResult = $this->select($sql);
         return $searchResult;
     }
     // Hàm tìm kiếm theo tên của category(manufacture)
     public function searchCategories($search)
     {
-        $sql = "SELECT * FROM products,manufactures WHERE products.manu_id=manufactures.manu_id AND manufactures.manu_name like '%$search%' ORDER BY products.id DESC;";
+        $sort = '';
+        if (isset($_GET['sort'])) {
+            if ($_GET['sort'] == 'desc') {
+                $sort = 'DESC';
+            } elseif ($_GET['sort'] == 'asc') {
+                $sort = 'ASC';
+            }
+        }
+        $sql = "SELECT * FROM products,manufactures WHERE products.manu_id=manufactures.manu_id 
+        AND manufactures.manu_name like '%$search%' ORDER BY products.price " .$sort;
         $searchResult = $this->select($sql);
         return $searchResult;
     }
@@ -396,5 +413,22 @@ class HomeModel extends BaseModel
         $sql = $sql . ' LIMIT ' . $star . ',' . $num;
         return $this->select($sql);
     }
-    
+    public function paginationProtype($typeid, $page,$num)
+    {
+        if ($page < 2) {
+            $star = 0;
+        } else {
+            $star = ($page * $num) - $num;
+        }
+        $protypes = 'SELECT type_id FROM protypes';
+        $protype = $this->select($protypes);
+        foreach ($protype as $pagedproty) {
+            $md5 = md5($pagedproty['type_id'] . 'chuyen-de-web-2');
+            if ($md5 == $typeid) {
+                $sql = 'SELECT * FROM `protypes`,products WHERE protypes.type_id = products.type_id AND protypes.type_id = ' . $pagedproty['type_id'] . ' ORDER BY products.id DESC';
+            }
+        }
+        $sql = $sql . ' LIMIT ' . $star . ',' . $num;
+        return $this->select($sql);
+    }
 }

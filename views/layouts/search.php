@@ -10,7 +10,7 @@ if (!empty($_GET['search'])) {
         <div class="input-group">
             <input name="search" type="text" value="<?= $search ?>" class="form-control" placeholder="Search for...">
             <span class="input-group-btn">
-                <button class="btn btn-default" name="submit" type="submit"><i class="icon icon-Search"></i></button>
+                <button class="btn btn-default" name="submit" type="submit" value="submit"><i class="icon icon-Search"></i></button>
             </span>
         </div>
     </div>
