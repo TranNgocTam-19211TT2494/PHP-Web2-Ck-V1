@@ -112,7 +112,7 @@ if (isset($_GET['submit'])) {
                                 </div>
                                 <div class="cake_text">
                                     <h4>$<?= $product['price']?></h4>
-                                    <h3><?= $product['name']?></h3>
+                                    <h3><a href="product-details.php?id=<?=$product['id'] ?>"><?= $product['name']?></a></h3>
                                     <a class="pest_btn" href="cart.php?id=<?= $product['id'] ?>"
                                         onclick="return insertCart(<?= $product['id'] ?>)">Thêm vào giỏ hàng</a>
                                 </div>

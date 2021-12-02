@@ -13,8 +13,7 @@ class ProtypeModel extends BaseTwoAdmin
     }
     public function insertProtype($input)
     {
-        $sql = "INSERT INTO protypes (type_name) VALUES (" .
-        "'" . $input['name'] ."')";
+        $sql = "INSERT INTO protypes (type_name) VALUES (" ."'" . $input['name'] ."')";
         $protypes = $this->insert($sql);
         return $protypes;
     }

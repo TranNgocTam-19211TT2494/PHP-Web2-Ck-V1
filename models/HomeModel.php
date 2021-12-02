@@ -316,8 +316,8 @@ class HomeModel extends BaseModel
         
         $sql = 'SELECT * FROM `products`  WHERE id =  '.$id.' ';
         $product = $this->select($sql);
-        
         return $product;
+
     }
    
     // Các sản phẩm có liên quan thuộc danh mục:
@@ -417,5 +417,25 @@ class HomeModel extends BaseModel
             </div>
         </div>
 <?php
+    }
+
+    // ------------------------- Comment --------------------//
+
+    public function getAllCommentById($id){
+        $sql = 'SELECT * FROM `comment` WHERE `id_product` = ' . $id;
+        $comment = $this->select($sql);
+        return $comment;
+    }
+    public function getNameUserByComment($lgUserID)
+    {
+        $sql = 'SELECT users.username FROM `comment`, `users` WHERE comment.user_id = users.id AND comment.user_id = ' . $lgUserID;
+        $comment = $this->select($sql);
+        return $comment;
+    }
+    public function insertComment($lgUserID,$id, $input){
+        // var_dump($input['name']).die();
+        $sql = "INSERT INTO `comment`(`user_id`, `id_product`, `username`, `content`) VALUES ('$lgUserID','$id', " ."'" . $input['name'] ."'," ."'" . $input['content'] ."')";
+        $comment = $this->insert($sql);
+        return $comment;
     }
 }

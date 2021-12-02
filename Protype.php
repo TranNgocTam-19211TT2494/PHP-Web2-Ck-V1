@@ -73,7 +73,7 @@ if (isset($_GET['type_id'])) {
                                         </div>
                                         <div class="cake_text">
                                             <h4>$<?= $pro['price'] ?></h4>
-                                            <h3><?= $pro['name'] ?></h3>
+                                            <h3><a href="product-details.php?id=<?=$pro['id'] ?>"><?= $pro['name']?></a></h3>
                                             <a class="pest_btn" href="cart.php?id=<?= $pro['id'] ?>" onclick="return insertCart(<?= $pro['id'] ?>)">Thêm vào giỏ hàng</a>
                                         </div>
                                     </div>
