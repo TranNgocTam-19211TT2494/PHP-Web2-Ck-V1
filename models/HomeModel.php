@@ -77,7 +77,7 @@ class HomeModel extends BaseModel
         $user = $this->select($sql);
         return $user;
     }
-    //Update password cho user;: 
+    //Update password cho user: 
     public function UpdatePassword($password , $email) {
         $sql = 'UPDATE users SET 
         password = "' . md5($password) . '"
@@ -355,6 +355,19 @@ class HomeModel extends BaseModel
     public function updateSum($OrderID, $Sum)
     {
         $sql = "Update checkouts set sum = $Sum where id = $OrderID";
+        $checkout = $this->update($sql);
+        return $checkout;
+    }
+    public function getCouponByZipcode($coupon)
+    {
+        
+        $sql = "SELECT zipcode.zipcode , zipcode.discount , zipcode.user_id FROM zipcode WHERE zipcode.zipcode = '$coupon'";
+        $zipcode = $this->select($sql);
+        return $zipcode;
+    }
+    public function updateCouponByCheckout($OrderID, $Coupon)
+    {
+        $sql = "Update checkouts set coupon = $Coupon where id = $OrderID";
         $checkout = $this->update($sql);
         return $checkout;
     }
