@@ -1,6 +1,5 @@
 <?php
     session_start();
-    
     require 'models/FactoryPattent.php';
     $factory = new FactoryPattent();
     $HomeModel = $factory->make('home');
@@ -9,6 +8,7 @@
         include_once("models/Cart.php");
         $id=$_GET['id'];
         Cart::InsertCart($id);
+        
         echo count($_SESSION['mycart']);
     }
    
@@ -99,20 +99,37 @@
                         <?php } ?>
                         <tr>
                             <td>
-                                <form class="form-inline">
+                                <?php
+                                if(!empty($_SESSION['lgUserID'])) {
+                                    $check = $HomeModel->getCouponByID($_SESSION['lgUserID']);
+                                    $zipcode = null;
+                                    if(isset($_POST['submit'])) {
+                                        $coupon = $_POST['coupon'];
+                                        if(!empty($coupon)) {
+                                           $zipcode = $HomeModel->getCouponByZipcode($coupon);
+                                        }
+                                        //print_r($zipcode);
+                                        $_SESSION['coupon'] = $coupon;
+                                    } else {
+                                        unset($_SESSION['coupon']);
+                                    }
+                                } else {
+                                    echo "Mời bạn đăng nhập";
+                                }
+                                ?>
+                                <form method="post" class="form-inline">
                                     <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="Mã giảm giá">
+                                        
+                                        <input type="text" class="form-control" name="coupon" value="<?php if(isset($zipcode)) echo $zipcode[0]['zipcode'] ?>" placeholder="Mã giảm giá">
                                     </div>
-                                    <button type="submit" class="btn">Áp dụng</button>
+                                    <button type="submit" name="submit" class="btn">Áp dụng</button>
                                 </form>
                             </td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
-                            <!-- <td>
-                                <a class="pest_btn" href="#">Thêm vào giỏ hàng</a>
-                            </td> -->
+                            
                         </tr>
                     </tbody>
                 </table>
@@ -124,13 +141,27 @@
                         <div class="cart_head">
                             Tổng số giỏ hàng
                         </div>
-                        <div class="sub_total">
-                            <h5>Tổng phụ <span>$<?= number_format($sum, 0);?></span></h5>
-                        </div>
-                        <div class="total">
-                            <h4>Tổng tiền <span>$<?= number_format($sum, 0);?></span></h4>
-                        </div>
                        
+                        <div class="total">
+                            <h4>Thành tiền <span>$<?= $sum ?></span></h4>
+                        </div>
+                        <?php
+                            if(!empty($zipcode)) {
+                            $phantram = (100 - $zipcode[0]['discount']) / 100;
+                            $tienphu = $sum * $phantram;
+                            $tongphu = $sum - $tienphu;
+                        ?>
+                        <div class="sub_total">
+                            <h5>Khuyến mãi <span> - $<?= $tongphu ?></span></h5>
+                        </div>
+                        <div class="sub_total">
+                            <h5>Tổng tiền sau khi khuyến mãi<span>$<?= $tienphu ?></span></h5>
+                        </div>
+                        <?php } else { ?>
+                        <div class="sub_total">
+                            <h5>Tiền phụ <span>$<?= $sum ?></span></h5>
+                        </div>
+                        <?php }  ?>
                         <?php if(count($_SESSION['mycart']) == 0) { ?>
                         <div class="cart_footer">
                             <a class="pest_btn" href="shop.php">Mời bạn mua hàng!</a>
@@ -175,25 +206,7 @@
                     </tbody>
                 </table>
             </div>
-            <!-- <div class="row cart_total_inner">
-                <div class="col-lg-7"></div>
-                <div class="col-lg-5">
-                    <div class="cart_total_text">
-                        <div class="cart_head">
-                            Tổng số giỏ hàng
-                        </div>
-                        <div class="sub_total">
-                            <h5>Tổng phụ <span>$25.00</span></h5>
-                        </div>
-                        <div class="total">
-                            <h4>Tổng tiền <span>$25.00</span></h4>
-                        </div>
-                        <div class="cart_footer">
-                            <a class="pest_btn" href="#">Tiến hành đặt hàng</a>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
+         
         </div>
     </section>
     <?php } ?>

@@ -27,9 +27,14 @@ session_start();
 
                     
                 }
-                //var_dump($sum).die();
-                //cập nhập tổng tiền giỏ hàng:
-                $HomeModel->updateSum($OrderID,$sum);
+                if(isset($_SESSION['coupon'])) {
+                    $check2 = $HomeModel->getCouponByZipcode($_SESSION['coupon']);
+                    $phantram = (100 - $check2[0]['discount']) / 100;
+                    $khuyenmai = $sum * $phantram;
+                    $HomeModel->updateSum($OrderID,$khuyenmai);
+                } else {
+                    $HomeModel->updateSum($OrderID,$sum);
+                }
                 unset($_SESSION['mycart']);
                 header("location: index.php");
             }
@@ -106,20 +111,7 @@ session_start();
                                 <input type="text" class="form-control" id="phone" name="phone"
                                     placeholder="Chọn một tùy chọn">
                             </div>
-                            <!-- <div class="select_check col-md-12">
-                                <div class="creat_account">
-                                    <input type="checkbox" id="f-option" name="selector">
-                                    <label for="f-option">Tạo một tài khoản?</label>
-                                    <div class="check"></div>
-                                </div>
-                            </div> -->
-                            <!-- <div class="select_check2 col-md-12">
-                                <div class="creat_account">
-                                    <input type="checkbox" id="f-option2" name="selector">
-                                    <label for="f-option2">Ship to a different address?</label>
-                                    <div class="check"></div>
-                                </div>
-                            </div> -->
+                           
                             <div class="form-group col-md-12">
                                 <label for="phone">Ghi chú đơn hàng</label>
                                 <textarea class="form-control" name="message" id="message" rows="1"
@@ -149,9 +141,23 @@ session_start();
                                 ?>
                                 <h5><?= $row[0]['name'] ?> X <?= $value ?><span>$<?= $total ?></span></h5>
                                 <?php } ?>
-                                <h4>TỔNG PHỤ <span>$<?= $sum ?></span></h4>
+                                <?php
+                                    $khuyenmai = null;
+                                    if (isset($_SESSION['coupon'])) {
+                                        $check = $HomeModel->getCouponByZipcode($_SESSION['coupon']);
+                                        $phantram = (100 - $check[0]['discount']) / 100;
+                                        $khuyenmai = $sum * $phantram;
+                                        $tongphu = $sum - $khuyenmai;
+                                    
+                                ?>
+                                <h4>Khuyến mãi <?= $check[0]['discount'] ?>% còn <span>- $<?= $tongphu ?></span></h4>
                                 <h5>Vận chuyển và xử lý<span class="text_f">Miễn phí vận chuyển</span></h5>
-                                <h3>TOÀN BỘ <span>$<?= $sum ?></span></h3>
+                                <h3>TOÀN BỘ <span>$<?= $khuyenmai ?></span></h3>
+                                <?php } else { ?>
+                                    <h4>TỔNG PHỤ <span>$<?= $sum ?></span></h4>
+                                    <h5>Vận chuyển và xử lý<span class="text_f">Miễn phí vận chuyển</span></h5>
+                                    <h3>TOÀN BỘ <span>$<?= $sum ?></span></h3>
+                                <?php } ?>
                             </div>
                             <div id="accordion" class="accordion_area">
                                 <div class="card">
