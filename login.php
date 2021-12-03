@@ -14,13 +14,14 @@ if (!empty($_POST['submit'])) {
     if ($userName != "" && $passWord != "") {
 
         $rows = $HomeModel->login($userName, $passWord);
-
+        
+        //print_r($rows[0]['permission']);die();
         if (!empty($rows)) {
             foreach ($rows as $row) {
                 $_SESSION["lgUserName"] = $userName;
-
+                $_SESSION["role"] = $row['permission'];
                 $_SESSION["lgUserID"] = $row['id'];
-
+               
             }
             if($rows[0]['action'] == 1){
                 header("location:index.php");
@@ -32,6 +33,12 @@ if (!empty($_POST['submit'])) {
         } else {
             echo "<p class=\"error\" style = 'color: red;
 				text-align: center;'>Tên đăng nhập hoặc mật khẩu không đúng</p>";
+        }
+        // Phân quyền admin:
+        if($_SESSION['role'] == "Admin") {
+            header("location: admin/admin.php");
+        } else {
+            header("location: index.php");
         }
     }
 }
@@ -62,7 +69,8 @@ if (!empty($_POST['submit'])) {
 
     <!-- Vendor CSS-->
     <link href="public/backend/vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
-    <link href="public/backend/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
+    <link href="public/backend/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet"
+        media="all">
     <link href="public/backend/vendor/wow/animate.css" rel="stylesheet" media="all">
     <link href="public/backend/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
     <link href="public/backend/vendor/slick/slick.css" rel="stylesheet" media="all">
@@ -89,11 +97,13 @@ if (!empty($_POST['submit'])) {
                             <form method="post">
                                 <div class="form-group">
                                     <label>Enter Name</label>
-                                    <input class="au-input au-input--full" type="text" name="username" placeholder="Name">
+                                    <input class="au-input au-input--full" type="text" name="username"
+                                        placeholder="Name">
                                 </div>
                                 <div class="form-group">
                                     <label>Password</label>
-                                    <input class="au-input au-input--full" type="password" name="password" placeholder="Password">
+                                    <input class="au-input au-input--full" type="password" name="password"
+                                        placeholder="Password">
                                 </div>
                                 <div class="login-checkbox">
                                     <label>
@@ -103,8 +113,9 @@ if (!empty($_POST['submit'])) {
                                         <a href="forgot-password.php">Forgotten Password?</a>
                                     </label>
                                 </div>
-                                <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit" name="submit" value="submit">sign in</button>
-                                
+                                <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit" name="submit"
+                                    value="submit">sign in</button>
+
                             </form>
                             <div class="register-link">
                                 <p>

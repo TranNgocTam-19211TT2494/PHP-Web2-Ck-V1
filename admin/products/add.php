@@ -1,10 +1,8 @@
 <?php
 session_start();
-    require_once("../../models/ProductModel.php");
-    // $productModel = new ProductModel();
-    
-    // ----------Factory----------
-    require '../../models/FactoryPattentTwoAdmin.php';
+// ----------Factory----------
+require '../../models/FactoryPattentTwoAdmin.php';   
+if($_SESSION['role'] == 'Admin') { 
     $factory = new FactoryPattentTwoAdmin();
     $productModel = $factory->make('product');
     // ----------Factory----------
@@ -31,7 +29,13 @@ session_start();
         }
         $error = true;
     }
-    ?>
+    
+} else {
+    header('location: index.php');
+}  
+  
+    
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -50,14 +54,16 @@ session_start();
     <link href="../../public/backend/css/font-face.css" rel="stylesheet" media="all">
     <link href="../../public/backend/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
     <link href="../../public/backend/vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
-    <link href="../../public/backend/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+    <link href="../../public/backend/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet"
+        media="all">
 
     <!-- Bootstrap CSS-->
     <link href="../../public/backend/vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
 
     <!-- Vendor CSS-->
     <link href="../../public/backend/vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
-    <link href="../../public/backend/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
+    <link href="../../public/backend/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet"
+        media="all">
     <link href="../../public/backend/vendor/wow/animate.css" rel="stylesheet" media="all">
     <link href="../../public/backend/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
     <link href="../../public/backend/vendor/slick/slick.css" rel="stylesheet" media="all">
@@ -68,16 +74,16 @@ session_start();
     <link href="../../public/backend/css/theme.css" rel="stylesheet" media="all">
 </head>
 <style>
-    .select2-hidden-accessible {
-        border: 0 !important;
-        clip: rect(0 0 0 0) !important;
-        height: 1 px !important;
-        margin: -1 px !important;
-        overflow: hidden !important;
-        padding: 0 !important;
-        position: absolute !important;
-        width: 1 px !important;
-    }
+.select2-hidden-accessible {
+    border: 0 !important;
+    clip: rect(0 0 0 0) !important;
+    height: 1 px !important;
+    margin: -1 px !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    position: absolute !important;
+    width: 1 px !important;
+}
 </style>
 
 <body class="">
@@ -211,9 +217,9 @@ session_start();
                             <strong>Add Product</strong>
                         </div>
                         <?php if (isset($error) && $error == true) { ?>
-                            <div class="alert alert-danger" role="alert">
-                                ADD PRODUCT UNSUCCESSFUL
-                            </div>
+                        <div class="alert alert-danger" role="alert">
+                            ADD PRODUCT UNSUCCESSFUL
+                        </div>
                         <?php } ?>
                         <div class="card-body card-block">
                             <form method="POST" class="form-horizontal" enctype="multipart/form-data">
@@ -223,7 +229,8 @@ session_start();
                                         <label for="text-input" class=" form-control-label">Name</label>
                                     </div>
                                     <div class="col-12 col-md-9">
-                                        <input type="text" id="text-input" name="name" placeholder="Name" class="form-control">
+                                        <input type="text" id="text-input" name="name" placeholder="Name"
+                                            class="form-control">
                                     </div>
                                 </div>
                                 <div class="row form-group">
@@ -235,7 +242,7 @@ session_start();
                                             <option value="0">Please select manufacture</option>
                                             <?php if (isset($allManufactures)) {
                                                 foreach ($allManufactures as $value) { ?>
-                                                    <option value="<?= $value['manu_id'] ?>"><?= $value['manu_name'] ?></option>
+                                            <option value="<?= $value['manu_id'] ?>"><?= $value['manu_name'] ?></option>
 
                                             <?php }
                                             } ?>
@@ -251,7 +258,7 @@ session_start();
                                             <option value="0">Please select protype</option>
                                             <?php if (isset($allProtypes)) {
                                                 foreach ($allProtypes as $value) { ?>
-                                                    <option value="<?= $value['type_id'] ?>"><?= $value['type_name'] ?></option>
+                                            <option value="<?= $value['type_id'] ?>"><?= $value['type_name'] ?></option>
 
                                             <?php }
                                             } ?>
@@ -263,7 +270,8 @@ session_start();
                                         <label for="textarea-input" class=" form-control-label">Description</label>
                                     </div>
                                     <div class="col-12 col-md-9">
-                                        <textarea name="description" id="textarea-input" rows="9" placeholder="Description..." class="form-control"></textarea>
+                                        <textarea name="description" id="textarea-input" rows="9"
+                                            placeholder="Description..." class="form-control"></textarea>
                                     </div>
                                 </div>
                                 <div class="row form-group">
@@ -271,7 +279,8 @@ session_start();
                                         <label for="text-input" class=" form-control-label">Price</label>
                                     </div>
                                     <div class="col-12 col-md-9">
-                                        <input type="number" id="text-input" name="price" placeholder="Price" class="form-control">
+                                        <input type="number" id="text-input" name="price" placeholder="Price"
+                                            class="form-control">
                                     </div>
                                 </div>
                                 <div class="row form-group">
@@ -281,10 +290,12 @@ session_start();
                                     <div class="col col-md-9">
                                         <div class="form-check-inline form-check">
                                             <label for="inline-radio1" class="form-check-label ">
-                                                <input type="radio" id="inline-radio1" name="feature" value="1" class="form-check-input" checked>New
+                                                <input type="radio" id="inline-radio1" name="feature" value="1"
+                                                    class="form-check-input" checked>New
                                             </label>
                                             <label for="inline-radio2" class="form-check-label ml-2">
-                                                <input type="radio" id="inline-radio2" name="feature" value="2" class="form-check-input">Hot
+                                                <input type="radio" id="inline-radio2" name="feature" value="2"
+                                                    class="form-check-input">Hot
                                             </label>
                                         </div>
                                     </div>
@@ -316,8 +327,8 @@ session_start();
             <!-- END COPYRIGHT-->
         </div>
     </div>
-     <!-- Jquery JS-->
-     <script src="../../public/backend/vendor/jquery-3.2.1.min.js"></script>
+    <!-- Jquery JS-->
+    <script src="../../public/backend/vendor/jquery-3.2.1.min.js"></script>
     <!-- Bootstrap JS-->
     <script src="../../public/backend/vendor/bootstrap-4.1/popper.min.js"></script>
     <script src="../../public/backend/vendor/bootstrap-4.1/bootstrap.min.js"></script>

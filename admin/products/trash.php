@@ -1,10 +1,16 @@
 <?php
 session_start();
 $token = null;
-if (empty($_SESSION['token'])) {
-    $_SESSION['token'] = bin2hex(random_bytes(32));
+if($_SESSION['role'] == 'Admin') { 
+    if (empty($_SESSION['token'])) {
+        $_SESSION['token'] = bin2hex(random_bytes(32));
+    }
+    $token = $_SESSION['token'];
+    
+} else {
+    header('location: ../index.php');
 }
-$token = $_SESSION['token'];
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -257,7 +263,8 @@ $token = $_SESSION['token'];
                                                             class="item" data-toggle="tooltip" data-placement="top"
                                                             title="Delete">
                                                             <i class="zmdi zmdi-delete"></i>
-                                                            <input type="hidden" name="token" value="<?php echo $token ?>">
+                                                            <input type="hidden" name="token"
+                                                                value="<?php echo $token ?>">
                                                         </button></a>
                                                 </div>
                                             </td>
@@ -278,8 +285,8 @@ $token = $_SESSION['token'];
         </div>
 
     </div>
-     <!-- Jquery JS-->
-     <script src="../../public/backend/vendor/jquery-3.2.1.min.js"></script>
+    <!-- Jquery JS-->
+    <script src="../../public/backend/vendor/jquery-3.2.1.min.js"></script>
     <!-- Bootstrap JS-->
     <script src="../../public/backend/vendor/bootstrap-4.1/popper.min.js"></script>
     <script src="../../public/backend/vendor/bootstrap-4.1/bootstrap.min.js"></script>

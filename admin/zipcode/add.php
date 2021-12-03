@@ -1,5 +1,30 @@
 <?php
 session_start();
+require_once("../../models/ZipCodeModel.php");
+if($_SESSION['role'] == 'Admin') { 
+    
+    $zipcode = new ZipCodeModel();
+    $allUser = $zipcode->getUser();
+    if (!empty($_GET['id'])) {
+        $zipcodeById = $zipcode->getZipCodeById($_GET['id']);
+    }
+    if (!empty($_POST['submit'])) {
+        if(empty($_GET['id'])){
+            $zipcode->insertZipcode($_POST);
+            if($zipcode){
+                header('location: index.php');
+            }
+        }else{
+            
+            $zipcode->updateZipcode($_POST);
+            if($zipcode){
+                header('location: index.php');
+            }
+        }
+    }
+} else {
+    header('location: ../index.php');
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -52,28 +77,7 @@ session_start();
 </style>
 
 <body class="">
-    <?php
-    require_once("../../models/ZipCodeModel.php");
-    $zipcode = new ZipCodeModel();
-    $allUser = $zipcode->getUser();
-    if (!empty($_GET['id'])) {
-        $zipcodeById = $zipcode->getZipCodeById($_GET['id']);
-    }
-    if (!empty($_POST['submit'])) {
-        if(empty($_GET['id'])){
-            $zipcode->insertZipcode($_POST);
-            if($zipcode){
-                header('location: index.php');
-            }
-        }else{
-            
-            $zipcode->updateZipcode($_POST);
-            if($zipcode){
-                header('location: index.php');
-            }
-        }
-    }
-    ?>
+   
     <div class="page-wrapper">
         <!-- HEADER DESKTOP-->
         <header class="header-desktop3 d-none d-lg-block">

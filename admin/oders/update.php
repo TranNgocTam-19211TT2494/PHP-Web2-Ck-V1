@@ -1,30 +1,36 @@
 <?php
     session_start();
     require '../../models/FactoryPattentTwoAdmin.php';
-    $factory = new FactoryPattentTwoAdmin();
-    $orders = $factory->make('order');
-    $checkout = null;
-    $check_id = null;
-    if (!empty($_GET['id'])) {
-        $check_id = $_GET['id'];
-        $checkout = $orders->getCheckoutById($check_id);
-        
-    }
-   
-    if (!empty($_POST['submit'])) {
-        if(!empty($check_id)){
-            $result = $orders->updateCheckout($_POST);
-            if($result==false){
-                $err = true;
-            }else{
+    if($_SESSION['role'] == 'Admin') { 
+        $factory = new FactoryPattentTwoAdmin();
+        $orders = $factory->make('order');
+        $checkout = null;
+        $check_id = null;
+        if (!empty($_GET['id'])) {
+            $check_id = $_GET['id'];
+            $checkout = $orders->getCheckoutById($check_id);
+            
+        }
+    
+        if (!empty($_POST['submit'])) {
+            if(!empty($check_id)){
+                $result = $orders->updateCheckout($_POST);
+                if($result==false){
+                    $err = true;
+                }else{
+                    header('location: ./index.php');
+                }
+            
+            
+            } else {
                 header('location: ./index.php');
             }
-           
-           
-        } else {
-            header('location: ./index.php');
         }
+        
+    } else {
+        header('location: ../index.php');
     }
+    
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -328,8 +334,8 @@
             <!-- END COPYRIGHT-->
         </div>
     </div>
-     <!-- Jquery JS-->
-     <script src="../../public/backend/vendor/jquery-3.2.1.min.js"></script>
+    <!-- Jquery JS-->
+    <script src="../../public/backend/vendor/jquery-3.2.1.min.js"></script>
     <!-- Bootstrap JS-->
     <script src="../../public/backend/vendor/bootstrap-4.1/popper.min.js"></script>
     <script src="../../public/backend/vendor/bootstrap-4.1/bootstrap.min.js"></script>

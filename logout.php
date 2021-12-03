@@ -3,6 +3,7 @@
     if (isset($_SESSION["lgUserID"])) {
         unset($_SESSION["lgUserName"]);
         unset($_SESSION["lgUserID"]);
+        unset($_SESSION["role"]);
         if (isset($_SESSION["lgCart"])) {
             unset($_SESSION["lgCart"]);
         }
