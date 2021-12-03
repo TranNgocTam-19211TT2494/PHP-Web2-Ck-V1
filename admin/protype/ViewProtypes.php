@@ -1,39 +1,40 @@
 <?php
-require "../../models/ProtypeModel.php";
-
-// -----------Factory------------------
+session_start();
 require "../../models/FactoryPattentTwoAdmin.php";
 $factory = new FactoryPattentTwoAdmin();
 $protypesModel = $factory->make('protype');
 // -----------Factory------------------
 
-// $protypesModel = new ProtypeModel();
-
-
 $protype = NULL; 
 $type_id = NULL;
-
-if (!empty($_GET['type_id'])) {
-    $type_id = $_GET['type_id'];
-    $protype = $protypesModel->FindProtypebyid($type_id); //Update existing user
-}
-// var_dump($protype);die();
-$err = false;
-if (!empty($_POST['submit'])) {
-    
-    if (!empty($type_id)) {
-       $result = $protypesModel->UpdateProtype($_POST);
-        if($result==false){
-            $err = true;
-        }else{
+if($_SESSION['role'] == 'Admin') { 
+    if (!empty($_GET['type_id'])) {
+        $type_id = $_GET['type_id'];
+        $protype = $protypesModel->FindProtypebyid($type_id); //Update existing user
+    }
+    // var_dump($protype);die();
+    $err = false;
+    if (!empty($_POST['submit'])) {
+        
+        if (!empty($type_id)) {
+           $result = $protypesModel->UpdateProtype($_POST);
+            if($result==false){
+                $err = true;
+            }else{
+                header('location: ./index.php');
+            }
+        } else {
+            $protypesModel->insertProtype($_POST);
             header('location: ./index.php');
         }
-    } else {
-        $protypesModel->insertProtype($_POST);
-        header('location: ./index.php');
+       
     }
-   
+    
+} else {
+    header('location: ../index.php');
 }
+
+
 
 ?>
 <!DOCTYPE html>

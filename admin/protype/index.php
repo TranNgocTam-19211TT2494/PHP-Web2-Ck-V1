@@ -1,15 +1,22 @@
 <?php
 session_start();
 require "../../models/FactoryPattentTwoAdmin.php";
-$factory = new FactoryPattentTwoAdmin();
-$protypesModel = $factory->make('protype');
-$token = null;
-if (empty($_SESSION['token'])) {
-    $_SESSION['token'] = bin2hex(random_bytes(32));
+if($_SESSION['role'] == 'Admin') { 
+    $factory = new FactoryPattentTwoAdmin();
+    $protypesModel = $factory->make('protype');
+    $token = null;
+    if (empty($_SESSION['token'])) {
+        $_SESSION['token'] = bin2hex(random_bytes(32));
+    }
+    $token = $_SESSION['token'];
+    // -----------Factory------------------
+    $protypes = $protypesModel->getProtype();
+    
+} else {
+    header('location: ../index.php');
 }
-$token = $_SESSION['token'];
-// -----------Factory------------------
-$protypes = $protypesModel->getProtype();
+
+
 
 ?>
 <!DOCTYPE html>

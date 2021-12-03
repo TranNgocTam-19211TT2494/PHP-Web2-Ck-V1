@@ -1,10 +1,9 @@
 <?php
 session_start();
-    require_once("../../models/ProductModel.php");
-    // $productModel = new ProductModel();
+// ----------Factory----------
+require '../../models/FactoryPattentTwoAdmin.php';
 
-    // ----------Factory----------
-    require '../../models/FactoryPattentTwoAdmin.php';
+if($_SESSION['role'] == 'Admin') { 
     $factory = new FactoryPattentTwoAdmin();
     $params = [];
     if (!empty($_GET['keyword'])) {
@@ -15,7 +14,11 @@ session_start();
     // ----------Factory----------
     
     $allProduct =  $productModel->getProducts($params);
-    ?>
+    
+} else {
+    header('location: ../index.php');
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 

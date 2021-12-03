@@ -1,20 +1,24 @@
 <?php
 session_start();
-include '../../models/ManufactureModel.php';
 
-// -----------Factory------------------
 require '../../models/FactoryPattentTwoAdmin.php';
-$facrory = new FactoryPattentTwoAdmin();
-$manusModel = $facrory->make('manu');
-// -----------Factory------------------
+if($_SESSION['role'] == 'Admin') { 
+    $facrory = new FactoryPattentTwoAdmin();
+    $manusModel = $facrory->make('manu');
+    // -----------Factory------------------
 
-// $manusModel = new ManufactureModel();
-$manufacture = $manusModel->getManufactures();
-$token = null;
-if (empty($_SESSION['token'])) {
-    $_SESSION['token'] = bin2hex(random_bytes(32));
+    // $manusModel = new ManufactureModel();
+    $manufacture = $manusModel->getManufactures();
+    $token = null;
+    if (empty($_SESSION['token'])) {
+        $_SESSION['token'] = bin2hex(random_bytes(32));
+    }
+    $token = $_SESSION['token'];
+    
+} else {
+    header('location: ../index.php');
 }
-$token = $_SESSION['token'];
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

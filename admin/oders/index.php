@@ -1,11 +1,17 @@
 <?php
 session_start();
 require "../../models/FactoryPattentTwoAdmin.php";
-$factory = new FactoryPattentTwoAdmin();
-$OrderModel = $factory->make('order');
+if($_SESSION['role'] == 'Admin') { 
+    $factory = new FactoryPattentTwoAdmin();
+    $OrderModel = $factory->make('order');
 
-// -----------Factory------------------
-$orders = $OrderModel->getOrders();
+    // -----------Factory------------------
+    $orders = $OrderModel->getOrders();
+    
+} else {
+    header('location: ../index.php');
+}
+
 
 ?>
 <!DOCTYPE html>

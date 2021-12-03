@@ -1,33 +1,36 @@
 <?php
 session_start();
-include '../../models/ManufactureModel.php';
-
-// -----------Factory------------------
 require '../../models/FactoryPattentTwoAdmin.php';
-$facrory = new FactoryPattentTwoAdmin();
-$manusModel = $facrory->make('manu');
-// -----------Factory------------------
+if($_SESSION['role'] == 'Admin') { 
+    $facrory = new FactoryPattentTwoAdmin();
+    $manusModel = $facrory->make('manu');
+    // -----------Factory------------------
 
-// $manusModel = new ManufactureModel();
-if (isset($_GET['manu_id'])) {
-    $_id = $_GET['manu_id'];
-    $manu = $manusModel->findManufactureById($_id);
-}
-$err=false;
-if (!empty($_POST['submit'])) {
-    if (!empty($_id)) {
-       $result =  $manusModel->updateManufacture($_POST);
-      if($result == false){
-          $err = true;
-      }else{
-        header('location: ./index.php');
-      }
-    } else {
-        $manusModel->insertManufacture($_POST);
-        header('location: ./index.php');
-       
+    // $manusModel = new ManufactureModel();
+    if (isset($_GET['manu_id'])) {
+        $_id = $_GET['manu_id'];
+        $manu = $manusModel->findManufactureById($_id);
     }
+    $err=false;
+    if (!empty($_POST['submit'])) {
+        if (!empty($_id)) {
+        $result =  $manusModel->updateManufacture($_POST);
+        if($result == false){
+            $err = true;
+        }else{
+            header('location: ./index.php');
+        }
+        } else {
+            $manusModel->insertManufacture($_POST);
+            header('location: ./index.php');
+        
+        }
+    }
+    
+} else {
+    header('location: index.php');
 }
+
 
 ?>
 <!DOCTYPE html>

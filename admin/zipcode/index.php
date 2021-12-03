@@ -2,8 +2,13 @@
 session_start();
 require_once("../../models/ProductModel.php");
 require_once("../../models/ZipCodeModel.php");
-$zipcode = new ZipCodeModel();
-$allZipCode = $zipcode->getZipCode();
+if($_SESSION['role'] == 'Admin') { 
+    $zipcode = new ZipCodeModel();
+    $allZipCode = $zipcode->getZipCode();
+} else {
+    header('location: ../index.php');
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
