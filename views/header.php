@@ -89,7 +89,9 @@ $proty = $protypeModel->getProtype();
                                 aria-haspopup="true" aria-expanded="false">Cửa tiệm</a>
                             <ul class="dropdown-menu">
                                 <li><a href="shop.php">Cửa hàng</a></li>
+                                <?php if(!empty($_SESSION['lgUserID'])) {?>
                                 <li><a href="whishlist.php">Danh sách yêu thích</a></li>
+                                <?php }?>
                             </ul>
                         </li>
                         <li><a href="contact.php">Liên hệ chúng tôi</a></li>
@@ -101,8 +103,8 @@ $proty = $protypeModel->getProtype();
                                 <?php
                             if (!empty($_SESSION["lgUserID"])) {
                                 $chuoi1 = <<<EOD
-                                <li><a href="">Tài Khoản</a></li>
-                                <li><a href="">Đổi mật khẩu</a></li>
+                                <li><a href="profile.php">Tài Khoản</a></li>
+                                <li><a href="change-pasword.php">Đổi mật khẩu</a></li>
                                 <li><a href="logout.php">Đăng xuất</a></li>
                                 
 EOD;
@@ -144,4 +146,5 @@ function insertCart(id) {
 
     return false;
 }
+
 </script>
