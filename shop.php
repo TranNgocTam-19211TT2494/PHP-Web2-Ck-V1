@@ -330,9 +330,9 @@ if (!isset($_GET['page'])) {
                             </div>
                             <?php $latests = $productModel->getProductLasters(); ?>
                             <?php
-                            if (!empty($latests)) {
+                            if(!empty($latests)) {
                                 foreach ($latests as $latest) {
-
+                                      
                             ?>
                                     <div class="media">
                                         <div class="d-flex">

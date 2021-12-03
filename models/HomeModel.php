@@ -40,8 +40,12 @@ class HomeModel extends BaseModel
             'zipcode' => $this->getToken(8),
             'user_id' => $lastUserId
         ];
-        $sql1 = "INSERT INTO `zipcode`(`zipcode`, `user_id`) 
-        VALUES ('" . $data['zipcode'] . "','" . $data['user_id'] . "')";
+        $sql1 = "INSERT INTO `webbanhkem`.`zipcode` (`zipcode`, `user_id` ,`discount`,`status`)
+         VALUES (" .
+         "'" . $this->getToken(8) 
+         . "','" . $lastUserId
+         . "','" . 25
+         . "','" . 1 . "')";
         $zipcode = $this->insert($sql1);
 
         return $user;
@@ -77,9 +81,8 @@ class HomeModel extends BaseModel
         $user = $this->select($sql);
         return $user;
     }
-    //Update password cho user: 
-    public function UpdatePassword($password, $email)
-    {
+    //Update password cho user;: 
+    public function UpdatePassword($password , $email) {
         $sql = 'UPDATE users SET 
         password = "' . md5($password) . '"
         WHERE email = "' . $email . '" ';
@@ -120,6 +123,29 @@ class HomeModel extends BaseModel
         } catch (Exception $e) {
             echo 'Error: ', $mail->ErrorInfo;
         }
+    // Tìm id của người dùng:
+    public function getUserById($id)
+    {
+        $sql = "SELECT * FROM users WHERE id = $id";
+        return $this->select($sql);
+    }
+    // Kiểm tra mật khẩu cũ:
+    public function checkOldPassword($name , $oldPassword)
+    {
+        $sql = 'SELECT * FROM users WHERE username = "' . $name . '" AND password = "' . md5($oldPassword) . '"';
+        return $this->select($sql);
+    }
+    // Change Password:
+    public function changePassword($name , $newPassword)
+    {   
+        $md5Password = md5($newPassword);
+        $sql = 'UPDATE users SET 
+        password = "' .$md5Password . '"
+        WHERE username = "' . $name . '" ';
+
+        $user = $this->update($sql);
+        return $user;
+        
     }
     // Lay id
     public function getid()
@@ -315,10 +341,15 @@ class HomeModel extends BaseModel
     public function firstProductDetail($paged)
     {
 
-        $sql = 'SELECT * FROM `products`  WHERE id =  ' . $paged . ' ';
-        $product = $this->select($sql);
-
-        return $product;
+        $allProduct =  $this->getProducts();
+        foreach ($allProduct as $value) {
+           if(md5($value['id'].'chuyen-de-web-2') == $id){
+            $sql = 'SELECT * FROM `products`  WHERE id =  '.$value['id'].' ';
+            $product = $this->select($sql);      
+            return $product;
+           }
+        }
+       
     }
 
     // Các sản phẩm có liên quan thuộc danh mục:

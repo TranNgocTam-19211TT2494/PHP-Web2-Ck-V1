@@ -51,8 +51,8 @@
 <body class="">
     <?php
     require_once("../../models/ProductModel.php");
-    require_once("../../models/ZipCodeModel.php");
-    $zipcode = new ZipCodeModel();
+    require_once("../../models/ZipcodeModel.php");
+    $zipcode = new ZipcodeModel();
     $allZipCode = $zipcode->getZipCode();
     ?>
     <div class="page-wrapper">
