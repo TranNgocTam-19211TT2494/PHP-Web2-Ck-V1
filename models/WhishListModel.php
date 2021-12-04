@@ -22,21 +22,26 @@ class WhishListModel extends BaseTwoAdmin {
    }
    public function insertWhishList($paged, $userId)
    {
-       $allProduct = $this->getAllProduct();
-       foreach ($allProduct as $value) {
-           if (md5($value['id'] . 'chuyen-de-web-2') == $paged) {
-               $sql = "INSERT INTO `webbanhkem`.`whishlist` (`user_id` ,`pro_id`) VALUES (" .
-                   "'" . $userId
-                   . "','" . $value['id'] . "')";
-               $allWhishlist = $this->getWhishlistExist($userId, $value['id']);
-               if (empty($allWhishlist)) {
-                   $products = $this->insert($sql);
-                   return $products;
-               } else {
-                   return 2;
-               }
-           }
+       if(!empty($paged) && !empty($userId)){
+        $allProduct = $this->getAllProduct();
+        foreach ($allProduct as $value) {
+            if (md5($value['id'] . 'chuyen-de-web-2') == $paged) {
+                $sql = "INSERT INTO `webbanhkem`.`whishlist` (`user_id` ,`pro_id`) VALUES (" .
+                    "'" . $userId
+                    . "','" . $value['id'] . "')";
+                $allWhishlist = $this->getWhishlistExist($userId, $value['id']);
+                if (empty($allWhishlist)) {
+                    $products = $this->insert($sql);
+                    return $products;
+                } else {
+                    return 2;
+                }
+            }
+        }
+       }else{
+            return 3;
        }
+      
    }
    public function getWhishlistExist($userid, $pro_id)
    {
@@ -78,29 +83,34 @@ class WhishListModel extends BaseTwoAdmin {
    }
    public function updateWhishList($input)
    {
-    $allProduct = $this->getAllProduct();
-    $allWhishlist  = $this->getWhishlist();
-    $versionNew = null;
-    foreach ($allWhishlist as  $item) {
-      if($input['version'] == md5($item['version'].'chuyen-de-web-2')){
-          $versionNew = $item['version'];
-      }
-    }
-    if($versionNew != null){
-        $version = (int)$versionNew + 1;
-        foreach ($allProduct as $value) {
-            if(md5($value['id'].'chuyen-de-web-2') == $input['pro_id']){
-                $sql = 'UPDATE whishlist SET 
-                user_id = "' . $input['user_id'] . '", 
-                pro_id = "' . $value['id'] . '",
-                version = "' .$version . '"
-                WHERE id = ' . $input['id'];
-                $whistlist = $this->update($sql);
-                return $whistlist;
-            }
+        $allProduct = $this->getAllProduct();
+        $allWhishlist  = $this->getWhishlist();
+        $versionNew = null;
+        $error = false;
+        foreach ($allWhishlist as  $item) {
+          if($input['version'] == md5($item['version'].'chuyen-de-web-2')){
+              $versionNew = $item['version'];
+          }
+          if($input['user_id'] == $item['user_id'] && $input['pro_id'] == md5($item['pro_id'].'chuyen-de-web-2')){
+             return $error;
+          }
         }
-    }else{
-        return false;
-    }
+        if($versionNew != null){
+            $version = (int)$versionNew + 1;
+            foreach ($allProduct as $value) {
+                
+                if(md5($value['id'].'chuyen-de-web-2') == $input['pro_id']){
+                    $sql = 'UPDATE whishlist SET 
+                    user_id = "' . $input['user_id'] . '", 
+                    pro_id = "' . $value['id'] . '",
+                    version = "' .$version . '"
+                    WHERE id = ' . $input['id'];
+                    $whistlist = $this->update($sql);
+                    return $whistlist;
+                }
+            }
+        }else{
+            return false;
+        }
    }
 }

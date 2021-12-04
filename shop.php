@@ -282,7 +282,7 @@ if (!isset($_GET['page'])) {
                                     <?php for ($i = 1; $i <= $number_of_pages; $i++) { ?>
 
                                     <li class="page-item ">
-                                        <a class="page-link" href="shop.php?page=<?php echo $i ?>"><?php echo $i ?></a>
+                                        <a class="page-link <?php if(isset($_GET['page']) && $_GET['page'] == $i) {echo 'active';} ?>" href="shop.php?page=<?php echo $i ?>"><?php echo $i ?></a>
 
                                     </li>
 

@@ -56,22 +56,34 @@ require_once("../../models/WhishListModel.php");
 $users = new WhishListModel();
 $allUser = $users->getAllUser();
 $allProduct = $users->getAllProduct();
+$noti = 0;
 if(!empty($_GET['id'])){
     $whishlistbyid = $users->findWhishListById($_GET['id']);
 }
-$noti = 0;
+
 if(!empty($_POST['submit'])){
     if(!empty($_GET['id'])){
         $whishlistbyid = $users->findWhishListById($_GET['id']);
-        $update = $users->updateWhishList($_POST);
-        if($update == false){
-            $noti = 2;
+        if(!empty($_POST['user_id']) && !empty($_POST['pro_id'])){
+            $update = $users->updateWhishList($_POST);
+            if(!$update){
+                $noti = 4;
+            }else{
+                header('location: index.php');
+            }
+        }else{
+            $noti = 4;
+        }
+       
+    }else{
+        $result = $users->insertWhishList($_POST['pro_id'],$_POST['user_id']);
+        if((int)$result == 3){
+            $noti = 3 ;
+        }else if((int)$result == 2){
+            $noti = 2 ;
         }else{
             header('location: index.php');
         }
-    }else{
-        $insert = $users->insertWhishList($_POST['pro_id'],$_POST['user_id']);
-        header('location: index.php');
     }
    
 }
@@ -209,9 +221,17 @@ if(!empty($_POST['submit'])){
                         </div>
                         <?php if(isset($noti) && $noti == 2) {?>
                         <div class="alert alert-danger" role="alert">
-                            ALREADY EXISTS
+                            WHISHLIST ALREADY EXISTS
                         </div>
-                        <?php }?>
+                        <?php }else if($noti == 3) {?>
+                        <div class="alert alert-danger" role="alert">
+                            ADD WHISHLIST UNSUCCESS
+                        </div>
+                        <?php }else if($noti == 4) {?>
+                        <div class="alert alert-danger" role="alert">
+                            UPDATE WHISHLIST UNSUCCESS
+                        </div>
+                        <?php } ?>
                         <div class="card-body card-block">
                             <form method="POST" class="form-horizontal" enctype="multipart/form-data">
                                 <input value="<?php if(isset($whishlistbyid)) echo $whishlistbyid[0]['id']?>"
