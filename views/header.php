@@ -117,7 +117,7 @@ $proty = $protypeModel->getProtype();
                                 <?php
                             if (!empty($_SESSION["lgUserID"])) {
                                 $chuoi1 = <<<EOD
-                                
+                                <li><a href="view-checkout.php">Xem đơn hàng</a></li>
                                 <li><a href="profile.php">Tài Khoản</a></li>
                                 <li><a href="change-pasword.php">Đổi mật khẩu</a></li>
                                 <li><a href="logout.php">Đăng xuất</a></li>
