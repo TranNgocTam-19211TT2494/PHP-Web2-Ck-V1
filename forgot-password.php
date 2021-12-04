@@ -1,7 +1,13 @@
 <?php
     require "./models/FactoryPattent.php";
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\SMTP;
+    use PHPMailer\PHPMailer\Exception;
     $factory = new FactoryPattent();
     $HomeModel = $factory->make('home');
+    
+    require 'vendor/autoload.php';
+   
     $loi = "";
     if(isset($_POST['submit']) == true) {
         
@@ -9,16 +15,53 @@
 
         $mail = $HomeModel->checkMail($_POST['email']);
         $count = count($mail);
-        // print_r(count($mail));
+        // print_r($mail[0]['password']);
+        // die();
         if($count == 0) {
             $loi = "Email ban chua duoc dang ky thanh vien";
         }else {
             //New Pass
-            $randPassword = rand(0,999999);
+            //$randPassword = rand(0,999999);
+            $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            $charactersLength = strlen($characters);
+            $randPassword = '';
+            for ($i = 0; $i < 8; $i++) {
+                $randPassword .= $characters[rand(0, $charactersLength - 1)];
+            }
+            
             //var_dump($randPassword);
             $HomeModel->UpdatePassword($randPassword , $email);
             //send mail
-            $HomeModel->sendMail($email , $randPassword);
+            $mail = new PHPMailer(true);//true:enables exceptions
+            try {
+                $mail->SMTPDebug = 0; //0,1,2: chế độ debug
+                $mail->isSMTP();
+                $mail->CharSet  = "utf-8";
+                $mail->Host = 'smtp.gmail.com';  //SMTP servers
+                $mail->SMTPAuth = true; // Enable authentication
+                $mail->Username = 'phantinh1209@gmail.com'; // SMTP username
+                $mail->Password = 'zexpotcxbxkuspaq';   // SMTP password
+                $mail->SMTPSecure = 'ssl';  // encryption TLS/SSL 
+                $mail->Port = 465;  // port to connect to                
+                $mail->setFrom('phantinh1209@gmail.com', 'CAKE SHOP');
+                $mail->addAddress($email);
+                $mail->isHTML(true);  // Set email format to HTML
+                $mail->Subject = 'Thư gửi lại mật khẩu';
+                $noidungthu = "<p>Bạn nhận được mail này, do bạn hoặc ai đó yêu cầu mật khẩu mới cho website...</p>
+                                    Mật khẩu mới của bạn là {$randPassword}";
+                $mail->Body = $noidungthu;
+                $mail->smtpConnect(array(
+                    "ssl" => array(
+                        "verify_peer" => false,
+                        "verify_peer_name" => false,
+                        "allow_self_signed" => true
+                    )
+                ));
+                $mail->send();
+                $loi .= "Đã gửi mail xong";
+            } catch (Exception $e) {
+                echo 'Error: ', $mail->ErrorInfo;
+            }
         }
     }
 ?>
