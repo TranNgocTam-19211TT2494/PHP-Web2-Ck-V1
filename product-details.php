@@ -9,21 +9,17 @@ if (isset($_GET['id'])) {
     $product = $HomeModel->firstProductDetail($id);
     //các sản phẩm liên quan:
     if ($product) {
-        $comments = $HomeModel->getAllCommentById($id);
         $ManuID = $product[0]['manu_id'];
         $products = $HomeModel->getProductManufactures($id, $ManuID);
     }
     // insert comment
-    
+
     if (!empty($_POST['submit'])) {
-        if (!empty($_SESSION['lgUserID'])) {
-            $a = $HomeModel->insertComment($_SESSION['lgUserID'], $id, $_POST);
-           
-        }
+        $a = $HomeModel->insertComment($_SESSION['lgUserID'], $id, $_POST);
+        // var_dump($a).die();
     }
-    if (!empty($_SESSION['lgUserID'])) {
-        $comment_name = $HomeModel->getNameUserByComment($_SESSION['lgUserID']);
-    }
+    $comments = $HomeModel->getAllCommentById($id);
+    $comment_name = $HomeModel->getNameUserByComment($_SESSION['lgUserID']);
 } else {
     echo "<br><center><h3>Vui lòng chọn 1 sản phẩm bất kỳ để xem thông tin chi tiết!</h3><center><br>";
 }
@@ -37,6 +33,12 @@ if (isset($_GET['id'])) {
 
 <head>
     <?php include_once("views/head.php"); ?>
+    <style>
+        .comment_list .name {
+            color: #000;
+            font-weight: bold;
+        }
+    </style>
 </head>
 
 <body>
@@ -97,7 +99,7 @@ if (isset($_GET['id'])) {
                         <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
                             <?php if (isset($_SESSION['lgUserID'])) { ?>
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-9">
 
                                         <form method="POST">
                                             <!-- <input class="name" name=""></input> -->
@@ -109,13 +111,15 @@ if (isset($_GET['id'])) {
                                         </form>
 
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-3">
                                         <div class="comment_list">
                                             <?php foreach ($comments as $comment) {
                                                 // var_dump($comment); 
                                             ?>
-                                                <div class="name">Name: <?= $comment["username"] ?></div>
-                                                <div class="content">Comment: <?= $comment["content"] ?></div>
+                                                <div class="comment_form">
+                                                    <div class="name"><?= $comment["username"] ?></div>
+                                                    <div class="content"><?= $comment["content"] ?></div>
+                                                </div>
                                             <?php } ?>
                                         </div>
                                     </div>

@@ -11,3 +11,8 @@
     counter-increment: number;
     content: counter(number) ;
 }
+/* Comment */
+.comment_list .name{
+    color: #000;
+    font-weight: bold;
+}
