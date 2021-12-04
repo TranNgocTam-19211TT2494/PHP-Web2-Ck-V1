@@ -11,19 +11,22 @@ if($_SESSION['role'] == 'Admin') {
         $_id = $_GET['manu_id'];
         $manu = $manusModel->findManufactureById($_id);
     }
-    $err=false;
+    $noti=0;
     if (!empty($_POST['submit'])) {
         if (!empty($_id)) {
         $result =  $manusModel->updateManufacture($_POST);
         if($result == false){
-            $err = true;
+            $noti = 3;
         }else{
             header('location: ./index.php');
         }
         } else {
-            $manusModel->insertManufacture($_POST);
-            header('location: ./index.php');
-        
+            $result = $manusModel->insertManufacture($_POST);
+            if($result){
+                header('location: ./index.php');
+            }else{
+                $noti = 2;
+            }
         }
     }
     
@@ -192,13 +195,15 @@ if($_SESSION['role'] == 'Admin') {
 
         <div class="main-content">
             <div class="row">
-
-
                 <div class="col-md-3"></div>
                 <div class="col-md-6">
-                    <?php if(isset($err) && $err == true) {?>
+                    <?php if(isset($noti) && $noti == 2) {?>
                     <div class="alert alert-danger" role="alert">
-                        UPDATE PRODUCT UNSUCCESSFUL
+                        INSERT MANUFACTURE UNSUCCESSFUL
+                    </div>
+                    <?php }else if($noti == 3){?>
+                        <div class="alert alert-danger" role="alert">
+                        UPDATE MANUFACTURE UNSUCCESSFUL
                     </div>
                     <?php }?>
                     <div class="card">

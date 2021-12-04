@@ -365,11 +365,32 @@ class HomeModel extends BaseModel
     // Các sản phẩm có liên quan thuộc danh mục:
     public function getProductManufactures($paged, $ManuID)
     {
-        $sql = 'Select * from products where id <> ' . $paged . '  and manu_id = ' . $ManuID . ' LIMIT 4';
-        $products = $this->select($sql);
-        return $products;
+        $allProduct = $this->getProducts();
+        foreach ($allProduct as  $value) {
+           if(md5($value['id'].'chuyen-de-web-2') == $paged){
+            $sql = 'Select * from products where id <> ' . $value['id'] . '  and manu_id = ' . $ManuID . ' LIMIT 4';
+            $products = $this->select($sql);
+            return $products;
+          
+           }
+        }
+        
     }
     // ------------------ Giỏ hàng -------------------- //
+    // Xem đơn hàng của khách hàng:
+    public function getCheckoutsByUserId($userID)
+    {
+        $sql = 'SELECT checkouts.id , checkouts.addedDate, checkouts.address ,checkouts.phone , checkouts.sum,checkouts.status FROM `checkouts` ,users WHERE checkouts.user_id = users.id AND checkouts.user_id = '.$userID;
+        $order = $this->select($sql);
+        return $order;
+    }
+    // Lấy sản phẩm trong giỏ hàng:
+    public function getOrderItemById($id)
+    {
+        $sql = 'SELECT carts.pro_id , products.name , products.price, carts.quantity FROM carts INNER JOIN products ON carts.pro_id = products.id WHERE carts.order_id = '.$id;
+        $user = $this->select($sql);
+        return $user;
+    }
     // Thêm vào giỏ hàng:
     public function getOrderItemByOrder($paged)
     {

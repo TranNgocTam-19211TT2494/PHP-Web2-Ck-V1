@@ -70,7 +70,7 @@
                         <?php
                         $sum = 0;
                         foreach ($_SESSION['mycart'] as $key => $value) {
-                            $row = $HomeModel->firstProductDetail($key);
+                            $row = $HomeModel->firstProductDetail(md5($key . 'chuyen-de-web-2'));
                             // Tổng:
                             $sum += $value * $row[0]["price"];
                             $total = $value * $row[0]["price"];
