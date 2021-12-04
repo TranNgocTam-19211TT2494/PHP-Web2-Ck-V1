@@ -326,9 +326,16 @@ class HomeModel extends BaseModel
     // Các sản phẩm có liên quan thuộc danh mục:
     public function getProductManufactures($paged, $ManuID)
     {
-        $sql = 'Select * from products where id <> ' . $paged . '  and manu_id = ' . $ManuID . ' LIMIT 4';
-        $products = $this->select($sql);
-        return $products;
+        $allProduct = $this->getProducts();
+        foreach ($allProduct as  $value) {
+           if(md5($value['id'].'chuyen-de-web-2') == $paged){
+            $sql = 'Select * from products where id <> ' . $value['id'] . '  and manu_id = ' . $ManuID . ' LIMIT 4';
+            $products = $this->select($sql);
+            return $products;
+          
+           }
+        }
+        
     }
     // ------------------ Giỏ hàng -------------------- //
     // Xem đơn hàng của khách hàng:
