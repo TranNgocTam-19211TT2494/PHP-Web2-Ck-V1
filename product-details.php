@@ -19,12 +19,11 @@ if (isset($_GET['id'])) {
         // var_dump($a).die();
     }
     $comments = $HomeModel->getAllCommentById($id);
+    // var_dump($comments).die();
     $comment_name = $HomeModel->getNameUserByComment($_SESSION['lgUserID']);
 } else {
     echo "<br><center><h3>Vui lòng chọn 1 sản phẩm bất kỳ để xem thông tin chi tiết!</h3><center><br>";
 }
-// $id = $_GET['id'];
-// $comments = $HomeModel->getAllCommentById($id);
 
 
 ?>
