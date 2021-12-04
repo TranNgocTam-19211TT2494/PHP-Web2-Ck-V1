@@ -1,30 +1,18 @@
 <?php
 session_start();
-require_once("../../models/ZipCodeModel.php");
+require "../../models/FactoryPattentTwoAdmin.php";
 if($_SESSION['role'] == 'Admin') { 
+    $factory = new FactoryPattentTwoAdmin();
+    $OrderModel = $factory->make('order');
+
+    // -----------Factory------------------
+    $orders = $OrderModel->getOrders();
     
-    $zipcode = new ZipCodeModel();
-    $allUser = $zipcode->getUser();
-    if (!empty($_GET['id'])) {
-        $zipcodeById = $zipcode->getZipCodeById($_GET['id']);
-    }
-    if (!empty($_POST['submit'])) {
-        if(empty($_GET['id'])){
-            $zipcode->insertZipcode($_POST);
-            if($zipcode){
-                header('location: index.php');
-            }
-        }else{
-            
-            $zipcode->updateZipcode($_POST);
-            if($zipcode){
-                header('location: index.php');
-            }
-        }
-    }
 } else {
     header('location: ../index.php');
 }
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -32,13 +20,10 @@ if($_SESSION['role'] == 'Admin') {
 <head>
     <!-- Required meta tags-->
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="au theme template">
-    <meta name="author" content="Hau Nguyen">
-    <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
     <title>Dashboard</title>
+    <?php include('../../views/admin/layouts/head.php') ?>
 
     <!-- Fontfaces CSS-->
     <link href="../../public/backend/css/font-face.css" rel="stylesheet" media="all">
@@ -62,23 +47,18 @@ if($_SESSION['role'] == 'Admin') {
 
     <!-- Main CSS-->
     <link href="../../public/backend/css/theme.css" rel="stylesheet" media="all">
+    <link href="../../public/backend/css/protype.css" rel="stylesheet" media="all">
+
 </head>
 <style>
-.select2-hidden-accessible {
-    border: 0 !important;
-    clip: rect(0 0 0 0) !important;
-    height: 1 px !important;
-    margin: -1 px !important;
-    overflow: hidden !important;
-    padding: 0 !important;
-    position: absolute !important;
-    width: 1 px !important;
+.table-data__tool {
+    justify-content: flex-end;
 }
 </style>
 
-<body class="">
-   
-    <div class="page-wrapper">
+<body class="animsition">
+
+    <div class="page-wrapper-1">
         <!-- HEADER DESKTOP-->
         <header class="header-desktop3 d-none d-lg-block">
             <div class="section__content section__content--p35">
@@ -157,7 +137,7 @@ if($_SESSION['role'] == 'Admin') {
                 ?>
                                         <div class="content">
                                             <h5 class="name">
-                                                <a href="../profile.php"><?= $_SESSION['lgUserName'] ?></a>
+                                                <a href="../../profile.php"><?= $_SESSION['lgUserName'] ?></a>
                                             </h5>
                                             <span class="email">ngoctam2303001@gmail.com</span>
                                         </div>
@@ -192,115 +172,123 @@ if($_SESSION['role'] == 'Admin') {
         <!-- END HEADER DESKTOP-->
 
         <!-- HEADER MOBILE-->
-        <?php include('../../views/admin/layouts/header-mobile.php')?>
+        <?php include('../../views/admin/layouts/header-mobile.php') ?>
         <!-- END HEADER MOBILE -->
 
         <!-- PAGE CONTENT-->
         <div class="page-content--bgf7">
             <!-- DATA TABLE-->
-            <div class="row">
-                <div class="col-md-3"></div>
-                <div class="col-md-6">
+            <section class="p-t-20">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="title-5 m-b-35">Orders table</h3>
 
-                    <div class="card">
-                        <div class="card-header">
-                            <strong>Add Product</strong>
-                        </div>
-                        <?php if(isset($error) && $error == true) {?>
-                        <div class="alert alert-danger" role="alert">
-                            ADD PRODUCT UNSUCCESSFUL
-                        </div>
-                        <?php }?>
-                        <div class="card-body card-block">
-                            <form method="POST" class="form-horizontal" enctype="multipart/form-data">
-                                <input value="<?php if(isset($zipcodeById)) echo $zipcodeById[0]['id']?>" type="hidden"
-                                    id="text-input" name="id">
-                                <div class="row form-group">
-                                    <div class="col col-md-3">
-                                        <label for="select" class=" form-control-label">User</label>
-                                    </div>
-                                    <div class="col-12 col-md-9">
-                                        <select name="user_id" id="select" class="form-control">
-                                            <option value="0">Please select user</option>
-                                            <?php if(isset($allUser)){
-                                                foreach ($allUser as $value) { ?>
-                                            <option value="<?= $value['id'] ?>"
-                                                <?php if(isset($zipcodeById) && $zipcodeById[0]['user_id'] == $value['id']){echo 'selected';}?>>
-
-                                                <?= $value['username']?></option>
-                                            <?php  } } ?>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="row form-group">
-                                    <div class="col col-md-3">
-                                        <label for="text-input" class=" form-control-label">Discount</label>
-                                    </div>
-                                    <div class="col-12 col-md-9">
-                                        <input value="<?php if(isset($zipcodeById)) echo $zipcodeById[0]['discount']?>"
-                                            type="number" id="text-input" name="discount" placeholder="Discount"
-                                            class="form-control">
-                                    </div>
-                                </div>
-                                <div class="row form-group">
-                                    <div class="col col-md-3">
-                                        <label class=" form-control-label">Status</label>
-                                    </div>
-                                    <div class="col col-md-9">
-                                        <div class="form-check-inline form-check">
-                                            <?php if(isset($zipcodeById)) {
-                                                if($zipcodeById[0]['status'] == "0"){?>
-                                            <label for="inline-radio1" class="form-check-label ">
-                                                <input type="radio" id="inline-radio1" name="status" value="0"
-                                                    class="form-check-input" checked>Pending
-                                            </label>
-                                            <label for="inline-radio2" class="form-check-label ml-2">
-                                                <input type="radio" id="inline-radio2" name="status" value="1"
-                                                    class="form-check-input">Active
-                                            </label>
-                                            <?php }else{?>
-                                            <label for="inline-radio1" class="form-check-label ">
-                                                <input type="radio" id="inline-radio1" name="status" value="0"
-                                                    class="form-check-input">Pending
-                                            </label>
-                                            <label for="inline-radio2" class="form-check-label ml-2">
-                                                <input type="radio" id="inline-radio2" name="status" value="1"
-                                                    class="form-check-input" checked>Active
-                                            </label>
-                                            <?php } }else{?>
-                                            <label for="inline-radio1" class="form-check-label ">
-                                                <input type="radio" id="inline-radio1" name="status" value="0"
-                                                    class="form-check-input" checked>Pending
-                                            </label>
-                                            <label for="inline-radio2" class="form-check-label ml-2">
-                                                <input type="radio" id="inline-radio2" name="status" value="1"
-                                                    class="form-check-input">Active
-                                            </label>
+                            <div class="table-responsive table-responsive-data2">
+                                <table class="table table-data2">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>First name</th>
+                                            <th>Last name</th>
+                                            <th>Product name</th>
+                                            <th>Address</th>
+                                            <th>Quantity</th>
+                                            <th>Price</th>
+                                            <th>Total</th>
+                                            <th>Notes</th>
+                                            <th>Order date</th>
+                                            <th>Status</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php if(!empty($orders)) { foreach ($orders as $order) { ?>
+                                        <!-- products -->
+                                        <?php 
+                                            $item = $OrderModel->getOrderItemById($order['id']);
+                                            //print_r($item);
+                                            $sum = 0;
+                                            $soluong = 0;
+                                            $gia = 0;
+                                            foreach ($item as $key) {
+                                                $soluong += $key['quantity'];
+                                                $gia += $key['price'];
+                                                //print_r($gia);
+                                                $sum = $item[0]['quantity'] * $gia;
+                                                
+                                            }
+                                            
+                                        ?>
+                                        <tr class="tr-shadow">
+                                            <td class="stt"></td>
+                                            <td>
+                                                <?= htmlspecialchars($order['firstname'])  ?>
+                                            </td>
+                                            <td>
+                                                <?= htmlspecialchars($order['lastname'])  ?>
+                                            </td>
+                                            <td>
+                                                <?= htmlspecialchars($item[0]['name'])  ?>
+                                            </td>
+                                            <td>
+                                                <?= htmlspecialchars($order['address'])  ?>
+                                            </td>
+                                            <td>
+                                                <?= htmlspecialchars($soluong)  ?>
+                                            </td>
+                                            <td>
+                                                $<?= htmlspecialchars($gia)  ?>
+                                            </td>
+                                            <td>
+                                                $<?= htmlspecialchars($order['sum'])  ?>
+                                            </td>
+                                            <td>
+                                                <?= htmlspecialchars($order['notes'])  ?>
+                                            </td>
+                                            <td>
+                                                <?= htmlspecialchars(date( "d-m-Y", strtotime($order['addedDate'])))?>
+                                            </td>
+                                            <?php if($order['status'] == 0) {?>
+                                            <td>
+                                                <span class="status--process">Inactive</span>
+                                            </td>
+                                            <?php } else { ?>
+                                            <td>
+                                                <span class="status--process">Active</span>
+                                            </td>
                                             <?php } ?>
-                                        </div>
-                                    </div>
-                                </div>
-                                <button type="submit" name="submit" value="submit" class="btn btn-primary btn-sm">
-                                    <i class="fa fa-dot-circle-o"></i> Submit
-                                </button>
-                                <button type="reset" class="btn btn-danger btn-sm">
-                                    <i class="fa fa-ban"></i> Reset
-                                </button>
-                            </form>
-                        </div>
+                                            <td class="edit-delete">
+                                                <div class="table-data-feature">
+                                                    <button class="item" data-toggle="tooltip" data-placement="top"
+                                                        title="Edit"
+                                                        onclick="window.location.href='./update.php?id=<?php echo md5($order['id'] . 'chuyen-de-web-2') ?>'">
+                                                        <i class="zmdi zmdi-edit"></i>
+                                                    </button>
+                                                    <button class="item" data-toggle="tooltip" data-placement="top"
+                                                        title="Delete"
+                                                        onclick="window.location.href='./delete.php?id=<?php echo md5($order['id'] . 'chuyen-de-web-2')  ?>'">
+                                                        <i class="zmdi zmdi-delete"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
 
+                                        <?php } } ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-3"></div>
                 </div>
-            </div>
+            </section>
             <!-- END DATA TABLE-->
-            <!-- COPYRIGHT-->
-            <?php include('../../views/admin/partials/copyright.php')?>
-            <!-- END COPYRIGHT-->
         </div>
+
     </div>
-  <!-- Jquery JS-->
-  <script src="../../public/backend/vendor/jquery-3.2.1.min.js"></script>
+
+    <!-- Jquery JS-->
+    <script src="../../public/backend/vendor/jquery-3.2.1.min.js"></script>
     <!-- Bootstrap JS-->
     <script src="../../public/backend/vendor/bootstrap-4.1/popper.min.js"></script>
     <script src="../../public/backend/vendor/bootstrap-4.1/bootstrap.min.js"></script>

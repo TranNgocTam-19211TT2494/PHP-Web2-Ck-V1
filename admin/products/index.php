@@ -1,3 +1,24 @@
+<?php
+session_start();
+// ----------Factory----------
+require '../../models/FactoryPattentTwoAdmin.php';
+
+if($_SESSION['role'] == 'Admin') { 
+    $factory = new FactoryPattentTwoAdmin();
+    $params = [];
+    if (!empty($_GET['keyword'])) {
+        $params['keyword'] = $_GET['keyword'];
+        
+    }
+    $productModel = $factory->make('product');
+    // ----------Factory----------
+    
+    $allProduct =  $productModel->getProducts($params);
+    
+} else {
+    header('location: ../index.php');
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,14 +37,16 @@
     <link href="../../public/backend/css/font-face.css" rel="stylesheet" media="all">
     <link href="../../public/backend/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
     <link href="../../public/backend/vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
-    <link href="../../public/backend/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+    <link href="../../public/backend/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet"
+        media="all">
 
     <!-- Bootstrap CSS-->
     <link href="../../public/backend/vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
 
     <!-- Vendor CSS-->
     <link href="../../public/backend/vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
-    <link href="../../public/backend/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
+    <link href="../../public/backend/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet"
+        media="all">
     <link href="../../public/backend/vendor/wow/animate.css" rel="stylesheet" media="all">
     <link href="../../public/backend/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
     <link href="../../public/backend/vendor/slick/slick.css" rel="stylesheet" media="all">
@@ -34,36 +57,20 @@
     <link href="../../public/backend/css/theme.css" rel="stylesheet" media="all">
 </head>
 <style>
-    .select2-hidden-accessible {
-        border: 0 !important;
-        clip: rect(0 0 0 0) !important;
-        height: 1 px !important;
-        margin: -1 px !important;
-        overflow: hidden !important;
-        padding: 0 !important;
-        position: absolute !important;
-        width: 1 px !important;
-    }
+.select2-hidden-accessible {
+    border: 0 !important;
+    clip: rect(0 0 0 0) !important;
+    height: 1 px !important;
+    margin: -1 px !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    position: absolute !important;
+    width: 1 px !important;
+}
 </style>
 
 <body class="">
-    <?php
-    require_once("../../models/ProductModel.php");
-    // $productModel = new ProductModel();
 
-    // ----------Factory----------
-    require '../../models/FactoryPattentTwoAdmin.php';
-    $factory = new FactoryPattentTwoAdmin();
-    $params = [];
-    if (!empty($_GET['keyword'])) {
-        $params['keyword'] = $_GET['keyword'];
-        
-    }
-    $productModel = $factory->make('product');
-    // ----------Factory----------
-    
-    $allProduct =  $productModel->getProducts($params);
-    ?>
     <div class="page-wrapper">
         <!-- HEADER DESKTOP-->
         <header class="header-desktop3 d-none d-lg-block">
@@ -77,7 +84,7 @@
                     <div class="header__navbar">
                         <ul class="list-unstyled">
                             <li class="has-sub">
-                                <a href="admin.php">
+                                <a href="../admin.php">
                                     <i class="fas fa-tachometer-alt"></i>Dashboard
                                     <span class="bot-line"></span>
                                 </a>
@@ -93,151 +100,81 @@
                                         <a href="../products/index.php">Products</a>
                                     </li>
                                     <li>
-                                        <a href="">Orders</a>
-                                    </li>
-                                    <li>
                                         <a href="../Manufacture/">Manufactures</a>
                                     </li>
                                     <li>
-                                        <a href="../protype/Protypes.php">Protype</a>
+                                        <a href="../protype/index.php">Protype</a>
                                     </li>
                                 </ul>
                             </li>
                             <li class="has-sub">
-                                <a href="#">
+                                <a href="../oders/index.php">
                                     <i class="fas fa-desktop"></i>
-                                    <span class="bot-line"></span>Table</a>
-                                <ul class="header3-sub-list list-unstyled">
-                                    <li>
-                                        <a href="button.html">Button</a>
-                                    </li>
-                                    <li>
-                                        <a href="badge.html">Badges</a>
-                                    </li>
-                                    <li>
-                                        <a href="tab.html">Tabs</a>
-                                    </li>
+                                    <span class="bot-line"></span>Orders</a>
 
-                                </ul>
+                            </li>
+                            <li class="has-sub">
+                                <a href="../zipcode/index.php">
+                                    <i class="fas fa-desktop"></i>
+                                    <span class="bot-line"></span>ZipCode</a>
+
                             </li>
                         </ul>
                     </div>
                     <div class="header__tool">
-                        <div class="header-button-item has-noti js-item-menu">
-                            <i class="zmdi zmdi-notifications"></i>
-                            <div class="notifi-dropdown notifi-dropdown--no-bor js-dropdown">
-                                <div class="notifi__title">
-                                    <p>You have 3 Notifications</p>
-                                </div>
-                                <div class="notifi__item">
-                                    <div class="bg-c1 img-cir img-40">
-                                        <i class="zmdi zmdi-email-open"></i>
-                                    </div>
-                                    <div class="content">
-                                        <p>You got a email notification</p>
-                                        <span class="date">April 12, 2018 06:50</span>
-                                    </div>
-                                </div>
-                                <div class="notifi__item">
-                                    <div class="bg-c2 img-cir img-40">
-                                        <i class="zmdi zmdi-account-box"></i>
-                                    </div>
-                                    <div class="content">
-                                        <p>Your account has been blocked</p>
-                                        <span class="date">April 12, 2018 06:50</span>
-                                    </div>
-                                </div>
-                                <div class="notifi__item">
-                                    <div class="bg-c3 img-cir img-40">
-                                        <i class="zmdi zmdi-file-text"></i>
-                                    </div>
-                                    <div class="content">
-                                        <p>You got a new file</p>
-                                        <span class="date">April 12, 2018 06:50</span>
-                                    </div>
-                                </div>
-                                <div class="notifi__footer">
-                                    <a href="#">All notifications</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="header-button-item js-item-menu">
-                            <i class="zmdi zmdi-settings"></i>
-                            <div class="setting-dropdown js-dropdown">
-                                <div class="account-dropdown__body">
-                                    <div class="account-dropdown__item">
-                                        <a href="#">
-                                            <i class="zmdi zmdi-account"></i>Account</a>
-                                    </div>
-                                    <div class="account-dropdown__item">
-                                        <a href="#">
-                                            <i class="zmdi zmdi-settings"></i>Setting</a>
-                                    </div>
-                                    <div class="account-dropdown__item">
-                                        <a href="#">
-                                            <i class="zmdi zmdi-money-box"></i>Billing</a>
-                                    </div>
-                                </div>
-                                <div class="account-dropdown__body">
-                                    <div class="account-dropdown__item">
-                                        <a href="#">
-                                            <i class="zmdi zmdi-globe"></i>Language</a>
-                                    </div>
-                                    <div class="account-dropdown__item">
-                                        <a href="#">
-                                            <i class="zmdi zmdi-pin"></i>Location</a>
-                                    </div>
-                                    <div class="account-dropdown__item">
-                                        <a href="#">
-                                            <i class="zmdi zmdi-email"></i>Email</a>
-                                    </div>
-                                    <div class="account-dropdown__item">
-                                        <a href="#">
-                                            <i class="zmdi zmdi-notifications"></i>Notifications</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
                         <div class="account-wrap">
                             <div class="account-item account-item--style2 clearfix js-item-menu">
                                 <div class="image">
                                     <img src="../../public/backend/images/icon/avatar-01.jpg" alt="John Doe" />
                                 </div>
+                                <?php 
+            if (isset($_SESSION['lgUserID'])) {
+                ?>
                                 <div class="content">
-                                    <a class="js-acc-btn" href="#">john doe</a>
+                                    <a class="js-acc-btn" href="#"><?= $_SESSION['lgUserName'] ?></a>
                                 </div>
+                                <?php
+            } ?>
                                 <div class="account-dropdown js-dropdown">
                                     <div class="info clearfix">
                                         <div class="image">
                                             <a href="#">
-                                                <img src="../../public/backend/images/icon/avatar-01.jpg" alt="John Doe" />
+                                                <img src="../../public/backend/images/icon/avatar-01.jpg"
+                                                    alt="John Doe" />
                                             </a>
                                         </div>
+                                        <?php 
+                    if(isset($_SESSION['lgUserID'])) { 
+                    
+                ?>
                                         <div class="content">
                                             <h5 class="name">
-                                                <a href="#">john doe</a>
+                                                <a href="../../profile.php"><?= $_SESSION['lgUserName'] ?></a>
                                             </h5>
-                                            <span class="email">johndoe@example.com</span>
+                                            <span class="email">ngoctam2303001@gmail.com</span>
                                         </div>
+                                        <?php } ?>
                                     </div>
                                     <div class="account-dropdown__body">
-                                        <div class="account-dropdown__item">
-                                            <a href="#">
-                                                <i class="zmdi zmdi-account"></i>Account</a>
-                                        </div>
-                                        <div class="account-dropdown__item">
-                                            <a href="#">
-                                                <i class="zmdi zmdi-settings"></i>Setting</a>
-                                        </div>
-                                        <div class="account-dropdown__item">
-                                            <a href="#">
-                                                <i class="zmdi zmdi-money-box"></i>Billing</a>
-                                        </div>
+                                        <?php
+            if (!empty($_SESSION["lgUserID"])) {
+                $chuoi1 = <<<EOD
+                <div class="account-dropdown__item">
+                    <a href="../../profile.php">
+                        <i class="zmdi zmdi-account"></i>Account</a>
+                </div>
+                <div class="account-dropdown__footer">
+                    <a href="../../logout.php">
+                    <i class="zmdi zmdi-power"></i>Logout</a>
+                 </div>
+                EOD;
+                echo $chuoi1;
+            } 
+
+            ?>
                                     </div>
-                                    <div class="account-dropdown__footer">
-                                        <a href="#">
-                                            <i class="zmdi zmdi-power"></i>Logout</a>
-                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -280,7 +217,8 @@
                                     <div class="col col-md-12">
                                         <div class="input-group">
                                             <div class="input-group-btn">
-                                                <button type="submit" class="btn" style="background: #63c76a;color:white;">
+                                                <button type="submit" class="btn"
+                                                    style="background: #63c76a;color:white;">
                                                     <i class="fa fa-search"></i> Search
                                                 </button>
                                             </div>
@@ -376,29 +314,31 @@
         </div>
 
     </div>
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="../../public/js/jquery-3.2.1.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="../../public/js/popper.min.js"></script>
-    <script src="../../public/js/bootstrap.min.js"></script>
-    <!-- Rev slider js -->
-    <script src="../../public/vendors/revolution/js/jquery.themepunch.tools.min.js"></script>
-    <script src="../../public/vendors/revolution/js/jquery.themepunch.revolution.min.js"></script>
-    <script src="../../public/vendors/revolution/js/extensions/revolution.extension.actions.min.js"></script>
-    <script src="../../public/vendors/revolution/js/extensions/revolution.extension.video.min.js"></script>
-    <script src="../../public/vendors/revolution/js/extensions/revolution.extension.slideanims.min.js"></script>
-    <script src="../../public/vendors/revolution/js/extensions/revolution.extension.layeranimation.min.js"></script>
-    <script src="../../public/vendors/revolution/js/extensions/revolution.extension.navigation.min.js"></script>
-    <!-- Extra plugin js -->
-    <script src="../../public/vendors/owl-carousel/owl.carousel.min.js"></script>
-    <script src="../../public/vendors/magnifc-popup/jquery.magnific-popup.min.js"></script>
-    <script src="../../public/vendors/datetime-picker/js/moment.min.js"></script>
-    <script src="../../public/vendors/datetime-picker/js/bootstrap-datetimepicker.min.js"></script>
-    <script src="../../public/vendors/nice-select/js/jquery.nice-select.min.js"></script>
-    <script src="../../public/vendors/jquery-ui/jquery-ui.min.js"></script>
-    <script src="../../public/vendors/lightbox/simpleLightbox.min.js"></script>
+    <!-- Jquery JS-->
+    <script src="../../public/backend/vendor/jquery-3.2.1.min.js"></script>
+    <!-- Bootstrap JS-->
+    <script src="../../public/backend/vendor/bootstrap-4.1/popper.min.js"></script>
+    <script src="../../public/backend/vendor/bootstrap-4.1/bootstrap.min.js"></script>
+    <!-- Vendor JS       -->
+    <script src="../../public/backend/vendor/slick/slick.min.js">
+    </script>
+    <script src="../../public/backend/vendor/wow/wow.min.js"></script>
+    <script src="../../public/backend/vendor/animsition/animsition.min.js"></script>
+    <script src="../../public/backend/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js">
+    </script>
+    <script src="../../public/backend/vendor/counter-up/jquery.waypoints.min.js"></script>
+    <script src="../../public/backend/vendor/counter-up/jquery.counterup.min.js">
+    </script>
+    <script src="../../public/backend/vendor/circle-progress/circle-progress.min.js"></script>
+    <script src="../../public/backend/vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
+    <script src="../../public/backend/vendor/chartjs/Chart.bundle.min.js"></script>
+    <script src="../../public/backend/vendor/select2/select2.min.js">
+    </script>
 
-    <script src="../../public/js/theme.js"></script>
+    <!-- Main JS-->
+    <script src="../../public/backend/js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+    <script src="../../public/js/xss.js"></script>
 
 </body>
 
