@@ -7,7 +7,7 @@ $factory = new FactoryPattent();
 
 $HomeModel = $factory->make('home');
 // --------------Factory----------
-
+$error = "";
 if (!empty($_POST['submit'])) {
     $userName = trim($_POST["username"]);
     $passWord = trim($_POST["password"]);
@@ -27,19 +27,22 @@ if (!empty($_POST['submit'])) {
                 header("location:index.php");
             }
             else{
-                echo "<p class=\"error\" style = 'color: red;
-				text-align: center;'>Tài khoản chưa được xác thực</p>";
+                
+                $error .= "Tài khoản chưa được xác thực";
             }
         } else {
-            echo "<p class=\"error\" style = 'color: red;
-				text-align: center;'>Tên đăng nhập hoặc mật khẩu không đúng</p>";
+            $error .= "Tên đăng nhập hoặc mật khẩu không đúng";
+           
         }
         // Phân quyền admin:
-        if($_SESSION['role'] == "Admin") {
-            header("location: admin/admin.php");
-        } else {
-            header("location: index.php");
+        if(!empty($_SESSION['role'])) {
+            if($_SESSION['role'] == "Admin") {
+                header("location: admin/admin.php");
+            } elseif($_SESSION['role'] == "User") {
+                header("location: index.php");
+            }
         }
+      
     }
 }
 
@@ -94,6 +97,13 @@ if (!empty($_POST['submit'])) {
                             </a>
                         </div>
                         <div class="login-form">
+                            <?php 
+                                if($error != "") {
+                            ?>
+                            <div class="alert alert-danger" role="alert">
+                                <?= $error ?>
+                            </div>
+                            <?php } ?>
                             <form method="post">
                                 <div class="form-group">
                                     <label>Enter Name</label>
