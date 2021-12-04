@@ -347,7 +347,7 @@ if (!isset($_GET['page'])) {
                                         style="max-width: 100px;">
                                 </div>
                                 <div class="media-body">
-                                    <a href="product-details.php?id=<?= $latest['id'] ?>">
+                                    <a href="product-details.php?id=<?= md5($latest['id'] . 'chuyen-de-web-2') ?>">
                                         <h4><?= $latest['name'] ?></h4>
                                     </a>
 
