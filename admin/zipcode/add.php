@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once("../../models/ZipCodeModel.php");
+$noti = 0;
 if($_SESSION['role'] == 'Admin') { 
     
     $zipcode = new ZipCodeModel();
@@ -10,15 +11,18 @@ if($_SESSION['role'] == 'Admin') {
     }
     if (!empty($_POST['submit'])) {
         if(empty($_GET['id'])){
-            $zipcode->insertZipcode($_POST);
-            if($zipcode){
+            $result = $zipcode->insertZipcode($_POST);
+            if($result){
                 header('location: index.php');
+            }else{
+                $noti = 2;
             }
         }else{
-            
-            $zipcode->updateZipcode($_POST);
-            if($zipcode){
+             $result1 = $zipcode->updateZipcode($_POST);
+            if($result1){
                 header('location: index.php');
+            }else{
+                $noti = 3;
             }
         }
     }
@@ -77,7 +81,7 @@ if($_SESSION['role'] == 'Admin') {
 </style>
 
 <body class="">
-   
+
     <div class="page-wrapper">
         <!-- HEADER DESKTOP-->
         <header class="header-desktop3 d-none d-lg-block">
@@ -206,11 +210,15 @@ if($_SESSION['role'] == 'Admin') {
                         <div class="card-header">
                             <strong>Add Product</strong>
                         </div>
-                        <?php if(isset($error) && $error == true) {?>
+                        <?php if(isset($noti) && $noti == 2) {?>
                         <div class="alert alert-danger" role="alert">
-                            ADD PRODUCT UNSUCCESSFUL
+                            ADD ZIPCODE UNSUCCESSFUL
                         </div>
-                        <?php }?>
+                        <?php }else if($noti == 3){?>
+                        <div class="alert alert-danger" role="alert">
+                            UPDATE ZIPCODE UNSUCCESSFUL
+                        </div>
+                        <?php } ?>
                         <div class="card-body card-block">
                             <form method="POST" class="form-horizontal" enctype="multipart/form-data">
                                 <input value="<?php if(isset($zipcodeById)) echo $zipcodeById[0]['id']?>" type="hidden"
@@ -299,8 +307,8 @@ if($_SESSION['role'] == 'Admin') {
             <!-- END COPYRIGHT-->
         </div>
     </div>
-  <!-- Jquery JS-->
-  <script src="../../public/backend/vendor/jquery-3.2.1.min.js"></script>
+    <!-- Jquery JS-->
+    <script src="../../public/backend/vendor/jquery-3.2.1.min.js"></script>
     <!-- Bootstrap JS-->
     <script src="../../public/backend/vendor/bootstrap-4.1/popper.min.js"></script>
     <script src="../../public/backend/vendor/bootstrap-4.1/bootstrap.min.js"></script>
