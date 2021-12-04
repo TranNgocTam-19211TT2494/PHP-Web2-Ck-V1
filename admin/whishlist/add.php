@@ -1,34 +1,7 @@
 <?php
 session_start();
-require_once("../../models/ZipCodeModel.php");
-$noti = 0;
-if($_SESSION['role'] == 'Admin') { 
-    
-    $zipcode = new ZipCodeModel();
-    $allUser = $zipcode->getUser();
-    if (!empty($_GET['id'])) {
-        $zipcodeById = $zipcode->getZipCodeById($_GET['id']);
-    }
-    if (!empty($_POST['submit'])) {
-        if(empty($_GET['id'])){
-            $result = $zipcode->insertZipcode($_POST);
-            if($result){
-                header('location: index.php');
-            }else{
-                $noti = 2;
-            }
-        }else{
-             $result1 = $zipcode->updateZipcode($_POST);
-            if($result1){
-                header('location: index.php');
-            }else{
-                $noti = 3;
-            }
-        }
-    }
-} else {
-    header('location: ../index.php');
-}
+require_once("../../models/WhishListModel.php");
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -79,6 +52,30 @@ if($_SESSION['role'] == 'Admin') {
     width: 1 px !important;
 }
 </style>
+<?php
+$users = new WhishListModel();
+$allUser = $users->getAllUser();
+$allProduct = $users->getAllProduct();
+if(!empty($_GET['id'])){
+    $whishlistbyid = $users->findWhishListById($_GET['id']);
+}
+$noti = 0;
+if(!empty($_POST['submit'])){
+    if(!empty($_GET['id'])){
+        $whishlistbyid = $users->findWhishListById($_GET['id']);
+        $update = $users->updateWhishList($_POST);
+        if($update == false){
+            $noti = 2;
+        }else{
+            header('location: index.php');
+        }
+    }else{
+        $insert = $users->insertWhishList($_POST['pro_id'],$_POST['user_id']);
+        header('location: index.php');
+    }
+   
+}
+?>
 
 <body class="">
 
@@ -208,21 +205,22 @@ if($_SESSION['role'] == 'Admin') {
 
                     <div class="card">
                         <div class="card-header">
-                            <strong>Add Product</strong>
+                            <strong>Add WhishList</strong>
                         </div>
                         <?php if(isset($noti) && $noti == 2) {?>
                         <div class="alert alert-danger" role="alert">
-                            ADD ZIPCODE UNSUCCESSFUL
+                            ALREADY EXISTS
                         </div>
-                        <?php }else if($noti == 3){?>
-                        <div class="alert alert-danger" role="alert">
-                            UPDATE ZIPCODE UNSUCCESSFUL
-                        </div>
-                        <?php } ?>
+                        <?php }?>
                         <div class="card-body card-block">
                             <form method="POST" class="form-horizontal" enctype="multipart/form-data">
-                                <input value="<?php if(isset($zipcodeById)) echo $zipcodeById[0]['id']?>" type="hidden"
-                                    id="text-input" name="id">
+                                <input value="<?php if(isset($whishlistbyid)) echo $whishlistbyid[0]['id']?>"
+                                    type="hidden" id="text-input" name="id">
+
+                                <input
+                                    value="<?php if(isset($whishlistbyid)) echo md5($whishlistbyid[0]['version'].'chuyen-de-web-2')?>"
+                                    type="hidden" id="text-input" name="version">
+
                                 <div class="row form-group">
                                     <div class="col col-md-3">
                                         <label for="select" class=" form-control-label">User</label>
@@ -233,7 +231,7 @@ if($_SESSION['role'] == 'Admin') {
                                             <?php if(isset($allUser)){
                                                 foreach ($allUser as $value) { ?>
                                             <option value="<?= $value['id'] ?>"
-                                                <?php if(isset($zipcodeById) && $zipcodeById[0]['user_id'] == $value['id']){echo 'selected';}?>>
+                                                <?php if(isset($whishlistbyid) && $whishlistbyid[0]['user_id'] == $value['id']){echo 'selected';}?>>
 
                                                 <?= $value['username']?></option>
                                             <?php  } } ?>
@@ -242,50 +240,19 @@ if($_SESSION['role'] == 'Admin') {
                                 </div>
                                 <div class="row form-group">
                                     <div class="col col-md-3">
-                                        <label for="text-input" class=" form-control-label">Discount</label>
+                                        <label for="select" class=" form-control-label">Product</label>
                                     </div>
                                     <div class="col-12 col-md-9">
-                                        <input value="<?php if(isset($zipcodeById)) echo $zipcodeById[0]['discount']?>"
-                                            type="number" id="text-input" name="discount" placeholder="Discount"
-                                            class="form-control">
-                                    </div>
-                                </div>
-                                <div class="row form-group">
-                                    <div class="col col-md-3">
-                                        <label class=" form-control-label">Status</label>
-                                    </div>
-                                    <div class="col col-md-9">
-                                        <div class="form-check-inline form-check">
-                                            <?php if(isset($zipcodeById)) {
-                                                if($zipcodeById[0]['status'] == "0"){?>
-                                            <label for="inline-radio1" class="form-check-label ">
-                                                <input type="radio" id="inline-radio1" name="status" value="0"
-                                                    class="form-check-input" checked>Pending
-                                            </label>
-                                            <label for="inline-radio2" class="form-check-label ml-2">
-                                                <input type="radio" id="inline-radio2" name="status" value="1"
-                                                    class="form-check-input">Active
-                                            </label>
-                                            <?php }else{?>
-                                            <label for="inline-radio1" class="form-check-label ">
-                                                <input type="radio" id="inline-radio1" name="status" value="0"
-                                                    class="form-check-input">Pending
-                                            </label>
-                                            <label for="inline-radio2" class="form-check-label ml-2">
-                                                <input type="radio" id="inline-radio2" name="status" value="1"
-                                                    class="form-check-input" checked>Active
-                                            </label>
-                                            <?php } }else{?>
-                                            <label for="inline-radio1" class="form-check-label ">
-                                                <input type="radio" id="inline-radio1" name="status" value="0"
-                                                    class="form-check-input" checked>Pending
-                                            </label>
-                                            <label for="inline-radio2" class="form-check-label ml-2">
-                                                <input type="radio" id="inline-radio2" name="status" value="1"
-                                                    class="form-check-input">Active
-                                            </label>
-                                            <?php } ?>
-                                        </div>
+                                        <select name="pro_id" id="select" class="form-control">
+                                            <option value="0">Please select product</option>
+                                            <?php if(isset($allProduct)){
+                                                foreach ($allProduct as $value) { ?>
+                                            <option value="<?= md5($value['id'].'chuyen-de-web-2')?>"
+                                                <?php if(isset($whishlistbyid) && $whishlistbyid[0]['pro_id'] == $value['id']){echo 'selected';}?>>
+
+                                                <?= $value['name']?></option>
+                                            <?php  } } ?>
+                                        </select>
                                     </div>
                                 </div>
                                 <button type="submit" name="submit" value="submit" class="btn btn-primary btn-sm">

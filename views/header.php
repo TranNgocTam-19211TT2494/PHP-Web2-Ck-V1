@@ -89,7 +89,9 @@ $proty = $protypeModel->getProtype();
                                 aria-haspopup="true" aria-expanded="false">Cửa tiệm</a>
                             <ul class="dropdown-menu">
                                 <li><a href="shop.php">Cửa hàng</a></li>
+                                <?php if(!empty($_SESSION['lgUserID'])) {?>
                                 <li><a href="whishlist.php">Danh sách yêu thích</a></li>
+                                <?php }?>
                             </ul>
                         </li>
                         <li><a href="contact.php">Liên hệ chúng tôi</a></li>
@@ -161,4 +163,5 @@ function insertCart(id) {
 
     return false;
 }
+
 </script>

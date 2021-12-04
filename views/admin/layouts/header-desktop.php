@@ -25,6 +25,9 @@
                                 <a href="products/index.php">Products</a>
                             </li>
                             <li>
+                                <a href="whishlist/index.php">WhishList</a>
+                            </li>
+                            <li>
                                 <a href="Manufacture/">Manufactures</a>
                             </li>
                             <li>

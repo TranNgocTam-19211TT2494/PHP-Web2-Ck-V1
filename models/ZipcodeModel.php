@@ -30,14 +30,19 @@ class ZipCodeModel extends BaseTwoAdmin {
     }
     public function insertZipcode($input)
     {
-        $sql = "INSERT INTO `webbanhkem`.`zipcode` (`zipcode`, `user_id` ,`discount`,`status`)
-         VALUES (" .
-         "'" . $this->getToken(8) 
-         . "','" . $input['user_id'] 
-         . "','" . $input['discount'] 
-         . "','" . $input['status'] . "')";
-    $bank = $this->insert($sql);
-    return $bank;
+        if(!empty($input['user_id']) && !empty($input['discount']) && !empty($input['status'])){
+            $sql = "INSERT INTO `webbanhkem`.`zipcode` (`zipcode`, `user_id` ,`discount`,`status`)
+            VALUES (" .
+            "'" . $this->getToken(8) 
+            . "','" . $input['user_id'] 
+            . "','" . $input['discount'] 
+            . "','" . $input['status'] . "')";
+           $bank = $this->insert($sql);
+           return $bank;
+        }else{
+            return false;
+        }
+        
     }
     public function getToken($length){
         $token = "";
@@ -57,12 +62,16 @@ class ZipCodeModel extends BaseTwoAdmin {
     }
     public function updateZipcode($input)
     {
-        $sql = 'UPDATE zipcode SET 
-        user_id = "' . $input['user_id'] . '", 
-        discount = "' . $input['discount'] . '", 
-        status = "' . $input['status'] . '"
-        WHERE id = ' . $input['id'];
-        $bank = $this->update($sql);
-        return $bank;
+        if(!empty($input['user_id']) && !empty($input['discount']) && !empty($input['status'])){
+            $sql = 'UPDATE zipcode SET 
+            user_id = "' . $input['user_id'] . '", 
+            discount = "' . $input['discount'] . '", 
+            status = "' . $input['status'] . '"
+            WHERE id = ' . $input['id'];
+            $bank = $this->update($sql);
+            return $bank;
+        }else{
+            return false;
+        }
     }
 }

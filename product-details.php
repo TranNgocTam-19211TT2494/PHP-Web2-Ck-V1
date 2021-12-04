@@ -16,6 +16,15 @@ if (isset($_GET['id'])) {
 } else {
     echo "<br><center><h3>Vui lòng chọn 1 sản phẩm bất kỳ để xem thông tin chi tiết!</h3><center><br>";
 }
+$noti = 0;
+if (!empty($_SESSION["lgUserID"])) {
+    if (!empty($_GET['id']) && !empty($_GET['submit'])) {
+        $inserWhishlist = $HomeModel->insertWhishList($_GET['id'], $_SESSION['lgUserID']);
+        $noti = 1;
+    }
+}else {
+    $noti = 2;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -45,9 +54,19 @@ if (isset($_GET['id'])) {
     <!--================End Main Header Area =================-->
 
     <!--================Product Details Area =================-->
+
     <?php if(isset($id)) { ?>
     <section class="product_details_area p_100">
         <div class="container">
+            <?php if($noti == 1) {?>
+            <div class="alert alert-success" role="alert">
+                Thêm vào danh sách thành công.
+            </div>
+            <?php }else if($noti == 2){?>
+            <div class="alert alert-success" role="alert">
+                Bạn cần phải đăng nhập
+            </div>
+            <?php }?>
             <div class="row product_d_price">
                 <div class="col-lg-6">
                     <div class="product_img"><img class="img-fluid" src="<?= $product[0]['pro_image']?>"
@@ -61,8 +80,13 @@ if (isset($_GET['id'])) {
                         </p>
                         <h5>Price :<span>$<?= $product[0]['price']?></span></h5>
 
-                        <a class="pink_more" href="cart.php?id=<?= $product[0]['id'] ?>" onclick="return insertCart(<?= $product[0]['id'] ?>)">Thêm vào giỏ hàng</a>
-                        <a class="pink_more" href="#">Yêu thích</a>
+                        <a class="pink_more" href="cart.php?id=<?= $product[0]['id'] ?>"
+                            onclick="return insertCart(<?= $product[0]['id'] ?>)">Thêm vào giỏ hàng</a>
+                        <?php if(!empty($_SESSION['lgUserID'])) {?>
+                    
+                        <a class="pink_more"
+                            href="product-details.php?id=<?= md5($product[0]['id'].'chuyen-de-web-2')?>&submit=<?= md5('chuyen-de-web-2')?>">Yêu thích</a>
+                        <?php }?>
                     </div>
                 </div>
             </div>
@@ -126,7 +150,8 @@ if (isset($_GET['id'])) {
                         <div class="cake_text">
                             <h4>$<?= $product['price'] ?></h4>
                             <h3><?= $product['name'] ?></h3>
-                            <a class="pest_btn" href="cart.php?id=<?= $product['id'] ?>" onclick="return insertCart(<?= $product['id'] ?>)">Thêm vào giỏ hàng</a>
+                            <a class="pest_btn" href="cart.php?id=<?= $product['id'] ?>"
+                                onclick="return insertCart(<?= $product['id'] ?>)">Thêm vào giỏ hàng</a>
                         </div>
                     </div>
                 </div>
