@@ -6,51 +6,25 @@ $HomeModel = $factory->make('home');
 
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
-   
     $product = $HomeModel->firstProductDetail($id);
     //các sản phẩm liên quan:
-
     if ($product) {
-        $comments = $HomeModel->getAllCommentById($id);
         $ManuID = $product[0]['manu_id'];
         $products = $HomeModel->getProductManufactures($id, $ManuID);
     }
     // insert comment
-    
+
     if (!empty($_POST['submit'])) {
-        if (!empty($_SESSION['lgUserID'])) {
-            $a = $HomeModel->insertComment($_SESSION['lgUserID'], $id, $_POST);
-           
-        }
+        $a = $HomeModel->insertComment($_SESSION['lgUserID'], $id, $_POST);
+        // var_dump($a).die();
     }
-    if (!empty($_SESSION['lgUserID'])) {
-        $comment_name = $HomeModel->getNameUserByComment($_SESSION['lgUserID']);
-
-    if(!empty($product)) {
-        $ManuID = $product[0]['manu_id'];
-        $manufactures = $HomeModel->getProductManufactures($id , $ManuID);
-       
-
-
-    }
+    $comments = $HomeModel->getAllCommentById($id);
+    // var_dump($comments).die();
+    $comment_name = $HomeModel->getNameUserByComment($_SESSION['lgUserID']);
 } else {
     echo "<br><center><h3>Vui lòng chọn 1 sản phẩm bất kỳ để xem thông tin chi tiết!</h3><center><br>";
 }
 
-// $id = $_GET['id'];
-// $comments = $HomeModel->getAllCommentById($id);
-
-
-
-$noti = 0;
-if (!empty($_SESSION["lgUserID"])) {
-    if (!empty($_GET['id']) && !empty($_GET['submit'])) {
-        $inserWhishlist = $HomeModel->insertWhishList($_GET['id'], $_SESSION['lgUserID']);
-        $noti = 1;
-    }
-}else {
-    $noti = 2;
-}
 
 ?>
 <!DOCTYPE html>
@@ -58,6 +32,12 @@ if (!empty($_SESSION["lgUserID"])) {
 
 <head>
     <?php include_once("views/head.php"); ?>
+    <style>
+        .comment_list .name {
+            color: #000;
+            font-weight: bold;
+        }
+    </style>
 </head>
 
 <body>
@@ -81,20 +61,24 @@ if (!empty($_SESSION["lgUserID"])) {
     <!--================End Main Header Area =================-->
 
     <!--================Product Details Area =================-->
+    <?php if (isset($id)) { ?>
+        <section class="product_details_area p_100">
+            <div class="container">
+                <div class="row product_d_price">
+                    <div class="col-lg-6">
+                        <div class="product_img"><img class="img-fluid" src="<?= $product[0]['pro_image'] ?>" alt="<?= $product[0]['name'] ?>" style="width: 100%;">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="product_details_text">
+                            <h4><?= $product[0]['name'] ?></h4>
+                            <p><?= $product[0]['description'] ?>
+                            </p>
+                            <h5>Price :<span>$<?= $product[0]['price'] ?></span></h5>
 
-    <?php if(isset($id)) { ?>
-    <section class="product_details_area p_100">
-        <div class="container">
-            <?php if($noti == 1) {?>
-            <div class="alert alert-success" role="alert">
-                Thêm vào danh sách thành công.
-            </div>
-            <?php }else if($noti == 2){?>
-            <div class="alert alert-success" role="alert">
-                Bạn cần phải đăng nhập
-            </div>
-            <?php }?>
-            <div class="row product_d_price">
+                            <a class="pink_more" href="cart.php?id=<?= $product[0]['id'] ?>" onclick="return insertCart(<?= $product[0]['id'] ?>)">Thêm vào giỏ hàng</a>
+                            <a class="pink_more" href="#">Yêu thích</a>
+                        </div>
                     </div>
                 </div>
                 <div class="product_tab_area">
@@ -114,7 +98,7 @@ if (!empty($_SESSION["lgUserID"])) {
                         <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
                             <?php if (isset($_SESSION['lgUserID'])) { ?>
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-9">
 
                                         <form method="POST">
                                             <!-- <input class="name" name=""></input> -->
@@ -126,13 +110,15 @@ if (!empty($_SESSION["lgUserID"])) {
                                         </form>
 
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-3">
                                         <div class="comment_list">
                                             <?php foreach ($comments as $comment) {
                                                 // var_dump($comment); 
                                             ?>
-                                                <div class="name">Name: <?= $comment["username"] ?></div>
-                                                <div class="content">Comment: <?= $comment["content"] ?></div>
+                                                <div class="comment_form">
+                                                    <div class="name"><?= $comment["username"] ?></div>
+                                                    <div class="content"><?= $comment["content"] ?></div>
+                                                </div>
                                             <?php } ?>
                                         </div>
                                     </div>
@@ -165,21 +151,21 @@ if (!empty($_SESSION["lgUserID"])) {
             </div>
             <div class="row similar_product_inner">
                 <?php
-                
-                    if(!empty($manufactures)) { 
-                        foreach ($manufactures as $product) {
-                           
+                if (!empty($products)) {
+                    foreach ($products as $product) {
+
                 ?>
-                <div class="col-lg-3 col-md-4 col-6">
-                    <div class="cake_feature_item">
-                        <div class="cake_img">
-                            <img src="<?= $product['pro_image'] ?>" alt="<?= $product['name'] ?>">
-                        </div>
-                        <div class="cake_text">
-                            <h4>$<?= $product['price'] ?></h4>
-                            <h3><?= $product['name'] ?></h3>
-                            <a class="pest_btn" href="cart.php?id=<?= $product['id'] ?>"
-                                onclick="return insertCart(<?= $product['id'] ?>)">Thêm vào giỏ hàng</a>
+                        <div class="col-lg-3 col-md-4 col-6">
+                            <div class="cake_feature_item">
+                                <div class="cake_img">
+                                    <img src="<?= $product['pro_image'] ?>" alt="<?= $product['name'] ?>">
+                                </div>
+                                <div class="cake_text">
+                                    <h4>$<?= $product['price'] ?></h4>
+                                    <h3><?= $product['name'] ?></h3>
+                                    <a class="pest_btn" href="cart.php?id=<?= $product['id'] ?>" onclick="return insertCart(<?= $product['id'] ?>)">Thêm vào giỏ hàng</a>
+                                </div>
+                            </div>
                         </div>
                 <?php }
                 } ?>
