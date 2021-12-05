@@ -23,6 +23,9 @@ if (!isset($_GET['page'])) {
 } else {
     $page = $_GET['page'];
 }
+if(!is_numeric($page) || $page < 0){
+    header('Location:404.php');
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
