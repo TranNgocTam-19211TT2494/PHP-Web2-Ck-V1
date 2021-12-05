@@ -51,9 +51,9 @@ $proty = $protypeModel->getProtype();
     <div class="main_menu_area">
         <div class="container">
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <a class="navbar-brand" href="index.html">
-                    <img src="img/logo.png" alt="">
-                    <img src="img/logo-2.png" alt="">
+                <a class="navbar-brand" href="index.php">
+                    <img src="http://localhost:8080/PHP-Web2-Ck-V1/public/img/logo.png" alt="">
+                    <img src="http://localhost:8080/PHP-Web2-Ck-V1/public/img/logo-2.png" alt="">
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -68,7 +68,7 @@ $proty = $protypeModel->getProtype();
                     <ul class="navbar-nav mr-auto">
                         <li><a href="index.php">Trang chủ</a></li>
 
-                        <li><a href="cake.php">Bánh của chúng tôi</a></li>
+                        <!-- <li><a href="cake.php">Bánh của chúng tôi</a></li> -->
                         <li><a href="menu.php">Thực đơn</a></li>
                         <li class="dropdown submenu">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button"
@@ -89,7 +89,9 @@ $proty = $protypeModel->getProtype();
                                 aria-haspopup="true" aria-expanded="false">Cửa tiệm</a>
                             <ul class="dropdown-menu">
                                 <li><a href="shop.php">Cửa hàng</a></li>
+                                <?php if(!empty($_SESSION['lgUserID'])) {?>
                                 <li><a href="whishlist.php">Danh sách yêu thích</a></li>
+                                <?php }?>
                             </ul>
                         </li>
                         <li><a href="contact.php">Liên hệ chúng tôi</a></li>
@@ -99,10 +101,27 @@ $proty = $protypeModel->getProtype();
                                 aria-haspopup="true" aria-expanded="false">Tài khoản</a>
                             <ul class="dropdown-menu">
                                 <?php
+                                    if(!empty($_SESSION['lgUserID'])) {
+                                    $check = $protypeModel->getUserById($_SESSION['lgUserID']);
+                                    if($check[0]['permission'] == 'Admin') {
+                                ?>
+                                <li><a href="admin/admin.php">Quản trị viên</a></li>
+                                <?php } } ?>
+                                <?php
+                                    if(!empty($_SESSION['lgUserID'])) {
+                                    $coupon = $protypeModel->getUserById($_SESSION['lgUserID']);
+                                    if($coupon[0]['permission'] == 'User') {
+                                ?>
+                                <li><a href="coupon.php">Mã khuyến mãi</a></li>
+                                <?php } } ?>
+
+
+                                <?php
                             if (!empty($_SESSION["lgUserID"])) {
                                 $chuoi1 = <<<EOD
-                                <li><a href="">Tài Khoản</a></li>
-                                <li><a href="">Đổi mật khẩu</a></li>
+                                <li><a href="view-checkout.php">Xem đơn hàng</a></li>
+                                <li><a href="profile.php">Tài Khoản</a></li>
+                                <li><a href="change-pasword.php">Đổi mật khẩu</a></li>
                                 <li><a href="logout.php">Đăng xuất</a></li>
                                 
 EOD;
@@ -144,4 +163,5 @@ function insertCart(id) {
 
     return false;
 }
+
 </script>

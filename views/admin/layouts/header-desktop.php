@@ -2,7 +2,7 @@
     <div class="section__content section__content--p35">
         <div class="header3-wrap">
             <div class="header__logo">
-                <a href="#">
+                <a href="../index.php">
                     <img src="../public/backend/images/icon/logo-white.png" alt="CoolAdmin" />
                 </a>
             </div>
@@ -13,31 +13,9 @@
                             <i class="fas fa-tachometer-alt"></i>Dashboard
                             <span class="bot-line"></span>
                         </a>
-                        <!-- <ul class="header3-sub-list list-unstyled">
-                            <li>
-                                <a href="index.html">Dashboard 1</a>
-                            </li>
-                            <li>
-                                <a href="index2.html">Dashboard 2</a>
-                            </li>
-                            <li>
-                                <a href="index3.html">Dashboard 3</a>
-                            </li>
-                            <li>
-                                <a href="index4.html">Dashboard 4</a>
-                            </li>
-                        </ul> -->
+
                     </li>
-                    <!-- <li>
-                        <a href="#">
-                            <i class="fas fa-shopping-basket"></i>
-                            <span class="bot-line"></span>eCommerce</a>
-                    </li>
-                    <li>
-                        <a href="table.html">
-                            <i class="fas fa-trophy"></i>
-                            <span class="bot-line"></span>Features</a>
-                    </li> -->
+
                     <li class="has-sub">
                         <a href="#">
                             <i class="fas fa-copy"></i>
@@ -47,10 +25,7 @@
                                 <a href="products/index.php">Products</a>
                             </li>
                             <li>
-                                <a href="../admin/zipcode/index.php">ZipCode</a>
-                            </li>
-                            <li>
-                                <a href="">Orders</a>
+                                <a href="whishlist/index.php">WhishList</a>
                             </li>
                             <li>
                                 <a href="Manufacture/">Manufactures</a>
@@ -61,131 +36,34 @@
                         </ul>
                     </li>
                     <li class="has-sub">
-                        <a href="#">
+                        <a href="../admin/oders/index.php">
                             <i class="fas fa-desktop"></i>
-                            <span class="bot-line"></span>Table</a>
-                        <ul class="header3-sub-list list-unstyled">
-                            <li>
-                                <a href="button.html">Button</a>
-                            </li>
-                            <li>
-                                <a href="badge.html">Badges</a>
-                            </li>
-                            <li>
-                                <a href="tab.html">Tabs</a>
-                            </li>
-                            <!-- <li>
-                                <a href="card.html">Cards</a>
-                            </li>
-                            <li>
-                                <a href="alert.html">Alerts</a>
-                            </li>
-                            <li>
-                                <a href="progress-bar.html">Progress Bars</a>
-                            </li>
-                            <li>
-                                <a href="modal.html">Modals</a>
-                            </li>
-                            <li>
-                                <a href="switch.html">Switchs</a>
-                            </li>
-                            <li>
-                                <a href="grid.html">Grids</a>
-                            </li>
-                            <li>
-                                <a href="fontawesome.html">FontAwesome</a>
-                            </li>
-                            <li>
-                                <a href="typo.html">Typography</a>
-                            </li> -->
-                        </ul>
+                            <span class="bot-line"></span>Orders</a>
+
+                    </li>
+                    <li class="has-sub">
+                        <a href="../admin/zipcode/index.php">
+                            <i class="fas fa-desktop"></i>
+                            <span class="bot-line"></span>ZipCode</a>
+
                     </li>
                 </ul>
             </div>
             <div class="header__tool">
-                <div class="header-button-item has-noti js-item-menu">
-                    <i class="zmdi zmdi-notifications"></i>
-                    <div class="notifi-dropdown notifi-dropdown--no-bor js-dropdown">
-                        <div class="notifi__title">
-                            <p>You have 3 Notifications</p>
-                        </div>
-                        <div class="notifi__item">
-                            <div class="bg-c1 img-cir img-40">
-                                <i class="zmdi zmdi-email-open"></i>
-                            </div>
-                            <div class="content">
-                                <p>You got a email notification</p>
-                                <span class="date">April 12, 2018 06:50</span>
-                            </div>
-                        </div>
-                        <div class="notifi__item">
-                            <div class="bg-c2 img-cir img-40">
-                                <i class="zmdi zmdi-account-box"></i>
-                            </div>
-                            <div class="content">
-                                <p>Your account has been blocked</p>
-                                <span class="date">April 12, 2018 06:50</span>
-                            </div>
-                        </div>
-                        <div class="notifi__item">
-                            <div class="bg-c3 img-cir img-40">
-                                <i class="zmdi zmdi-file-text"></i>
-                            </div>
-                            <div class="content">
-                                <p>You got a new file</p>
-                                <span class="date">April 12, 2018 06:50</span>
-                            </div>
-                        </div>
-                        <div class="notifi__footer">
-                            <a href="#">All notifications</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="header-button-item js-item-menu">
-                    <i class="zmdi zmdi-settings"></i>
-                    <div class="setting-dropdown js-dropdown">
-                        <div class="account-dropdown__body">
-                            <div class="account-dropdown__item">
-                                <a href="#">
-                                    <i class="zmdi zmdi-account"></i>Account</a>
-                            </div>
-                            <div class="account-dropdown__item">
-                                <a href="#">
-                                    <i class="zmdi zmdi-settings"></i>Setting</a>
-                            </div>
-                            <div class="account-dropdown__item">
-                                <a href="#">
-                                    <i class="zmdi zmdi-money-box"></i>Billing</a>
-                            </div>
-                        </div>
-                        <div class="account-dropdown__body">
-                            <div class="account-dropdown__item">
-                                <a href="#">
-                                    <i class="zmdi zmdi-globe"></i>Language</a>
-                            </div>
-                            <div class="account-dropdown__item">
-                                <a href="#">
-                                    <i class="zmdi zmdi-pin"></i>Location</a>
-                            </div>
-                            <div class="account-dropdown__item">
-                                <a href="#">
-                                    <i class="zmdi zmdi-email"></i>Email</a>
-                            </div>
-                            <div class="account-dropdown__item">
-                                <a href="#">
-                                    <i class="zmdi zmdi-notifications"></i>Notifications</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
                 <div class="account-wrap">
                     <div class="account-item account-item--style2 clearfix js-item-menu">
                         <div class="image">
                             <img src="../public/backend/images/icon/avatar-01.jpg" alt="John Doe" />
                         </div>
+                        <?php 
+                            if (isset($_SESSION['lgUserID'])) {
+                                ?>
                         <div class="content">
-                            <a class="js-acc-btn" href="#">john doe</a>
+                            <a class="js-acc-btn" href="#"><?= $_SESSION['lgUserName'] ?></a>
                         </div>
+                        <?php
+                            } ?>
                         <div class="account-dropdown js-dropdown">
                             <div class="info clearfix">
                                 <div class="image">
@@ -193,31 +71,37 @@
                                         <img src="../public/backend/images/icon/avatar-01.jpg" alt="John Doe" />
                                     </a>
                                 </div>
+                                <?php 
+                                    if(isset($_SESSION['lgUserID'])) { 
+                                    
+                                ?>
                                 <div class="content">
                                     <h5 class="name">
-                                        <a href="#">john doe</a>
+                                        <a href="../profile.php"><?= $_SESSION['lgUserName'] ?></a>
                                     </h5>
-                                    <span class="email">johndoe@example.com</span>
+                                    <span class="email">ngoctam2303001@gmail.com</span>
                                 </div>
+                                <?php } ?>
                             </div>
                             <div class="account-dropdown__body">
+                                <?php
+                            if (!empty($_SESSION["lgUserID"])) {
+                                $chuoi1 = <<<EOD
                                 <div class="account-dropdown__item">
-                                    <a href="#">
+                                    <a href="../profile.php">
                                         <i class="zmdi zmdi-account"></i>Account</a>
                                 </div>
-                                <div class="account-dropdown__item">
-                                    <a href="#">
-                                        <i class="zmdi zmdi-settings"></i>Setting</a>
-                                </div>
-                                <div class="account-dropdown__item">
-                                    <a href="#">
-                                        <i class="zmdi zmdi-money-box"></i>Billing</a>
-                                </div>
-                            </div>
-                            <div class="account-dropdown__footer">
-                                <a href="#">
+                                <div class="account-dropdown__footer">
+                                    <a href="../logout.php">
                                     <i class="zmdi zmdi-power"></i>Logout</a>
+                                 </div>
+                                EOD;
+                                echo $chuoi1;
+                            } 
+
+                            ?>
                             </div>
+
                         </div>
                     </div>
                 </div>
