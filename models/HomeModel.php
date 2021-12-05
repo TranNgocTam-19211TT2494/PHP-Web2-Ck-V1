@@ -488,7 +488,7 @@ class HomeModel extends BaseModel
         $comment = $this->insert($sql);
         return $comment;
     }
-}
+
 // ------------------------- panigation --------------------//
     public function paginationManu($manuid, $page,$num)
     {
