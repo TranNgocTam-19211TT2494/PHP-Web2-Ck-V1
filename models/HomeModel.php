@@ -12,26 +12,26 @@ class HomeModel extends BaseModel
 {
     protected static $_instance;
     //   ------------ User ---------------//
-      //Login
+    //Login
     public function login($username, $password)
     {
         $md5Password = md5($password);
         $sql = 'SELECT * FROM users WHERE username = "' . $username . '" AND password = "' . $md5Password . '"';
-  
+
         $user = $this->select($sql);
         return $user;
     }
     //   Register:
-    public function insertUserDecorator($input, $zipcode)
+    public function insertUserDecorator($pagenput, $zipcode)
     {
         $allUser = $this->getAllUser();
         foreach ($allUser as  $value) {
-            if ($input['email'] == $value['email']) {
+            if ($pagenput['email'] == $value['email']) {
                 return false;
             }
         }
         $sql = "INSERT INTO `users`(`username`, `email`, `password`,`otp`,`permission`) 
-        VALUES ('" . $input['username'] . "','" . $input['email'] . "','" . md5($input['password']) . "','" . $input['otp'] . "','" . 'User' . "')";
+        VALUES ('" . $pagenput['username'] . "','" . $pagenput['email'] . "','" . md5($pagenput['password']) . "','" . $pagenput['otp'] . "','" . 'User' . "')";
         $user = $this->insert($sql);
 
         $lastUserId = $this->lastUserId();
@@ -40,8 +40,12 @@ class HomeModel extends BaseModel
             'zipcode' => $this->getToken(8),
             'user_id' => $lastUserId
         ];
-        $sql1 = "INSERT INTO `zipcode`(`zipcode`, `user_id`) 
-        VALUES ('" . $data['zipcode'] . "','" . $data['user_id'] . "')";
+        $sql1 = "INSERT INTO `webbanhkem`.`zipcode` (`zipcode`, `user_id` ,`discount`,`status`)
+         VALUES (" .
+         "'" . $this->getToken(8) 
+         . "','" . $lastUserId
+         . "','" . 25
+         . "','" . 1 . "')";
         $zipcode = $this->insert($sql1);
 
         return $user;
@@ -52,7 +56,7 @@ class HomeModel extends BaseModel
         $codeAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         $codeAlphabet .= "0123456789";
         $max = strlen($codeAlphabet);
-        for ($i = 0; $i < $length; $i++) {
+        for ($page = 0; $page < $length; $page++) {
             $token .= $codeAlphabet[random_int(0, $max - 1)];
         }
         return $token;
@@ -66,17 +70,18 @@ class HomeModel extends BaseModel
     public function lastUserId()
     {
         $sql = "SELECT MAX(id) FROM users";
-        $id = $this->select($sql);
-        return $id[0]['MAX(id)'];
+        $paged = $this->select($sql);
+        return $paged[0]['MAX(id)'];
     }
-    
+
     //Forget Password
-    public function checkMail($email){
+    public function checkMail($email)
+    {
         $sql = 'SELECT * FROM users WHERE email = "' . $email . '"';
         $user = $this->select($sql);
         return $user;
     }
-      //Update password cho user: 
+    //Update password cho user: 
     public function UpdatePassword($password , $email) {
         $sql = 'UPDATE users SET 
         password = "' . md5($password) . '"
@@ -84,51 +89,40 @@ class HomeModel extends BaseModel
         $user = $this->update($sql);
         return $user;
     }
-      //Send mail password cho nguoi dung:
-    public function sendMail($email , $password)
+    // Tìm id của người dùng:
+    public function getUserById($id)
     {
-        $mail = new PHPMailer(true);//true:enables exceptions
-        try {
-            $mail->SMTPDebug = 0; //0,1,2: chế độ debug
-            $mail->isSMTP();
-            $mail->CharSet  = "utf-8";
-            $mail->Host = 'smtp.gmail.com';  //SMTP servers
-            $mail->SMTPAuth = true; // Enable authentication
-            $mail->Username = 'phantinh1209@gmail.com'; // SMTP username
-            $mail->Password = 'zexpotcxbxkuspaq';   // SMTP password
-            $mail->SMTPSecure = 'ssl';  // encryption TLS/SSL 
-            $mail->Port = 465;  // port to connect to                
-            $mail->setFrom('phantinh1209@gmail.com', 'AnhTam');
-            $mail->addAddress($email);
-            $mail->isHTML(true);  // Set email format to HTML
-            $mail->Subject = 'Thư gửi lại mật khẩu';
-            $noidungthu = "<p>Bạn nhận được mail này, do bạn hoặc ai đó yêu cầu mật khẩu mới cho website...</p>
-                                Mật khẩu mới của bạn là {$password}
-            ";
-            $mail->Body = $noidungthu;
-            $mail->smtpConnect(array(
-                "ssl" => array(
-                    "verify_peer" => false,
-                    "verify_peer_name" => false,
-                    "allow_self_signed" => true
-                )
-            ));
-            $mail->send();
-            echo "Đã gửi mail xong";
-        } catch (Exception $e) {
-            echo 'Error: ', $mail->ErrorInfo;
-        }
-      
-            
+        $sql = "SELECT * FROM users WHERE id = $id";
+        return $this->select($sql);
+    }
+    // Kiểm tra mật khẩu cũ:
+    public function checkOldPassword($name , $oldPassword)
+    {
+        $sql = 'SELECT * FROM users WHERE username = "' . $name . '" AND password = "' . md5($oldPassword) . '"';
+        return $this->select($sql);
+    }
+    // Change Password:
+    public function changePassword($name , $newPassword)
+    {   
+        $md5Password = md5($newPassword);
+        $sql = 'UPDATE users SET 
+        password = "' .$md5Password . '"
+        WHERE username = "' . $name . '" ';
+
+        $user = $this->update($sql);
+        return $user;
+        
     }
     // Lay id
-    public function getid(){
+    public function getid()
+    {
         $sql = 'SELECT * FROM users ORDER BY ID DESC LIMIT 1';
         $protypes = $this->select($sql);
         return $protypes;
     }
     // Lay mã otp
-    public function getOtp() {
+    public function getOtp()
+    {
         $sql1 = 'SELECT * FROM users ORDER BY ID DESC LIMIT 1';
         $userid = $this->select($sql1);
         // var_dump($userid[0]['id']).die();
@@ -137,7 +131,8 @@ class HomeModel extends BaseModel
         return $protypes;
     }
     //Cap nhap trang thai đăng ký
-    public function getOtpAsAction(){
+    public function getOtpAsAction()
+    {
         $sql1 = 'SELECT * FROM users ORDER BY ID DESC LIMIT 1';
         $userid = $this->select($sql1);
         // var_dump($userid[0]['id']).die();
@@ -145,7 +140,13 @@ class HomeModel extends BaseModel
         $protypes = $this->update($sql);
         return $protypes;
     }
-     
+    // Mã khuyến mãi:
+    public function getCouponByID($id)
+    {
+        $sql = 'SELECT  zipcode.status,zipcode.discount,zipcode.created_at,zipcode.zipcode FROM zipcode , users WHERE zipcode.user_id = users.id AND zipcode.user_id = '.$id;
+        $coupon = $this->select($sql);
+        return $coupon;
+    }
     //   ---------------------- Protype ---------------- //
     public function getProtype()
     {
@@ -164,12 +165,12 @@ class HomeModel extends BaseModel
         $protypes = 'SELECT type_id FROM protypes';
         $protype = $this->select($protypes);
         $proty = null;
-        foreach ($protype as $idproty) {
-            $md5 = md5($idproty['type_id'] . 'chuyen-de-web-2');
-            if($md5 == $typeid){
-                $sql = 'SELECT * FROM `protypes`,products WHERE protypes.type_id = products.type_id AND protypes.type_id = '.$idproty['type_id'] .' ORDER BY products.id DESC';
+        foreach ($protype as $pagedproty) {
+            $md5 = md5($pagedproty['type_id'] . 'chuyen-de-web-2');
+            if ($md5 == $typeid) {
+                $sql = 'SELECT * FROM `protypes`,products WHERE protypes.type_id = products.type_id AND protypes.type_id = ' . $pagedproty['type_id'] . ' ORDER BY products.id DESC';
                 $proty = $this->select($sql);
-            } 
+            }
         }
         return $proty;
     }
@@ -195,11 +196,11 @@ class HomeModel extends BaseModel
         $whishlist = $this->select($sql);
         return $whishlist;
     }
-    public function insertWhishList($id, $userId)
+    public function insertWhishList($paged, $userId)
     {
         $allProduct = $this->getProducts();
         foreach ($allProduct as $value) {
-            if (md5($value['id'] . 'chuyen-de-web-2') == $id) {
+            if (md5($value['id'] . 'chuyen-de-web-2') == $paged) {
                 $sql = "INSERT INTO `webbanhkem`.`whishlist` (`user_id` ,`pro_id`) VALUES (" .
                     "'" . $userId
                     . "','" . $value['id'] . "')";
@@ -213,12 +214,12 @@ class HomeModel extends BaseModel
             }
         }
     }
-    public function deleteWhishList($id)
+    public function deleteWhishList($paged)
     {
         $allWhishlist = $this->getWhishlist();
         foreach ($allWhishlist as $value) {
             $md5 = md5($value['id'] . "chuyen-de-web-2");
-            if ($md5 == $id) {
+            if ($md5 == $paged) {
                 $sql = "DELETE FROM whishlist WHERE id =  " . $value['id'];
                 $whishlist = $this->delete($sql);
                 return $whishlist;
@@ -235,14 +236,14 @@ class HomeModel extends BaseModel
         return $manufactures;
     }
     // Hien thi san pham theo danh 
-    public function getManufactureById($id)
+    public function getManufactureById($paged)
     {
         $manufacture = 'SELECT manu_id FROM manufactures';
         $manufactures = $this->select($manufacture);
         $manu = null;
         foreach ($manufactures as $manufac) {
             $md5 = md5($manufac['manu_id'] . 'chuyen-de-web-2');
-            if ($md5 == $id) {
+            if ($md5 == $paged) {
                 $sql = 'SELECT * FROM `products` , manufactures WHERE products.manu_id = manufactures.manu_id AND products.manu_id =  ' . $manufac['manu_id'] . ' ';
                 $manu = $this->select($sql);
             }
@@ -251,18 +252,16 @@ class HomeModel extends BaseModel
 
         return $manu;
     }
-     // --------------------- Products ------------------ //
+    // --------------------- Products ------------------ //
     public function getProducts()
     {
-        $sort ='';
-        if(isset($_GET['sort'])){
-            if($_GET['sort']=='desc'){
+        $sort = '';
+        if (isset($_GET['sort'])) {
+            if ($_GET['sort'] == 'desc') {
                 $sort = 'DESC';
-            }
-            elseif($_GET['sort'] == 'asc'){
+            } elseif ($_GET['sort'] == 'asc') {
                 $sort = 'ASC';
             }
-           
         }
 
         $sql = 'SELECT * FROM `products` WHERE detele_at IS NULL ORDER BY products.price ' . $sort;
@@ -270,9 +269,9 @@ class HomeModel extends BaseModel
         return $products;
     }
     // Dem so san pham theo danh muc:
-    public function countProductWithManufacture($id)
+    public function countProductWithManufacture($paged)
     {
-        $sql = 'SELECT * FROM `products` WHERE products.manu_id = ' . $id;
+        $sql = 'SELECT * FROM `products` WHERE products.manu_id = ' . $paged;
         $manufactures = $this->select($sql);
         return $manufactures;
     }
@@ -311,41 +310,66 @@ class HomeModel extends BaseModel
         return $products;
     }
     // Chi tiết sản phẩm :
-    public function firstProductDetail($id)
+    public function firstProductDetail($paged)
     {
-        
-        $sql = 'SELECT * FROM `products`  WHERE id =  '.$id.' ';
-        $product = $this->select($sql);
-        return $product;
-
+        $allProduct = $this->getProducts();
+        foreach ($allProduct as  $value) {
+           if(md5($value['id'].'chuyen-de-web-2') == $paged){
+            $sql = 'SELECT * FROM `products`  WHERE id =  ' . $value['id'] . ' ';
+            $product = $this->select($sql);
+            return $product;
+           }
+        }
+      
     }
-   
+
     // Các sản phẩm có liên quan thuộc danh mục:
-    public function getProductManufactures($id , $ManuID)
+    public function getProductManufactures($paged, $ManuID)
     {
-        $sql = 'Select * from products where id <> '.$id.'  and manu_id = '.$ManuID.' LIMIT 4';
-        $products = $this->select($sql);
-        return $products;
+        $allProduct = $this->getProducts();
+        foreach ($allProduct as  $value) {
+           if(md5($value['id'].'chuyen-de-web-2') == $paged){
+            $sql = 'Select * from products where id <> ' . $value['id'] . '  and manu_id = ' . $ManuID . ' LIMIT 4';
+            $products = $this->select($sql);
+            return $products;
+          
+           }
+        }
+        
     }
     // ------------------ Giỏ hàng -------------------- //
-    // Thêm vào giỏ hàng:
-    public function getOrderItemByOrder($id)
+    // Xem đơn hàng của khách hàng:
+    public function getCheckoutsByUserId($userID)
     {
-        $sql = 'SELECT carts.pro_id , products.name , products.price , carts.quantity FROM `carts` INNER JOIN products ON carts.pro_id = products.id WHERE carts.order_id = '.$id;
+        $sql = 'SELECT checkouts.id , checkouts.addedDate, checkouts.address ,checkouts.phone , checkouts.sum,checkouts.status FROM `checkouts` ,users WHERE checkouts.user_id = users.id AND checkouts.user_id = '.$userID;
+        $order = $this->select($sql);
+        return $order;
+    }
+    // Lấy sản phẩm trong giỏ hàng:
+    public function getOrderItemById($id)
+    {
+        $sql = 'SELECT carts.pro_id , products.name , products.price, carts.quantity FROM carts INNER JOIN products ON carts.pro_id = products.id WHERE carts.order_id = '.$id;
+        $user = $this->select($sql);
+        return $user;
+    }
+    // Thêm vào giỏ hàng:
+    public function getOrderItemByOrder($paged)
+    {
+        $sql = 'SELECT carts.pro_id , products.name , products.price , carts.quantity FROM `carts` INNER JOIN products ON carts.pro_id = products.id WHERE carts.order_id = ' . $paged;
         $cart = $this->select($sql);
         return $cart;
     }
     // Thêm danh sách giỏ hàng
-    public function insertOrderItem($OrderID , $ProductID , $Quantity)
+    public function insertOrderItem($OrderID, $ProductID, $Quantity)
     {
-        $sql="Insert into carts (order_id,pro_id,quantity) values($OrderID,$ProductID,$Quantity)";
+        $sql = "Insert into carts (order_id,pro_id,quantity) values($OrderID,$ProductID,$Quantity)";
         $product = $this->insert($sql);
         return $product;
     }
     // -------------- Checkout ---------------- //
-    public function insertOrder($userID, $Firstname , $Lastname ,$address, $email, $phone,$notes)
+    public function insertOrder($userID, $Firstname, $Lastname, $address, $email, $phone, $notes)
     {
-        $sql="Insert into checkouts(user_id,firstname,lastname,addedDate,address,email,phone,notes) values('$userID','$Firstname','$Lastname',now(),'$address','$email','$phone','$notes')";
+        $sql = "Insert into checkouts(user_id,firstname,lastname,addedDate,address,email,phone,notes) values('$userID','$Firstname','$Lastname',now(),'$address','$email','$phone','$notes')";
         $product = $this->insert($sql);
         return $product;
     }
@@ -353,13 +377,26 @@ class HomeModel extends BaseModel
     public function getOrderMaxById()
     {
         $sql = "SELECT MAX(id) FROM checkouts";
-        $id = $this->select($sql);
-        return $id[0]['MAX(id)'];
+        $paged = $this->select($sql);
+        return $paged[0]['MAX(id)'];
     }
     // Cập nhập Tổng tiền:
-    public function updateSum($OrderID , $Sum)
+    public function updateSum($OrderID, $Sum)
     {
         $sql = "Update checkouts set sum = $Sum where id = $OrderID";
+        $checkout = $this->update($sql);
+        return $checkout;
+    }
+    public function getCouponByZipcode($coupon)
+    {
+        
+        $sql = "SELECT zipcode.zipcode , zipcode.discount , zipcode.user_id FROM zipcode WHERE zipcode.zipcode = '$coupon'";
+        $zipcode = $this->select($sql);
+        return $zipcode;
+    }
+    public function updateCouponByCheckout($OrderID, $Coupon)
+    {
+        $sql = "Update checkouts set coupon = $Coupon where id = $OrderID";
         $checkout = $this->update($sql);
         return $checkout;
     }
@@ -374,50 +411,63 @@ class HomeModel extends BaseModel
     }
     public function searchProduct($search)
     {
-        $sql = "SELECT * FROM products WHERE name LIKE '%$search%' OR description LIKE '%$search%' ORDER BY id DESC;";
+        $sort = '';
+        if (isset($_GET['sort'])) {
+            if ($_GET['sort'] == 'desc') {
+                $sort = 'DESC';
+            } elseif ($_GET['sort'] == 'asc') {
+                $sort = 'ASC';
+            }
+        }
+        $sql = "SELECT * FROM products WHERE name LIKE '%$search%' OR description LIKE '%$search%' ORDER BY products.price " .$sort;
         $searchResult = $this->select($sql);
         return $searchResult;
     }
     // Hàm tìm kiếm theo tên của category(manufacture)
     public function searchCategories($search)
     {
-        $sql = "SELECT * FROM products,manufactures WHERE products.manu_id=manufactures.manu_id AND manufactures.manu_name like '%$search%' ORDER BY products.id DESC;";
+        $sort = '';
+        if (isset($_GET['sort'])) {
+            if ($_GET['sort'] == 'desc') {
+                $sort = 'DESC';
+            } elseif ($_GET['sort'] == 'asc') {
+                $sort = 'ASC';
+            }
+        }
+        $sql = "SELECT * FROM products,manufactures WHERE products.manu_id=manufactures.manu_id 
+        AND manufactures.manu_name like '%$search%' ORDER BY products.price " .$sort;
         $searchResult = $this->select($sql);
         return $searchResult;
     }
-    public function numPagination1($sql, $page, $num)
+    public function pagination($sql, $page, $num)
     {
-        $numPage = ceil(count($this->select($sql)) / $num);
-?>
-        <div class="product_pagination">
-            <div class="left_btn">
-                <a href="<?php echo $_SERVER['REQUEST_URI'] ?>&page=<?php if ($page > 1) echo $page - 1;
-                                                                    else echo 1 ?>">
-                    <i class="lnr lnr-arrow-left"></i> New posts</a>
-            </div>
-            <div class="middle_list">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination">
-                        <?php
-                        for ($i = 1; $i <= $numPage; $i++) {
-                        ?>
-                            <li class="page-item">
-                                <a class="page-link" href="<?php echo $_SERVER['REQUEST_URI'] ?>&page=<?php echo $i ?>"><?php echo $i ?></a>
-                            </li>
-                        <?php
-                        }
-                        ?>
-                    </ul>
-                </nav>
-            </div>
-            <div class="right_btn">
-                <a href="<?php echo $_SERVER['REQUEST_URI'] ?>&page=<?php if ($page < $numPage) echo $page + 1;
-                                                                    else echo $numPage ?>">
-                    Older posts <i class="lnr lnr-arrow-right"></i></a>
-            </div>
-        </div>
-<?php
+        if ($page < 2) {
+            $star = 0;
+        } else {
+            $star = ($page * $num) - $num;
+        }
+        $sql = $sql . ' LIMIT ' . $star . ',' . $num;
+        return $this->select($sql);
     }
+    public function paginationProtype($typeid, $page,$num)
+    {
+        if ($page < 2) {
+            $star = 0;
+        } else {
+            $star = ($page * $num) - $num;
+        }
+        $protypes = 'SELECT type_id FROM protypes';
+        $protype = $this->select($protypes);
+        foreach ($protype as $pagedproty) {
+            $md5 = md5($pagedproty['type_id'] . 'chuyen-de-web-2');
+            if ($md5 == $typeid) {
+                $sql = 'SELECT * FROM `protypes`,products WHERE protypes.type_id = products.type_id AND protypes.type_id = ' . $pagedproty['type_id'] . ' ORDER BY products.id DESC';
+            }
+        }
+        $sql = $sql . ' LIMIT ' . $star . ',' . $num;
+        return $this->select($sql);
+    }
+
 
     // ------------------------- Comment --------------------//
 
@@ -439,3 +489,35 @@ class HomeModel extends BaseModel
         return $comment;
     }
 }
+// ------------------------- panigation --------------------//
+    public function paginationManu($manuid, $page,$num)
+    {
+        if ($page < 2) {
+            $star = 0;
+        } else {
+            $star = ($page * $num) - $num;
+        }
+        $manufacture = 'SELECT manu_id FROM manufactures';
+        $manufactures = $this->select($manufacture);
+        foreach ($manufactures as $manufac) {
+            $md5 = md5($manufac['manu_id'] . 'chuyen-de-web-2');
+            if ($md5 == $manuid) {
+                $sql = 'SELECT * FROM `products` , manufactures WHERE products.manu_id = manufactures.manu_id AND products.manu_id =  ' . $manufac['manu_id'] . ' ';
+            }
+        }
+        $sql = $sql . ' LIMIT ' . $star . ',' . $num;
+        return $this->select($sql);
+    }
+    // public function paginationSearchProduct($search,$page,$num)
+    // {
+    //     if ($page < 2) {
+    //         $star = 0;
+    //     } else {
+    //         $star = ($page * $num) - $num;
+    //     }
+    //     $sqlF = "SELECT * FROM products WHERE name LIKE '%$search%' OR description LIKE '%$search%' ORDER BY products.price DESC";
+    //     $sql = $sqlF . ' LIMIT ' . $star . ',' . $num;
+    //     return $this->select($sql);
+    // }
+}
+

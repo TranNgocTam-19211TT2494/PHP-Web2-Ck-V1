@@ -1,4 +1,5 @@
 <?php
+    session_start();
     require_once 'models/FactoryPattent.php';
     $factory = new FactoryPattent();
     $HomeModel = $factory->make('home');

@@ -1,34 +1,36 @@
 <?php
-session_start();
-require_once("../../models/ZipCodeModel.php");
-$noti = 0;
-if($_SESSION['role'] == 'Admin') { 
+    session_start();
+    require '../../models/FactoryPattentTwoAdmin.php';
+    if($_SESSION['role'] == 'Admin') { 
+        $factory = new FactoryPattentTwoAdmin();
+        $orders = $factory->make('order');
+        $checkout = null;
+        $check_id = null;
+        if (!empty($_GET['id'])) {
+            $check_id = $_GET['id'];
+            $checkout = $orders->getCheckoutById($check_id);
+            
+        }
     
-    $zipcode = new ZipCodeModel();
-    $allUser = $zipcode->getUser();
-    if (!empty($_GET['id'])) {
-        $zipcodeById = $zipcode->getZipCodeById($_GET['id']);
-    }
-    if (!empty($_POST['submit'])) {
-        if(empty($_GET['id'])){
-            $result = $zipcode->insertZipcode($_POST);
-            if($result){
-                header('location: index.php');
-            }else{
-                $noti = 2;
-            }
-        }else{
-             $result1 = $zipcode->updateZipcode($_POST);
-            if($result1){
-                header('location: index.php');
-            }else{
-                $noti = 3;
+        if (!empty($_POST['submit'])) {
+            if(!empty($check_id)){
+                $result = $orders->updateCheckout($_POST);
+                if($result==false){
+                    $err = true;
+                }else{
+                    header('location: ./index.php');
+                }
+            
+            
+            } else {
+                header('location: ./index.php');
             }
         }
+        
+    } else {
+        header('location: ../index.php');
     }
-} else {
-    header('location: ../index.php');
-}
+    
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -172,11 +174,11 @@ if($_SESSION['role'] == 'Admin') {
             if (!empty($_SESSION["lgUserID"])) {
                 $chuoi1 = <<<EOD
                 <div class="account-dropdown__item">
-                    <a href="../../profile.php">
+                    <a href="../profile.php">
                         <i class="zmdi zmdi-account"></i>Account</a>
                 </div>
                 <div class="account-dropdown__footer">
-                    <a href="../../logout.php">
+                    <a href="../logout.php">
                     <i class="zmdi zmdi-power"></i>Logout</a>
                  </div>
                 EOD;
@@ -207,47 +209,82 @@ if($_SESSION['role'] == 'Admin') {
                 <div class="col-md-6">
 
                     <div class="card">
-                        <div class="card-header">
-                            <strong>Add Product</strong>
-                        </div>
-                        <?php if(isset($noti) && $noti == 2) {?>
-                        <div class="alert alert-danger" role="alert">
-                            ADD ZIPCODE UNSUCCESSFUL
-                        </div>
-                        <?php }else if($noti == 3){?>
-                        <div class="alert alert-danger" role="alert">
-                            UPDATE ZIPCODE UNSUCCESSFUL
-                        </div>
-                        <?php } ?>
+
+
                         <div class="card-body card-block">
-                            <form method="POST" class="form-horizontal" enctype="multipart/form-data">
-                                <input value="<?php if(isset($zipcodeById)) echo $zipcodeById[0]['id']?>" type="hidden"
-                                    id="text-input" name="id">
+                            <form method="POST" class="form-horizontal">
+                                <input value="<?= $check_id ?>" type="hidden" id="text-input" name="id">
+                                <input type="hidden" name="version"
+                                    value="<?= md5($checkout[0]['version'].'chuyen-de-web-2') ?>">
+
                                 <div class="row form-group">
                                     <div class="col col-md-3">
-                                        <label for="select" class=" form-control-label">User</label>
+                                        <label for="text-input" class=" form-control-label">First name</label>
                                     </div>
                                     <div class="col-12 col-md-9">
-                                        <select name="user_id" id="select" class="form-control">
-                                            <option value="0">Please select user</option>
-                                            <?php if(isset($allUser)){
-                                                foreach ($allUser as $value) { ?>
-                                            <option value="<?= $value['id'] ?>"
-                                                <?php if(isset($zipcodeById) && $zipcodeById[0]['user_id'] == $value['id']){echo 'selected';}?>>
-
-                                                <?= $value['username']?></option>
-                                            <?php  } } ?>
-                                        </select>
+                                        <input value="<?php if(isset($checkout)) echo $checkout[0]['firstname']?>"
+                                            type="text" id="text-input" placeholder="First name" class="form-control"
+                                            readonly>
                                     </div>
                                 </div>
                                 <div class="row form-group">
                                     <div class="col col-md-3">
-                                        <label for="text-input" class=" form-control-label">Discount</label>
+                                        <label for="text-input" class=" form-control-label">Last name</label>
                                     </div>
                                     <div class="col-12 col-md-9">
-                                        <input value="<?php if(isset($zipcodeById)) echo $zipcodeById[0]['discount']?>"
-                                            type="number" id="text-input" name="discount" placeholder="Discount"
-                                            class="form-control">
+                                        <input value="<?php if(isset($checkout)) echo $checkout[0]['lastname']?>"
+                                            type="text" id="text-input" placeholder="First name" class="form-control"
+                                            readonly>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="text-input" class=" form-control-label">Address</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <input value="<?php if(isset($checkout)) echo $checkout[0]['address']?>"
+                                            type="text" id="text-input" placeholder="First name" class="form-control"
+                                            readonly>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="text-input" class=" form-control-label">Phone</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <input value="<?php if(isset($checkout)) echo $checkout[0]['phone']?>"
+                                            type="text" id="text-input" placeholder="First name" class="form-control"
+                                            readonly>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="text-input" class=" form-control-label">Notes</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <input value="<?php if(isset($checkout)) echo $checkout[0]['notes']?>"
+                                            type="text" id="text-input" placeholder="First name" class="form-control"
+                                            readonly>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="text-input" class=" form-control-label">Sum</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <input value="<?php if(isset($checkout)) echo $checkout[0]['sum']?>" type="text"
+                                            id="text-input" placeholder="First name" class="form-control" readonly>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label for="text-input" class=" form-control-label">Date</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <input
+                                            value="<?php if(isset($checkout)) echo date( "d-m-Y", strtotime($checkout[0]['addedDate']));?>"
+                                            type="text" id="text-input" placeholder="First name" class="form-control"
+                                            readonly>
                                     </div>
                                 </div>
                                 <div class="row form-group">
@@ -256,8 +293,8 @@ if($_SESSION['role'] == 'Admin') {
                                     </div>
                                     <div class="col col-md-9">
                                         <div class="form-check-inline form-check">
-                                            <?php if(isset($zipcodeById)) {
-                                                if($zipcodeById[0]['status'] == "0"){?>
+                                            <?php if(isset($checkout)) {
+                                                if($checkout[0]['status'] == "0"){?>
                                             <label for="inline-radio1" class="form-check-label ">
                                                 <input type="radio" id="inline-radio1" name="status" value="0"
                                                     class="form-check-input" checked>Pending
@@ -275,25 +312,15 @@ if($_SESSION['role'] == 'Admin') {
                                                 <input type="radio" id="inline-radio2" name="status" value="1"
                                                     class="form-check-input" checked>Active
                                             </label>
-                                            <?php } }else{?>
-                                            <label for="inline-radio1" class="form-check-label ">
-                                                <input type="radio" id="inline-radio1" name="status" value="0"
-                                                    class="form-check-input" checked>Pending
-                                            </label>
-                                            <label for="inline-radio2" class="form-check-label ml-2">
-                                                <input type="radio" id="inline-radio2" name="status" value="1"
-                                                    class="form-check-input">Active
-                                            </label>
-                                            <?php } ?>
+                                            <?php } }?>
+
                                         </div>
                                     </div>
                                 </div>
                                 <button type="submit" name="submit" value="submit" class="btn btn-primary btn-sm">
                                     <i class="fa fa-dot-circle-o"></i> Submit
                                 </button>
-                                <button type="reset" class="btn btn-danger btn-sm">
-                                    <i class="fa fa-ban"></i> Reset
-                                </button>
+
                             </form>
                         </div>
 
