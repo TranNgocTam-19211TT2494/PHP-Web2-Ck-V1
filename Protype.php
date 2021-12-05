@@ -13,6 +13,14 @@ if (isset($_GET['type_id'])) {
     $typeid = $_GET['type_id'];
     // $protype = $protypeModel->getprotypeOnProduct($typeid);
 }
+if (!empty($_SESSION["lgUserID"])) {
+    if (!empty($_GET['id'])) {
+        $inserWhishlist = $productModel->insertWhishList($_GET['id'], $_SESSION['lgUserID']);
+        $noti = 1;
+    }
+} else {
+    $noti = 2;
+}
 $search  = '';
 $searchCate  = '';
 if (!isset($_GET['page'])) {
@@ -54,6 +62,15 @@ if (!isset($_GET['page'])) {
             <div class="container">
                 <div class="row product_inner_row">
                     <div class="col-lg-9">
+					 <?php if (isset($noti) && $noti == 1) { ?>
+                    <div class="alert alert-success" role="alert">
+                        Thêm vào danh sách thành công.
+                    </div>
+                    <?php } else if ($noti == 2) { ?>
+                    <div class="alert alert-success" role="alert">
+                        Bạn cần phải đăng nhập
+                    </div>
+                    <?php } ?>
                         <!-- </?php if ($protype) { ?> -->
                         <input type="hidden" name="type_id" value="<?php echo $typeid ?>">
                         <div class="row m0 product_task_bar">
@@ -86,9 +103,10 @@ if (!isset($_GET['page'])) {
                                                     <?php if (isset($_SESSION['lgUserID'])) { ?>
                                                         <?php if (empty($productModel->getWhishlistExist($_SESSION['lgUserID'], $product['id']))) { ?>
                                                             <div class="icon-whishlist">
-                                                                <a href="shop.php?id=<?= md5($product['id'] . 'chuyen-de-web-2') ?>">
-                                                                    <i class="fa fa-heart" aria-hidden="true"></i>
-                                                                </a>
+                                                                 <a
+																	href="Protype.php?id=<?= md5($product['id'] . 'chuyen-de-web-2') ?>&type_id=<?php echo $typeid; ?>">
+																	<i class="fa fa-heart" aria-hidden="true"></i>
+																</a>
                                                             </div>
                                                     <?php }
                                                     } ?>
