@@ -12,6 +12,16 @@ if (isset($_GET['manu_id'])) {
     $id = $_GET['manu_id'];
     // $manu = $productModel->getManufactureById($id);
 }
+$noti = 0;
+//$products = $productModel->getProducts();
+if (!empty($_SESSION["lgUserID"])) {
+    if (!empty($_GET['id'])) {
+        $inserWhishlist = $productModel->insertWhishList($_GET['id'], $_SESSION['lgUserID']);
+        $noti = 1;
+    }
+} else {
+    $noti = 2;
+}
 if (isset($_GET['type_id'])) {
     $typeid = $_GET['type_id'];
     // $protype = $protypeModel->getprotypeOnProduct($typeid);
@@ -51,223 +61,241 @@ if (!isset($_GET['page'])) {
     </section>
     <!--================End Main Header Area =================-->
     <?php if (!empty($_GET['manu_id'])) { ?>
-        <!--================Product Area =================-->
-        <section class="product_area p_100">
-            <div class="container">
-                <div class="row product_inner_row">
-                    <div class="col-lg-9">
-                        <!-- </?php if ($protype) { ?> -->
-                        <!-- <input type="hidden" name="type_id" value="<?php echo $typeid ?>"> -->
-                        <div class="row m0 product_task_bar">
-                            <div class="product_task_inner">
-                                <div class="float-left">
+    <!--================Product Area =================-->
+    <section class="product_area p_100">
+        <div class="container">
+            <div class="row product_inner_row">
+                <div class="col-lg-9">
+                    <?php if (isset($noti) && $noti == 1) { ?>
+                    <div class="alert alert-success" role="alert">
+                        Thêm vào danh sách thành công.
+                    </div>
+                    <?php } else if ($noti == 2) { ?>
+                    <div class="alert alert-success" role="alert">
+                        Bạn cần phải đăng nhập
+                    </div>
+                    <?php } ?>
+                    <!-- </?php if ($protype) { ?> -->
+                    <!-- <input type="hidden" name="type_id" value="<?php echo $typeid ?>"> -->
+                    <div class="row m0 product_task_bar">
+                        <div class="product_task_inner">
+                            <div class="float-left">
 
-                                </div>
-                                <div class="float-right">
-                                    <h4>Danh mục</h4>
+                            </div>
+                            <div class="float-right">
+                                <h4>Danh mục</h4>
 
-                                </div>
                             </div>
                         </div>
-                        <!-- Tien lam phan trang -->
-                        <?php
+                    </div>
+                    <!-- Tien lam phan trang -->
+                    <?php
                         if (isset($_GET['submit'])) {
                             // search categories
                             if (!empty($_GET['search-cate'])) { ?>
-                                <div class="row product_item_inner">
-                                    <?php
+                    <div class="row product_item_inner">
+                        <?php
                                     $searchCate = $_GET['search-cate'];
                                     $products = $productModel->searchCategories($searchCate);
                                     $num_result_cate = count($products);
                                     foreach ($products as $product) { ?>
-                                        <div class="col-lg-4 col-md-4 col-6">
-                                            <div class="cake_feature_item">
-                                                <div class="cake_img">
-                                                    <img src="<?= $product['pro_image'] ?>" alt="">
-                                                    <?php if (isset($_SESSION['lgUserID'])) { ?>
-                                                        <?php if (empty($productModel->getWhishlistExist($_SESSION['lgUserID'], $product['id']))) { ?>
-                                                            <div class="icon-whishlist">
-                                                                <a href="shop.php?id=<?= md5($product['id'] . 'chuyen-de-web-2') ?>">
-                                                                    <i class="fa fa-heart" aria-hidden="true"></i>
-                                                                </a>
-                                                            </div>
-                                                    <?php }
-                                                    } ?>
-                                                </div>
-                                                <div class="cake_text">
-                                                    <h4>$<?= $product['price'] ?></h4>
-                                                    <h3><?= $product['name'] ?></h3>
-                                                    <a class="pest_btn" href="cart.php?id=<?= $product['id'] ?>" onclick="return insertCart(<?= $product['id'] ?>)">Thêm vào giỏ hàng</a>
-                                                </div>
-                                            </div>
-                                        </div>
+                        <div class="col-lg-4 col-md-4 col-6">
+                            <div class="cake_feature_item">
+                                <div class="cake_img">
+                                    <img src="<?= $product['pro_image'] ?>" alt="">
+                                    <?php if (isset($_SESSION['lgUserID'])) { ?>
+                                    <?php if (empty($productModel->getWhishlistExist($_SESSION['lgUserID'], $product['id']))) { ?>
+                                    <div class="icon-whishlist">
+                                        <a href="manufacture-shop.php?id=<?= md5($product['id'] . 'chuyen-de-web-2') ?>&manu_id=<?php echo $id ?>">
+                                            <i class="fa fa-heart" aria-hidden="true"></i>
+                                        </a>
+                                    </div>
                                     <?php }
-                                    ?>
+                                                    } ?>
                                 </div>
-                                <!-- Phân trang -->
-                                <?php
+                                <div class="cake_text">
+                                    <h4>$<?= $product['price'] ?></h4>
+                                    <h3><?= $product['name'] ?></h3>
+                                    <a class="pest_btn" href="cart.php?id=<?= $product['id'] ?>"
+                                        onclick="return insertCart(<?= $product['id'] ?>)">Thêm vào giỏ hàng</a>
+                                </div>
+                            </div>
+                        </div>
+                        <?php }
+                                    ?>
+                    </div>
+                    <!-- Phân trang -->
+                    <?php
                                 $number_of_pages = ceil($num_result_cate / 6);
                                 if ($number_of_pages > 1) { ?>
-                                    <div class="product_pagination">
-                                        <div class="left_btn">
-                                        </div>
-                                        <div class="middle_list">
-                                            <nav aria-label="Page navigation example">
-                                                <ul class="pagination">
-                                                    <?php
+                    <div class="product_pagination">
+                        <div class="left_btn">
+                        </div>
+                        <div class="middle_list">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination">
+                                    <?php
                                                     for ($i = 1; $i <= $number_of_pages; $i++) {
                                                     ?>
-                                                        <li class="page-item">
-                                                            <a class="page-link" href="shop.php?page=<?php echo $i ?>"><?php echo $i ?></a>
-                                                        </li>
-                                                    <?php
+                                    <li class="page-item">
+                                        <a class="page-link" href="shop.php?page=<?php echo $i ?>"><?php echo $i ?></a>
+                                    </li>
+                                    <?php
                                                     }
                                                     ?>
-                                                </ul>
-                                            </nav>
-                                        </div>
-                                        <div class="right_btn">
-                                        </div>
-                                    </div>
-                            <?php }
+                                </ul>
+                            </nav>
+                        </div>
+                        <div class="right_btn">
+                        </div>
+                    </div>
+                    <?php }
                             }
                         } else { ?>
 
-                            <div class="row product_item_inner">
+                    <div class="row product_item_inner">
 
-                                <?php
+                        <?php
                                 $products = $productModel->paginationManu($id, $page, 6);
                                 if (count($products) > 0) {
 
                                     foreach ($products as $product) { ?>
-                                        <div class="col-lg-4 col-md-4 col-6">
-                                            <div class="cake_feature_item">
-                                                <div class="cake_img">
-                                                    <img src="<?= $product['pro_image'] ?>" alt="">
-                                                    <?php if (isset($_SESSION['lgUserID'])) { ?>
-                                                        <?php if (empty($productModel->getWhishlistExist($_SESSION['lgUserID'], $product['id']))) { ?>
-                                                            <div class="icon-whishlist">
-                                                                <a href="whishlist.php?id=<?= md5($product['id'] . 'chuyen-de-web-2') ?>">
-                                                                    <i class="fa fa-heart" aria-hidden="true"></i>
-                                                                </a>
-                                                            </div>
-                                                    <?php }
+                        <div class="col-lg-4 col-md-4 col-6">
+                            <div class="cake_feature_item">
+                                <div class="cake_img">
+                                    <img src="<?= $product['pro_image'] ?>" alt="">
+                                    <?php if (isset($_SESSION['lgUserID'])) { ?>
+                                    <?php if (empty($productModel->getWhishlistExist($_SESSION['lgUserID'], $product['id']))) { ?>
+                                    <div class="icon-whishlist">
+                                        <a
+                                            href="manufacture-shop.php?id=<?= md5($product['id'] . 'chuyen-de-web-2') ?>&manu_id=<?php echo $id ?>">
+                                            <i class="fa fa-heart" aria-hidden="true"></i>
+                                        </a>
+                                    </div>
+                                    <?php }
                                                     } ?>
-                                                </div>
-                                                <div class="cake_text">
-                                                    <h4>$<?= $product['price'] ?></h4>
-                                                    <h3><?= $product['name'] ?></h3>
-                                                    <a class="pest_btn" href="cart.php?id=<?= $product['id'] ?>" onclick="return insertCart(<?= $product['id'] ?>)">Thêm vào giỏ hàng</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                <?php }
+                                </div>
+                                <div class="cake_text">
+                                    <h4>$<?= $product['price'] ?></h4>
+                                    <h3><?= $product['name'] ?></h3>
+                                    <a class="pest_btn" href="cart.php?id=<?= $product['id'] ?>"
+                                        onclick="return insertCart(<?= $product['id'] ?>)">Thêm vào giỏ hàng</a>
+                                </div>
+                            </div>
+                        </div>
+                        <?php }
                                 } ?>
 
 
-                            </div>
-                            <!-- Phân trang -->
-                            <?php
+                    </div>
+                    <!-- Phân trang -->
+                    <?php
                             $result = $productModel->getManufactureById($id);
                             $number_of_result = count($result);
                             $number_of_pages = ceil($number_of_result / 6);
                             // var_dump($number_of_result);
                             if ($number_of_pages <= 1) { ?>
-                            <?php } else { ?>
-                                <div class="product_pagination">
-                                    <div class="left_btn">
-                                        <a href="manufacture-shop.php?manu_id=<?php echo $id ?>&page=<?php if ($page > 1) echo $page - 1;
+                    <?php } else { ?>
+                    <div class="product_pagination">
+                        <div class="left_btn">
+                            <a href="manufacture-shop.php?manu_id=<?php echo $id ?>&page=<?php if ($page > 1) echo $page - 1;
                                                                     else echo 1 ?>">
-                                            <i class="lnr lnr-arrow-left"></i> Trước
-                                        </a>
-                                    </div>
-                                    <div class="middle_list">
-                                        <nav aria-label="Page navigation example">
-                                            <ul class="pagination">
-                                                <?php
+                                <i class="lnr lnr-arrow-left"></i> Trước
+                            </a>
+                        </div>
+                        <div class="middle_list">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination">
+                                    <?php
                                                 for ($i = 1; $i <= $number_of_pages; $i++) {
                                                 ?>
-                                                    <li class="page-item">
-                                                        <a class="page-link" href="manufacture-shop.php?manu_id=<?php echo $id ?>&page=<?php echo $i ?>"><?php echo $i ?></a>
-                                                    </li>
-                                                <?php
+                                    <li class="page-item">
+                                        <a class="page-link"
+                                            href="manufacture-shop.php?manu_id=<?php echo $id ?>&page=<?php echo $i ?>"><?php echo $i ?></a>
+                                    </li>
+                                    <?php
                                                 }
                                                 ?>
-                                            </ul>
-                                        </nav>
-                                    </div>
-                                    <div class="right_btn">
-                                        <a href="manufacture-shop.php?manu_id=<?php echo $id ?>&page=<?php if ($page < $number_of_pages) echo $page + 1;
-                                                                    else echo $number_of_pages ?>">
-                                            Sau <i class="lnr lnr-arrow-right"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            <?php  } ?>
-                        <?php } ?>
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="product_left_sidebar">
-                            <aside class="left_sidebar search_widget">
-                                <form method="get" class="input-group">
-                                    <input type="hidden" name="manu_id" value="<?php echo $id ?>">
-                                    <input type="text" name="search-cate" value="<?= $searchCate ?>" class="form-control" placeholder="Nhập từ khóa tìm kiếm">
-                                    <div class="input-group-append">
-                                        <button class="btn" type="submit" name="submit" value="submit"><i class="icon icon-Search"></i></button>
-                                    </div>
-                                </form>
-                            </aside>
-                            <!-- Manufacture -->
-                            <aside class="left_sidebar p_catgories_widget">
-                                <div class="p_w_title">
-                                    <h3>Danh mục sản phẩm</h3>
-                                </div>
-
-                                <ul class="list_style">
-                                    <?php foreach ($manufactures as $manufacture) { ?>
-                                        <li><a href="manufacture-shop.php?manu_id=<?= md5($manufacture['manu_id'] . 'chuyen-de-web-2') ?>"><?= $manufacture['manu_name'] ?>
-                                                (<?= count($productModel->countProductWithManufacture($manufacture['manu_id'])) ?>)</a></li>
-                                    <?php } ?>
-
                                 </ul>
-                            </aside>
-
-                            <aside class="left_sidebar p_sale_widget">
-                                <div class="p_w_title">
-                                    <h3>Sản phẩm mới nhất</h3>
+                            </nav>
+                        </div>
+                        <div class="right_btn">
+                            <a href="manufacture-shop.php?manu_id=<?php echo $id ?>&page=<?php if ($page < $number_of_pages) echo $page + 1;
+                                                                    else echo $number_of_pages ?>">
+                                Sau <i class="lnr lnr-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <?php  } ?>
+                    <?php } ?>
+                </div>
+                <div class="col-lg-3">
+                    <div class="product_left_sidebar">
+                        <aside class="left_sidebar search_widget">
+                            <form method="get" class="input-group">
+                                <input type="hidden" name="manu_id" value="<?php echo $id ?>">
+                                <input type="text" name="search-cate" value="<?= $searchCate ?>" class="form-control"
+                                    placeholder="Nhập từ khóa tìm kiếm">
+                                <div class="input-group-append">
+                                    <button class="btn" type="submit" name="submit" value="submit"><i
+                                            class="icon icon-Search"></i></button>
                                 </div>
-                                <?php
+                            </form>
+                        </aside>
+                        <!-- Manufacture -->
+                        <aside class="left_sidebar p_catgories_widget">
+                            <div class="p_w_title">
+                                <h3>Danh mục sản phẩm</h3>
+                            </div>
+
+                            <ul class="list_style">
+                                <?php foreach ($manufactures as $manufacture) { ?>
+                                <li><a
+                                        href="manufacture-shop.php?manu_id=<?= md5($manufacture['manu_id'] . 'chuyen-de-web-2') ?>"><?= $manufacture['manu_name'] ?>
+                                        (<?= count($productModel->countProductWithManufacture($manufacture['manu_id'])) ?>)</a>
+                                </li>
+                                <?php } ?>
+
+                            </ul>
+                        </aside>
+
+                        <aside class="left_sidebar p_sale_widget">
+                            <div class="p_w_title">
+                                <h3>Sản phẩm mới nhất</h3>
+                            </div>
+                            <?php
                                 $latests = $productModel->getProductLasters();
 
                                 ?>
-                                <?php
+                            <?php
                                 if (!empty($latests)) {
                                     foreach ($latests as $latest) {
 
                                 ?>
-                                        <div class="media">
-                                            <div class="d-flex">
-                                                <img src="<?= $latest['pro_image'] ?>" alt="<?= $latest['name'] ?>" style="max-width: 100px;">
-                                            </div>
-                                            <div class="media-body">
-                                                <a href="product-details.php?id=<?= $latest['id'] ?>">
-                                                    <h4><?= $latest['name'] ?></h4>
-                                                </a>
+                            <div class="media">
+                                <div class="d-flex">
+                                    <img src="<?= $latest['pro_image'] ?>" alt="<?= $latest['name'] ?>"
+                                        style="max-width: 100px;">
+                                </div>
+                                <div class="media-body">
+                                    <a href="product-details.php?id=<?= md5($latest['id'].'chuyen-de-web-2') ?>">
+                                        <h4><?= $latest['name'] ?></h4>
+                                    </a>
 
-                                                <h5>$<?= $latest['price'] ?></h5>
-                                            </div>
-                                        </div>
-                                <?php }
+                                    <h5>$<?= $latest['price'] ?></h5>
+                                </div>
+                            </div>
+                            <?php }
                                 } ?>
 
-                            </aside>
-                        </div>
+                        </aside>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
     <?php } else { ?>
-        <?php include "404.php"; ?>
+    <?php include "404.php"; ?>
     <?php } ?>
     <!--================End Product Area =================-->
 

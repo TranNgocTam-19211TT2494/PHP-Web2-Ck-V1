@@ -105,7 +105,7 @@ if (!isset($_GET['page'])) {
                                     <?php if (isset($_SESSION['lgUserID'])) { ?>
                                     <?php if (empty($productModel->getWhishlistExist($_SESSION['lgUserID'], $product['id']))) { ?>
                                     <div class="icon-whishlist">
-                                        <a href="shop.php?id=<?= md5($product['id'] . 'chuyen-de-web-2') ?>">
+                                        <a href="Protype.php?id=<?= md5($product['id'] . 'chuyen-de-web-2') ?>&type_id=<?php echo $typeid; ?>">
                                             <i class="fa fa-heart" aria-hidden="true"></i>
                                         </a>
                                     </div>
