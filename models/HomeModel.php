@@ -341,9 +341,14 @@ class HomeModel extends BaseModel
     // Xem đơn hàng của khách hàng:
     public function getCheckoutsByUserId($userID)
     {
-        $sql = 'SELECT checkouts.id , checkouts.addedDate, checkouts.address ,checkouts.phone , checkouts.sum,checkouts.status FROM `checkouts` ,users WHERE checkouts.user_id = users.id AND checkouts.user_id = '.$userID;
-        $order = $this->select($sql);
-        return $order;
+        if (!is_numeric($userID) || $userID < 0 || is_double($userID)) {
+            return 'Not invalid';
+        } else {
+            $sql = 'SELECT checkouts.id , checkouts.user_id , checkouts.addedDate, checkouts.address ,checkouts.phone , checkouts.sum,checkouts.status FROM `checkouts` ,users WHERE checkouts.user_id = users.id AND checkouts.user_id = ' . $userID;
+            $order = $this->select($sql);
+            return $order;
+        }
+        // $sql = 'SELECT checkouts.id , checkouts.addedDate, checkouts.address ,checkouts.phone , checkouts.sum,checkouts.status FROM `checkouts` ,users WHERE checkouts.user_id = users.id AND checkouts.user_id = '.$userID;
     }
     // Lấy sản phẩm trong giỏ hàng:
     public function getOrderItemById($id)
