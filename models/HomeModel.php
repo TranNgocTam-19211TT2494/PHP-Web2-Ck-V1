@@ -123,6 +123,7 @@ class HomeModel extends BaseModel
         } catch (Exception $e) {
             echo 'Error: ', $mail->ErrorInfo;
         }
+    }
     // Tìm id của người dùng:
     public function getUserById($id)
     {
@@ -532,3 +533,4 @@ class HomeModel extends BaseModel
         $sql = $sqlF . ' LIMIT ' . $star . ',' . $num;
         return $this->select($sql);
     }
+}
