@@ -10,4 +10,11 @@ class ChartOrderModel extends BaseAdminModel
         $id = $this->select($sql);
         return $id;
     }
+    public function getUserByMonth($month)
+    {
+        # code...
+        $sql = "SELECT * from users where MONTH(date) = $month";
+        $id = $this->select($sql);
+        return $id;
+    }
 }

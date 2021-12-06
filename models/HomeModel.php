@@ -42,10 +42,10 @@ class HomeModel extends BaseModel
         ];
         $sql1 = "INSERT INTO `webbanhkem`.`zipcode` (`zipcode`, `user_id` ,`discount`,`status`)
          VALUES (" .
-         "'" . $this->getToken(8) 
-         . "','" . $lastUserId
-         . "','" . 25
-         . "','" . 1 . "')";
+            "'" . $this->getToken(8)
+            . "','" . $lastUserId
+            . "','" . 25
+            . "','" . 1 . "')";
         $zipcode = $this->insert($sql1);
 
         return $user;
@@ -82,7 +82,8 @@ class HomeModel extends BaseModel
         return $user;
     }
     //Update password cho user: 
-    public function UpdatePassword($password , $email) {
+    public function UpdatePassword($password, $email)
+    {
         $sql = 'UPDATE users SET 
         password = "' . md5($password) . '"
         WHERE email = "' . $email . '" ';
@@ -96,22 +97,21 @@ class HomeModel extends BaseModel
         return $this->select($sql);
     }
     // Kiểm tra mật khẩu cũ:
-    public function checkOldPassword($name , $oldPassword)
+    public function checkOldPassword($name, $oldPassword)
     {
         $sql = 'SELECT * FROM users WHERE username = "' . $name . '" AND password = "' . md5($oldPassword) . '"';
         return $this->select($sql);
     }
     // Change Password:
-    public function changePassword($name , $newPassword)
-    {   
+    public function changePassword($name, $newPassword)
+    {
         $md5Password = md5($newPassword);
         $sql = 'UPDATE users SET 
-        password = "' .$md5Password . '"
+        password = "' . $md5Password . '"
         WHERE username = "' . $name . '" ';
 
         $user = $this->update($sql);
         return $user;
-        
     }
     // Lay id
     public function getid()
@@ -143,7 +143,7 @@ class HomeModel extends BaseModel
     // Mã khuyến mãi:
     public function getCouponByID($id)
     {
-        $sql = 'SELECT  zipcode.status,zipcode.discount,zipcode.created_at,zipcode.zipcode FROM zipcode , users WHERE zipcode.user_id = users.id AND zipcode.user_id = '.$id;
+        $sql = 'SELECT  zipcode.status,zipcode.discount,zipcode.created_at,zipcode.zipcode FROM zipcode , users WHERE zipcode.user_id = users.id AND zipcode.user_id = ' . $id;
         $coupon = $this->select($sql);
         return $coupon;
     }
@@ -314,13 +314,12 @@ class HomeModel extends BaseModel
     {
         $allProduct = $this->getProducts();
         foreach ($allProduct as  $value) {
-           if(md5($value['id'].'chuyen-de-web-2') == $paged){
-            $sql = 'SELECT * FROM `products`  WHERE id =  ' . $value['id'] . ' ';
-            $product = $this->select($sql);
-            return $product;
-           }
+            if (md5($value['id'] . 'chuyen-de-web-2') == $paged) {
+                $sql = 'SELECT * FROM `products`  WHERE id =  ' . $value['id'] . ' ';
+                $product = $this->select($sql);
+                return $product;
+            }
         }
-      
     }
 
     // Các sản phẩm có liên quan thuộc danh mục:
@@ -328,14 +327,12 @@ class HomeModel extends BaseModel
     {
         $allProduct = $this->getProducts();
         foreach ($allProduct as  $value) {
-           if(md5($value['id'].'chuyen-de-web-2') == $paged){
-            $sql = 'Select * from products where id <> ' . $value['id'] . '  and manu_id = ' . $ManuID . ' LIMIT 4';
-            $products = $this->select($sql);
-            return $products;
-          
-           }
+            if (md5($value['id'] . 'chuyen-de-web-2') == $paged) {
+                $sql = 'Select * from products where id <> ' . $value['id'] . '  and manu_id = ' . $ManuID . ' LIMIT 4';
+                $products = $this->select($sql);
+                return $products;
+            }
         }
-        
     }
     // ------------------ Giỏ hàng -------------------- //
     // Xem đơn hàng của khách hàng:
@@ -353,7 +350,7 @@ class HomeModel extends BaseModel
     // Lấy sản phẩm trong giỏ hàng:
     public function getOrderItemById($id)
     {
-        $sql = 'SELECT carts.pro_id , products.name , products.price, carts.quantity FROM carts INNER JOIN products ON carts.pro_id = products.id WHERE carts.order_id = '.$id;
+        $sql = 'SELECT carts.pro_id , products.name , products.price, carts.quantity FROM carts INNER JOIN products ON carts.pro_id = products.id WHERE carts.order_id = ' . $id;
         $user = $this->select($sql);
         return $user;
     }
@@ -394,7 +391,7 @@ class HomeModel extends BaseModel
     }
     public function getCouponByZipcode($coupon)
     {
-        
+
         $sql = "SELECT zipcode.zipcode , zipcode.discount , zipcode.user_id FROM zipcode WHERE zipcode.zipcode = '$coupon'";
         $zipcode = $this->select($sql);
         return $zipcode;
@@ -430,11 +427,10 @@ class HomeModel extends BaseModel
     }
     public function pagination($sql, $page, $num)
     {
-        
-        if(!is_numeric($page)){
+
+        if (!is_numeric($page)) {
             return false;
-        }
-        else{
+        } else {
             if ($page < 2) {
                 $star = 0;
             } else {
@@ -444,7 +440,7 @@ class HomeModel extends BaseModel
             return $this->select($sql);
         }
     }
-    public function paginationProtype($typeid, $page,$num)
+    public function paginationProtype($typeid, $page, $num)
     {
         if ($page < 2) {
             $star = 0;
@@ -462,7 +458,7 @@ class HomeModel extends BaseModel
         $sql = $sql . ' LIMIT ' . $star . ',' . $num;
         return $this->select($sql);
     }
-    public function paginationManu($manuid, $page,$num)
+    public function paginationManu($manuid, $page, $num)
     {
         if ($page < 2) {
             $star = 0;
@@ -480,7 +476,7 @@ class HomeModel extends BaseModel
         $sql = $sql . ' LIMIT ' . $star . ',' . $num;
         return $this->select($sql);
     }
-    public function paginationSearchCate($searchCate, $page,$num)
+    public function paginationSearchCate($searchCate, $page, $num)
     {
         if ($page < 2) {
             $star = 0;
@@ -492,7 +488,7 @@ class HomeModel extends BaseModel
         $sql = $sql . ' LIMIT ' . $star . ',' . $num;
         return $this->select($sql);
     }
-    public function paginationSearchProduct($search,$page,$num)
+    public function paginationSearchProduct($search, $page, $num)
     {
         if ($page < 2) {
             $star = 0;
@@ -502,5 +498,15 @@ class HomeModel extends BaseModel
         $sqlF = 'SELECT * FROM products WHERE name LIKE "%' . mysqli_real_escape_string(self::$_connection, $search) . '%"';
         $sql = $sqlF . ' LIMIT ' . $star . ',' . $num;
         return $this->select($sql);
+    }
+    public function getUserByMonth($month)
+    {
+        if (!is_numeric($month) || $month < 0 || is_double($month)) {
+            return 'Not invalid';
+        } else {
+            $sql = "SELECT * from users where MONTH(date) = $month";
+            $id = $this->select($sql);
+            return $id;
+        }
     }
 }
