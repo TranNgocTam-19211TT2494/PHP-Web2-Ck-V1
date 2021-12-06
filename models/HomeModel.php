@@ -475,6 +475,18 @@ class HomeModel extends BaseModel
         $sql = $sql . ' LIMIT ' . $star . ',' . $num;
         return $this->select($sql);
     }
+    public function paginationSearchCate($searchCate, $page,$num)
+    {
+        if ($page < 2) {
+            $star = 0;
+        } else {
+            $star = ($page * $num) - $num;
+        }
+        $sql = 'SELECT * FROM products,manufactures WHERE products.manu_id=manufactures.manu_id 
+        AND manufactures.manu_name LIKE "%' . mysqli_real_escape_string(self::$_connection, $searchCate) . '%"';
+        $sql = $sql . ' LIMIT ' . $star . ',' . $num;
+        return $this->select($sql);
+    }
     public function paginationSearchProduct($search,$page,$num)
     {
         if ($page < 2) {
