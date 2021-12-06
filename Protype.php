@@ -207,7 +207,7 @@ if (!is_numeric($page)) {
                                 </div>
                                 <!-- Phân trang -->
                         <?php
-                        $result = $productModel->getProducts();
+                        $result = $productModel->getprotypeOnProduct($typeid);
                         $number_of_result = count($result);
                         $number_of_pages = ceil($number_of_result / 6);
                         if ($number_of_pages > 1) {
