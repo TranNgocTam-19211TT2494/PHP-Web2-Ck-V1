@@ -56,6 +56,20 @@ class TestChangePassword extends TestCase
     {
         $homeModel = new HomeModel();
         $userName = "tien";
+        $password = null;
+        $expected = false;
+        $homeModel->startTransaction();
+        $actual = $homeModel->changePassword($userName, $password);
+        $homeModel->rollback();
+        $this->assertEquals($expected, $actual);
+    }
+     /**
+     * Test case password is null
+     */
+    public function testChangePasswordWithPasswordEmpty()
+    {
+        $homeModel = new HomeModel();
+        $userName = "tien";
         $password = "";
         $expected = false;
         $homeModel->startTransaction();
