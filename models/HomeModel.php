@@ -104,13 +104,21 @@ class HomeModel extends BaseModel
     // Change Password:
     public function changePassword($name , $newPassword)
     {   
-        $md5Password = md5($newPassword);
-        $sql = 'UPDATE users SET 
-        password = "' .$md5Password . '"
-        WHERE username = "' . $name . '" ';
-
-        $user = $this->update($sql);
-        return $user;
+        if(empty($name) || empty($newPassword)) {
+            return false;
+        }
+        if(!is_string($newPassword)||strlen($newPassword) < 6){
+            return false;
+        }
+        else{
+            $md5Password = md5($newPassword);
+            $sql = 'UPDATE users SET 
+            password = "' .$md5Password . '"
+            WHERE username = "' . $name . '" ';
+    
+            $user = $this->update($sql);
+            return $user;
+        }
         
     }
     // Lay id
