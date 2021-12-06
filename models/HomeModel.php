@@ -81,7 +81,7 @@ class HomeModel extends BaseModel
         $user = $this->select($sql);
         return $user;
     }
-    //Update password cho user;: 
+    //Update password cho user: 
     public function UpdatePassword($password , $email) {
         $sql = 'UPDATE users SET 
         password = "' . md5($password) . '"
@@ -174,7 +174,13 @@ class HomeModel extends BaseModel
         $protypes = $this->update($sql);
         return $protypes;
     }
-
+    // Mã khuyến mãi:
+    public function getCouponByID($id)
+    {
+        $sql = 'SELECT  zipcode.status,zipcode.discount,zipcode.created_at,zipcode.zipcode FROM zipcode , users WHERE zipcode.user_id = users.id AND zipcode.user_id = '.$id;
+        $coupon = $this->select($sql);
+        return $coupon;
+    }
     //   ---------------------- Protype ---------------- //
     public function getProtype()
     {
@@ -340,26 +346,46 @@ class HomeModel extends BaseModel
     // Chi tiết sản phẩm :
     public function firstProductDetail($paged)
     {
-
-        $allProduct =  $this->getProducts();
-        foreach ($allProduct as $value) {
-           if(md5($value['id'].'chuyen-de-web-2') == $id){
-            $sql = 'SELECT * FROM `products`  WHERE id =  '.$value['id'].' ';
-            $product = $this->select($sql);      
+        $allProduct = $this->getProducts();
+        foreach ($allProduct as  $value) {
+           if(md5($value['id'].'chuyen-de-web-2') == $paged){
+            $sql = 'SELECT * FROM `products`  WHERE id =  ' . $value['id'] . ' ';
+            $product = $this->select($sql);
             return $product;
            }
         }
-       
+      
     }
 
     // Các sản phẩm có liên quan thuộc danh mục:
     public function getProductManufactures($paged, $ManuID)
     {
-        $sql = 'Select * from products where id <> ' . $paged . '  and manu_id = ' . $ManuID . ' LIMIT 4';
-        $products = $this->select($sql);
-        return $products;
+        $allProduct = $this->getProducts();
+        foreach ($allProduct as  $value) {
+           if(md5($value['id'].'chuyen-de-web-2') == $paged){
+            $sql = 'Select * from products where id <> ' . $value['id'] . '  and manu_id = ' . $ManuID . ' LIMIT 4';
+            $products = $this->select($sql);
+            return $products;
+          
+           }
+        }
+        
     }
     // ------------------ Giỏ hàng -------------------- //
+    // Xem đơn hàng của khách hàng:
+    public function getCheckoutsByUserId($userID)
+    {
+        $sql = 'SELECT checkouts.id , checkouts.addedDate, checkouts.address ,checkouts.phone , checkouts.sum,checkouts.status FROM `checkouts` ,users WHERE checkouts.user_id = users.id AND checkouts.user_id = '.$userID;
+        $order = $this->select($sql);
+        return $order;
+    }
+    // Lấy sản phẩm trong giỏ hàng:
+    public function getOrderItemById($id)
+    {
+        $sql = 'SELECT carts.pro_id , products.name , products.price, carts.quantity FROM carts INNER JOIN products ON carts.pro_id = products.id WHERE carts.order_id = '.$id;
+        $user = $this->select($sql);
+        return $user;
+    }
     // Thêm vào giỏ hàng:
     public function getOrderItemByOrder($paged)
     {
@@ -395,6 +421,19 @@ class HomeModel extends BaseModel
         $checkout = $this->update($sql);
         return $checkout;
     }
+    public function getCouponByZipcode($coupon)
+    {
+        
+        $sql = "SELECT zipcode.zipcode , zipcode.discount , zipcode.user_id FROM zipcode WHERE zipcode.zipcode = '$coupon'";
+        $zipcode = $this->select($sql);
+        return $zipcode;
+    }
+    public function updateCouponByCheckout($OrderID, $Coupon)
+    {
+        $sql = "Update checkouts set coupon = $Coupon where id = $OrderID";
+        $checkout = $this->update($sql);
+        return $checkout;
+    }
     public static function getInstance()
     {
         if (self::$_instance != null) {
@@ -406,43 +445,33 @@ class HomeModel extends BaseModel
     }
     public function searchProduct($search)
     {
-        $sort = '';
-        if (isset($_GET['sort'])) {
-            if ($_GET['sort'] == 'desc') {
-                $sort = 'DESC';
-            } elseif ($_GET['sort'] == 'asc') {
-                $sort = 'ASC';
-            }
-        }
-        $sql = "SELECT * FROM products WHERE name LIKE '%$search%' OR description LIKE '%$search%' ORDER BY products.price " .$sort;
+        $sql = 'SELECT * FROM products WHERE name LIKE "%' . mysqli_real_escape_string(self::$_connection, $search) . '%"';
         $searchResult = $this->select($sql);
         return $searchResult;
     }
     // Hàm tìm kiếm theo tên của category(manufacture)
     public function searchCategories($search)
     {
-        $sort = '';
-        if (isset($_GET['sort'])) {
-            if ($_GET['sort'] == 'desc') {
-                $sort = 'DESC';
-            } elseif ($_GET['sort'] == 'asc') {
-                $sort = 'ASC';
-            }
-        }
-        $sql = "SELECT * FROM products,manufactures WHERE products.manu_id=manufactures.manu_id 
-        AND manufactures.manu_name like '%$search%' ORDER BY products.price " .$sort;
+        $sql = 'SELECT * FROM products,manufactures WHERE products.manu_id=manufactures.manu_id 
+        AND manufactures.manu_name LIKE "%' . mysqli_real_escape_string(self::$_connection, $search) . '%"';
         $searchResult = $this->select($sql);
         return $searchResult;
     }
     public function pagination($sql, $page, $num)
     {
-        if ($page < 2) {
-            $star = 0;
-        } else {
-            $star = ($page * $num) - $num;
+        
+        if(!is_numeric($page)){
+            return false;
         }
-        $sql = $sql . ' LIMIT ' . $star . ',' . $num;
-        return $this->select($sql);
+        else{
+            if ($page < 2) {
+                $star = 0;
+            } else {
+                $star = ($page * $num) - $num;
+            }
+            $sql = $sql . ' LIMIT ' . $star . ',' . $num;
+            return $this->select($sql);
+        }
     }
     public function paginationProtype($typeid, $page,$num)
     {
@@ -480,15 +509,26 @@ class HomeModel extends BaseModel
         $sql = $sql . ' LIMIT ' . $star . ',' . $num;
         return $this->select($sql);
     }
-    // public function paginationSearchProduct($search,$page,$num)
-    // {
-    //     if ($page < 2) {
-    //         $star = 0;
-    //     } else {
-    //         $star = ($page * $num) - $num;
-    //     }
-    //     $sqlF = "SELECT * FROM products WHERE name LIKE '%$search%' OR description LIKE '%$search%' ORDER BY products.price DESC";
-    //     $sql = $sqlF . ' LIMIT ' . $star . ',' . $num;
-    //     return $this->select($sql);
-    // }
-}
+    public function paginationSearchCate($searchCate, $page,$num)
+    {
+        if ($page < 2) {
+            $star = 0;
+        } else {
+            $star = ($page * $num) - $num;
+        }
+        $sql = 'SELECT * FROM products,manufactures WHERE products.manu_id=manufactures.manu_id 
+        AND manufactures.manu_name LIKE "%' . mysqli_real_escape_string(self::$_connection, $searchCate) . '%"';
+        $sql = $sql . ' LIMIT ' . $star . ',' . $num;
+        return $this->select($sql);
+    }
+    public function paginationSearchProduct($search,$page,$num)
+    {
+        if ($page < 2) {
+            $star = 0;
+        } else {
+            $star = ($page * $num) - $num;
+        }
+        $sqlF = 'SELECT * FROM products WHERE name LIKE "%' . mysqli_real_escape_string(self::$_connection, $search) . '%"';
+        $sql = $sqlF . ' LIMIT ' . $star . ',' . $num;
+        return $this->select($sql);
+    }

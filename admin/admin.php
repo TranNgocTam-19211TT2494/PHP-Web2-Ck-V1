@@ -1,7 +1,7 @@
 <?php 
 // Start the session
 session_start();
-require('../models/UserModel.php');
+//var_dump($_SESSION['role']);
 
 // --------------Factory----------
 require '../models/FactoryPattentAdmin.php';
@@ -9,19 +9,19 @@ $factory = new FactoryPattentAdmin();
 $userModel = $factory->make('user');
 // --------------Factory----------
 
-// $userModel = new UserModel();
-$params = [];
+if($_SESSION['role'] == 'Admin') { 
+    $params = [];
 
-if (!empty($_GET['keyword'])) {
-    $params['keyword'] = $_GET['keyword'];
-    //Kiểm tra keyword bằng regex trong PHP
-    // $pattern = '/^[A-Za-z0-9]$/';
-    // if (!preg_match($pattern, $params['keyword'])) {
-    //     echo "Không đúng định dạng";
-    //     $params['keyword'] = null;
-    // }
+    if (!empty($_GET['keyword'])) {
+        $params['keyword'] = $_GET['keyword'];
+        
+    }
+    $users = $userModel->getUsers($params);
+    
+} else {
+    header('location: index.php');
 }
-$users = $userModel->getUsers($params);
+
 
 ?>
 <!DOCTYPE html>
@@ -81,7 +81,7 @@ $users = $userModel->getUsers($params);
     </div>
 
     <?php include('../views/admin/layouts/footer.php')?>
-   
+
 </body>
 
 </html>

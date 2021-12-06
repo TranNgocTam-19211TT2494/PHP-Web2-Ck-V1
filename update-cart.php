@@ -5,7 +5,7 @@
   $factory = new FactoryPattent();
   $HomModel = $factory->make('home');
   $Cart = new Cart();
-
+  $id = 0;
   if(isset($_GET['id'])) {
     $id = $_GET['id'];
     $product = $HomModel->firstProductDetail($id);
@@ -13,6 +13,8 @@
     $name = $product[0]['name'];
     $quantity = $_SESSION['mycart'][$id];
     
+  } else {
+      echo "Không có sản phẩm trong giỏ hàng";
   }
   if(isset($_POST['submit'])) {
     $quantity = $_POST['quantity'];
@@ -64,6 +66,7 @@
                             <img src="public/img/logo-2.png" alt="CoolAdmin">
                         </a>
                     </div>
+                    <?php if(isset($id)) {?>
                     <div class="login-form">
                         <form method="post" action="update-cart.php?id=<?php echo $id; ?>"
                             onSubmit="return IsEditCart()">
@@ -87,6 +90,9 @@
                         </div>
                     </div>
                 </div>
+                <?php } else { ?>
+                    <h2>Không có sản phẩm trong giỏ hàng</h2>
+                <?php } ?>
             </div>
         </div>
     </div>

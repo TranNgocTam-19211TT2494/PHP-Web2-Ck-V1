@@ -6,11 +6,13 @@ $HomeModel = $factory->make('home');
 
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
+   
     $product = $HomeModel->firstProductDetail($id);
     //các sản phẩm liên quan:
-    if($product) {
+    if(!empty($product)) {
         $ManuID = $product[0]['manu_id'];
-        $products = $HomeModel->getProductManufactures($id , $ManuID);
+        $manufactures = $HomeModel->getProductManufactures($id , $ManuID);
+       
 
     }
 } else {
@@ -138,9 +140,10 @@ if (!empty($_SESSION["lgUserID"])) {
             </div>
             <div class="row similar_product_inner">
                 <?php
-                    if(!empty($products)) { 
-                        foreach ($products as $product) {
-                            
+                
+                    if(!empty($manufactures)) { 
+                        foreach ($manufactures as $product) {
+                           
                 ?>
                 <div class="col-lg-3 col-md-4 col-6">
                     <div class="cake_feature_item">
