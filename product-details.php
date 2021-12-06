@@ -3,7 +3,6 @@ session_start();
 require_once 'models/FactoryPattent.php';
 $factory = new FactoryPattent();
 $HomeModel = $factory->make('home');
-
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
     $product = $HomeModel->firstProductDetail($id);
@@ -14,13 +13,16 @@ if (isset($_GET['id'])) {
     }
     // insert comment
 
-    if (!empty($_POST['submit'])) {
+    if (isset($_POST['submit'])) {
+        $_POST['submit'] = null;
         $a = $HomeModel->insertComment($_SESSION['lgUserID'], $id, $_POST);
-        // var_dump($a).die();
+    }
+    if (isset($_POST['submit_replide'])) {
+        // var_dump($_POST);
+        // var_dump($_SESSION['lgUserName']).die();
+        $HomeModel->updateComment($_SESSION['lgUserName'], $_POST);
     }
     $comments = $HomeModel->getAllCommentById($id);
-    // var_dump($comments).die();
-    $comment_name = $HomeModel->getNameUserByComment($_SESSION['lgUserID']);
 } else {
     echo "<br><center><h3>Vui lòng chọn 1 sản phẩm bất kỳ để xem thông tin chi tiết!</h3><center><br>";
 }
@@ -32,12 +34,6 @@ if (isset($_GET['id'])) {
 
 <head>
     <?php include_once("views/head.php"); ?>
-    <style>
-        .comment_list .name {
-            color: #000;
-            font-weight: bold;
-        }
-    </style>
 </head>
 
 <body>
@@ -84,13 +80,13 @@ if (isset($_GET['id'])) {
                 <div class="product_tab_area">
                     <nav>
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Mô tả</a>
+                            <a class="nav-item nav-link " id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Mô tả</a>
 
                             <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Nhận xét</a>
                         </div>
                     </nav>
                     <div class="tab-content" id="nav-tabContent">
-                        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                        <div class="tab-pane fade show " id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                             <p><?= $product[0]['description'] ?></p>
 
                         </div>
@@ -98,27 +94,54 @@ if (isset($_GET['id'])) {
                         <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
                             <?php if (isset($_SESSION['lgUserID'])) { ?>
                                 <div class="row">
-                                    <div class="col-md-9">
+                                    <div class="col-md-7">
 
-                                        <form method="POST">
-                                            <!-- <input class="name" name=""></input> -->
-                                            <input type="hidden" name="name" id="name" value="<?= $comment_name[0]["username"] ?>">
+                                        <form method="POST" onsubmit="return checkBeforeSubmit()">
+                                            <input type="hidden" name="name" id="name" value="<?= $_SESSION["lgUserName"] ?>">
                                             <br>
-                                            <textarea name="content" id="content" cols="50" rows="5"></textarea>
+                                            <textarea name="content" id="content" ></textarea>
                                             <br>
-                                            <button class="pink_more" type="submit" name="submit" value="submit">Gửi</button>
+                                            <button class="pink_more btn_pink" type="submit" name="submit" value="submit">Gửi</button>
                                         </form>
 
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-5">
                                         <div class="comment_list">
                                             <?php foreach ($comments as $comment) {
-                                                // var_dump($comment); 
+                                                $date_time = $comment["create_at"];
+                                                $replide_time = $comment["update_at"];
                                             ?>
-                                                <div class="comment_form">
-                                                    <div class="name"><?= $comment["username"] ?></div>
-                                                    <div class="content"><?= $comment["content"] ?></div>
+                                                <div class="comment_icon">
+                                                    <i class="fa fa-check" aria-hidden="true"></i>
+                                                    <div class="comment_form">
+                                                        <div class="date_name">
+                                                            <div class="name"><?= $comment["username"] ?></div>
+                                                            <div class="date"><?= date('H:i', strtotime(str_replace('/', '-', $date_time))); ?></div>
+                                                        </div>
+                                                        <div class="content"><?= $comment["content"] ?></div>
+                                                    </div>
                                                 </div>
+
+                                                <?php if (isset($comment["name_replide"])) { ?>
+                                                    <div class="comment_icon_replide">
+                                                        <i class="fa fa-check" aria-hidden="true"></i>
+                                                        <div class="comment_replide">
+                                                            <div class="date_name">
+                                                                <div class="name"><?= $comment["name_replide"] ?></div>
+                                                                <div class="date"><?= date('H:i', strtotime(str_replace('/', '-', $replide_time))); ?></div>
+                                                            </div>
+                                                            <div class="content"><?= $comment["replied_comment"] ?></div>
+                                                        </div>
+                                                    </div>
+                                                <?php } ?>
+                                                <?php if ($_SESSION['role'] == "Admin") { ?>
+                                                    <?php if (empty($comment["name_replide"])) { ?>
+                                                        <form method="post">
+                                                            <input type="hidden" name="id_comment" value="<?= $comment["id"] ?>">
+                                                            <button class="tl_btn" type="submit" name="submit_replide" value="submit_replide">Trả lời</button>
+                                                        </form>
+                                                    <?php } ?>
+                                                <?php } ?>
                                             <?php } ?>
                                         </div>
                                     </div>
@@ -126,10 +149,23 @@ if (isset($_GET['id'])) {
                             <?php } else { ?>
                                 <div class="comment_list">
                                     <?php foreach ($comments as $comment) {
-                                        // var_dump($comment); 
+                                        $date_time = $comment["create_at"];
+                                        $replide_time = $comment["update_at"];
                                     ?>
-                                        <div class="name">Name: <?= $comment["username"] ?></div>
-                                        <div class="content">Comment: <?= $comment["content"] ?></div>
+                                        <div class="comment_form">
+                                            <div class="date_name">
+                                                <div class="name"><?= $comment["username"] ?></div>
+                                                <div class="date"><?= date('H:i', strtotime(str_replace('/', '-', $date_time))); ?></div>
+                                            </div>
+                                            <div class="content"><?= $comment["content"] ?></div>
+                                        </div>
+                                        <div class="comment_replide">
+                                            <div class="date_name">
+                                                <div class="name"><?= $comment["name_replide"] ?></div>
+                                                <div class="date"><?= date('H:i', strtotime(str_replace('/', '-', $replide_time))); ?></div>
+                                            </div>
+                                            <div class="content"><?= $comment["replied_comment"] ?></div>
+                                        </div>
                                     <?php } ?>
                                 </div>
                             <?php } ?>
@@ -192,6 +228,18 @@ if (isset($_GET['id'])) {
 
 
     <?php include_once("views/footer.php"); ?>
+
+    <script type="text/javascript">
+        var wasSubmitted = false;
+
+        function checkBeforeSubmit() {
+            if (!wasSubmitted) {
+                wasSubmitted = true;
+                return wasSubmitted;
+            }
+            return false;
+        }
+    </script>
 </body>
 
 </html>
