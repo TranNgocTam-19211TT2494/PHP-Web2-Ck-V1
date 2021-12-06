@@ -367,9 +367,24 @@ class HomeModel extends BaseModel
     // Thêm danh sách giỏ hàng
     public function insertOrderItem($OrderID, $ProductID, $Quantity)
     {
-        $sql = "Insert into carts (order_id,pro_id,quantity) values($OrderID,$ProductID,$Quantity)";
-        $product = $this->insert($sql);
-        return $product;
+        if(empty($OrderID) || empty($ProductID) || empty($Quantity)){
+            return 'Invalid';
+        }
+        if(!is_numeric($OrderID) || $OrderID < 0 || is_double($OrderID)){
+            return 'Invalid';
+        }
+        if(!is_numeric($ProductID) || $ProductID < 0 || is_double($ProductID)){
+            return 'Invalid';
+        }
+        if(!is_numeric($Quantity) || $Quantity < 0 || is_double($Quantity)){
+            return 'Invalid';
+        }
+        else{
+            $sql = "Insert into carts (order_id,pro_id,quantity) values($OrderID,$ProductID,$Quantity)";
+            var_dump($sql);
+            $product = $this->insert($sql);
+            return $product;
+        }
     }
     // -------------- Checkout ---------------- //
     public function insertOrder($userID, $Firstname, $Lastname, $address, $email, $phone, $notes)
@@ -378,6 +393,14 @@ class HomeModel extends BaseModel
         $product = $this->insert($sql);
         return $product;
     }
+    // -------------- Checkout ---------------- //
+    public function findOrderById($id)
+    {
+        $sql = 'SELECT * FROM carts WHERE id = ' . $id;
+        $order = $this->select($sql);
+        return $order;
+    }
+
     // Lấy id mới nhất của đơn hàng:
     public function getOrderMaxById()
     {
