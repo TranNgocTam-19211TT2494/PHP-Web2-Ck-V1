@@ -2078,6 +2078,9 @@ i:before {
   margin-bottom: 22px;
   padding-top: 35px;
 }
+.cake_feature_item .cake_text h3 a{
+  color: #343434;
+}
 
 .cake_feature_main {
   background: #fff;

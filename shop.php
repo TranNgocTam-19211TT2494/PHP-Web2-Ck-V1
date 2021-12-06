@@ -167,8 +167,8 @@ if (!isset($_GET['page'])) {
                                                 } ?>
                                 </div>
                                 <div class="cake_text">
-                                    <h4>$<?= $product['price'] ?></h4>
-                                    <h3><?= $product['name'] ?></h3>
+                                    <h4>$<?= $product['price']?></h4>
+                                    <h3><a href="product-details.php?id=<?=$product['id'] ?>"><?= $product['name']?></a></h3>
                                     <a class="pest_btn" href="cart.php?id=<?= $product['id'] ?>"
                                         onclick="return insertCart(<?= $product['id'] ?>)">Thêm vào giỏ hàng</a>
                                 </div>
@@ -260,7 +260,6 @@ if (!isset($_GET['page'])) {
                         </div>
                         <?php }
                             } ?>
-
 
                     </div>
                     <!-- Phân trang -->
