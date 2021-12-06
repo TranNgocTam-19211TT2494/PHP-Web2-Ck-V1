@@ -344,7 +344,7 @@ class HomeModel extends BaseModel
         if (!is_numeric($userID) || $userID < 0 || is_double($userID)) {
             return 'Not invalid';
         } else {
-            $sql = 'SELECT checkouts.id , checkouts.user_id , checkouts.addedDate, checkouts.address ,checkouts.phone , checkouts.sum,checkouts.status FROM `checkouts` ,users WHERE checkouts.user_id = users.id AND checkouts.user_id = ' . $userID;
+            $sql = 'SELECT checkouts.id , checkouts.user_id , checkouts.addedDate, checkouts.address ,checkouts.phone , checkouts.sum,checkouts.status FROM `checkouts` ,users WHERE checkouts.user_id = users.id AND checkouts.user_id = ' . mysqli_real_escape_string(self::$_connection, $userID) .' ';
             $order = $this->select($sql);
             return $order;
         }
@@ -353,9 +353,13 @@ class HomeModel extends BaseModel
     // Lấy sản phẩm trong giỏ hàng:
     public function getOrderItemById($id)
     {
-        $sql = 'SELECT carts.pro_id , products.name , products.price, carts.quantity FROM carts INNER JOIN products ON carts.pro_id = products.id WHERE carts.order_id = '.$id;
-        $user = $this->select($sql);
-        return $user;
+        if (!is_numeric($id) || $id < 0 || is_double($id)) {
+            return 'Not invalid';
+        } else {
+            $sql = 'SELECT carts.pro_id , products.name , products.price, carts.quantity FROM carts INNER JOIN products ON carts.pro_id = products.id WHERE carts.order_id = ' . mysqli_real_escape_string(self::$_connection, $id) .' ';
+            $user = $this->select($sql);
+            return $user;
+        }
     }
     // Thêm vào giỏ hàng:
     public function getOrderItemByOrder($paged)
