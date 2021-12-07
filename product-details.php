@@ -96,10 +96,10 @@ if (isset($_GET['id'])) {
                                 <div class="row">
                                     <div class="col-md-7">
 
-                                        <form method="POST" onsubmit="return checkBeforeSubmit()">
+                                        <form method="POST" >
                                             <input type="hidden" name="name" id="name" value="<?= $_SESSION["lgUserName"] ?>">
                                             <br>
-                                            <textarea name="content" id="content" ></textarea>
+                                            <textarea name="content" id="content"></textarea>
                                             <br>
                                             <button class="pink_more btn_pink" type="submit" name="submit" value="submit">Gửi</button>
                                         </form>
@@ -152,20 +152,29 @@ if (isset($_GET['id'])) {
                                         $date_time = $comment["create_at"];
                                         $replide_time = $comment["update_at"];
                                     ?>
-                                        <div class="comment_form">
-                                            <div class="date_name">
-                                                <div class="name"><?= $comment["username"] ?></div>
-                                                <div class="date"><?= date('H:i', strtotime(str_replace('/', '-', $date_time))); ?></div>
+                                        <div class="comment_icon">
+                                            <i class="fa fa-check" aria-hidden="true"></i>
+                                            <div class="comment_form">
+                                                <div class="date_name">
+                                                    <div class="name"><?= $comment["username"] ?></div>
+                                                    <div class="date"><?= date('H:i', strtotime(str_replace('/', '-', $date_time))); ?></div>
+                                                </div>
+                                                <div class="content"><?= $comment["content"] ?></div>
                                             </div>
-                                            <div class="content"><?= $comment["content"] ?></div>
                                         </div>
-                                        <div class="comment_replide">
-                                            <div class="date_name">
-                                                <div class="name"><?= $comment["name_replide"] ?></div>
-                                                <div class="date"><?= date('H:i', strtotime(str_replace('/', '-', $replide_time))); ?></div>
+
+                                        <?php if (isset($comment["name_replide"])) { ?>
+                                            <div class="comment_icon_replide">
+                                                <i class="fa fa-check" aria-hidden="true"></i>
+                                                <div class="comment_replide">
+                                                    <div class="date_name">
+                                                        <div class="name"><?= $comment["name_replide"] ?></div>
+                                                        <div class="date"><?= date('H:i', strtotime(str_replace('/', '-', $replide_time))); ?></div>
+                                                    </div>
+                                                    <div class="content"><?= $comment["replied_comment"] ?></div>
+                                                </div>
                                             </div>
-                                            <div class="content"><?= $comment["replied_comment"] ?></div>
-                                        </div>
+                                        <?php } ?>
                                     <?php } ?>
                                 </div>
                             <?php } ?>
@@ -229,17 +238,6 @@ if (isset($_GET['id'])) {
 
     <?php include_once("views/footer.php"); ?>
 
-    <script type="text/javascript">
-        var wasSubmitted = false;
-
-        function checkBeforeSubmit() {
-            if (!wasSubmitted) {
-                wasSubmitted = true;
-                return wasSubmitted;
-            }
-            return false;
-        }
-    </script>
 </body>
 
 </html>

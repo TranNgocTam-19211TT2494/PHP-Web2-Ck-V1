@@ -7,7 +7,9 @@ cacheResult ="false"
 >				
 <testsuites>				
 <testsuite name="SqlWsContractImport">				
-<file>./tests/UserModelTest.php</file>				
+<file>./tests/UpdateSumTest.php</file>			
+<file>./tests/InsertOrdelTest.php</file>		
+<file>./tests/InsertCommentTest.php</file>			
 </testsuite>				
 </testsuites>				
 <filter>				

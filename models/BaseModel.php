@@ -3,7 +3,7 @@ require_once 'configs/database.php';
 require_once 'UserDecorator.php';
 abstract class BaseModel implements UserDecorator{
     // Database connection
-    // protected static $_instance;
+    protected static $_instance;
     protected static $_connection;
     public function __construct() {
         if (!isset(self::$_connection)) {
@@ -67,5 +67,12 @@ abstract class BaseModel implements UserDecorator{
         $result = $this->query($sql);
         return $result;
     }
-
+    public function startTransaction()
+    {
+        self::$_connection->begin_transaction();
+    }
+    public function rollback()
+    {
+        self::$_connection->rollback();
+    }
 }
