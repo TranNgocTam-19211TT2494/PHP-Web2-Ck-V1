@@ -1,3 +1,11 @@
+<?php
+    session_start();
+    require_once 'models/FactoryPattent.php';
+    $factory = new FactoryPattent();
+    $HomeModel = $factory->make('home');
+    $productsDesc = $HomeModel->getDiscoverDescProducts();
+    $productsAsc = $HomeModel->getDiscoverAscProducts();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,10 +24,10 @@
     <section class="banner_area">
         <div class="container">
             <div class="banner_text">
-                <h3>Menu</h3>
+                <h3>Thực đơn</h3>
                 <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="menu.html">Menu</a></li>
+                    <li><a href="index.php">Nhà</a></li>
+                    <li><a href="menu.php">Thực đơn</a></li>
                 </ul>
             </div>
         </div>
@@ -31,82 +39,40 @@
         <div class="container">
             <div class="price_list_inner">
                 <div class="single_pest_title">
-                    <h2>Our Price List</h2>
-                    <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
-                        totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
-                        dicta sunt explicabo.</p>
+                    <h2>Bảng giá của chúng tôi</h2>
+                    <p>Nhưng để bạn có thể hiểu rằng mọi lỗi lầm bẩm sinh đều là niềm vui khi buộc tội và ca ngợi nỗi
+                        đau, tôi sẽ mở ra toàn bộ vấn đề, và sẽ giải thích chính những điều đã được nói bởi người phát
+                        minh ra sự thật và như nó là kiến ​​trúc sư của cuộc sống may mắn.</p>
                 </div>
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="discover_item_inner">
+
+                            <?php if(!empty($productsDesc)) {
+                            foreach ($productsDesc as $product) {?>
                             <div class="discover_item">
-                                <h4>Double Chocolate Pie</h4>
-                                <p>Chocolate puding, vanilla, fruite rasberry jam milk <span>$8.99</span></p>
+                                <h4><?= $product['name'] ?></h4>
+                                <p><?= substr($product['description'], 0 , 77) ?>...
+                                    <span>$<?= $product['price'] ?></span>
+                                </p>
                             </div>
-                            <div class="discover_item">
-                                <h4>Zabaglione Cake</h4>
-                                <p>Chocolate puding, vanilla, fruite rasberry jam evporate milk <span>$12.99</span></p>
-                            </div>
-                            <div class="discover_item">
-                                <h4>Blueberry Muffin</h4>
-                                <p>Chocolate puding, vanilla, fruite rasberry jam milk <span>$8.99</span></p>
-                            </div>
-                            <div class="discover_item">
-                                <h4>Box of Delight</h4>
-                                <p>Chocolate puding, vanilla, fruite rasberry jam evporate milk <span>$7.99</span></p>
-                            </div>
-                            <div class="discover_item">
-                                <h4>Classic French Croissant</h4>
-                                <p>Chocolate puding, vanilla, fruite rasberry jam evporate milk <span>$6.79</span></p>
-                            </div>
-                            <div class="discover_item">
-                                <h4>Macarons & Tea</h4>
-                                <p>Chocolate puding, vanilla, fruite rasberry jam evporate milk <span>$5.99</span></p>
-                            </div>
-                            <div class="discover_item">
-                                <h4>Strawberry Sweet Cake</h4>
-                                <p>Chocolate puding, vanilla, fruite rasberry jam evporate milk <span>$12.99</span></p>
-                            </div>
-                            <div class="discover_item">
-                                <h4>Cupcake of Vanela</h4>
-                                <p>Chocolate puding, vanilla, fruite rasberry jam evporate milk <span>$20.00</span></p>
-                            </div>
+                            <?php }
+                        }?>
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="discover_item_inner">
+
+                            <?php if(!empty($productsAsc)) {
+                            foreach ($productsAsc as $product) {?>
                             <div class="discover_item">
-                                <h4>Fried Egg Sandwich</h4>
-                                <p>Chocolate puding, vanilla, fruite rasberry jam milk <span>$8.99</span></p>
+                                <h4><?= $product['name'] ?></h4>
+                                <p><?= substr($product['description'], 0 , 70) ?>...
+                                    <span>$<?= $product['price'] ?></span>
+                                </p>
                             </div>
-                            <div class="discover_item">
-                                <h4>Multigrain Hot Cake</h4>
-                                <p>Chocolate puding, vanilla, fruite rasberry jam evporate milk <span>$12.99</span></p>
-                            </div>
-                            <div class="discover_item">
-                                <h4>Branch Special Cake</h4>
-                                <p>Chocolate puding, vanilla, fruite rasberry jam milk <span>$8.99</span></p>
-                            </div>
-                            <div class="discover_item">
-                                <h4>Bialy Egg Sandwich with Cake</h4>
-                                <p>Chocolate puding, vanilla, fruite rasberry jam milk <span>$7.99</span></p>
-                            </div>
-                            <div class="discover_item">
-                                <h4>Strawberry Sweet Cake</h4>
-                                <p>Chocolate puding, vanilla, fruite rasberry jam evporate milk <span>$6.79</span></p>
-                            </div>
-                            <div class="discover_item">
-                                <h4>Double Chocolate Pie</h4>
-                                <p>Chocolate puding, vanilla, fruite rasberry jam evporate milk <span>$5.99</span></p>
-                            </div>
-                            <div class="discover_item">
-                                <h4>Blueberry Muffin</h4>
-                                <p>Chocolate puding, vanilla, fruite rasberry jam evporate milk <span>$12.99</span></p>
-                            </div>
-                            <div class="discover_item">
-                                <h4>Classic Chocolate Cake</h4>
-                                <p>Chocolate puding, vanilla, fruite rasberry jam evporate milk <span>$20.00</span></p>
-                            </div>
+                            <?php }
+                        }?>
                         </div>
                     </div>
                 </div>
@@ -127,11 +93,11 @@
     <!--================End Main Header Area =================-->
 
     <!--================Newsletter Area =================-->
-	<?php include_once("views/layouts/news.php");?>
+    <?php include_once("views/layouts/news.php");?>
     <!--================End Newsletter Area =================-->
 
     <!--================Footer Area =================-->
-	<?php include_once("views/layouts/footer.php");?>
+    <?php include_once("views/layouts/footer.php");?>
     <!--================End Footer Area =================-->
 
     <!--================Search Box Area =================-->
@@ -143,7 +109,7 @@
 
 
 
-	<?php include_once("views/footer.php");?>
+    <?php include_once("views/footer.php");?>
 </body>
 
 </html>

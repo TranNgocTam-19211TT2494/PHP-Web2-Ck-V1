@@ -5,36 +5,43 @@ require 'models/FactoryPattent.php';
 $factory = new FactoryPattent();
 $productModel = $factory->make('home');
 // --------------Factory----------
-	$noti = 0;
-	$products = $productModel->getProducts(); 
-    if(!empty($_SESSION["lgUserID"])){
-        if(!empty($_GET['id'])){
-            $inserWhishlist = $productModel->insertWhishList($_GET['id'],$_SESSION['lgUserID']);
-            $noti = 1;
-        }
-    }else{
-        $noti = 2;
+$noti = 0;
+//$products = $productModel->getProducts();
+if (!empty($_SESSION["lgUserID"])) {
+    if (!empty($_GET['id'])) {
+        $inserWhishlist = $productModel->insertWhishList($_GET['id'], $_SESSION['lgUserID']);
+        $noti = 1;
     }
+} else {
+    $noti = 2;
+}
+$search  = '';
+$searchCate  = '';
+if (!isset($_GET['page'])) {
+    $page = 1;
+} else {
+    $page = $_GET['page'];
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
 
-<?php include_once("views/head.php");?>
+<?php include_once("views/head.php"); ?>
 
 <body>
 
     <!--================Main Header Area =================-->
-    <?php include_once("views/header.php");?>
+    <?php include_once("views/header.php"); ?>
     <!--================End Main Header Area =================-->
 
     <!--================End Main Header Area =================-->
     <section class="banner_area">
         <div class="container">
             <div class="banner_text">
-                <h3>Shop</h3>
+                <h3>Cửa hàng</h3>
                 <ul>
-                    <li><a href="index.php">Home</a></li>
-                    <li><a href="shop.php">Shop</a></li>
+                    <li><a href="index.php">Nhà</a></li>
+                    <li><a href="shop.php">Cửa hàng</a></li>
                 </ul>
             </div>
         </div>
@@ -47,205 +54,334 @@ $productModel = $factory->make('home');
             <div class="row product_inner_row">
 
                 <div class="col-lg-9">
-                    <?php if(isset($noti) && $noti == 1) {?>
+                    <?php if (isset($noti) && $noti == 1) { ?>
                     <div class="alert alert-success" role="alert">
-                        ADD WHISHLIST SUCCESS
+                        Thêm vào danh sách thành công.
                     </div>
-                    <?php }else if($noti == 2){?>
+                    <?php } else if ($noti == 2) { ?>
                     <div class="alert alert-success" role="alert">
-                        YOU CAN LOGIN
+                        Bạn cần phải đăng nhập
                     </div>
-                    <?php }?>
+                    <?php } ?>
                     <div class="row m0 product_task_bar">
-
                         <div class="product_task_inner">
-                            <!-- <div class="float-left">
+                            <div class="float-left">
                                 <a class="active" href="#"><i class="fa fa-th-large" aria-hidden="true"></i></a>
                                 <a href="#"><i class="fa fa-th-list" aria-hidden="true"></i></a>
-                                <span>Showing 1 - 10 of 55 results</span>
-                            </div> -->
+                            </div>
                             <div class="float-right">
-                                <h4>Sort by :</h4>
-                                <select class="short" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
-									<option>Sort</option>
-									<option value="?field=price&sort=desc">Reduce</option>
-									<option value="?field=price&sort=asc">Augment</option>
+                                <h4>Sắp xếp theo :</h4>
+                                <select class="short"
+                                    onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
+                                    <option>Loại</option>
+                                    <option value="?field=price&sort=desc">Giảm (A - Z)</option>
+                                    <option value="?field=price&sort=asc">Tăng (Z - A)</option>
                                 </select>
                             </div>
                         </div>
                     </div>
+                    <?php
+                    if (isset($_GET['submit'])) {
+                        // search categories
+                        if (!empty($_GET['search-cate'])) { ?>
                     <div class="row product_item_inner">
-                        <?php foreach ($products as $product) { ?>
+                        <?php
+                                $searchCate = $_GET['search-cate'];
+                                $products = $productModel->searchCategories($searchCate);
+                                $num_result_cate = count($products);
+                                foreach ($products as $product) { ?>
                         <div class="col-lg-4 col-md-4 col-6">
                             <div class="cake_feature_item">
                                 <div class="cake_img">
-                                    <img src="<?= $product['pro_image']?>" alt="">
-                                    <?php if(isset($_SESSION['lgUserID'])) {?>
-                                    <?php if(empty($productModel->getWhishlistExist($_SESSION['lgUserID'],$product['id']))) {?>
+                                    <img src="<?= $product['pro_image'] ?>" alt="">
+                                    <?php if (isset($_SESSION['lgUserID'])) { ?>
+                                    <?php if (empty($productModel->getWhishlistExist($_SESSION['lgUserID'], $product['id']))) { ?>
                                     <div class="icon-whishlist">
-                                        <a href="shop.php?id=<?= md5($product['id'].'chuyen-de-web-2')?>">
+                                        <a href="shop.php?id=<?= md5($product['id'] . 'chuyen-de-web-2') ?>">
                                             <i class="fa fa-heart" aria-hidden="true"></i>
                                         </a>
                                     </div>
-                                    <?php } }?>
+                                    <?php }
+                                                } ?>
                                 </div>
                                 <div class="cake_text">
-                                    <h4>$<?= $product['price']?></h4>
-                                    <h3><?= $product['name']?></h3>
-                                    <a class="pest_btn" href="#">Add to cart</a>
+                                    <h4>$<?= $product['price'] ?></h4>
+                                    <h3><?= $product['name'] ?></h3>
+                                    <a class="pest_btn" href="cart.php?id=<?= $product['id'] ?>"
+                                        onclick="return insertCart(<?= $product['id'] ?>)">Thêm vào giỏ hàng</a>
                                 </div>
                             </div>
                         </div>
-                        <?php } ?>
+                        <?php }
+                                ?>
                     </div>
                     <!-- Phân trang -->
+                    <?php
+                            $number_of_pages = ceil($num_result_cate / 6);
+                            if ($number_of_pages > 1) { ?>
                     <div class="product_pagination">
                         <div class="left_btn">
-                            <a href="#"><i class="lnr lnr-arrow-left"></i> New posts</a>
                         </div>
                         <div class="middle_list">
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination">
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item active"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">...</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">12</a></li>
+                                    <?php
+                                                for ($i = 1; $i <= $number_of_pages; $i++) {
+                                                ?>
+                                    <li class="page-item">
+                                        <a class="page-link" href="shop.php?page=<?php echo $i ?>"><?php echo $i ?></a>
+                                    </li>
+                                    <?php
+                                                }
+                                                ?>
                                 </ul>
                             </nav>
                         </div>
-                        <div class="right_btn"><a href="#">Older posts <i class="lnr lnr-arrow-right"></i></a></div>
+                        <div class="right_btn">
+                        </div>
                     </div>
+                    <?php }
+                        }
+                        // search products
+                        if (!empty($_GET['search'])) { ?>
+                    <div class="row product_item_inner">
+                        <?php
+                                $search = $_GET['search'];
+                                $sql = "SELECT * FROM products WHERE name LIKE '%$search%' OR description LIKE '%$search%' ORDER BY products.price DESC";
+                                $products = $productModel->pagination($sql, $page, 6);
+                                $num_result = count($products);
+                                if(count($products) > 0){
+                                foreach ($products as $product) { ?>
+                        <div class="col-lg-4 col-md-4 col-6">
+                            <div class="cake_feature_item">
+                                <div class="cake_img">
+                                    <img src="<?= $product['pro_image'] ?>" alt="">
+                                    <?php if (isset($_SESSION['lgUserID'])) { ?>
+                                    <?php if (empty($productModel->getWhishlistExist($_SESSION['lgUserID'], $product['id']))) { ?>
+                                    <div class="icon-whishlist">
+                                        <a href="shop.php?id=<?= md5($product['id'] . 'chuyen-de-web-2') ?>">
+                                            <i class="fa fa-heart" aria-hidden="true"></i>
+                                        </a>
+                                    </div>
+                                    <?php }
+                                                } ?>
+                                </div>
+                                <div class="cake_text">
+                                    <h4>$<?= $product['price']?></h4>
+                                    <h3><a href="product-details.php?id=<?=$product['id'] ?>"><?= $product['name']?></a></h3>
+                                    <a class="pest_btn" href="cart.php?id=<?= $product['id'] ?>"
+                                        onclick="return insertCart(<?= $product['id'] ?>)">Thêm vào giỏ hàng</a>
+                                </div>
+                            </div>
+                        </div>
+                        <?php } }
+                                ?>
+                    </div>
+                    <!-- Phân trang -->
+                    <?php
+                            // $number_of_pages = ceil($num_result / 6);
+                            $result = $productModel->searchProduct($search);
+                            $number_of_result = count($result);
+                            $number_of_pages = ceil($number_of_result / 6);
+                            if ($number_of_pages > 1) { ?>
+                    <div class="product_pagination">
+                        <div class="left_btn">
+                            <a href="shop.php?<?php if (isset($search)) ?>search=<?php echo $search ?>&<?php if (isset($_GET['submit'])) ?>submit=<?php echo $_GET['submit'] ?>&page=<?php if ($page > 1) echo $page - 1;
+                                                        else echo 1 ?>">
+                                <i class="lnr lnr-arrow-left"></i>Trước
+                            </a>
+                        </div>
+                        <div class="middle_list">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination">
+                                    <?php
+                                                for ($i = 1; $i <= $number_of_pages; $i++) {
+                                                ?>
+                                    <li class="page-item">
+                                        <a class="page-link"
+                                            href="shop.php?<?php if (isset($search)) ?>search=<?php echo $search ?>&<?php if (isset($_GET['submit'])) ?>submit=<?php echo $_GET['submit'] ?>&page=<?php echo $i ?>"><?php echo $i ?></a>
+                                    </li>
+                                    <?php
+                                                }
+                                                ?>
+                                </ul>
+                            </nav>
+                        </div>
+                        <div class="right_btn">
+                            <a href="shop.php?<?php if (isset($search)) ?>search=<?php echo $search ?>&<?php if (isset($_GET['submit'])) ?>submit=<?php echo $_GET['submit'] ?>&page=<?php if ($page < $number_of_pages) echo $page + 1;
+                                                                else echo $number_of_pages ?>">
+                                Sau <i class="lnr lnr-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <?php } else { ?>
+
+                    <?php  }
+                        }
+                    } else { ?>
+
+                    <div class="row product_item_inner">
+
+                        <?php
+                            $sort = '';
+                            if (isset($_GET['sort'])) {
+                                if ($_GET['sort'] == 'desc') {
+                                    $sort = 'DESC';
+                                } elseif ($_GET['sort'] == 'asc') {
+                                    $sort = 'ASC';
+                                }
+                            }
+                            $sql = 'SELECT * FROM `products` WHERE detele_at IS NULL ORDER BY products.price ' . $sort;
+                            $products = $productModel->pagination($sql, $page, 6);
+                            if (count($products) > 0) {
+
+                                foreach ($products as $product) { ?>
+                        <div class="col-lg-4 col-md-4 col-6">
+                            <div class="cake_feature_item">
+                                <div class="cake_img">
+                                    <img src="<?= $product['pro_image'] ?>" alt="">
+                                    <?php if (isset($_SESSION['lgUserID'])) { ?>
+                                    <?php if (empty($productModel->getWhishlistExist($_SESSION['lgUserID'], $product['id']))) { ?>
+                                    <div class="icon-whishlist">
+                                        <a href="shop.php?id=<?= md5($product['id'] . 'chuyen-de-web-2') ?>">
+                                            <i class="fa fa-heart" aria-hidden="true"></i>
+                                        </a>
+                                    </div>
+                                    <?php }
+                                                } ?>
+                                </div>
+                                <div class="cake_text">
+                                    <h4>$<?= $product['price'] ?></h4>
+                                    <h3><?= $product['name'] ?></h3>
+                                    <a class="pest_btn" href="cart.php?id=<?= $product['id'] ?>"
+                                        onclick="return insertCart(<?= $product['id'] ?>)">Thêm vào giỏ hàng</a>
+                                </div>
+                            </div>
+                        </div>
+                        <?php }
+                            } ?>
+
+                    </div>
+                    <!-- Phân trang -->
+                    <?php
+                        $result = $productModel->getProducts();
+                        $number_of_result = count($result);
+                        $number_of_pages = ceil($number_of_result / 6);
+                        ?>
+                    <div class="product_pagination">
+                        <div class="left_btn">
+                            <a href="shop.php?page=<?php if ($page > 1) echo $page - 1;
+                                                        else echo 1 ?>">
+                                <i class="lnr lnr-arrow-left"></i>Trước
+                            </a>
+                        </div>
+                        <div class="middle_list">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination">
+                                    <?php for ($i = 1; $i <= $number_of_pages; $i++) { ?>
+
+                                    <li class="page-item ">
+                                        <a class="page-link <?php if(isset($_GET['page']) && $_GET['page'] == $i) {echo 'active';} ?>" href="shop.php?page=<?php echo $i ?>"><?php echo $i ?></a>
+
+                                    </li>
+
+                                    <?php } ?>
+                                </ul>
+                            </nav>
+                        </div>
+                        <div class="right_btn">
+                            <a href="shop.php?page=<?php if ($page < $number_of_pages) echo $page + 1;
+                                                        else echo $number_of_pages ?>">
+                                Sau <i class="lnr lnr-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <?php } ?>
                 </div>
                 <div class="col-lg-3">
                     <div class="product_left_sidebar">
                         <aside class="left_sidebar search_widget">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Enter Search Keywords">
+                            <form method="get" class="input-group">
+                                <input type="text" name="search-cate" value="<?= $searchCate ?>" class="form-control"
+                                    placeholder="Nhập từ khóa tìm kiếm">
                                 <div class="input-group-append">
-                                    <button class="btn" type="button"><i class="icon icon-Search"></i></button>
+                                    <button class="btn" type="submit" name="submit" value="submit"><i
+                                            class="icon icon-Search"></i></button>
                                 </div>
-                            </div>
+                            </form>
                         </aside>
                         <!-- Manufacture -->
                         <aside class="left_sidebar p_catgories_widget">
                             <div class="p_w_title">
-                                <h3>Product Categories</h3>
+                                <h3>Danh mục sản phẩm</h3>
                             </div>
-                            <?php 
-                                $manufactures = $productModel->getManufactures();
-                                
+                            <?php
+                            $manufactures = $productModel->getManufactures();
+
                             ?>
                             <ul class="list_style">
                                 <?php foreach ($manufactures as $manufacture) { ?>
-                                <li><a href="manufacture-shop.php?manu_id=<?=md5($manufacture['manu_id'] . 'chuyen-de-web-2') ?>"><?= $manufacture['manu_name'] ?> (<?= count($productModel->countProductWithManufacture($manufacture['manu_id'])) ?>)</a></li>
+                                <li><a
+                                        href="manufacture-shop.php?manu_id=<?= md5($manufacture['manu_id'] . 'chuyen-de-web-2') ?>"><?= $manufacture['manu_name'] ?>
+                                        (<?= count($productModel->countProductWithManufacture($manufacture['manu_id'])) ?>)</a>
+                                </li>
                                 <?php } ?>
-                              
+
                             </ul>
                         </aside>
-                        
+
                         <aside class="left_sidebar p_sale_widget">
                             <div class="p_w_title">
-                                <h3>Top Sale Products</h3>
+                                <h3>Sản phẩm mới nhất</h3>
                             </div>
+                            <?php $latests = $productModel->getProductLasters(); ?>
+                            <?php
+                            if (!empty($latests)) {
+                                foreach ($latests as $latest) {
+
+                            ?>
                             <div class="media">
                                 <div class="d-flex">
-                                    <img src="img/product/sale-product/s-product-1.jpg" alt="">
+                                    <img src="<?= $latest['pro_image'] ?>" alt="<?= $latest['name'] ?>"
+                                        style="max-width: 100px;">
                                 </div>
                                 <div class="media-body">
-                                    <a href="#">
-                                        <h4>Brown Cake</h4>
+                                    <a href="product-details.php?id=<?= md5($latest['id'] . 'chuyen-de-web-2') ?>">
+                                        <h4><?= $latest['name'] ?></h4>
                                     </a>
-                                    <ul class="list_style">
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                    </ul>
-                                    <h5>$29</h5>
+
+                                    <h5>$<?= $latest['price'] ?></h5>
                                 </div>
                             </div>
-                            <div class="media">
-                                <div class="d-flex">
-                                    <img src="img/product/sale-product/s-product-2.jpg" alt="">
-                                </div>
-                                <div class="media-body">
-                                    <a href="#">
-                                        <h4>Brown Cake</h4>
-                                    </a>
-                                    <ul class="list_style">
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                    </ul>
-                                    <h5>$29</h5>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="d-flex">
-                                    <img src="img/product/sale-product/s-product-3.jpg" alt="">
-                                </div>
-                                <div class="media-body">
-                                    <a href="#">
-                                        <h4>Brown Cake</h4>
-                                    </a>
-                                    <ul class="list_style">
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                    </ul>
-                                    <h5>$29</h5>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="d-flex">
-                                    <img src="img/product/sale-product/s-product-4.jpg" alt="">
-                                </div>
-                                <div class="media-body">
-                                    <a href="#">
-                                        <h4>Brown Cake</h4>
-                                    </a>
-                                    <ul class="list_style">
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-star-o"></i></a></li>
-                                    </ul>
-                                    <h5>$29</h5>
-                                </div>
-                            </div>
+                            <?php }
+                            } ?>
                         </aside>
                     </div>
                 </div>
-            </div>
-        </div>
+
     </section>
     <!--================End Product Area =================-->
 
     <!--================Newsletter Area =================-->
-    <?php include_once("views/layouts/news.php");?>
+    <?php include_once("views/layouts/news.php"); ?>
     <!--================End Newsletter Area =================-->
 
     <!--================Footer Area =================-->
-    <?php include_once("views/layouts/footer.php");?>
+    <?php include_once("views/layouts/footer.php"); ?>
     <!--================End Footer Area =================-->
 
 
     <!--================Search Box Area =================-->
-    <?php include_once("views/layouts/search.php");?>
+    <?php include_once("views/layouts/search.php"); ?>
     <!--================End Search Box Area =================-->
 
 
 
+    <script src="./public/js/page.js"></script>
+
+    <?php include_once("views/footer.php"); ?>
 
 
-    <?php include_once("views/footer.php");?>
 </body>
 
 </html>

@@ -1,15 +1,22 @@
 <?php
 session_start();
 require "../../models/FactoryPattentTwoAdmin.php";
-$factory = new FactoryPattentTwoAdmin();
-$protypesModel = $factory->make('protype');
-$token = null;
-if (empty($_SESSION['token'])) {
-    $_SESSION['token'] = bin2hex(random_bytes(32));
+if($_SESSION['role'] == 'Admin') { 
+    $factory = new FactoryPattentTwoAdmin();
+    $protypesModel = $factory->make('protype');
+    $token = null;
+    if (empty($_SESSION['token'])) {
+        $_SESSION['token'] = bin2hex(random_bytes(32));
+    }
+    $token = $_SESSION['token'];
+    // -----------Factory------------------
+    $protypes = $protypesModel->getProtype();
+    
+} else {
+    header('location: ../index.php');
 }
-$token = $_SESSION['token'];
-// -----------Factory------------------
-$protypes = $protypesModel->getProtype();
+
+
 
 ?>
 <!DOCTYPE html>
@@ -27,14 +34,16 @@ $protypes = $protypesModel->getProtype();
     <link href="../../public/backend/css/font-face.css" rel="stylesheet" media="all">
     <link href="../../public/backend/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
     <link href="../../public/backend/vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
-    <link href="../../public/backend/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+    <link href="../../public/backend/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet"
+        media="all">
 
     <!-- Bootstrap CSS-->
     <link href="../../public/backend/vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
 
     <!-- Vendor CSS-->
     <link href="../../public/backend/vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
-    <link href="../../public/backend/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
+    <link href="../../public/backend/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet"
+        media="all">
     <link href="../../public/backend/vendor/wow/animate.css" rel="stylesheet" media="all">
     <link href="../../public/backend/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
     <link href="../../public/backend/vendor/slick/slick.css" rel="stylesheet" media="all">
@@ -47,9 +56,9 @@ $protypes = $protypesModel->getProtype();
 
 </head>
 <style>
-    .table-data__tool {
-        justify-content: flex-end;
-    }
+.table-data__tool {
+    justify-content: flex-end;
+}
 </style>
 
 <body class="animsition">
@@ -67,13 +76,13 @@ $protypes = $protypesModel->getProtype();
                     <div class="header__navbar">
                         <ul class="list-unstyled">
                             <li class="has-sub">
-                                <a href="admin.php">
+                                <a href="../admin.php">
                                     <i class="fas fa-tachometer-alt"></i>Dashboard
                                     <span class="bot-line"></span>
                                 </a>
-                            
+
                             </li>
-                       
+
                             <li class="has-sub">
                                 <a href="#">
                                     <i class="fas fa-copy"></i>
@@ -83,151 +92,81 @@ $protypes = $protypesModel->getProtype();
                                         <a href="../products/index.php">Products</a>
                                     </li>
                                     <li>
-                                        <a href="">Orders</a>
-                                    </li>
-                                    <li>
                                         <a href="../Manufacture/">Manufactures</a>
                                     </li>
                                     <li>
-                                        <a href="../protype/Protypes.php">Protype</a>
+                                        <a href="../protype/index.php">Protype</a>
                                     </li>
                                 </ul>
                             </li>
                             <li class="has-sub">
-                                <a href="#">
+                                <a href="../oders/index.php">
                                     <i class="fas fa-desktop"></i>
-                                    <span class="bot-line"></span>Table</a>
-                                <ul class="header3-sub-list list-unstyled">
-                                    <li>
-                                        <a href="button.html">Button</a>
-                                    </li>
-                                    <li>
-                                        <a href="badge.html">Badges</a>
-                                    </li>
-                                    <li>
-                                        <a href="tab.html">Tabs</a>
-                                    </li>
-                                   
-                                </ul>
+                                    <span class="bot-line"></span>Orders</a>
+
+                            </li>
+                            <li class="has-sub">
+                                <a href="../zipcode/index.php">
+                                    <i class="fas fa-desktop"></i>
+                                    <span class="bot-line"></span>ZipCode</a>
+
                             </li>
                         </ul>
                     </div>
                     <div class="header__tool">
-                        <div class="header-button-item has-noti js-item-menu">
-                            <i class="zmdi zmdi-notifications"></i>
-                            <div class="notifi-dropdown notifi-dropdown--no-bor js-dropdown">
-                                <div class="notifi__title">
-                                    <p>You have 3 Notifications</p>
-                                </div>
-                                <div class="notifi__item">
-                                    <div class="bg-c1 img-cir img-40">
-                                        <i class="zmdi zmdi-email-open"></i>
-                                    </div>
-                                    <div class="content">
-                                        <p>You got a email notification</p>
-                                        <span class="date">April 12, 2018 06:50</span>
-                                    </div>
-                                </div>
-                                <div class="notifi__item">
-                                    <div class="bg-c2 img-cir img-40">
-                                        <i class="zmdi zmdi-account-box"></i>
-                                    </div>
-                                    <div class="content">
-                                        <p>Your account has been blocked</p>
-                                        <span class="date">April 12, 2018 06:50</span>
-                                    </div>
-                                </div>
-                                <div class="notifi__item">
-                                    <div class="bg-c3 img-cir img-40">
-                                        <i class="zmdi zmdi-file-text"></i>
-                                    </div>
-                                    <div class="content">
-                                        <p>You got a new file</p>
-                                        <span class="date">April 12, 2018 06:50</span>
-                                    </div>
-                                </div>
-                                <div class="notifi__footer">
-                                    <a href="#">All notifications</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="header-button-item js-item-menu">
-                            <i class="zmdi zmdi-settings"></i>
-                            <div class="setting-dropdown js-dropdown">
-                                <div class="account-dropdown__body">
-                                    <div class="account-dropdown__item">
-                                        <a href="#">
-                                            <i class="zmdi zmdi-account"></i>Account</a>
-                                    </div>
-                                    <div class="account-dropdown__item">
-                                        <a href="#">
-                                            <i class="zmdi zmdi-settings"></i>Setting</a>
-                                    </div>
-                                    <div class="account-dropdown__item">
-                                        <a href="#">
-                                            <i class="zmdi zmdi-money-box"></i>Billing</a>
-                                    </div>
-                                </div>
-                                <div class="account-dropdown__body">
-                                    <div class="account-dropdown__item">
-                                        <a href="#">
-                                            <i class="zmdi zmdi-globe"></i>Language</a>
-                                    </div>
-                                    <div class="account-dropdown__item">
-                                        <a href="#">
-                                            <i class="zmdi zmdi-pin"></i>Location</a>
-                                    </div>
-                                    <div class="account-dropdown__item">
-                                        <a href="#">
-                                            <i class="zmdi zmdi-email"></i>Email</a>
-                                    </div>
-                                    <div class="account-dropdown__item">
-                                        <a href="#">
-                                            <i class="zmdi zmdi-notifications"></i>Notifications</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
                         <div class="account-wrap">
                             <div class="account-item account-item--style2 clearfix js-item-menu">
                                 <div class="image">
                                     <img src="../../public/backend/images/icon/avatar-01.jpg" alt="John Doe" />
                                 </div>
+                                <?php 
+            if (isset($_SESSION['lgUserID'])) {
+                ?>
                                 <div class="content">
-                                    <a class="js-acc-btn" href="#">john doe</a>
+                                    <a class="js-acc-btn" href="#"><?= $_SESSION['lgUserName'] ?></a>
                                 </div>
+                                <?php
+            } ?>
                                 <div class="account-dropdown js-dropdown">
                                     <div class="info clearfix">
                                         <div class="image">
                                             <a href="#">
-                                                <img src="../../public/backend/images/icon/avatar-01.jpg" alt="John Doe" />
+                                                <img src="../../public/backend/images/icon/avatar-01.jpg"
+                                                    alt="John Doe" />
                                             </a>
                                         </div>
+                                        <?php 
+                    if(isset($_SESSION['lgUserID'])) { 
+                    
+                ?>
                                         <div class="content">
                                             <h5 class="name">
-                                                <a href="#">john doe</a>
+                                                <a href="../../profile.php"><?= $_SESSION['lgUserName'] ?></a>
                                             </h5>
-                                            <span class="email">johndoe@example.com</span>
+                                            <span class="email">ngoctam2303001@gmail.com</span>
                                         </div>
+                                        <?php } ?>
                                     </div>
                                     <div class="account-dropdown__body">
-                                        <div class="account-dropdown__item">
-                                            <a href="#">
-                                                <i class="zmdi zmdi-account"></i>Account</a>
-                                        </div>
-                                        <div class="account-dropdown__item">
-                                            <a href="#">
-                                                <i class="zmdi zmdi-settings"></i>Setting</a>
-                                        </div>
-                                        <div class="account-dropdown__item">
-                                            <a href="#">
-                                                <i class="zmdi zmdi-money-box"></i>Billing</a>
-                                        </div>
+                                        <?php
+            if (!empty($_SESSION["lgUserID"])) {
+                $chuoi1 = <<<EOD
+                <div class="account-dropdown__item">
+                    <a href="../../profile.php">
+                        <i class="zmdi zmdi-account"></i>Account</a>
+                </div>
+                <div class="account-dropdown__footer">
+                    <a href="../../logout.php">
+                    <i class="zmdi zmdi-power"></i>Logout</a>
+                 </div>
+                EOD;
+                echo $chuoi1;
+            } 
+
+            ?>
                                     </div>
-                                    <div class="account-dropdown__footer">
-                                        <a href="#">
-                                            <i class="zmdi zmdi-power"></i>Logout</a>
-                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -251,7 +190,8 @@ $protypes = $protypesModel->getProtype();
                             <h3 class="title-5 m-b-35">Protypes table</h3>
                             <div class="table-data__tool">
                                 <div class="table-data__tool-right">
-                                    <button class="au-btn au-btn-icon au-btn--green au-btn--small" onclick="window.location.href='./ViewProtypes.php'" >
+                                    <button class="au-btn au-btn-icon au-btn--green au-btn--small"
+                                        onclick="window.location.href='./ViewProtypes.php'">
                                         <i class="zmdi zmdi-plus"></i>add item</button>
                                 </div>
                             </div>
@@ -267,22 +207,27 @@ $protypes = $protypesModel->getProtype();
                                     </thead>
                                     <tbody>
                                         <?php foreach ($protypes as $proty) { ?>
-                                            <tr class="tr-shadow">
+                                        <tr class="tr-shadow">
                                             <td class="stt"></td>
-                                                <td><?= htmlspecialchars($proty['type_name'])  ?></td>
-                                                <td><?= htmlspecialchars(date( "d-m-Y", strtotime($proty['create_at'])))?> </td>
-                                                <td class="edit-delete">
-                                                    <div class="table-data-feature">
-                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Edit" onclick="window.location.href='./ViewProtypes.php?type_id=<?php echo md5($proty['type_id'] . 'chuyen-de-web-2') ?>'">
-                                                            <i class="zmdi zmdi-edit"></i>
-                                                        </button>
-                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Delete" onclick="window.location.href='./DeleteProtypes.php?type_id=<?php echo md5($proty['type_id'] . 'chuyen-de-web-2')  ?>&token=<?php echo $token ?>'">
-                                                            <i class="zmdi zmdi-delete"></i>
-                                                            <input type="hidden" name="token" value="<?php echo $token ?>">
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                            <td><?= htmlspecialchars($proty['type_name'])  ?></td>
+                                            <td><?= htmlspecialchars(date( "d-m-Y", strtotime($proty['create_at'])))?>
+                                            </td>
+                                            <td class="edit-delete">
+                                                <div class="table-data-feature">
+                                                    <button class="item" data-toggle="tooltip" data-placement="top"
+                                                        title="Edit"
+                                                        onclick="window.location.href='./ViewProtypes.php?type_id=<?php echo md5($proty['type_id'] . 'chuyen-de-web-2') ?>'">
+                                                        <i class="zmdi zmdi-edit"></i>
+                                                    </button>
+                                                    <button class="item" data-toggle="tooltip" data-placement="top"
+                                                        title="Delete"
+                                                        onclick="window.location.href='./DeleteProtypes.php?type_id=<?php echo md5($proty['type_id'] . 'chuyen-de-web-2')  ?>&token=<?php echo $token ?>'">
+                                                        <i class="zmdi zmdi-delete"></i>
+                                                        <input type="hidden" name="token" value="<?php echo $token ?>">
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
                                         <?php } ?>
                                     </tbody>
                                 </table>
@@ -296,7 +241,31 @@ $protypes = $protypesModel->getProtype();
 
     </div>
 
-    <?php include('../../views/admin/layouts/footer.php') ?>
+    <!-- Jquery JS-->
+    <script src="../../public/backend/vendor/jquery-3.2.1.min.js"></script>
+    <!-- Bootstrap JS-->
+    <script src="../../public/backend/vendor/bootstrap-4.1/popper.min.js"></script>
+    <script src="../../public/backend/vendor/bootstrap-4.1/bootstrap.min.js"></script>
+    <!-- Vendor JS       -->
+    <script src="../../public/backend/vendor/slick/slick.min.js">
+    </script>
+    <script src="../../public/backend/vendor/wow/wow.min.js"></script>
+    <script src="../../public/backend/vendor/animsition/animsition.min.js"></script>
+    <script src="../../public/backend/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js">
+    </script>
+    <script src="../../public/backend/vendor/counter-up/jquery.waypoints.min.js"></script>
+    <script src="../../public/backend/vendor/counter-up/jquery.counterup.min.js">
+    </script>
+    <script src="../../public/backend/vendor/circle-progress/circle-progress.min.js"></script>
+    <script src="../../public/backend/vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
+    <script src="../../public/backend/vendor/chartjs/Chart.bundle.min.js"></script>
+    <script src="../../public/backend/vendor/select2/select2.min.js">
+    </script>
+
+    <!-- Main JS-->
+    <script src="../../public/backend/js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+    <script src="../../public/js/xss.js"></script>
 
 </body>
 

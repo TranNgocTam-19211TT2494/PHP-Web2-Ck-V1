@@ -1752,6 +1752,7 @@ i:before {
 .banner_area {
   background: url(../img/banner/banner-bg.jpg) no-repeat scroll center center;
   background-size: cover;
+  padding-top: 115px;
 }
 
 .banner_text {
@@ -2009,6 +2010,9 @@ i:before {
   -webkit-transition: all 300ms ease;
   -o-transition: all 300ms ease;
   transition: all 300ms ease;
+  height: 230px;
+    width: 100%;
+    object-fit: cover;
 }
 
 .cake_feature_item .cake_img:before {
@@ -2073,6 +2077,9 @@ i:before {
   font-family: "Playfair Display", serif;
   margin-bottom: 22px;
   padding-top: 35px;
+}
+.cake_feature_item .cake_text h3 a{
+  color: #343434;
 }
 
 .cake_feature_main {
@@ -5931,7 +5938,7 @@ i:before {
 }
 
 .cart_table_area .table-responsive .table tbody tr:last-child td .form-inline .form-group input {
-  width: 130px;
+  width: 125px;
   border: 1px solid #dddddd;
   border-radius: 3px;
   height: 33px;
