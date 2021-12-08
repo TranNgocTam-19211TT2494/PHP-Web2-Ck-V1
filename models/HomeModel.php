@@ -105,13 +105,21 @@ class HomeModel extends BaseModel
     // Change Password:
     public function changePassword($name, $newPassword)
     {
-        $md5Password = md5($newPassword);
-        $sql = 'UPDATE users SET 
-        password = "' . $md5Password . '"
-        WHERE username = "' . $name . '" ';
-
-        $user = $this->update($sql);
-        return $user;
+        if(empty($name) || empty($newPassword)) {
+            return false;
+        }
+        if(!is_string($newPassword)||strlen($newPassword) < 6){
+            return false;
+        }
+        else{
+            $md5Password = md5($newPassword);
+            $sql = 'UPDATE users SET 
+            password = "' .$md5Password . '"
+            WHERE username = "' . $name . '" ';
+    
+            $user = $this->update($sql);
+            return $user;
+        }
     }
     // Lay id
     public function getid()
@@ -338,16 +346,25 @@ class HomeModel extends BaseModel
     // Xem đơn hàng của khách hàng:
     public function getCheckoutsByUserId($userID)
     {
-        $sql = 'SELECT checkouts.id , checkouts.addedDate, checkouts.address ,checkouts.phone , checkouts.sum,checkouts.status FROM `checkouts` ,users WHERE checkouts.user_id = users.id AND checkouts.user_id = ' . $userID;
-        $order = $this->select($sql);
-        return $order;
+        if (!is_numeric($userID) || $userID < 0 || is_double($userID)) {
+            return 'Not invalid';
+        } else {
+            $sql = 'SELECT checkouts.id , checkouts.user_id , checkouts.addedDate, checkouts.address ,checkouts.phone , checkouts.sum,checkouts.status FROM `checkouts` ,users WHERE checkouts.user_id = users.id AND checkouts.user_id = ' . $userID;
+            $order = $this->select($sql);
+            return $order;
+        }
+        // $sql = 'SELECT checkouts.id , checkouts.addedDate, checkouts.address ,checkouts.phone , checkouts.sum,checkouts.status FROM `checkouts` ,users WHERE checkouts.user_id = users.id AND checkouts.user_id = '.$userID;
     }
     // Lấy sản phẩm trong giỏ hàng:
     public function getOrderItemById($id)
     {
-        $sql = 'SELECT carts.pro_id , products.name , products.price, carts.quantity FROM carts INNER JOIN products ON carts.pro_id = products.id WHERE carts.order_id = ' . $id;
-        $user = $this->select($sql);
-        return $user;
+        if (!is_numeric($id) || $id < 0 || is_double($id)) {
+            return 'Not invalid';
+        } else {
+            $sql = 'SELECT carts.pro_id , products.name , products.price, carts.quantity FROM carts INNER JOIN products ON carts.pro_id = products.id WHERE carts.order_id = ' . mysqli_real_escape_string(self::$_connection, $id) .' ';
+            $user = $this->select($sql);
+            return $user;
+        }
     }
     // Thêm vào giỏ hàng:
     public function getOrderItemByOrder($paged)
@@ -359,9 +376,23 @@ class HomeModel extends BaseModel
     // Thêm danh sách giỏ hàng
     public function insertOrderItem($OrderID, $ProductID, $Quantity)
     {
-        $sql = "Insert into carts (order_id,pro_id,quantity) values($OrderID,$ProductID,$Quantity)";
-        $product = $this->insert($sql);
-        return $product;
+        if (empty($OrderID) || empty($ProductID) || empty($Quantity)) {
+            return 'Invalid';
+        }
+        if (!is_numeric($OrderID) || $OrderID < 0 || is_double($OrderID)) {
+            return 'Invalid';
+        }
+        if (!is_numeric($ProductID) || $ProductID < 0 || is_double($ProductID)) {
+            return 'Invalid';
+        }
+        if (!is_numeric($Quantity) || $Quantity < 0 || is_double($Quantity)) {
+            return 'Invalid';
+        } else {
+            $sql = "Insert into carts (order_id,pro_id,quantity) values($OrderID,$ProductID,$Quantity)";
+            var_dump($sql);
+            $product = $this->insert($sql);
+            return $product;
+        }
     }
     // -------------- Checkout ---------------- //
     public function insertOrder($userID, $Firstname, $Lastname, $address, $email, $phone, $notes)
@@ -561,5 +592,24 @@ class HomeModel extends BaseModel
         } else {
             return false;
         }
+    }
+        $sql = $sqlF . ' LIMIT ' . $star . ',' . $num;
+        return $this->select($sql);
+    }
+    public function getUserByMonth($month)
+    {
+        if (!is_numeric($month) || $month < 0 || is_double($month)) {
+            return 'Not invalid';
+        } else {
+            $sql = "SELECT * from users where MONTH(date) = $month";
+            $id = $this->select($sql);
+            return $id;
+        }
+    }
+    public function findOrderById($id)
+    {
+        $sql = 'SELECT * FROM carts WHERE id = ' . $id;
+        $order = $this->select($sql);
+        return $order;
     }
 }
