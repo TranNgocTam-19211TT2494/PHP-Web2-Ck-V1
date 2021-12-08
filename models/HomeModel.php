@@ -90,6 +90,41 @@ class HomeModel extends BaseModel
         $user = $this->update($sql);
         return $user;
     }
+    //Send mail password cho nguoi dung:
+    public function sendMail($email, $password)
+    {
+        $mail = new PHPMailer(true); //true:enables exceptions
+        try {
+            $mail->SMTPDebug = 0; //0,1,2: chế độ debug
+            $mail->isSMTP();
+            $mail->CharSet  = "utf-8";
+            $mail->Host = 'smtp.gmail.com';  //SMTP servers
+            $mail->SMTPAuth = true; // Enable authentication
+            $mail->Username = 'phantinh1209@gmail.com'; // SMTP username
+            $mail->Password = 'zexpotcxbxkuspaq';   // SMTP password
+            $mail->SMTPSecure = 'ssl';  // encryption TLS/SSL 
+            $mail->Port = 465;  // port to connect to                
+            $mail->setFrom('phantinh1209@gmail.com', 'AnhTam');
+            $mail->addAddress($email);
+            $mail->isHTML(true);  // Set email format to HTML
+            $mail->Subject = 'Thư gửi lại mật khẩu';
+            $noidungthu = "<p>Bạn nhận được mail này, do bạn hoặc ai đó yêu cầu mật khẩu mới cho website...</p>
+                                Mật khẩu mới của bạn là {$password}
+            ";
+            $mail->Body = $noidungthu;
+            $mail->smtpConnect(array(
+                "ssl" => array(
+                    "verify_peer" => false,
+                    "verify_peer_name" => false,
+                    "allow_self_signed" => true
+                )
+            ));
+            $mail->send();
+            echo "Đã gửi mail xong";
+        } catch (Exception $e) {
+            echo 'Error: ', $mail->ErrorInfo;
+        }
+    }
     // Tìm id của người dùng:
     public function getUserById($id)
     {
@@ -432,45 +467,41 @@ class HomeModel extends BaseModel
         self::$_instance = new self();
         return self::$_instance;
     }
-    public function searchProduct($search)
+    public function searchProduct($search = null)
     {
-        $sort = '';
-        if (isset($_GET['sort'])) {
-            if ($_GET['sort'] == 'desc') {
-                $sort = 'DESC';
-            } elseif ($_GET['sort'] == 'asc') {
-                $sort = 'ASC';
-            }
+        if (!empty($search)) {
+            $sql = 'SELECT * FROM products WHERE name LIKE "%' . mysqli_real_escape_string(self::$_connection, $search) . '%"';
+            $searchResult = $this->select($sql);
+            return $searchResult;
+        }else{
         }
-        $sql = "SELECT * FROM products WHERE name LIKE '%$search%' OR description LIKE '%$search%' ORDER BY products.price " . $sort;
-        $searchResult = $this->select($sql);
-        return $searchResult;
     }
     // Hàm tìm kiếm theo tên của category(manufacture)
     public function searchCategories($search)
     {
-        $sort = '';
-        if (isset($_GET['sort'])) {
-            if ($_GET['sort'] == 'desc') {
-                $sort = 'DESC';
-            } elseif ($_GET['sort'] == 'asc') {
-                $sort = 'ASC';
-            }
+        if (!empty($search)) {
+            $sql = 'SELECT * FROM products,manufactures WHERE products.manu_id=manufactures.manu_id 
+            AND manufactures.manu_name LIKE "%' . mysqli_real_escape_string(self::$_connection, $search) . '%"';
+            $searchResult = $this->select($sql);
+            return $searchResult;
+        } else {
+            return false;
         }
-        $sql = "SELECT * FROM products,manufactures WHERE products.manu_id=manufactures.manu_id 
-        AND manufactures.manu_name like '%$search%' ORDER BY products.price " . $sort;
-        $searchResult = $this->select($sql);
-        return $searchResult;
     }
     public function pagination($sql, $page, $num)
     {
-        if ($page < 2) {
-            $star = 0;
+
+        if (!is_numeric($page)) {
+            return false;
         } else {
-            $star = ($page * $num) - $num;
+            if ($page < 2) {
+                $star = 0;
+            } else {
+                $star = ($page * $num) - $num;
+            }
+            $sql = $sql . ' LIMIT ' . $star . ',' . $num;
+            return $this->select($sql);
         }
-        $sql = $sql . ' LIMIT ' . $star . ',' . $num;
-        return $this->select($sql);
     }
     public function paginationProtype($typeid, $page, $num)
     {
@@ -567,15 +598,36 @@ class HomeModel extends BaseModel
         $sql = $sql . ' LIMIT ' . $star . ',' . $num;
         return $this->select($sql);
     }
-    // public function paginationSearchProduct($search,$page,$num)
-    // {
-    //     if ($page < 2) {
-    //         $star = 0;
-    //     } else {
-    //         $star = ($page * $num) - $num;
-    //     }
-    //     $sqlF = "SELECT * FROM products WHERE name LIKE '%$search%' OR description LIKE '%$search%' ORDER BY products.price DESC";
-    //     $sql = $sqlF . ' LIMIT ' . $star . ',' . $num;
-    //     return $this->select($sql);
-    // }
+    public function paginationSearchCate($searchCate, $page, $num)
+    {
+        if ($page < 2) {
+            $star = 0;
+        } else {
+            $star = ($page * $num) - $num;
+        }
+        if (empty($searchCate) || !is_string($searchCate)) {
+            return false;
+        }
+         else {
+            $sql = 'SELECT * FROM products,manufactures WHERE products.manu_id=manufactures.manu_id 
+        AND manufactures.manu_name LIKE "%' . mysqli_real_escape_string(self::$_connection, $searchCate) . '%"';
+            $sql = $sql . ' LIMIT ' . $star . ',' . $num;
+            return $this->select($sql);
+        }
+    }
+    public function paginationSearchProduct($search, $page, $num)
+    {
+        if (!empty($search)) {
+            if ($page < 2) {
+                $star = 0;
+            } else {
+                $star = ($page * $num) - $num;
+            }
+            $sqlF = 'SELECT * FROM products WHERE name LIKE "%' . mysqli_real_escape_string(self::$_connection, $search) . '%"';
+            $sql = $sqlF . ' LIMIT ' . $star . ',' . $num;
+            return $this->select($sql);
+        } else {
+            return false;
+        }
+    }
 }
