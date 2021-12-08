@@ -183,9 +183,15 @@ class HomeModel extends BaseModel
     }
     public function getWhishlistExist($userid, $pro_id)
     {
-        $sql = "SELECT * FROM `whishlist` WHERE `user_id` = $userid and `pro_id` = $pro_id";
-        $whishlist = $this->select($sql);
-        return $whishlist;
+        if(!empty($userid) && !is_double($userid) && !is_bool($userid) && !is_object($userid) && !is_array($userid)
+            && !is_string($userid) && $userid > 0 && !empty($pro_id) && !is_double($pro_id) && !is_bool($pro_id) && !is_object($pro_id) && !is_array($pro_id)
+            && !is_string($pro_id) && $pro_id > 0){
+            $sql = "SELECT * FROM `whishlist` WHERE `user_id` = $userid and `pro_id` = $pro_id";
+            $whishlist = $this->select($sql);
+            return $whishlist;
+        }else{
+            return false;
+        }
     }
     public function getWhishlistByUserID($userid)
     {
@@ -200,6 +206,7 @@ class HomeModel extends BaseModel
         }else{
             return false;
         }
+        
     }
     public function insertWhishList($paged, $userId)
     {
