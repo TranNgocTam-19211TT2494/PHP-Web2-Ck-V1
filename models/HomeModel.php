@@ -221,16 +221,19 @@ class HomeModel extends BaseModel
     }
     public function deleteWhishList($paged)
     {
-        $allWhishlist = $this->getWhishlist();
-        foreach ($allWhishlist as $value) {
-            $md5 = md5($value['id'] . "chuyen-de-web-2");
-            if ($md5 == $paged) {
-                $sql = "DELETE FROM whishlist WHERE id =  " . $value['id'];
-                $whishlist = $this->delete($sql);
-                return $whishlist;
+        if(!empty($paged)){
+            $allWhishlist = $this->getWhishlist();
+            foreach ($allWhishlist as $value) {
+                $md5 = md5($value['id'] . "chuyen-de-web-2");
+                if ($md5 == $paged && !is_bool($paged)) {
+                    $sql = "DELETE FROM whishlist WHERE id =  " . $value['id'];
+                    $whishlist = $this->delete($sql);
+                    return $whishlist;
+                }
             }
+        }else{
+            return false;
         }
-        return false;
     }
     // --------------------- Manufacture ------------------ //
     // Hien thi data bang manufactures:
@@ -538,6 +541,14 @@ class HomeModel extends BaseModel
         }
         $sql = $sql . ' LIMIT ' . $star . ',' . $num;
         return $this->select($sql);
+    }
+    public static function startTransaction()
+    {
+        self::$_connection->begin_transaction();
+    }
+    public static function rollback()
+    {
+        self::$_connection->rollback();
     }
     // public function paginationSearchProduct($search,$page,$num)
     // {
