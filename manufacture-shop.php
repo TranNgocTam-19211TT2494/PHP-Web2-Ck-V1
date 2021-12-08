@@ -35,6 +35,7 @@ if (!isset($_GET['page'])) {
 if (!is_numeric($page)) {
     header('Location:404.php');
 }
+$vaCate = [];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -79,7 +80,7 @@ if (!is_numeric($page)) {
                             </div>
                         <?php } ?>
                         <!-- </?php if ($protype) { ?> -->
-                        <!-- <input type="hidden" name="type_id" value="<?php echo $typeid ?>"> -->
+                        <input type="hidden" name="type_id" value="<?php echo $typeid ?>">
                         <div class="row m0 product_task_bar">
                             <div class="product_task_inner">
                                 <div class="float-left">
@@ -93,19 +94,18 @@ if (!is_numeric($page)) {
                         </div>
                         <!-- Tien lam phan trang -->
                         <?php
-                        if ($page <= 0) { ?>
-                            <div class="alert alert-danger" role="alert">
-                                KHÔNG CÓ TRANG BẠN TÌM KIẾM
-                            </div>
-                            <?php } else {
-                            if (isset($_GET['submit'])) {
-                                // search categories
+                        if ($page > 0) {
+                            if (!empty($_GET['submit'])) {
                                 if (!empty($_GET['search-cate'])) { ?>
+                                    <!-- search categories -->
                                     <div class="row product_item_inner">
                                         <?php
                                         $searchCate = $_GET['search-cate'];
                                         $products = $productModel->paginationSearchCate($searchCate, $page, 6);
-                                        $num_result_cate = count($products);
+                                        if (count($products) == 0) {
+                                            $vaCate = 0;
+                                        }
+                                        // var_dump($products);
                                         foreach ($products as $product) { ?>
                                             <div class="col-lg-4 col-md-4 col-6">
                                                 <div class="cake_feature_item">
@@ -114,7 +114,7 @@ if (!is_numeric($page)) {
                                                         <?php if (isset($_SESSION['lgUserID'])) { ?>
                                                             <?php if (empty($productModel->getWhishlistExist($_SESSION['lgUserID'], $product['id']))) { ?>
                                                                 <div class="icon-whishlist">
-                                                                    <a href="manufacture-shop.php?id=<?= md5($product['id'] . 'chuyen-de-web-2') ?>&manu_id=<?php echo $id ?>">
+                                                                    <a href="shop.php?id=<?= md5($product['id'] . 'chuyen-de-web-2') ?>">
                                                                         <i class="fa fa-heart" aria-hidden="true"></i>
                                                                     </a>
                                                                 </div>
@@ -135,7 +135,7 @@ if (!is_numeric($page)) {
                                     <?php
                                     $result = $productModel->searchCategories($searchCate);
                                     $number_of_result = count($result);
-                                    $number_of_pages = ceil($num_result_cate / 6);
+                                    $number_of_pages = ceil($number_of_result / 6);
                                     if ($number_of_pages > 1) {
                                         if ($page <= $number_of_pages) {
                                     ?>
@@ -155,9 +155,7 @@ if (!is_numeric($page)) {
                                                                     <a class="page-link <?php if (isset($_GET['page']) && $_GET['page'] == $i) {
                                                                                             echo 'active';
                                                                                         } ?>" href="manufacture-shop.php?manu_id=<?php echo $id ?>&<?php if (isset($searchCate)) ?>search-cate=<?php echo $searchCate ?>&<?php if (isset($_GET['submit'])) ?>submit=<?php echo $_GET['submit'] ?>&page=<?php echo $i ?>"><?php echo $i ?></a>
-
                                                                 </li>
-
                                                             <?php } ?>
                                                         </ul>
                                                     </nav>
@@ -173,14 +171,25 @@ if (!is_numeric($page)) {
                                             <div class="alert alert-danger" role="alert">
                                                 KHÔNG CÓ TRANG BẠN TÌM KIẾM
                                             </div>
-                                <?php  }
+                                    <?php  }
                                     }
                                 }
+                                if (empty($_GET['search-cate'])) { ?>
+                                    <div class="alert alert-danger" role="alert">
+                                        BẠN HÃY NHẬP TỪ KHÓA ĐỂ TÌM KIẾM
+                                    </div>
+                                <?php }
+                                if ($vaCate == 0) { ?>
+                                    <div class="alert alert-danger" role="alert">
+                                        KHÔNG TÌM THẤY
+                                    </div>
+                                <?php }
                             } else { ?>
                                 <div class="row product_item_inner">
                                     <?php
                                     $products = $productModel->paginationManu($id, $page, 6);
                                     if (count($products) > 0) {
+
                                         foreach ($products as $product) { ?>
                                             <div class="col-lg-4 col-md-4 col-6">
                                                 <div class="cake_feature_item">
@@ -189,7 +198,7 @@ if (!is_numeric($page)) {
                                                         <?php if (isset($_SESSION['lgUserID'])) { ?>
                                                             <?php if (empty($productModel->getWhishlistExist($_SESSION['lgUserID'], $product['id']))) { ?>
                                                                 <div class="icon-whishlist">
-                                                                    <a href="manufacture-shop.php?id=<?= md5($product['id'] . 'chuyen-de-web-2') ?>&manu_id=<?php echo $id ?>">
+                                                                    <a href="shop.php?id=<?= md5($product['id'] . 'chuyen-de-web-2') ?>">
                                                                         <i class="fa fa-heart" aria-hidden="true"></i>
                                                                     </a>
                                                                 </div>
@@ -205,10 +214,12 @@ if (!is_numeric($page)) {
                                             </div>
                                     <?php }
                                     } ?>
+
+
                                 </div>
                                 <!-- Phân trang -->
                                 <?php
-                                $result = $productModel->getManufactureById($id);
+                                 $result = $productModel->getManufactureById($id);
                                 $number_of_result = count($result);
                                 $number_of_pages = ceil($number_of_result / 6);
                                 if ($number_of_pages > 1) {
@@ -230,7 +241,6 @@ if (!is_numeric($page)) {
                                                                 <a class="page-link <?php if (isset($_GET['page']) && $_GET['page'] == $i) {
                                                                                         echo 'active';
                                                                                     } ?>" href="manufacture-shop.php?manu_id=<?php echo $id ?>&page=<?php echo $i ?>"><?php echo $i ?></a>
-
                                                             </li>
 
                                                         <?php } ?>
@@ -248,10 +258,17 @@ if (!is_numeric($page)) {
                                         <div class="alert alert-danger" role="alert">
                                             KHÔNG CÓ TRANG BẠN TÌM KIẾM
                                         </div>
-                        <?php  }
+
+                            <?php }
                                 }
                             }
-                        } ?>
+                        }
+                        // So trang <0
+                        else { ?>
+                            <div class="alert alert-danger" role="alert">
+                                KHÔNG CÓ TRANG BẠN TÌM KIẾM
+                            </div>
+                        <?php } ?>
                     </div>
                     <div class="col-lg-3">
                         <div class="product_left_sidebar">
