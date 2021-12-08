@@ -183,24 +183,35 @@ class HomeModel extends BaseModel
     }
     public function getWhishlistExist($userid, $pro_id)
     {
-        $sql = "SELECT * FROM `whishlist` WHERE `user_id` = $userid and `pro_id` = $pro_id";
-        $whishlist = $this->select($sql);
-        return $whishlist;
+        if(!empty($userid) && !is_array($userid) && !is_string($userid) && !is_object($userid) && !is_bool($userid)
+         && !is_double($userid) && $userid > 0 && !empty($pro_id) && !is_array($pro_id) && !is_string($pro_id) && 
+         !is_object($pro_id) && !is_bool($pro_id) && !is_double($pro_id) && $pro_id > 0){
+            $sql = "SELECT * FROM `whishlist` WHERE `user_id` = $userid and `pro_id` = $pro_id";
+            $whishlist = $this->select($sql);
+            return $whishlist;
+        }else{
+            return false;
+        }
     }
     public function getWhishlistByUserID($userid)
     {
-        $sql = "SELECT whishlist.id as whishlistId,products.pro_image,products.name,products.price 
-        FROM `whishlist`,products 
-        WHERE whishlist.pro_id = products.id 
-        AND whishlist.user_id = $userid ORDER BY `whishlist`.`id` DESC";
-        $whishlist = $this->select($sql);
-        return $whishlist;
+        if(!empty($userid) && !is_array($userid) && !is_string($userid) && !is_object($userid) && !is_bool($userid) && !is_double($userid) && $userid > 0){
+            $sql = "SELECT whishlist.id as whishlistId,products.pro_image,products.name,products.price 
+            FROM `whishlist`,products 
+            WHERE whishlist.pro_id = products.id 
+            AND whishlist.user_id = $userid ORDER BY `whishlist`.`id` DESC";
+            $whishlist = $this->select($sql);
+            return $whishlist;
+        }else{
+            return false;
+        }
+        
     }
     public function insertWhishList($paged, $userId)
     {
         $allProduct = $this->getProducts();
         foreach ($allProduct as $value) {
-            if (md5($value['id'] . 'chuyen-de-web-2') == $paged) {
+            if (md5($value['id'] . 'chuyen-de-web-2') == $paged && !is_bool($paged)) {
                 $sql = "INSERT INTO `webbanhkem`.`whishlist` (`user_id` ,`pro_id`) VALUES (" .
                     "'" . $userId
                     . "','" . $value['id'] . "')";
@@ -219,7 +230,7 @@ class HomeModel extends BaseModel
         $allWhishlist = $this->getWhishlist();
         foreach ($allWhishlist as $value) {
             $md5 = md5($value['id'] . "chuyen-de-web-2");
-            if ($md5 == $paged) {
+            if ($md5 == $paged && !is_bool($paged)) {
                 $sql = "DELETE FROM whishlist WHERE id =  " . $value['id'];
                 $whishlist = $this->delete($sql);
                 return $whishlist;
@@ -533,6 +544,14 @@ class HomeModel extends BaseModel
         }
         $sql = $sql . ' LIMIT ' . $star . ',' . $num;
         return $this->select($sql);
+    }
+    public function startTransaction()
+    {
+        self::$_connection->begin_transaction();
+    }
+    public function rollback()
+    {
+        self::$_connection->rollback();
     }
     // public function paginationSearchProduct($search,$page,$num)
     // {

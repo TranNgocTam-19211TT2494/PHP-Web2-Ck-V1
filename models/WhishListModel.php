@@ -14,6 +14,15 @@ class WhishListModel extends BaseTwoAdmin {
     $users = $this->select($sql);
     return $users;
    }
+   public function getWhishlistByUserID($userid)
+   {
+       $sql = "SELECT whishlist.id as whishlistId,products.pro_image,products.name,products.price 
+       FROM `whishlist`,products 
+       WHERE whishlist.pro_id = products.id 
+       AND whishlist.user_id = $userid ORDER BY `whishlist`.`id` DESC";
+       $whishlist = $this->select($sql);
+       return $whishlist;
+   }
    public function getAllProduct()
    {
     $sql = 'SELECT * FROM `products` WHERE detele_at IS NULL';
