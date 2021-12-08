@@ -161,6 +161,17 @@ class HomeModel extends BaseModel
     // Mã khuyến mãi:
     public function getCouponByID($id)
     {
+        if(empty($id)) {
+            return "Not Empty";
+        } elseif (is_string($id)) {
+            return "Not String";
+        } elseif (is_array($id)) {
+            return "Not Array";
+        } elseif (is_object($id)) {
+            return "Not Object";
+        } elseif (is_bool($id)) {
+            return "Not Boolean";
+        } 
         $sql = 'SELECT  zipcode.status,zipcode.discount,zipcode.created_at,zipcode.zipcode FROM zipcode , users WHERE zipcode.user_id = users.id AND zipcode.user_id = ' . $id;
         $coupon = $this->select($sql);
         return $coupon;
