@@ -15,6 +15,24 @@ class HomeModel extends BaseModel
     //Login
     public function login($username, $password)
     {
+        if(is_null($username) && is_null($password)) {
+            return "Not Null";
+
+        } elseif(empty($username) || empty($password)) {
+            return "Not Empty";
+
+        } elseif(is_array($username) || is_array($password)) {
+            return "Not Array";
+
+        }  elseif(is_object($username) || is_object($password)) {
+            return "Not Object";
+
+        }elseif(is_bool($username) || is_bool($password)) {
+            return "Not Boolean";
+
+        } elseif(is_numeric($username)) {
+            return "Not Number";
+        }
         $md5Password = md5($password);
         $sql = 'SELECT * FROM users WHERE username = "' . $username . '" AND password = "' . $md5Password . '"';
 
@@ -77,6 +95,11 @@ class HomeModel extends BaseModel
     //Forget Password
     public function checkMail($email)
     {
+        if(empty($email)) {
+            return "Not Empty";
+        } elseif (is_numeric($email) || is_array($email) || is_object($email) || is_bool($email)) {
+            return "The field you entered is wrong";
+        }
         $sql = 'SELECT * FROM users WHERE email = "' . $email . '"';
         $user = $this->select($sql);
         return $user;
@@ -143,6 +166,17 @@ class HomeModel extends BaseModel
     // Mã khuyến mãi:
     public function getCouponByID($id)
     {
+        if(empty($id)) {
+            return "Not Empty";
+        } elseif (is_string($id)) {
+            return "Not String";
+        } elseif (is_array($id)) {
+            return "Not Array";
+        } elseif (is_object($id)) {
+            return "Not Object";
+        } elseif (is_bool($id)) {
+            return "Not Boolean";
+        } 
         $sql = 'SELECT  zipcode.status,zipcode.discount,zipcode.created_at,zipcode.zipcode FROM zipcode , users WHERE zipcode.user_id = users.id AND zipcode.user_id = ' . $id;
         $coupon = $this->select($sql);
         return $coupon;
