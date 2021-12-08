@@ -141,17 +141,4 @@ class TestGetCheckoutsByUserId extends TestCase
         $homeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
-    /**
-     * Test case id is special characters(@,#)
-     */
-    public function testGetCheckoutsByUserIdIsSpecialCharacter()
-    {
-        $homeModel = new HomeModel();
-        $id = '@@';
-        $expected = 'Not invalid';
-        $homeModel->startTransaction();
-        $actual = $homeModel->getCheckoutsByUserId($id);
-        $homeModel->rollback();
-        $this->assertEquals($expected, $actual);
-    }
 }
