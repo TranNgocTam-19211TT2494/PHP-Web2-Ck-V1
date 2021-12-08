@@ -443,9 +443,24 @@ class HomeModel extends BaseModel
     // -------------- Checkout ---------------- //
     public function insertOrder($userID, $Firstname, $Lastname, $address, $email, $phone, $notes)
     {
-        $sql = "Insert into checkouts(user_id,firstname,lastname,addedDate,address,email,phone,notes) values('$userID','$Firstname','$Lastname',now(),'$address','$email','$phone','$notes')";
-        $product = $this->insert($sql);
-        return $product;
+        if (
+            isset($userID) || isset($Firstname) || isset($Lastname)
+            || isset($address)  || isset($email) || isset($phone) || isset($notes)
+        ) {
+            if (
+                is_array($userID) || is_array($Firstname) || is_array($Lastname)
+                || is_array($address)  || is_array($email) || is_array($phone) || is_array($notes)
+            ) {
+                if (!is_string($userID) || !is_string($phone)) {
+                    return 0;
+                }
+                $sql = "Insert into checkouts(user_id,firstname,lastname,addedDate,address,email,phone,notes) values('$userID','$Firstname','$Lastname',now(),'$address','$email','$phone','$notes')";
+                $product = $this->insert($sql);
+                return $product;
+            }
+        } else {
+            return 0;
+        }
     }
     // Lấy id mới nhất của đơn hàng:
     public function getOrderMaxById()
@@ -457,9 +472,20 @@ class HomeModel extends BaseModel
     // Cập nhập Tổng tiền:
     public function updateSum($OrderID, $Sum)
     {
-        $sql = "Update checkouts set sum = $Sum where id = $OrderID";
-        $checkout = $this->update($sql);
-        return $checkout;
+        if(isset($OrderID) || isset($Sum)){
+            if(is_array($OrderID) || is_array($Sum)){
+                if(is_string($OrderID) || is_array($Sum)){
+                    return false;
+                }
+                $sql = "Update checkouts set sum = $Sum where id = $OrderID";
+                $checkout = $this->update($sql);
+                return $checkout;
+            }
+        }
+        else{
+            return false;
+        }
+       
     }
     public function getCouponByZipcode($coupon)
     {
@@ -486,16 +512,23 @@ class HomeModel extends BaseModel
     public function searchProduct($search = null)
     {
         if (!empty($search)) {
+            if(is_array($search) || is_object($search)){
+                return false;
+            }
             $sql = 'SELECT * FROM products WHERE name LIKE "%' . mysqli_real_escape_string(self::$_connection, $search) . '%"';
             $searchResult = $this->select($sql);
             return $searchResult;
         }else{
+            return false;
         }
     }
     // Hàm tìm kiếm theo tên của category(manufacture)
     public function searchCategories($search)
     {
         if (!empty($search)) {
+            if(is_array($search) || is_object($search)){
+                return false;
+            }
             $sql = 'SELECT * FROM products,manufactures WHERE products.manu_id=manufactures.manu_id 
             AND manufactures.manu_name LIKE "%' . mysqli_real_escape_string(self::$_connection, $search) . '%"';
             $searchResult = $this->select($sql);
@@ -569,12 +602,19 @@ class HomeModel extends BaseModel
         $comments = 'SELECT id FROM products';
         $comment = $this->select($comments);
         $insert_comment = null;
-        foreach ($comment as $commen) {
-            $md5 = md5($commen['id'] . 'chuyen-de-web-2');
-            var_dump($md5);
-            if ($md5 == $id) {
-                $sql = "INSERT INTO `comment`(`user_id`, `id_product`, `username`, `content`) VALUES ('$lgUserID'," . "'" . $commen['id'] . "', " . "'" . $input['name'] . "'," . "'" . $input['content'] . "')";
-                $insert_comment = $this->insert($sql);
+        if (isset($lgUserID) || isset($commen['id']) || isset($input)) {
+            if (is_array($lgUserID) || is_array($id) || is_array($input)) {
+                if (!is_string($lgUserID)) {
+                    return false;
+                }
+                foreach ($comment as $commen) {
+                    $md5 = md5($commen['id'] . 'chuyen-de-web-2');
+                    if ($md5 == $id) {
+
+                        $sql = "INSERT INTO `comment`(`user_id`, `id_product`, `username`, `content`) VALUES ('$lgUserID'," . "'" . $commen['id'] . "', " . "'" . $input['name'] . "'," . "'" . $input['content'] . "')";
+                        $insert_comment = $this->insert($sql);
+                    }
+                }
             }
         }
         return $insert_comment;
@@ -583,7 +623,7 @@ class HomeModel extends BaseModel
     {
 
         $sql = "UPDATE `comment` SET `name_replide`='$lgUserName', `replied_comment`='Cảm ơn bạn đã đánh giá.', `update_at` = now() WHERE id = " . $input['id_comment'];
-        
+
         $insert_comment = $this->update($sql);
         // var_dump($insert_comment).die();
         return $insert_comment;
