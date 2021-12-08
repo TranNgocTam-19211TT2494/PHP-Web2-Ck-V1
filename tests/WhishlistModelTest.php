@@ -97,7 +97,7 @@ class WhishlistModelTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
     //insertWhishList pro_id = 92 user_id = 25
-    public function testinsertWhishlistOk()
+    public function testInsertWhishlistOk()
     {
         $pro_id = md5(92 . 'chuyen-de-web-2');
         $user_id = 25;
@@ -111,7 +111,7 @@ class WhishlistModelTest extends TestCase
             $this->assertTrue(false);
         }
     }
-    public function testinsertWhishlistProductIdNotExist()
+    public function testInsertWhishlistProductIdNotExist()
     {
         $pro_id = md5(9999990 . 'chuyen-de-web-2');
         $user_id = 25;
@@ -122,7 +122,7 @@ class WhishlistModelTest extends TestCase
         $homeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
-    public function testinsertWhishlistProductIdString()
+    public function testInsertWhishlistProductIdString()
     {
         $pro_id = md5('asdasd' . 'chuyen-de-web-2');
         $user_id = 25;
@@ -133,7 +133,7 @@ class WhishlistModelTest extends TestCase
         $homeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
-    public function testinsertWhishlistProductIdEmptyOne()
+    public function testInsertWhishlistProductIdEmptyOne()
     {
         $pro_id = md5('' . 'chuyen-de-web-2');
         $user_id = 25;
@@ -144,7 +144,7 @@ class WhishlistModelTest extends TestCase
         $homeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
-    public function testinsertWhishlistProductIdEmptyTwo()
+    public function testInsertWhishlistProductIdEmptyTwo()
     {
         $pro_id = '';
         $user_id = 25;
@@ -155,7 +155,7 @@ class WhishlistModelTest extends TestCase
         $homeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
-    public function testinsertWhishlistProductIdObject()
+    public function testInsertWhishlistProductIdObject()
     {
         $pro_id = new stdClass();
         $user_id = 25;
@@ -166,7 +166,7 @@ class WhishlistModelTest extends TestCase
         $homeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
-    public function testinsertWhishlistProductIdBoolOne()
+    public function testInsertWhishlistProductIdBoolOne()
     {
         $pro_id = true;
         $user_id = 25;
@@ -177,7 +177,7 @@ class WhishlistModelTest extends TestCase
         $homeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
-    public function testinsertWhishlistProductIdBoolTwo()
+    public function testInsertWhishlistProductIdBoolTwo()
     {
         $pro_id = md5(true . 'chuyen-de-web-2');
         $user_id = 25;
@@ -188,7 +188,7 @@ class WhishlistModelTest extends TestCase
         $homeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
-    public function testinsertWhishlistProductIdDouble()
+    public function testInsertWhishlistProductIdDouble()
     {
         $pro_id = md5(92.00000000 . 'chuyen-de-web-2');
         $user_id = 25;
@@ -199,7 +199,7 @@ class WhishlistModelTest extends TestCase
         $homeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
-    public function testinsertWhishlistProductIdNullOne()
+    public function testInsertWhishlistProductIdNullOne()
     {
         $pro_id = null;
         $user_id = 25;
@@ -210,7 +210,7 @@ class WhishlistModelTest extends TestCase
         $homeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
-    public function testinsertWhishlistProductIdNullTwo()
+    public function testInsertWhishlistProductIdNullTwo()
     {
         $pro_id = md5(null . 'chuyen-de-web-2');
         $user_id = 25;
@@ -221,7 +221,7 @@ class WhishlistModelTest extends TestCase
         $homeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
-    public function testinsertWhishlistProductIdStringValueNumber()
+    public function testInsertWhishlistProductIdStringValueNumber()
     {
         $pro_id = md5('92' . 'chuyen-de-web-2');
         $user_id = 25;
@@ -232,7 +232,7 @@ class WhishlistModelTest extends TestCase
         $homeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
-    public function testinsertWhishlistProductIdNegative()
+    public function testInsertWhishlistProductIdNegative()
     {
         $pro_id = md5(-90 . 'chuyen-de-web-2');
         $user_id = 25;
@@ -243,7 +243,7 @@ class WhishlistModelTest extends TestCase
         $homeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
-    public function testinsertWhishlistProductIdArray()
+    public function testInsertWhishlistProductIdArray()
     {
         $pro_id = ['pro_id' => '90'];
         $user_id = 25;
@@ -255,7 +255,7 @@ class WhishlistModelTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    public function testinsertWhishlistUserIdNotExist()
+    public function testInsertWhishlistUserIdNotExist()
     {
         $pro_id = md5(90 . 'chuyen-de-web-2');
         $user_id = 21231235;
@@ -266,7 +266,7 @@ class WhishlistModelTest extends TestCase
         $homeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
-    public function testinsertWhishlistUserIdString()
+    public function testInsertWhishlistUserIdString()
     {
         $pro_id = md5('asdasd' . 'chuyen-de-web-2');
         $user_id = 25;
@@ -277,7 +277,7 @@ class WhishlistModelTest extends TestCase
         $homeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
-    public function testinsertWhishlistUserIdEmptyOne()
+    public function testInsertWhishlistUserIdEmptyOne()
     {
         $pro_id = md5('' . 'chuyen-de-web-2');
         $user_id = 25;
@@ -288,7 +288,7 @@ class WhishlistModelTest extends TestCase
         $homeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
-    public function testinsertWhishlistUserIdEmptyTwo()
+    public function testInsertWhishlistUserIdEmptyTwo()
     {
         $pro_id = '';
         $user_id = 25;
@@ -299,7 +299,7 @@ class WhishlistModelTest extends TestCase
         $homeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
-    public function testinsertWhishlistUserIdObject()
+    public function testInsertWhishlistUserIdObject()
     {
         $pro_id = new stdClass();
         $user_id = 25;
@@ -310,7 +310,7 @@ class WhishlistModelTest extends TestCase
         $homeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
-    public function testinsertWhishlistUserIdBoolOne()
+    public function testInsertWhishlistUserIdBoolOne()
     {
         $pro_id = true;
         $user_id = 25;
@@ -321,7 +321,7 @@ class WhishlistModelTest extends TestCase
         $homeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
-    public function testinsertWhishlistUserIdBoolTwo()
+    public function testInsertWhishlistUserIdBoolTwo()
     {
         $pro_id = md5(true . 'chuyen-de-web-2');
         $user_id = 25;
@@ -332,7 +332,7 @@ class WhishlistModelTest extends TestCase
         $homeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
-    public function testinsertWhishlistUserIdDouble()
+    public function testInsertWhishlistUserIdDouble()
     {
         $pro_id = md5(92.00000000 . 'chuyen-de-web-2');
         $user_id = 25;
@@ -343,7 +343,7 @@ class WhishlistModelTest extends TestCase
         $homeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
-    public function testinsertWhishlistUserIdNullOne()
+    public function testInsertWhishlistUserIdNullOne()
     {
         $pro_id = null;
         $user_id = 25;
@@ -354,7 +354,7 @@ class WhishlistModelTest extends TestCase
         $homeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
-    public function testinsertWhishlistUserIdNullTwo()
+    public function testInsertWhishlistUserIdNullTwo()
     {
         $pro_id = md5(null . 'chuyen-de-web-2');
         $user_id = 25;
@@ -365,7 +365,7 @@ class WhishlistModelTest extends TestCase
         $homeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
-    public function testinsertWhishlistUserIdStringValueNumber()
+    public function testInsertWhishlistUserIdStringValueNumber()
     {
         $pro_id = md5('92' . 'chuyen-de-web-2');
         $user_id = 25;
@@ -376,7 +376,7 @@ class WhishlistModelTest extends TestCase
         $homeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
-    public function testinsertWhishlistUserIdNegative()
+    public function testInsertWhishlistUserIdNegative()
     {
         $pro_id = md5(-90 . 'chuyen-de-web-2');
         $user_id = 25;
@@ -387,7 +387,7 @@ class WhishlistModelTest extends TestCase
         $homeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
-    public function testinsertWhishlistUserIdArray()
+    public function testInsertWhishlistUserIdArray()
     {
         $pro_id = ['pro_id' => '90'];
         $user_id = 25;
