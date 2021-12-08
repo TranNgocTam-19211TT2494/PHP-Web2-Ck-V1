@@ -9,8 +9,16 @@ $noti = 0;
 //$products = $productModel->getProducts();
 if (!empty($_SESSION["lgUserID"])) {
     if (!empty($_GET['id'])) {
-        $inserWhishlist = $productModel->insertWhishList($_GET['id'], $_SESSION['lgUserID']);
-        $noti = 1;
+        $allProducts =  $productModel->getProducts();
+        foreach ($allProducts as $value) {
+            if(md5($value['id'].'chuyen-de-web-2') ==  $_GET['id']){
+                $inserWhishlist = $productModel->insertWhishList($_GET['id'], $_SESSION['lgUserID']);
+                $noti = 1;
+            }else{
+                $noti = 3;
+            }
+        }
+      
     }
 } else {
     $noti = 2;
@@ -54,7 +62,8 @@ if (!isset($_GET['page'])) {
             <div class="row product_inner_row">
 
                 <div class="col-lg-9">
-                    <?php if (isset($noti) && $noti == 1) { ?>
+                    <?php if(isset($noti)){?>
+                    <?php if ($noti == 1) { ?>
                     <div class="alert alert-success" role="alert">
                         Thêm vào danh sách thành công.
                     </div>
@@ -62,7 +71,11 @@ if (!isset($_GET['page'])) {
                     <div class="alert alert-success" role="alert">
                         Bạn cần phải đăng nhập
                     </div>
-                    <?php } ?>
+                    <?php }else if ($noti == 3) { ?>
+                    <div class="alert alert-success" role="alert">
+                        Thêm vào danh sách không thành công
+                    </div>
+                    <?php } }?>
                     <div class="row m0 product_task_bar">
                         <div class="product_task_inner">
                             <div class="float-left">
@@ -168,7 +181,8 @@ if (!isset($_GET['page'])) {
                                 </div>
                                 <div class="cake_text">
                                     <h4>$<?= $product['price']?></h4>
-                                    <h3><a href="product-details.php?id=<?=$product['id'] ?>"><?= $product['name']?></a></h3>
+                                    <h3><a href="product-details.php?id=<?=$product['id'] ?>"><?= $product['name']?></a>
+                                    </h3>
                                     <a class="pest_btn" href="cart.php?id=<?= $product['id'] ?>"
                                         onclick="return insertCart(<?= $product['id'] ?>)">Thêm vào giỏ hàng</a>
                                 </div>
@@ -281,7 +295,8 @@ if (!isset($_GET['page'])) {
                                     <?php for ($i = 1; $i <= $number_of_pages; $i++) { ?>
 
                                     <li class="page-item ">
-                                        <a class="page-link <?php if(isset($_GET['page']) && $_GET['page'] == $i) {echo 'active';} ?>" href="shop.php?page=<?php echo $i ?>"><?php echo $i ?></a>
+                                        <a class="page-link <?php if(isset($_GET['page']) && $_GET['page'] == $i) {echo 'active';} ?>"
+                                            href="shop.php?page=<?php echo $i ?>"><?php echo $i ?></a>
 
                                     </li>
 
