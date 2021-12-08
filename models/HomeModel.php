@@ -107,6 +107,12 @@ class HomeModel extends BaseModel
     //Update password cho user: 
     public function UpdatePassword($password, $email)
     {
+        if(empty($email) || empty($password)) {
+            return "name is empty";
+        } elseif (is_numeric($email) || is_array($email) || is_array($password) || is_object($email) || is_object($password)
+                  || is_bool($email) || is_bool($password)) {
+            return "Enter the wrong field name";
+        } 
         $sql = 'UPDATE users SET 
         password = "' . md5($password) . '"
         WHERE email = "' . $email . '" ';

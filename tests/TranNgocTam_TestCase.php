@@ -310,4 +310,102 @@ class TranNgocTam_TestCase extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
+    // ---------------------- FUNCTION UPDATE PASSWORD --------------- // ?? 8 Test case
+    // Test Update Ok:
+    public function testUpdatePasswordOk() {
+        $factory = new FactoryPattent();
+        $HomeModel = $factory->make('home');
+        $HomeModel->startTransaction();
+        $update = $HomeModel->UpdatePassword("111111", "pemesi4727@simdpi.com");
+
+        $expected = "Tam23032001";
+        
+        $actual = $HomeModel->login("Tam23032001","111111");
+        //print_r($actual); die();
+        $HomeModel->rollback();
+
+        $this->assertEquals($expected, $actual[0]['username']);
+    }
+    // Test Update Not Good:
+    public function testUpdatePasswordNg() {
+        $factory = new FactoryPattent();
+        $HomeModel = $factory->make('home');
+        $HomeModel->startTransaction();
+        $actual = $HomeModel->UpdatePassword("1", "pemesi4727d@simdpi.com");
+        //print_r($actual); die();
+        $HomeModel->rollback();
+        if($actual == 1) {
+            return $this->assertTrue(true);
+        } else {
+            return $this->assertTrue(false);
+        }
+    }
+    // Test Update Not Empty:
+    public function testUpdatePasswordEmpty() {
+        $factory = new FactoryPattent();
+        $HomeModel = $factory->make('home');
+        $expected = "name is empty";
+        $HomeModel->startTransaction();
+        $actual = $HomeModel->UpdatePassword("", "");
+        //print_r($actual); die();
+        $HomeModel->rollback();
+        $this->assertEquals($expected, $actual);
+    }
+    // Test Update Not NULL:
+    public function testUpdatePasswordNull() {
+        $factory = new FactoryPattent();
+        $HomeModel = $factory->make('home');
+        $expected = "name is empty";
+        $HomeModel->startTransaction();
+        $actual = $HomeModel->UpdatePassword(null, null);
+        //print_r($actual); die();
+        $HomeModel->rollback();
+        $this->assertEquals($expected, $actual);
+    }
+    // Test Update Not Numeric:
+    public function testUpdatePasswordNumeric() {
+        $factory = new FactoryPattent();
+        $HomeModel = $factory->make('home');
+        $expected = "Enter the wrong field name";
+        $HomeModel->startTransaction();
+        $actual = $HomeModel->UpdatePassword("11111", 100);
+        //print_r($actual); die();
+        $HomeModel->rollback();
+        $this->assertEquals($expected, $actual);
+    }
+    // Test Update Not Array:
+    public function testUpdatePasswordArray() {
+        $factory = new FactoryPattent();
+        $HomeModel = $factory->make('home');
+        $expected = "Enter the wrong field name";
+        $HomeModel->startTransaction();
+        $actual = $HomeModel->UpdatePassword(['a','b'], ['a','b']);
+        //print_r($actual); die();
+        $HomeModel->rollback();
+        $this->assertEquals($expected, $actual);
+    }
+    // Test Update Not Object:
+    public function testUpdatePasswordObject() {
+        $factory = new FactoryPattent();
+        $HomeModel = $factory->make('home');
+        $obj = new HomeModel();
+        $expected = "Enter the wrong field name";
+        $HomeModel->startTransaction();
+        $actual = $HomeModel->UpdatePassword(['a','b'], $obj);
+        //print_r($actual); die();
+        $HomeModel->rollback();
+        $this->assertEquals($expected, $actual);
+    }
+    // Test Update Not Boolean:
+    public function testUpdatePasswordBoolean() {
+        $factory = new FactoryPattent();
+        $HomeModel = $factory->make('home');
+        $obj = new HomeModel();
+        $expected = "Enter the wrong field name";
+        $HomeModel->startTransaction();
+        $actual = $HomeModel->UpdatePassword(true, true);
+        //print_r($actual); die();
+        $HomeModel->rollback();
+        $this->assertEquals($expected, $actual);
+    }
 }
