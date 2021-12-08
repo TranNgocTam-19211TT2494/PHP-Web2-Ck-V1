@@ -42,10 +42,10 @@ class HomeModel extends BaseModel
         ];
         $sql1 = "INSERT INTO `webbanhkem`.`zipcode` (`zipcode`, `user_id` ,`discount`,`status`)
          VALUES (" .
-         "'" . $this->getToken(8) 
-         . "','" . $lastUserId
-         . "','" . 25
-         . "','" . 1 . "')";
+            "'" . $this->getToken(8)
+            . "','" . $lastUserId
+            . "','" . 25
+            . "','" . 1 . "')";
         $zipcode = $this->insert($sql1);
 
         return $user;
@@ -82,7 +82,8 @@ class HomeModel extends BaseModel
         return $user;
     }
     //Update password cho user: 
-    public function UpdatePassword($password , $email) {
+    public function UpdatePassword($password, $email)
+    {
         $sql = 'UPDATE users SET 
         password = "' . md5($password) . '"
         WHERE email = "' . $email . '" ';
@@ -96,22 +97,21 @@ class HomeModel extends BaseModel
         return $this->select($sql);
     }
     // Kiểm tra mật khẩu cũ:
-    public function checkOldPassword($name , $oldPassword)
+    public function checkOldPassword($name, $oldPassword)
     {
         $sql = 'SELECT * FROM users WHERE username = "' . $name . '" AND password = "' . md5($oldPassword) . '"';
         return $this->select($sql);
     }
     // Change Password:
-    public function changePassword($name , $newPassword)
-    {   
+    public function changePassword($name, $newPassword)
+    {
         $md5Password = md5($newPassword);
         $sql = 'UPDATE users SET 
-        password = "' .$md5Password . '"
+        password = "' . $md5Password . '"
         WHERE username = "' . $name . '" ';
 
         $user = $this->update($sql);
         return $user;
-        
     }
     // Lay id
     public function getid()
@@ -143,7 +143,7 @@ class HomeModel extends BaseModel
     // Mã khuyến mãi:
     public function getCouponByID($id)
     {
-        $sql = 'SELECT  zipcode.status,zipcode.discount,zipcode.created_at,zipcode.zipcode FROM zipcode , users WHERE zipcode.user_id = users.id AND zipcode.user_id = '.$id;
+        $sql = 'SELECT  zipcode.status,zipcode.discount,zipcode.created_at,zipcode.zipcode FROM zipcode , users WHERE zipcode.user_id = users.id AND zipcode.user_id = ' . $id;
         $coupon = $this->select($sql);
         return $coupon;
     }
@@ -314,34 +314,38 @@ class HomeModel extends BaseModel
     {
         $allProduct = $this->getProducts();
         foreach ($allProduct as  $value) {
-           if(md5($value['id'].'chuyen-de-web-2') == $paged){
-            $sql = 'SELECT * FROM `products`  WHERE id =  ' . $value['id'] . ' ';
-            $product = $this->select($sql);
-            return $product;
-           }
+            if (md5($value['id'] . 'chuyen-de-web-2') == $paged) {
+                $sql = 'SELECT * FROM `products`  WHERE id =  ' . $value['id'] . ' ';
+                $product = $this->select($sql);
+                return $product;
+            }
         }
-      
     }
 
     // Các sản phẩm có liên quan thuộc danh mục:
     public function getProductManufactures($paged, $ManuID)
     {
-        $sql = 'Select * from products where id <> ' . $paged . '  and manu_id = ' . $ManuID . ' LIMIT 4';
-        $products = $this->select($sql);
-        return $products;
+        $allProduct = $this->getProducts();
+        foreach ($allProduct as  $value) {
+            if (md5($value['id'] . 'chuyen-de-web-2') == $paged) {
+                $sql = 'Select * from products where id <> ' . $value['id'] . '  and manu_id = ' . $ManuID . ' LIMIT 4';
+                $products = $this->select($sql);
+                return $products;
+            }
+        }
     }
     // ------------------ Giỏ hàng -------------------- //
     // Xem đơn hàng của khách hàng:
     public function getCheckoutsByUserId($userID)
     {
-        $sql = 'SELECT checkouts.id , checkouts.addedDate, checkouts.address ,checkouts.phone , checkouts.sum,checkouts.status FROM `checkouts` ,users WHERE checkouts.user_id = users.id AND checkouts.user_id = '.$userID;
+        $sql = 'SELECT checkouts.id , checkouts.addedDate, checkouts.address ,checkouts.phone , checkouts.sum,checkouts.status FROM `checkouts` ,users WHERE checkouts.user_id = users.id AND checkouts.user_id = ' . $userID;
         $order = $this->select($sql);
         return $order;
     }
     // Lấy sản phẩm trong giỏ hàng:
     public function getOrderItemById($id)
     {
-        $sql = 'SELECT carts.pro_id , products.name , products.price, carts.quantity FROM carts INNER JOIN products ON carts.pro_id = products.id WHERE carts.order_id = '.$id;
+        $sql = 'SELECT carts.pro_id , products.name , products.price, carts.quantity FROM carts INNER JOIN products ON carts.pro_id = products.id WHERE carts.order_id = ' . $id;
         $user = $this->select($sql);
         return $user;
     }
@@ -382,7 +386,7 @@ class HomeModel extends BaseModel
     }
     public function getCouponByZipcode($coupon)
     {
-        
+
         $sql = "SELECT zipcode.zipcode , zipcode.discount , zipcode.user_id FROM zipcode WHERE zipcode.zipcode = '$coupon'";
         $zipcode = $this->select($sql);
         return $zipcode;
@@ -412,7 +416,7 @@ class HomeModel extends BaseModel
                 $sort = 'ASC';
             }
         }
-        $sql = "SELECT * FROM products WHERE name LIKE '%$search%' OR description LIKE '%$search%' ORDER BY products.price " .$sort;
+        $sql = "SELECT * FROM products WHERE name LIKE '%$search%' OR description LIKE '%$search%' ORDER BY products.price " . $sort;
         $searchResult = $this->select($sql);
         return $searchResult;
     }
@@ -428,7 +432,7 @@ class HomeModel extends BaseModel
             }
         }
         $sql = "SELECT * FROM products,manufactures WHERE products.manu_id=manufactures.manu_id 
-        AND manufactures.manu_name like '%$search%' ORDER BY products.price " .$sort;
+        AND manufactures.manu_name like '%$search%' ORDER BY products.price " . $sort;
         $searchResult = $this->select($sql);
         return $searchResult;
     }
@@ -442,7 +446,7 @@ class HomeModel extends BaseModel
         $sql = $sql . ' LIMIT ' . $star . ',' . $num;
         return $this->select($sql);
     }
-    public function paginationProtype($typeid, $page,$num)
+    public function paginationProtype($typeid, $page, $num)
     {
         if ($page < 2) {
             $star = 0;
@@ -460,7 +464,59 @@ class HomeModel extends BaseModel
         $sql = $sql . ' LIMIT ' . $star . ',' . $num;
         return $this->select($sql);
     }
-    public function paginationManu($manuid, $page,$num)
+
+
+    // ------------------------- Comment --------------------//
+
+    public function getAllCommentById($id)
+    {
+        // var_dump($input['name']).die();
+        $comments = 'SELECT id FROM products';
+        $comment = $this->select($comments);
+        $insert_comment = null;
+        foreach ($comment as $commen) {
+            $md5 = md5($commen['id'] . 'chuyen-de-web-2');
+            if ($md5 == $id) {
+                $sql = 'SELECT * FROM `comment` WHERE `id_product` = ' . $commen['id'];
+                $insert_comment = $this->select($sql);
+                return $insert_comment;
+            }
+        }
+        // $sql = 'SELECT * FROM `comment` WHERE `id_product` = ' . $id;
+        // $comment = $this->select($sql);
+    }
+    public function getNameUserByComment($lgUserID)
+    {
+        $sql = 'SELECT users.username FROM `comment`, `users` WHERE comment.user_id = users.id AND comment.user_id = ' . $lgUserID;
+        $comment = $this->select($sql);
+        return $comment;
+    }
+    public function insertComment($lgUserID, $id, $input)
+    {
+        $comments = 'SELECT id FROM products';
+        $comment = $this->select($comments);
+        $insert_comment = null;
+        foreach ($comment as $commen) {
+            $md5 = md5($commen['id'] . 'chuyen-de-web-2');
+            var_dump($md5);
+            if ($md5 == $id) {
+                $sql = "INSERT INTO `comment`(`user_id`, `id_product`, `username`, `content`) VALUES ('$lgUserID'," . "'" . $commen['id'] . "', " . "'" . $input['name'] . "'," . "'" . $input['content'] . "')";
+                $insert_comment = $this->insert($sql);
+            }
+        }
+        return $insert_comment;
+    }
+    public function updateComment($lgUserName, $input)
+    {
+
+        $sql = "UPDATE `comment` SET `name_replide`='$lgUserName', `replied_comment`='Cảm ơn bạn đã đánh giá.', `update_at` = now() WHERE id = " . $input['id_comment'];
+        
+        $insert_comment = $this->update($sql);
+        // var_dump($insert_comment).die();
+        return $insert_comment;
+    }
+    // ------------------------- panigation --------------------//
+    public function paginationManu($manuid, $page, $num)
     {
         if ($page < 2) {
             $star = 0;
