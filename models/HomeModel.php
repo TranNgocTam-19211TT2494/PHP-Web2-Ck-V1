@@ -470,16 +470,23 @@ class HomeModel extends BaseModel
     public function searchProduct($search = null)
     {
         if (!empty($search)) {
+            if(is_array($search) || is_object($search)){
+                return false;
+            }
             $sql = 'SELECT * FROM products WHERE name LIKE "%' . mysqli_real_escape_string(self::$_connection, $search) . '%"';
             $searchResult = $this->select($sql);
             return $searchResult;
         }else{
+            return false;
         }
     }
     // Hàm tìm kiếm theo tên của category(manufacture)
     public function searchCategories($search)
     {
         if (!empty($search)) {
+            if(is_array($search) || is_object($search)){
+                return false;
+            }
             $sql = 'SELECT * FROM products,manufactures WHERE products.manu_id=manufactures.manu_id 
             AND manufactures.manu_name LIKE "%' . mysqli_real_escape_string(self::$_connection, $search) . '%"';
             $searchResult = $this->select($sql);
