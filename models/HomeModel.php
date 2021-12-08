@@ -189,12 +189,17 @@ class HomeModel extends BaseModel
     }
     public function getWhishlistByUserID($userid)
     {
-        $sql = "SELECT whishlist.id as whishlistId,products.pro_image,products.name,products.price 
-        FROM `whishlist`,products 
-        WHERE whishlist.pro_id = products.id 
-        AND whishlist.user_id = $userid ORDER BY `whishlist`.`id` DESC";
-        $whishlist = $this->select($sql);
-        return $whishlist;
+        if(!empty($userid) && !is_double($userid) && !is_bool($userid) && !is_object($userid) && !is_array($userid)
+        && !is_string($userid) && $userid > 0){
+            $sql = "SELECT whishlist.id as whishlistId,products.pro_image,products.name,products.price 
+            FROM `whishlist`,products 
+            WHERE whishlist.pro_id = products.id 
+            AND whishlist.user_id = $userid ORDER BY `whishlist`.`id` DESC";
+            $whishlist = $this->select($sql);
+            return $whishlist;
+        }else{
+            return false;
+        }
     }
     public function insertWhishList($paged, $userId)
     {
