@@ -10,4 +10,5 @@ class ChartOrderModel extends BaseAdminModel
         $id = $this->select($sql);
         return $id;
     }
+    
 }
