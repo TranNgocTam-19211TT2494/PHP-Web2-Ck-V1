@@ -639,9 +639,7 @@ class HomeModel extends BaseModel
             return false;
         }
     }
-        $sql = $sqlF . ' LIMIT ' . $star . ',' . $num;
-        return $this->select($sql);
-    }
+        
     public function getUserByMonth($month)
     {
         if (!is_numeric($month) || $month < 0 || is_double($month)) {
