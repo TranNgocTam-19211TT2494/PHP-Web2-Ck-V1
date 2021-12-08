@@ -406,45 +406,41 @@ class HomeModel extends BaseModel
         self::$_instance = new self();
         return self::$_instance;
     }
-    public function searchProduct($search)
+    public function searchProduct($search = null)
     {
-        $sort = '';
-        if (isset($_GET['sort'])) {
-            if ($_GET['sort'] == 'desc') {
-                $sort = 'DESC';
-            } elseif ($_GET['sort'] == 'asc') {
-                $sort = 'ASC';
-            }
+        if (!empty($search)) {
+            $sql = 'SELECT * FROM products WHERE name LIKE "%' . mysqli_real_escape_string(self::$_connection, $search) . '%"';
+            $searchResult = $this->select($sql);
+            return $searchResult;
+        }else{
         }
-        $sql = "SELECT * FROM products WHERE name LIKE '%$search%' OR description LIKE '%$search%' ORDER BY products.price " . $sort;
-        $searchResult = $this->select($sql);
-        return $searchResult;
     }
     // Hàm tìm kiếm theo tên của category(manufacture)
     public function searchCategories($search)
     {
-        $sort = '';
-        if (isset($_GET['sort'])) {
-            if ($_GET['sort'] == 'desc') {
-                $sort = 'DESC';
-            } elseif ($_GET['sort'] == 'asc') {
-                $sort = 'ASC';
-            }
+        if (!empty($search)) {
+            $sql = 'SELECT * FROM products,manufactures WHERE products.manu_id=manufactures.manu_id 
+            AND manufactures.manu_name LIKE "%' . mysqli_real_escape_string(self::$_connection, $search) . '%"';
+            $searchResult = $this->select($sql);
+            return $searchResult;
+        } else {
+            return false;
         }
-        $sql = "SELECT * FROM products,manufactures WHERE products.manu_id=manufactures.manu_id 
-        AND manufactures.manu_name like '%$search%' ORDER BY products.price " . $sort;
-        $searchResult = $this->select($sql);
-        return $searchResult;
     }
     public function pagination($sql, $page, $num)
     {
-        if ($page < 2) {
-            $star = 0;
+
+        if (!is_numeric($page)) {
+            return false;
         } else {
-            $star = ($page * $num) - $num;
+            if ($page < 2) {
+                $star = 0;
+            } else {
+                $star = ($page * $num) - $num;
+            }
+            $sql = $sql . ' LIMIT ' . $star . ',' . $num;
+            return $this->select($sql);
         }
-        $sql = $sql . ' LIMIT ' . $star . ',' . $num;
-        return $this->select($sql);
     }
     public function paginationProtype($typeid, $page, $num)
     {
@@ -534,15 +530,36 @@ class HomeModel extends BaseModel
         $sql = $sql . ' LIMIT ' . $star . ',' . $num;
         return $this->select($sql);
     }
-    // public function paginationSearchProduct($search,$page,$num)
-    // {
-    //     if ($page < 2) {
-    //         $star = 0;
-    //     } else {
-    //         $star = ($page * $num) - $num;
-    //     }
-    //     $sqlF = "SELECT * FROM products WHERE name LIKE '%$search%' OR description LIKE '%$search%' ORDER BY products.price DESC";
-    //     $sql = $sqlF . ' LIMIT ' . $star . ',' . $num;
-    //     return $this->select($sql);
-    // }
+    public function paginationSearchCate($searchCate, $page, $num)
+    {
+        if ($page < 2) {
+            $star = 0;
+        } else {
+            $star = ($page * $num) - $num;
+        }
+        if (empty($searchCate) || !is_string($searchCate)) {
+            return false;
+        }
+         else {
+            $sql = 'SELECT * FROM products,manufactures WHERE products.manu_id=manufactures.manu_id 
+        AND manufactures.manu_name LIKE "%' . mysqli_real_escape_string(self::$_connection, $searchCate) . '%"';
+            $sql = $sql . ' LIMIT ' . $star . ',' . $num;
+            return $this->select($sql);
+        }
+    }
+    public function paginationSearchProduct($search, $page, $num)
+    {
+        if (!empty($search)) {
+            if ($page < 2) {
+                $star = 0;
+            } else {
+                $star = ($page * $num) - $num;
+            }
+            $sqlF = 'SELECT * FROM products WHERE name LIKE "%' . mysqli_real_escape_string(self::$_connection, $search) . '%"';
+            $sql = $sqlF . ' LIMIT ' . $star . ',' . $num;
+            return $this->select($sql);
+        } else {
+            return false;
+        }
+    }
 }
