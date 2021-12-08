@@ -539,6 +539,28 @@ class HomeModel extends BaseModel
         $sql = $sql . ' LIMIT ' . $star . ',' . $num;
         return $this->select($sql);
     }
+    public function getAllOrderByMonth($month)
+    {
+        if(!empty($month) && !is_string($month) && !is_object($month) && !is_array($month) 
+        && is_double($month) && $month > 0 && $month <= 12){
+            $sql = "SELECT * 
+            FROM checkouts  
+            WHERE MONTH(addedDate) = $month;";
+            $id = $this->select($sql);
+            return $id;
+        }else{
+            return false;
+        }
+        
+    }
+    public static function startTransaction()
+    {
+        self::$_connection->begin_transaction();
+    }
+    public static function rollback()
+    {
+        self::$_connection->rollback();
+    }
     // public function paginationSearchProduct($search,$page,$num)
     // {
     //     if ($page < 2) {
