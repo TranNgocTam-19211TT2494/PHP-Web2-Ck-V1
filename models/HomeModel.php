@@ -435,7 +435,7 @@ class HomeModel extends BaseModel
             return 'Invalid';
         } else {
             $sql = "Insert into carts (order_id,pro_id,quantity) values($OrderID,$ProductID,$Quantity)";
-            var_dump($sql);
+            //var_dump($sql);
             $product = $this->insert($sql);
             return $product;
         }

@@ -10,7 +10,8 @@ cacheResult ="false"
 <!-- <file>./tests/UserModelTest.php</file>				 -->
 <file>./tests/TestPHPUnitTien.php</file>
 <file>./tests/TranNgocTam_TestCase.php</file>
-<file>./tests/TrangPHPUnitTest.php</file>					
+<file>./tests/TrangPHPUnitTest.php</file>
+</testsuite >					
 </testsuites>				
 <filter>				
 <whitelist processUncoveredFilesFromWhitelist="true">				
