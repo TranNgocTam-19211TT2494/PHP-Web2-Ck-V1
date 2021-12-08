@@ -128,6 +128,12 @@ class HomeModel extends BaseModel
     // Kiểm tra mật khẩu cũ:
     public function checkOldPassword($name, $oldPassword)
     {
+        if(empty($name) || empty($oldPassword)) {
+            return "name is empty";
+        } elseif (is_array($name) || is_array($oldPassword) || is_object($name) || is_object($oldPassword) || 
+                    is_bool($name) || is_bool($oldPassword) || is_numeric($name)) {
+            return "enter the wrong field";
+        }
         $sql = 'SELECT * FROM users WHERE username = "' . $name . '" AND password = "' . md5($oldPassword) . '"';
         return $this->select($sql);
     }

@@ -408,4 +408,120 @@ class TranNgocTam_TestCase extends TestCase
         $HomeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
+
+    // ---------------------- FUNCTION CHECK OLD PASSWORD --------------- // ?? 9 Test case
+    // Test Update Ok:
+    public function testCheckOldPasswordOk() {
+        $factory = new FactoryPattent();
+        $HomeModel = $factory->make('home');
+        $expected = "Tam23032001";
+        $HomeModel->startTransaction();
+        $actual = $HomeModel->checkOldPassword("Tam23032001", "111111");
+        //print_r($actual); die();
+        $HomeModel->rollback();
+        $this->assertEquals($expected, $actual[0]['username']);
+    }
+    // Test Update Not Good:
+    public function testCheckOldPasswordNg() {
+        $factory = new FactoryPattent();
+        $HomeModel = $factory->make('home');
+        $HomeModel->startTransaction();
+        $actual = $HomeModel->checkOldPassword("Tam", "111111");
+        //print_r($actual); die();
+        $HomeModel->rollback();
+        if(empty($actual)) {
+            return $this->assertTrue(true);
+        } else {
+            return $this->assertTrue(false);
+        }
+    }
+    // Test Update Ok:
+    public function testCheckOldPasswordEmpty() {
+        $factory = new FactoryPattent();
+        $HomeModel = $factory->make('home');
+        $expected = "name is empty";
+        $HomeModel->startTransaction();
+        $actual = $HomeModel->checkOldPassword("Tam23032001", "");
+        //print_r($actual); die();
+        $HomeModel->rollback();
+        $this->assertEquals($expected, $actual);
+    }
+    //Test Check password null:
+    public function testCheckOldPasswordNull() {
+        $factory = new FactoryPattent();
+        $HomeModel = $factory->make('home');
+        $expected = "name is empty";
+        $HomeModel->startTransaction();
+        $actual = $HomeModel->checkOldPassword("Tam23032001", NULL);
+        //print_r($actual); die();
+        $HomeModel->rollback();
+        $this->assertEquals($expected, $actual);
+    }
+    //Test Check password array:
+    public function testCheckOldPasswordArray() {
+        $factory = new FactoryPattent();
+        $HomeModel = $factory->make('home');
+        $expected = "enter the wrong field";
+        $HomeModel->startTransaction();
+        $actual = $HomeModel->checkOldPassword("Tam23032001", ['a','b']);
+        //print_r($actual); die();
+        $HomeModel->rollback();
+        $this->assertEquals($expected, $actual);
+    }
+    //Test Check password object:
+    public function testCheckOldPasswordOject() {
+        $factory = new FactoryPattent();
+        $HomeModel = $factory->make('home');
+        $obj = new HomeModel();
+        $expected = "enter the wrong field";
+        $HomeModel->startTransaction();
+        $actual = $HomeModel->checkOldPassword("Tam23032001", $obj);
+        //print_r($actual); die();
+        $HomeModel->rollback();
+        $this->assertEquals($expected, $actual);
+    }
+    //Test Check password bool:
+    public function testCheckOldPasswordBoolean() {
+        $factory = new FactoryPattent();
+        $HomeModel = $factory->make('home');
+        $expected = "enter the wrong field";
+        $HomeModel->startTransaction();
+        $actual = $HomeModel->checkOldPassword("Tam23032001", true);
+        //print_r($actual); die();
+        $HomeModel->rollback();
+        $this->assertEquals($expected, $actual);
+    }
+    //Test Check password number:
+    public function testCheckOldPasswordNumeric() {
+        $factory = new FactoryPattent();
+        $HomeModel = $factory->make('home');
+        $expected = "enter the wrong field";
+        $HomeModel->startTransaction();
+        $actual = $HomeModel->checkOldPassword(1000, "111111");
+        //print_r($actual); die();
+        $HomeModel->rollback();
+        $this->assertEquals($expected, $actual);
+    }
+    //Test Check password double:
+    public function testCheckOldPasswordDouble() {
+        $factory = new FactoryPattent();
+        $HomeModel = $factory->make('home');
+        $expected = "enter the wrong field";
+        $HomeModel->startTransaction();
+        $actual = $HomeModel->checkOldPassword(9.999999, "111111");
+        //print_r($actual); die();
+        $HomeModel->rollback();
+        $this->assertEquals($expected, $actual);
+    }
+    //Test Check MoreSpace:
+    public function testCheckOldPasswordMoreSpace() {
+        $factory = new FactoryPattent();
+        $HomeModel = $factory->make('home');
+        $expected = [];
+        $HomeModel->startTransaction();
+        $actual = $HomeModel->checkOldPassword("Tam23032001", "   111111");
+        //print_r($actual); die();
+        $HomeModel->rollback();
+        $this->assertEquals($expected, $actual);
+    }
 }
