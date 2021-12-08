@@ -95,6 +95,11 @@ class HomeModel extends BaseModel
     //Forget Password
     public function checkMail($email)
     {
+        if(empty($email)) {
+            return "Not Empty";
+        } elseif (is_numeric($email) || is_array($email) || is_object($email) || is_bool($email)) {
+            return "The field you entered is wrong";
+        }
         $sql = 'SELECT * FROM users WHERE email = "' . $email . '"';
         $user = $this->select($sql);
         return $user;

@@ -215,5 +215,99 @@ class TranNgocTam_TestCase extends TestCase
         $HomeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
-    
+
+    // ---------------------- FUNCTION CHECK MAIL --------------- // ?? 8 Test case
+    // Test check mail Ok
+    public function testCheckMailOk() {
+        $factory = new FactoryPattent();
+        $HomeModel = $factory->make('home');
+        $expected = 'Tam23032001';
+        $HomeModel->startTransaction();
+        $actual = $HomeModel->checkMail("pemesi4727@simdpi.com");
+        //print_r($actual); die();
+        $HomeModel->rollback();
+        $this->assertEquals($expected, $actual[0]['username']);
+    }
+    // Test check mail Not good
+    public function testCheckMailNg() {
+        $factory = new FactoryPattent();
+        $HomeModel = $factory->make('home');
+        $HomeModel->startTransaction();
+        $actual = $HomeModel->checkMail("pemesi472dsad7@simdpi.com");
+        //print_r($actual); die();
+        $HomeModel->rollback();
+        if(empty($actual)) {
+            return $this->assertTrue(true);
+        } else {
+            return $this->assertTrue(false);
+        }
+    }
+    // Test check mail Not good
+    public function testCheckMailEmpty() {
+        $factory = new FactoryPattent();
+        $HomeModel = $factory->make('home');
+        $expected = "Not Empty";
+        $HomeModel->startTransaction();
+        $actual = $HomeModel->checkMail('');
+        //print_r($actual); die();
+        $HomeModel->rollback();
+        $this->assertEquals($expected, $actual);
+    }
+    // Test check mail Not Null
+    public function testCheckMailNull() {
+        $factory = new FactoryPattent();
+        $HomeModel = $factory->make('home');
+        $expected = "Not Empty";
+        $HomeModel->startTransaction();
+        $actual = $HomeModel->checkMail(NULL);
+        //print_r($actual); die();
+        $HomeModel->rollback();
+        $this->assertEquals($expected, $actual);
+    }
+    // Test check mail Email field is number
+    public function testCheckMailNumeric() {
+        $factory = new FactoryPattent();
+        $HomeModel = $factory->make('home');
+        $expected = "The field you entered is wrong";
+        $HomeModel->startTransaction();
+        $actual = $HomeModel->checkMail(10);
+        //print_r($actual); die();
+        $HomeModel->rollback();
+        $this->assertEquals($expected, $actual);
+    }
+    // Test check mail Email field is array
+    public function testCheckMailArray() {
+        $factory = new FactoryPattent();
+        $HomeModel = $factory->make('home');
+        $expected = "The field you entered is wrong";
+        $HomeModel->startTransaction();
+        $actual = $HomeModel->checkMail(['a','b']);
+        //print_r($actual); die();
+        $HomeModel->rollback();
+        $this->assertEquals($expected, $actual);
+    }
+    // Test check mail Email field is object
+    public function testCheckMailObject() {
+        $factory = new FactoryPattent();
+        $HomeModel = $factory->make('home');
+        $obj = new HomeModel();
+        $expected = "The field you entered is wrong";
+        $HomeModel->startTransaction();
+        $actual = $HomeModel->checkMail($obj);
+        //print_r($actual); die();
+        $HomeModel->rollback();
+        $this->assertEquals($expected, $actual);
+    }
+    // Test check mail Email field is boolean
+    public function testCheckMailBoolean() {
+        $factory = new FactoryPattent();
+        $HomeModel = $factory->make('home');
+        $expected = "The field you entered is wrong";
+        $HomeModel->startTransaction();
+        $actual = $HomeModel->checkMail(true);
+        //print_r($actual); die();
+        $HomeModel->rollback();
+        $this->assertEquals($expected, $actual);
+    }
+
 }
