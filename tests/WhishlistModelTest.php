@@ -97,7 +97,7 @@ class WhishlistModelTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
     //deleteWhishList
-    public function testdeleteWhishlistIdOk()
+    public function testDeleteWhishlistIdOk()
     {
         $id = md5(143 . 'chuyen-de-web-2');
         $homeModel = new HomeModel();
@@ -108,7 +108,7 @@ class WhishlistModelTest extends TestCase
             $this->assertTrue(true);
         }
     }
-    public function testdeleteWhishlistIdNotExist()
+    public function testDeleteWhishlistIdNotExist()
     {
         $id = md5(5646546 . 'chuyen-de-web-2');
         $homeModel = new HomeModel();
@@ -118,7 +118,7 @@ class WhishlistModelTest extends TestCase
         $homeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
-    public function testdeleteWhishlistIdString()
+    public function testDeleteWhishlistIdString()
     {
         $id = md5('asdasd' . 'chuyen-de-web-2');
         $homeModel = new HomeModel();
@@ -128,7 +128,7 @@ class WhishlistModelTest extends TestCase
         $homeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
-    public function testdeleteWhishlistIdEmptyOne()
+    public function testDeleteWhishlistIdEmptyOne()
     {
         $id = md5('' . 'chuyen-de-web-2');
         $homeModel = new HomeModel();
@@ -138,7 +138,7 @@ class WhishlistModelTest extends TestCase
         $homeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
-    public function testdeleteWhishlistIdEmptyTwo()
+    public function testDeleteWhishlistIdEmptyTwo()
     {
         $id = '';
         $homeModel = new HomeModel();
@@ -148,7 +148,7 @@ class WhishlistModelTest extends TestCase
         $homeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
-    public function testdeleteWhishlistIdObject()
+    public function testDeleteWhishlistIdObject()
     {
         $id = new stdClass();
         $homeModel = new HomeModel();
@@ -158,7 +158,7 @@ class WhishlistModelTest extends TestCase
         $homeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
-    public function testdeleteWhishlistIdBoolOne()
+    public function testDeleteWhishlistIdBoolOne()
     {
         $id = true;
         $homeModel = new HomeModel();
@@ -168,7 +168,7 @@ class WhishlistModelTest extends TestCase
         $homeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
-    public function testdeleteWhishlistIdBoolTwo()
+    public function testDeleteWhishlistIdBoolTwo()
     {
         $id = md5(true.'chuyen-de-web-2');
         $homeModel = new HomeModel();
@@ -178,7 +178,7 @@ class WhishlistModelTest extends TestCase
         $homeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
-    public function testdeleteWhishlistIdDouble()
+    public function testDeleteWhishlistIdDouble()
     {
         $id = md5(143.0000000000.'chuyen-de-web-2');
         $homeModel = new HomeModel();
@@ -188,7 +188,7 @@ class WhishlistModelTest extends TestCase
         $homeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
-    public function testdeleteWhishlistIdNullOne()
+    public function testDeleteWhishlistIdNullOne()
     {
         $id = md5(null.'chuyen-de-web-2');
         $homeModel = new HomeModel();
@@ -198,7 +198,7 @@ class WhishlistModelTest extends TestCase
         $homeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
-    public function testdeleteWhishlistIdNullTwo()
+    public function testDeleteWhishlistIdNullTwo()
     {
         $id = null;
         $homeModel = new HomeModel();
@@ -208,7 +208,7 @@ class WhishlistModelTest extends TestCase
         $homeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
-    public function testdeleteWhishlistIdStringValueNumber()
+    public function testDeleteWhishlistIdStringValueNumber()
     {
         $id = md5('143'. 'chuyen-de-web-2');
         $homeModel = new HomeModel();
@@ -218,7 +218,7 @@ class WhishlistModelTest extends TestCase
         $homeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
-    public function testdeleteWhishlistIdNegative()
+    public function testDeleteWhishlistIdNegative()
     {
         $id = md5('-143'. 'chuyen-de-web-2');
         $homeModel = new HomeModel();
@@ -228,7 +228,7 @@ class WhishlistModelTest extends TestCase
         $homeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
-    public function testdeleteWhishlistIdArray()
+    public function testDeleteWhishlistIdArray()
     {
         $id = ['pro_id' => '143'];
         $homeModel = new HomeModel();
