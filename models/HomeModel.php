@@ -203,21 +203,26 @@ class HomeModel extends BaseModel
     }
     public function insertWhishList($paged, $userId)
     {
-        $allProduct = $this->getProducts();
-        foreach ($allProduct as $value) {
-            if (md5($value['id'] . 'chuyen-de-web-2') == $paged) {
-                $sql = "INSERT INTO `webbanhkem`.`whishlist` (`user_id` ,`pro_id`) VALUES (" .
-                    "'" . $userId
-                    . "','" . $value['id'] . "')";
-                $allWhishlist = $this->getWhishlistExist($userId, $value['id']);
-                if (empty($allWhishlist)) {
-                    $products = $this->insert($sql);
-                    return $products;
-                } else {
-                    return 2;
+        if(!empty($paged) && !empty($userId) && !is_string($userId)){
+            $allProduct = $this->getProducts();
+            foreach ($allProduct as $value) {
+                if (md5($value['id'] . 'chuyen-de-web-2') == $paged && !is_bool($paged) ) {
+                    $sql = "INSERT INTO `webbanhkem`.`whishlist` (`user_id` ,`pro_id`) VALUES (" .
+                        "'" . $userId
+                        . "','" . $value['id'] . "')";
+                    $allWhishlist = $this->getWhishlistExist($userId, $value['id']);
+                    if (empty($allWhishlist)) {
+                        $products = $this->insert($sql);
+                        return $products;
+                    } else {
+                        return 2;
+                    }
                 }
             }
+        }else{
+             return false;
         }
+        
     }
     public function deleteWhishList($paged)
     {
@@ -538,6 +543,14 @@ class HomeModel extends BaseModel
         }
         $sql = $sql . ' LIMIT ' . $star . ',' . $num;
         return $this->select($sql);
+    }
+    public static function startTransaction()
+    {
+        self::$_connection->begin_transaction();
+    }
+    public static function rollback()
+    {
+        self::$_connection->rollback();
     }
     // public function paginationSearchProduct($search,$page,$num)
     // {
