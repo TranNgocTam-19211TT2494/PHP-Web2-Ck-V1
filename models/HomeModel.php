@@ -580,15 +580,53 @@ class HomeModel extends BaseModel
         $sql = $sql . ' LIMIT ' . $star . ',' . $num;
         return $this->select($sql);
     }
-    // public function paginationSearchProduct($search,$page,$num)
-    // {
-    //     if ($page < 2) {
-    //         $star = 0;
-    //     } else {
-    //         $star = ($page * $num) - $num;
-    //     }
-    //     $sqlF = "SELECT * FROM products WHERE name LIKE '%$search%' OR description LIKE '%$search%' ORDER BY products.price DESC";
-    //     $sql = $sqlF . ' LIMIT ' . $star . ',' . $num;
-    //     return $this->select($sql);
-    // }
+    public function paginationSearchCate($searchCate, $page, $num)
+    {
+        if ($page < 2) {
+            $star = 0;
+        } else {
+            $star = ($page * $num) - $num;
+        }
+        if (empty($searchCate) || !is_string($searchCate)) {
+            return false;
+        }
+         else {
+            $sql = 'SELECT * FROM products,manufactures WHERE products.manu_id=manufactures.manu_id 
+        AND manufactures.manu_name LIKE "%' . mysqli_real_escape_string(self::$_connection, $searchCate) . '%"';
+            $sql = $sql . ' LIMIT ' . $star . ',' . $num;
+            return $this->select($sql);
+        }
+    }
+    public function paginationSearchProduct($search, $page, $num)
+    {
+        if (!empty($search)) {
+            if ($page < 2) {
+                $star = 0;
+            } else {
+                $star = ($page * $num) - $num;
+            }
+            $sqlF = 'SELECT * FROM products WHERE name LIKE "%' . mysqli_real_escape_string(self::$_connection, $search) . '%"';
+            $sql = $sqlF . ' LIMIT ' . $star . ',' . $num;
+            return $this->select($sql);
+        } else {
+            return false;
+        }
+    }
+        
+    public function getUserByMonth($month)
+    {
+        if (!is_numeric($month) || $month < 0 || is_double($month)) {
+            return 'Not invalid';
+        } else {
+            $sql = "SELECT * from users where MONTH(date) = $month";
+            $id = $this->select($sql);
+            return $id;
+        }
+    }
+    public function findOrderById($id)
+    {
+        $sql = 'SELECT * FROM carts WHERE id = ' . $id;
+        $order = $this->select($sql);
+        return $order;
+    }
 }

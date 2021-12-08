@@ -5,9 +5,10 @@ bootstrap="vendor/autoload.php"
 colors="true"				
 cacheResult ="false"				
 >				
-<testsuites>				
-<testsuite name="SqlWsContractImport">				
-<file>./tests/TranNgocTam_TestCase.php</file>				
+<testsuites>
+<testsuite name="SqlWsContractImport">
+<file>./tests/TestPHPUnitTien.php</file>
+<file>./tests/TranNgocTam_TestCase.php</file>
 </testsuite>				
 </testsuites>				
 <filter>				
