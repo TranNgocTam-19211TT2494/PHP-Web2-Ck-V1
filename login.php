@@ -12,9 +12,8 @@ if (!empty($_POST['submit'])) {
     $userName = trim($_POST["username"]);
     $passWord = trim($_POST["password"]);
     if ($userName != "" && $passWord != "") {
-
         $rows = $HomeModel->login($userName, $passWord);
-        
+
         //print_r($rows[0]['permission']);die();
         if (!empty($rows)) {
             foreach ($rows as $row) {
@@ -23,16 +22,18 @@ if (!empty($_POST['submit'])) {
                 $_SESSION["lgUserID"] = $row['id'];
                
             }
-            if($rows[0]['action'] == 1){
-                header("location:index.php");
+            if(isset($rows[0]['action'])) {
+                if($rows[0]['action'] == 1){
+                    header("location:index.php");
+                }
+                else{
+                    
+                    $error .= "Tài khoản chưa được xác thực";
+                }
             }
-            else{
-                
-                $error .= "Tài khoản chưa được xác thực";
-            }
+          
         } else {
             $error .= "Tên đăng nhập hoặc mật khẩu không đúng";
-           
         }
         // Phân quyền admin:
         if(!empty($_SESSION['role'])) {

@@ -15,6 +15,24 @@ class HomeModel extends BaseModel
     //Login
     public function login($username, $password)
     {
+        if(is_null($username) && is_null($password)) {
+            return "Not Null";
+
+        } elseif(empty($username) || empty($password)) {
+            return "Not Empty";
+
+        } elseif(is_array($username) || is_array($password)) {
+            return "Not Array";
+
+        }  elseif(is_object($username) || is_object($password)) {
+            return "Not Object";
+
+        }elseif(is_bool($username) || is_bool($password)) {
+            return "Not Boolean";
+
+        } elseif(is_numeric($username)) {
+            return "Not Number";
+        }
         $md5Password = md5($password);
         $sql = 'SELECT * FROM users WHERE username = "' . $username . '" AND password = "' . $md5Password . '"';
 
