@@ -6,7 +6,7 @@ class WhishlistModelTest extends TestCase
     //getWhishlistByUserID
     public function testgetWhishlistByUserIdOk()
     {
-        $userId = 46;
+        $userId = 47;
         $homeModel = new HomeModel();
         $actual = $homeModel->getWhishlistByUserID($userId);
         if(!empty($actual)){
@@ -18,10 +18,11 @@ class WhishlistModelTest extends TestCase
         $userId = 26151;
         $homeModel = new HomeModel();
         $actual = $homeModel->getWhishlistByUserID($userId);
+        //var_dump($actual);
         if(empty($actual)){
-        $this->assertTrue(true);
+            $this->assertTrue(true);
         }else{
-        $this->assertTrue(false);
+            $this->assertTrue(false);
         }
     }
     public function testgetWhishlistByUserIdString()
@@ -257,12 +258,13 @@ class WhishlistModelTest extends TestCase
 
     public function testInsertWhishlistUserIdNotExist()
     {
-        $pro_id = md5(90 . 'chuyen-de-web-2');
+        $pro_id = md5(1000 . 'chuyen-de-web-2');
         $user_id = 21231235;
         $expected = false;
         $homeModel = new HomeModel();
         $homeModel->startTransaction();
         $actual = $homeModel->insertWhishList($pro_id,$user_id);
+        //var_dump($actual).die();
         $homeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
