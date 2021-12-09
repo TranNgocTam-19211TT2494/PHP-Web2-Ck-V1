@@ -6,6 +6,7 @@ $factory = new FactoryPattent();
 $productModel = $factory->make('home');
 // --------------Factory----------
 $noti = 0;
+$insertUnSuccess = 1;
 //$products = $productModel->getProducts();
 if (!empty($_SESSION["lgUserID"])) {
     if (!empty($_GET['id'])) {
@@ -13,12 +14,12 @@ if (!empty($_SESSION["lgUserID"])) {
         foreach ($allProducts as $value) {
             if(md5($value['id'].'chuyen-de-web-2') ==  $_GET['id']){
                 $inserWhishlist = $productModel->insertWhishList($_GET['id'], $_SESSION['lgUserID']);
-                $noti = 1;
-            }else{
-                $noti = 3;
+                 $noti = 1;
             }
         }
-      
+        if((int)$noti != 1){
+            $insertUnSuccess = 2;
+        }
     }
 } else {
     $noti = 2;
@@ -76,7 +77,7 @@ $vaPro = [];
                     <div class="alert alert-success" role="alert">
                         Bạn cần phải đăng nhập
                     </div>
-                    <?php }else if ($noti == 3) { ?>
+                    <?php }else if (isset($insertUnSuccess) && $insertUnSuccess == 2) { ?>
                     <div class="alert alert-success" role="alert">
                         Thêm vào danh sách không thành công
                     </div>
