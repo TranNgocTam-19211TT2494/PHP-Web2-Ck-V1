@@ -16,6 +16,7 @@ if (isset($_GET['id'])) {
     if (isset($_POST['submit'])) {
         $_POST['submit'] = null;
         $a = $HomeModel->insertComment($_SESSION['lgUserID'], $id, $_POST);
+        var_dump($a).die();
     }
     if (isset($_POST['submit_replide'])) {
         // var_dump($_POST);
