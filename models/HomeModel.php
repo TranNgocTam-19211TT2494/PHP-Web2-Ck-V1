@@ -314,7 +314,7 @@ class HomeModel extends BaseModel
         $comment = $this->select($comments);
         $insert_comment = null;
         if (isset($lgUserID) && count($comment) != 0 && isset($input)) {
-            if (!is_array($lgUserID) && !is_array($id) && !is_array($input)) {
+            if (!is_array($lgUserID) && !is_array($id) && is_array($input) && !is_bool($lgUserID) && !is_bool($id) && !is_bool($input)) {
                 if (is_string($lgUserID)) {
                     return false;
                 }
@@ -351,7 +351,7 @@ class HomeModel extends BaseModel
     public function getAllOrderByMonth($month)
     {
         if(!empty($month) && !is_string($month) && !is_object($month) && !is_array($month) 
-        && is_double($month) && $month > 0 && $month <= 12){
+        && !is_double($month) && $month > 0 && !is_bool($month)){
             $sql = "SELECT * 
             FROM checkouts  
             WHERE MONTH(addedDate) = $month;";
@@ -362,8 +362,28 @@ class HomeModel extends BaseModel
         }
         
     }
+    // Lấy id mới nhất của đơn hàng:
+    public function getOrderMaxById()
+    {
+        $sql = "SELECT MAX(id) FROM checkouts";
+        $paged = $this->select($sql);
+        return $paged[0]['MAX(id)'];
+    }
+    public static function getInstance()
+    {
+        if (self::$_instance != null) {
+
+            return self::$_instance;
+        }
+        self::$_instance = new self();
+        return self::$_instance;
+    }
 
 
+
+
+
+    // Chưa test PHPUnit
     //   Register:
     public function insertUserDecorator($pagenput, $zipcode)
     {
@@ -582,13 +602,7 @@ class HomeModel extends BaseModel
         return $cart;
     }
    
-    // Lấy id mới nhất của đơn hàng:
-    public function getOrderMaxById()
-    {
-        $sql = "SELECT MAX(id) FROM checkouts";
-        $paged = $this->select($sql);
-        return $paged[0]['MAX(id)'];
-    }
+   
   
     public function getCouponByZipcode($coupon)
     {
@@ -603,15 +617,7 @@ class HomeModel extends BaseModel
         $checkout = $this->update($sql);
         return $checkout;
     }
-    public static function getInstance()
-    {
-        if (self::$_instance != null) {
-
-            return self::$_instance;
-        }
-        self::$_instance = new self();
-        return self::$_instance;
-    }
+   
    
     public function pagination($sql, $page, $num)
     {
