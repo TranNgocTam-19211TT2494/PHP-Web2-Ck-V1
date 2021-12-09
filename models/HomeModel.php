@@ -15,22 +15,17 @@ class HomeModel extends BaseModel
     //Login
     public function login($username, $password)
     {
-        if(is_null($username) && is_null($password)) {
+        if (is_null($username) && is_null($password)) {
             return "Not Null";
-
-        } elseif(empty($username) || empty($password)) {
+        } elseif (empty($username) || empty($password)) {
             return "Not Empty";
-
-        } elseif(is_array($username) || is_array($password)) {
+        } elseif (is_array($username) || is_array($password)) {
             return "Not Array";
-
-        }  elseif(is_object($username) || is_object($password)) {
+        } elseif (is_object($username) || is_object($password)) {
             return "Not Object";
-
-        }elseif(is_bool($username) || is_bool($password)) {
+        } elseif (is_bool($username) || is_bool($password)) {
             return "Not Boolean";
-
-        } elseif(is_numeric($username)) {
+        } elseif (is_numeric($username)) {
             return "Not Number";
         }
         $md5Password = md5($password);
@@ -95,7 +90,7 @@ class HomeModel extends BaseModel
     //Forget Password
     public function checkMail($email)
     {
-        if(empty($email)) {
+        if (empty($email)) {
             return "Not Empty";
         } elseif (is_numeric($email) || is_array($email) || is_object($email) || is_bool($email)) {
             return "The field you entered is wrong";
@@ -107,12 +102,14 @@ class HomeModel extends BaseModel
     //Update password cho user: 
     public function UpdatePassword($password, $email)
     {
-        if(empty($email) || empty($password)) {
+        if (empty($email) || empty($password)) {
             return "name is empty";
-        } elseif (is_numeric($email) || is_array($email) || is_array($password) || is_object($email) || is_object($password)
-                  || is_bool($email) || is_bool($password)) {
+        } elseif (
+            is_numeric($email) || is_array($email) || is_array($password) || is_object($email) || is_object($password)
+            || is_bool($email) || is_bool($password)
+        ) {
             return "Enter the wrong field name";
-        } 
+        }
         $sql = 'UPDATE users SET 
         password = "' . md5($password) . '"
         WHERE email = "' . $email . '" ';
@@ -128,10 +125,12 @@ class HomeModel extends BaseModel
     // Kiểm tra mật khẩu cũ:
     public function checkOldPassword($name, $oldPassword)
     {
-        if(empty($name) || empty($oldPassword)) {
+        if (empty($name) || empty($oldPassword)) {
             return "name is empty";
-        } elseif (is_array($name) || is_array($oldPassword) || is_object($name) || is_object($oldPassword) || 
-                    is_bool($name) || is_bool($oldPassword) || is_numeric($name)) {
+        } elseif (
+            is_array($name) || is_array($oldPassword) || is_object($name) || is_object($oldPassword) ||
+            is_bool($name) || is_bool($oldPassword) || is_numeric($name)
+        ) {
             return "enter the wrong field";
         }
         $sql = 'SELECT * FROM users WHERE username = "' . $name . '" AND password = "' . md5($oldPassword) . '"';
@@ -140,18 +139,17 @@ class HomeModel extends BaseModel
     // Change Password:
     public function changePassword($name, $newPassword)
     {
-        if(empty($name) || empty($newPassword)) {
+        if (empty($name) || empty($newPassword)) {
             return false;
         }
-        if(!is_string($newPassword)||strlen($newPassword) < 6){
+        if (!is_string($newPassword) || strlen($newPassword) < 6) {
             return false;
-        }
-        else{
+        } else {
             $md5Password = md5($newPassword);
             $sql = 'UPDATE users SET 
-            password = "' .$md5Password . '"
+            password = "' . $md5Password . '"
             WHERE username = "' . $name . '" ';
-    
+
             $user = $this->update($sql);
             return $user;
         }
@@ -186,7 +184,7 @@ class HomeModel extends BaseModel
     // Mã khuyến mãi:
     public function getCouponByID($id)
     {
-        if(empty($id)) {
+        if (empty($id)) {
             return "Not Empty";
         } elseif (is_string($id)) {
             return "Not String";
@@ -196,7 +194,7 @@ class HomeModel extends BaseModel
             return "Not Object";
         } elseif (is_bool($id)) {
             return "Not Boolean";
-        } 
+        }
         $sql = 'SELECT  zipcode.status,zipcode.discount,zipcode.created_at,zipcode.zipcode FROM zipcode , users WHERE zipcode.user_id = users.id AND zipcode.user_id = ' . $id;
         $coupon = $this->select($sql);
         return $coupon;
@@ -237,49 +235,69 @@ class HomeModel extends BaseModel
     }
     public function getWhishlistExist($userid, $pro_id)
     {
-        $sql = "SELECT * FROM `whishlist` WHERE `user_id` = $userid and `pro_id` = $pro_id";
-        $whishlist = $this->select($sql);
-        return $whishlist;
+        if(!empty($userid) && !is_double($userid) && !is_bool($userid) && !is_object($userid) && !is_array($userid)
+            && !is_string($userid) && $userid > 0 && !empty($pro_id) && !is_double($pro_id) && !is_bool($pro_id) && !is_object($pro_id) && !is_array($pro_id)
+            && !is_string($pro_id) && $pro_id > 0){
+            $sql = "SELECT * FROM `whishlist` WHERE `user_id` = $userid and `pro_id` = $pro_id";
+            $whishlist = $this->select($sql);
+            return $whishlist;
+        }else{
+            return false;
+        }
     }
     public function getWhishlistByUserID($userid)
     {
-        $sql = "SELECT whishlist.id as whishlistId,products.pro_image,products.name,products.price 
-        FROM `whishlist`,products 
-        WHERE whishlist.pro_id = products.id 
-        AND whishlist.user_id = $userid ORDER BY `whishlist`.`id` DESC";
-        $whishlist = $this->select($sql);
-        return $whishlist;
+        if(!empty($userid) && !is_double($userid) && !is_bool($userid) && !is_object($userid) && !is_array($userid)
+        && !is_string($userid) && $userid > 0){
+            $sql = "SELECT whishlist.id as whishlistId,products.pro_image,products.name,products.price 
+            FROM `whishlist`,products 
+            WHERE whishlist.pro_id = products.id 
+            AND whishlist.user_id = $userid ORDER BY `whishlist`.`id` DESC";
+            $whishlist = $this->select($sql);
+            return $whishlist;
+        }else{
+            return false;
+        }
+        
     }
     public function insertWhishList($paged, $userId)
     {
-        $allProduct = $this->getProducts();
-        foreach ($allProduct as $value) {
-            if (md5($value['id'] . 'chuyen-de-web-2') == $paged) {
-                $sql = "INSERT INTO `webbanhkem`.`whishlist` (`user_id` ,`pro_id`) VALUES (" .
-                    "'" . $userId
-                    . "','" . $value['id'] . "')";
-                $allWhishlist = $this->getWhishlistExist($userId, $value['id']);
-                if (empty($allWhishlist)) {
-                    $products = $this->insert($sql);
-                    return $products;
-                } else {
-                    return 2;
+        if(!empty($paged) && !empty($userId) && !is_string($userId)){
+            $allProduct = $this->getProducts();
+            foreach ($allProduct as $value) {
+                if (md5($value['id'] . 'chuyen-de-web-2') == $paged && !is_bool($paged) ) {
+                    $sql = "INSERT INTO `webbanhkem`.`whishlist` (`user_id` ,`pro_id`) VALUES (" .
+                        "'" . $userId
+                        . "','" . $value['id'] . "')";
+                    $allWhishlist = $this->getWhishlistExist($userId, $value['id']);
+                    if (empty($allWhishlist)) {
+                        $products = $this->insert($sql);
+                        return $products;
+                    } else {
+                        return 2;
+                    }
                 }
             }
+        }else{
+             return false;
         }
+        
     }
     public function deleteWhishList($paged)
     {
-        $allWhishlist = $this->getWhishlist();
-        foreach ($allWhishlist as $value) {
-            $md5 = md5($value['id'] . "chuyen-de-web-2");
-            if ($md5 == $paged) {
-                $sql = "DELETE FROM whishlist WHERE id =  " . $value['id'];
-                $whishlist = $this->delete($sql);
-                return $whishlist;
+        if(!empty($paged)){
+            $allWhishlist = $this->getWhishlist();
+            foreach ($allWhishlist as $value) {
+                $md5 = md5($value['id'] . "chuyen-de-web-2");
+                if ($md5 == $paged && !is_bool($paged)) {
+                    $sql = "DELETE FROM whishlist WHERE id =  " . $value['id'];
+                    $whishlist = $this->delete($sql);
+                    return $whishlist;
+                }
             }
+        }else{
+            return false;
         }
-        return false;
     }
     // --------------------- Manufacture ------------------ //
     // Hien thi data bang manufactures:
@@ -407,7 +425,7 @@ class HomeModel extends BaseModel
         if (!is_numeric($id) || $id < 0 || is_double($id)) {
             return 'Not invalid';
         } else {
-            $sql = 'SELECT carts.pro_id , products.name , products.price, carts.quantity FROM carts INNER JOIN products ON carts.pro_id = products.id WHERE carts.order_id = ' . mysqli_real_escape_string(self::$_connection, $id) .' ';
+            $sql = 'SELECT carts.pro_id , products.name , products.price, carts.quantity FROM carts INNER JOIN products ON carts.pro_id = products.id WHERE carts.order_id = ' . mysqli_real_escape_string(self::$_connection, $id) . ' ';
             $user = $this->select($sql);
             return $user;
         }
@@ -444,20 +462,24 @@ class HomeModel extends BaseModel
     public function insertOrder($userID, $Firstname, $Lastname, $address, $email, $phone, $notes)
     {
         if (
-            isset($userID) || isset($Firstname) || isset($Lastname)
-            || isset($address)  || isset($email) || isset($phone) || isset($notes)
+            !is_array($userID) && !is_array($Firstname) && !is_array($Lastname)
+            && !is_array($address)  && !is_array($email) && !is_array($phone) && !is_array($notes)
         ) {
             if (
-                is_array($userID) || is_array($Firstname) || is_array($Lastname)
-                || is_array($address)  || is_array($email) || is_array($phone) || is_array($notes)
+                !is_numeric($userID) && !is_string($Firstname) && !is_string($Lastname)
+                && !is_string($address)  && !is_string($email) && !is_numeric($phone) && !is_string($notes)
             ) {
-                if (!is_string($userID) || !is_string($phone)) {
-                    return 0;
-                }
-                $sql = "Insert into checkouts(user_id,firstname,lastname,addedDate,address,email,phone,notes) values('$userID','$Firstname','$Lastname',now(),'$address','$email','$phone','$notes')";
-                $product = $this->insert($sql);
-                return $product;
+                return 0;
             }
+            if (is_object($userID) || is_object($phone) || is_bool($userID)) {
+                return 0;
+            }
+            if (intval($userID) <= 0) {
+                return 0;
+            }
+            $sql = "Insert into checkouts(user_id,firstname,lastname,addedDate,address,email,phone,notes) values('$userID','$Firstname','$Lastname',now(),'$address','$email','$phone','$notes')";
+            $product = $this->insert($sql);
+            return $product;
         } else {
             return 0;
         }
@@ -472,20 +494,18 @@ class HomeModel extends BaseModel
     // Cập nhập Tổng tiền:
     public function updateSum($OrderID, $Sum)
     {
-        if(isset($OrderID) || isset($Sum)){
-            if(is_array($OrderID) || is_array($Sum)){
-                if(is_string($OrderID) || is_array($Sum)){
-                    return false;
-                }
-                $sql = "Update checkouts set sum = $Sum where id = $OrderID";
-                $checkout = $this->update($sql);
-                return $checkout;
-            }
-        }
-        else{
+        // if (strlen("$OrderID") == 0 && strlen("$Sum") == 0) {
+        //     return false;
+        // }
+        if (!is_numeric($OrderID) && !is_numeric($Sum)) {
             return false;
         }
-       
+        if($OrderID <= 0 || $Sum <= 0){
+            return false;
+        }
+        $sql = "Update checkouts set sum = $Sum where id = $OrderID";
+        $checkout = $this->update($sql);
+        return $checkout;
     }
     public function getCouponByZipcode($coupon)
     {
@@ -511,24 +531,21 @@ class HomeModel extends BaseModel
     }
     public function searchProduct($search = null)
     {
-        if (!empty($search)) {
-            if(is_array($search) || is_object($search)){
-                return false;
-            }
+        if (is_array($search) || is_object($search)) {
+            return false;
+        }
+        if ($search === null) {
+            return false;
+        } else {
             $sql = 'SELECT * FROM products WHERE name LIKE "%' . mysqli_real_escape_string(self::$_connection, $search) . '%"';
             $searchResult = $this->select($sql);
             return $searchResult;
-        }else{
-            return false;
         }
     }
     // Hàm tìm kiếm theo tên của category(manufacture)
     public function searchCategories($search)
     {
-        if (!empty($search)) {
-            if(is_array($search) || is_object($search)){
-                return false;
-            }
+        if (is_string($search)) {
             $sql = 'SELECT * FROM products,manufactures WHERE products.manu_id=manufactures.manu_id 
             AND manufactures.manu_name LIKE "%' . mysqli_real_escape_string(self::$_connection, $search) . '%"';
             $searchResult = $this->select($sql);
@@ -602,16 +619,18 @@ class HomeModel extends BaseModel
         $comments = 'SELECT id FROM products';
         $comment = $this->select($comments);
         $insert_comment = null;
-        if (isset($lgUserID) || isset($commen['id']) || isset($input)) {
-            if (is_array($lgUserID) || is_array($id) || is_array($input)) {
-                if (!is_string($lgUserID)) {
+        if (isset($lgUserID) && count($comment) != 0 && isset($input)) {
+            if (!is_array($lgUserID) && !is_array($id) && is_array($input)) {
+                if (is_string($lgUserID)) {
                     return false;
                 }
                 foreach ($comment as $commen) {
                     $md5 = md5($commen['id'] . 'chuyen-de-web-2');
+                    // var_dump($md5);
+                    // var_dump($id);
                     if ($md5 == $id) {
-
                         $sql = "INSERT INTO `comment`(`user_id`, `id_product`, `username`, `content`) VALUES ('$lgUserID'," . "'" . $commen['id'] . "', " . "'" . $input['name'] . "'," . "'" . $input['content'] . "')";
+                        // var_dump($sql).die();
                         $insert_comment = $this->insert($sql);
                     }
                 }
@@ -656,8 +675,7 @@ class HomeModel extends BaseModel
         }
         if (empty($searchCate) || !is_string($searchCate)) {
             return false;
-        }
-         else {
+        } else {
             $sql = 'SELECT * FROM products,manufactures WHERE products.manu_id=manufactures.manu_id 
         AND manufactures.manu_name LIKE "%' . mysqli_real_escape_string(self::$_connection, $searchCate) . '%"';
             $sql = $sql . ' LIMIT ' . $star . ',' . $num;
@@ -679,7 +697,7 @@ class HomeModel extends BaseModel
             return false;
         }
     }
-        
+
     public function getUserByMonth($month)
     {
         if (!is_numeric($month) || $month < 0 || is_double($month)) {
@@ -695,5 +713,19 @@ class HomeModel extends BaseModel
         $sql = 'SELECT * FROM carts WHERE id = ' . $id;
         $order = $this->select($sql);
         return $order;
+    }
+    public function getAllOrderByMonth($month)
+    {
+        if(!empty($month) && !is_string($month) && !is_object($month) && !is_array($month) 
+        && is_double($month) && $month > 0 && $month <= 12){
+            $sql = "SELECT * 
+            FROM checkouts  
+            WHERE MONTH(addedDate) = $month;";
+            $id = $this->select($sql);
+            return $id;
+        }else{
+            return false;
+        }
+        
     }
 }

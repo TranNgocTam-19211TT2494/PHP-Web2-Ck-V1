@@ -6,17 +6,13 @@ colors="true"
 cacheResult ="false"				
 >				
 <testsuites>				
-
 <testsuite name="SqlWsContractImport">
 <!-- <file>./tests/UserModelTest.php</file>				 -->
-<file>./tests/TestPHPUnitTien.php</file>
-<file>./tests/TranNgocTam_TestCase.php</file>
+<!-- <file>./tests/TestPHPUnitTien.php</file>
+<file>./tests/TranNgocTam_TestCase.php</file> -->
 <file>./tests/TrangPHPUnitTest.php</file>
-<file>./tests/WhishlistModelTest.php</file>	
-</testsuite >	
-</testsuites>					
-
-		
+</testsuite >					
+</testsuites>				
 <filter>				
 <whitelist processUncoveredFilesFromWhitelist="true">				
 <directory suffix=".php">./models/HomeModel.php</directory>				
