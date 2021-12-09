@@ -10,8 +10,8 @@ class TestPHPUnitTien extends TestCase
     public function testGetCheckoutsByUserIdOk()
     {
         $homeModel = new HomeModel();
-        $id = 50;
-        $expected = 50;
+        $id = 51;
+        $expected = 51;
         $homeModel->startTransaction();
         $user = $homeModel->getCheckoutsByUserId($id);
         $actual = $user[0]['user_id'];

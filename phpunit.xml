@@ -13,7 +13,8 @@ cacheResult ="false"
 <file>./tests/TranNgocTam_TestCase.php</file>
 <file>./tests/TrangPHPUnitTest.php</file>
 <file>./tests/WhishlistModelTest.php</file>	
-</testsuite >					
+</testsuite >	
+</testsuites>					
 
 		
 <filter>				
