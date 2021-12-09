@@ -17,15 +17,19 @@ class TrangPHPUnitTest extends TestCase
     {
         $HomeModel = new HomeModel();
         $lgUserID = 47;
-        $id = 100;
+        $id = md5(100 . 'chuyen-de-web-2');
         $data = [
             'name' => 'Trang',
             'content' => 'tuyệt'
         ];
         $HomeModel->startTransaction();
-        $HomeModel->insertComment($lgUserID, $id, $data);
+        $actual = $HomeModel->insertComment($lgUserID, $id, $data);
         $HomeModel->rollback();
-        $this->assertTrue(true);
+        if ($actual == true) {
+            $this->assertTrue(true);
+        } else {
+            $this->assertTrue(false);
+        }
     }
 
     public function testInsertCommentByUserIdNg()
@@ -460,6 +464,23 @@ class TrangPHPUnitTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
+    public function testInsertOrderIdPhoneString()
+    {
+        $HomeModel = new HomeModel();
+        $userID = "abc";
+        $Firstname = "Trang";
+        $Lastname = "Hoài";
+        $address = "NT";
+        $email = "tranhoaitrang3001@gmail.com";
+        $phone = "abc";
+        $notes = "không";
+        $expected = false;
+        $HomeModel->startTransaction();
+        $actual = $HomeModel->insertOrder($userID, $Firstname, $Lastname, $address, $email, $phone, $notes);
+        $HomeModel->rollback();
+        $this->assertEquals($expected, $actual);
+    }
+
     public function testInsertOrderIdNegative()
     {
         $HomeModel = new HomeModel();
@@ -524,22 +545,7 @@ class TrangPHPUnitTest extends TestCase
         $HomeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
-    public function testInsertOrderNotEmtyNull()
-    {
-        $HomeModel = new HomeModel();
-        $userID = "";
-        $Firstname = "";
-        $Lastname = "";
-        $address = "";
-        $email = "";
-        $phone = "";
-        $notes = "";
-        $expected = 0;
-        $HomeModel->startTransaction();
-        $actual = $HomeModel->insertOrder($userID, $Firstname, $Lastname, $address, $email, $phone, $notes);
-        $HomeModel->rollback();
-        $this->assertEquals($expected, $actual);
-    }
+    
     public function testInsertOrderByUserIdNotObject()
     {
         $HomeModel = new HomeModel();
@@ -636,7 +642,7 @@ class TrangPHPUnitTest extends TestCase
         $email = $bool;
         $phone = $bool;
         $notes = $bool;
-        $expected = 0;
+        $expected = false;
         $HomeModel->startTransaction();
         $actual = $HomeModel->insertOrder($userID, $Firstname, $Lastname, $address, $email, $phone, $notes);
         $HomeModel->rollback();
@@ -660,11 +666,11 @@ class TrangPHPUnitTest extends TestCase
     {
         $HomeModel = new HomeModel();
         $HomeModel->startTransaction();
-        $OrderID = 3;
+        $OrderID = 999;
         $Sum = 2;
         $actual = $HomeModel->updateSum($OrderID, $Sum);
         $HomeModel->rollback();
-        if(empty($actual)){
+        if($actual){
             $this->assertTrue(true);
         }else{
             $this->assertTrue(false);
@@ -840,7 +846,7 @@ class TrangPHPUnitTest extends TestCase
     {
         $HomeModel = new HomeModel();
         $Search  = 23;
-        $expected = [];
+        $expected = false;
         $HomeModel->startTransaction();
         $actual = $HomeModel->searchCategories($Search);
         $HomeModel->rollback();
@@ -853,7 +859,7 @@ class TrangPHPUnitTest extends TestCase
     {
         $HomeModel = new HomeModel();
         $Search  = true;
-        $expected = [];
+        $expected = false;
         $HomeModel->startTransaction();
         $actual = $HomeModel->searchCategories($Search);
         $HomeModel->rollback();
@@ -916,10 +922,9 @@ class TrangPHPUnitTest extends TestCase
         $HomeModel = new HomeModel();
         $Search  = 'bánh';
         $expected = 'Bánh Muffin';
-        $HomeModel->startTransaction();
         $user = $HomeModel->searchProduct($Search);
         $actual = $user[0]['name'];
-        $HomeModel->rollback();
+        // var_dump($actual);
         $this->assertEquals($expected, $actual);
     }
     /**
@@ -929,18 +934,17 @@ class TrangPHPUnitTest extends TestCase
     {
         $HomeModel = new HomeModel();
         $Search  = 'kem';
-        $HomeModel->startTransaction();
         $user = $HomeModel->searchProduct($Search);
-        $HomeModel->rollback();
-        if (empty($user[0])) {
+        // var_dump($user).die();
+        if (empty($user)) {
             return $this->assertTrue(true);
         } else {
             return $this->assertTrue(false);
         }
     }
-    // /**
-    //  * Test keyword là số
-    //  */
+    // // /**
+    // //  * Test keyword là số
+    // //  */
     public function testSearchProductByIsNum()
     {
         $HomeModel = new HomeModel();
@@ -948,12 +952,13 @@ class TrangPHPUnitTest extends TestCase
         $expected = [];
         $HomeModel->startTransaction();
         $actual = $HomeModel->searchProduct($Search);
+        
         $HomeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
-    // /**
-    //  * Test keyword là boolean(true/false)
-    //  */
+    // // /**
+    // //  * Test keyword là boolean(true/false)
+    // //  */
     public function testSearchProductIsBoolean()
     {
         $HomeModel = new HomeModel();
@@ -961,12 +966,13 @@ class TrangPHPUnitTest extends TestCase
         $expected = [];
         $HomeModel->startTransaction();
         $actual = $HomeModel->searchProduct($Search);
+        // var_dump($actual).die();
         $HomeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
-    // /**
-    //  * Test keyword là boolean(true/false)
-    //  */
+    // // /**
+    // //  * Test keyword là boolean(true/false)
+    // //  */
     public function testSearchProductIsArray()
     {
         $HomeModel = new HomeModel();
@@ -988,12 +994,13 @@ class TrangPHPUnitTest extends TestCase
         $HomeModel->startTransaction();
         $actual = $HomeModel->searchProduct($Search);
         $HomeModel->rollback();
+        
         $this->assertEquals($expected, $actual);
     }
     
-    // /**
-    //  * Test keyword có từ 2 khoảng trắng
-    //  */
+    /**
+     * Test keyword có từ 2 khoảng trắng
+     */
     public function testSearchProductIsMoreSpace()
     {
         $HomeModel = new HomeModel();
@@ -1001,6 +1008,16 @@ class TrangPHPUnitTest extends TestCase
         $expected = [];
         $HomeModel->startTransaction();
         $actual = $HomeModel->searchProduct($Search);
+        $HomeModel->rollback();
+        $this->assertEquals($expected, $actual);
+    }
+    public function testSearchProductNull()
+    {
+        $HomeModel = new HomeModel();
+        // $Search  = '';
+        $expected = false;
+        $HomeModel->startTransaction();
+        $actual = $HomeModel->searchProduct();
         $HomeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
@@ -1012,6 +1029,7 @@ class TrangPHPUnitTest extends TestCase
         $HomeModel->startTransaction();
         $actual = $HomeModel->searchProduct($Search);
         $HomeModel->rollback();
+        // var_dump($actual).die();
         $this->assertEquals($expected, $actual);
     }
 }
