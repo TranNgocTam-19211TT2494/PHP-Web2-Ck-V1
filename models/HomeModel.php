@@ -213,8 +213,6 @@ class HomeModel extends BaseModel
                 if (empty($allWhishlist)) {
                     $products = $this->insert($sql);
                     return $products;
-                } else {
-                    return 2;
                 }
             }
         }
