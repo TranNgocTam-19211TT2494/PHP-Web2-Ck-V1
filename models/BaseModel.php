@@ -75,4 +75,5 @@ abstract class BaseModel implements UserDecorator{
     {
         self::$_connection->rollback();
     }
+    
 }

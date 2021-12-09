@@ -15,6 +15,24 @@ class HomeModel extends BaseModel
     //Login
     public function login($username, $password)
     {
+        if(is_null($username) && is_null($password)) {
+            return "Not Null";
+
+        } elseif(empty($username) || empty($password)) {
+            return "Not Empty";
+
+        } elseif(is_array($username) || is_array($password)) {
+            return "Not Array";
+
+        }  elseif(is_object($username) || is_object($password)) {
+            return "Not Object";
+
+        }elseif(is_bool($username) || is_bool($password)) {
+            return "Not Boolean";
+
+        } elseif(is_numeric($username)) {
+            return "Not Number";
+        }
         $md5Password = md5($password);
         $sql = 'SELECT * FROM users WHERE username = "' . $username . '" AND password = "' . $md5Password . '"';
 
@@ -77,6 +95,11 @@ class HomeModel extends BaseModel
     //Forget Password
     public function checkMail($email)
     {
+        if(empty($email)) {
+            return "Not Empty";
+        } elseif (is_numeric($email) || is_array($email) || is_object($email) || is_bool($email)) {
+            return "The field you entered is wrong";
+        }
         $sql = 'SELECT * FROM users WHERE email = "' . $email . '"';
         $user = $this->select($sql);
         return $user;
@@ -84,46 +107,17 @@ class HomeModel extends BaseModel
     //Update password cho user: 
     public function UpdatePassword($password, $email)
     {
+        if(empty($email) || empty($password)) {
+            return "name is empty";
+        } elseif (is_numeric($email) || is_array($email) || is_array($password) || is_object($email) || is_object($password)
+                  || is_bool($email) || is_bool($password)) {
+            return "Enter the wrong field name";
+        } 
         $sql = 'UPDATE users SET 
         password = "' . md5($password) . '"
         WHERE email = "' . $email . '" ';
         $user = $this->update($sql);
         return $user;
-    }
-    //Send mail password cho nguoi dung:
-    public function sendMail($email, $password)
-    {
-        $mail = new PHPMailer(true); //true:enables exceptions
-        try {
-            $mail->SMTPDebug = 0; //0,1,2: chế độ debug
-            $mail->isSMTP();
-            $mail->CharSet  = "utf-8";
-            $mail->Host = 'smtp.gmail.com';  //SMTP servers
-            $mail->SMTPAuth = true; // Enable authentication
-            $mail->Username = 'phantinh1209@gmail.com'; // SMTP username
-            $mail->Password = 'zexpotcxbxkuspaq';   // SMTP password
-            $mail->SMTPSecure = 'ssl';  // encryption TLS/SSL 
-            $mail->Port = 465;  // port to connect to                
-            $mail->setFrom('phantinh1209@gmail.com', 'AnhTam');
-            $mail->addAddress($email);
-            $mail->isHTML(true);  // Set email format to HTML
-            $mail->Subject = 'Thư gửi lại mật khẩu';
-            $noidungthu = "<p>Bạn nhận được mail này, do bạn hoặc ai đó yêu cầu mật khẩu mới cho website...</p>
-                                Mật khẩu mới của bạn là {$password}
-            ";
-            $mail->Body = $noidungthu;
-            $mail->smtpConnect(array(
-                "ssl" => array(
-                    "verify_peer" => false,
-                    "verify_peer_name" => false,
-                    "allow_self_signed" => true
-                )
-            ));
-            $mail->send();
-            echo "Đã gửi mail xong";
-        } catch (Exception $e) {
-            echo 'Error: ', $mail->ErrorInfo;
-        }
     }
     // Tìm id của người dùng:
     public function getUserById($id)
@@ -134,19 +128,33 @@ class HomeModel extends BaseModel
     // Kiểm tra mật khẩu cũ:
     public function checkOldPassword($name, $oldPassword)
     {
+        if(empty($name) || empty($oldPassword)) {
+            return "name is empty";
+        } elseif (is_array($name) || is_array($oldPassword) || is_object($name) || is_object($oldPassword) || 
+                    is_bool($name) || is_bool($oldPassword) || is_numeric($name)) {
+            return "enter the wrong field";
+        }
         $sql = 'SELECT * FROM users WHERE username = "' . $name . '" AND password = "' . md5($oldPassword) . '"';
         return $this->select($sql);
     }
     // Change Password:
     public function changePassword($name, $newPassword)
     {
-        $md5Password = md5($newPassword);
-        $sql = 'UPDATE users SET 
-        password = "' . $md5Password . '"
-        WHERE username = "' . $name . '" ';
-
-        $user = $this->update($sql);
-        return $user;
+        if(empty($name) || empty($newPassword)) {
+            return false;
+        }
+        if(!is_string($newPassword)||strlen($newPassword) < 6){
+            return false;
+        }
+        else{
+            $md5Password = md5($newPassword);
+            $sql = 'UPDATE users SET 
+            password = "' .$md5Password . '"
+            WHERE username = "' . $name . '" ';
+    
+            $user = $this->update($sql);
+            return $user;
+        }
     }
     // Lay id
     public function getid()
@@ -178,6 +186,17 @@ class HomeModel extends BaseModel
     // Mã khuyến mãi:
     public function getCouponByID($id)
     {
+        if(empty($id)) {
+            return "Not Empty";
+        } elseif (is_string($id)) {
+            return "Not String";
+        } elseif (is_array($id)) {
+            return "Not Array";
+        } elseif (is_object($id)) {
+            return "Not Object";
+        } elseif (is_bool($id)) {
+            return "Not Boolean";
+        } 
         $sql = 'SELECT  zipcode.status,zipcode.discount,zipcode.created_at,zipcode.zipcode FROM zipcode , users WHERE zipcode.user_id = users.id AND zipcode.user_id = ' . $id;
         $coupon = $this->select($sql);
         return $coupon;
@@ -373,16 +392,25 @@ class HomeModel extends BaseModel
     // Xem đơn hàng của khách hàng:
     public function getCheckoutsByUserId($userID)
     {
-        $sql = 'SELECT checkouts.id , checkouts.addedDate, checkouts.address ,checkouts.phone , checkouts.sum,checkouts.status FROM `checkouts` ,users WHERE checkouts.user_id = users.id AND checkouts.user_id = ' . $userID;
-        $order = $this->select($sql);
-        return $order;
+        if (!is_numeric($userID) || $userID < 0 || is_double($userID)) {
+            return 'Not invalid';
+        } else {
+            $sql = 'SELECT checkouts.id , checkouts.user_id , checkouts.addedDate, checkouts.address ,checkouts.phone , checkouts.sum,checkouts.status FROM `checkouts` ,users WHERE checkouts.user_id = users.id AND checkouts.user_id = ' . $userID;
+            $order = $this->select($sql);
+            return $order;
+        }
+        // $sql = 'SELECT checkouts.id , checkouts.addedDate, checkouts.address ,checkouts.phone , checkouts.sum,checkouts.status FROM `checkouts` ,users WHERE checkouts.user_id = users.id AND checkouts.user_id = '.$userID;
     }
     // Lấy sản phẩm trong giỏ hàng:
     public function getOrderItemById($id)
     {
-        $sql = 'SELECT carts.pro_id , products.name , products.price, carts.quantity FROM carts INNER JOIN products ON carts.pro_id = products.id WHERE carts.order_id = ' . $id;
-        $user = $this->select($sql);
-        return $user;
+        if (!is_numeric($id) || $id < 0 || is_double($id)) {
+            return 'Not invalid';
+        } else {
+            $sql = 'SELECT carts.pro_id , products.name , products.price, carts.quantity FROM carts INNER JOIN products ON carts.pro_id = products.id WHERE carts.order_id = ' . mysqli_real_escape_string(self::$_connection, $id) .' ';
+            $user = $this->select($sql);
+            return $user;
+        }
     }
     // Thêm vào giỏ hàng:
     public function getOrderItemByOrder($paged)
@@ -394,9 +422,23 @@ class HomeModel extends BaseModel
     // Thêm danh sách giỏ hàng
     public function insertOrderItem($OrderID, $ProductID, $Quantity)
     {
-        $sql = "Insert into carts (order_id,pro_id,quantity) values($OrderID,$ProductID,$Quantity)";
-        $product = $this->insert($sql);
-        return $product;
+        if (empty($OrderID) || empty($ProductID) || empty($Quantity)) {
+            return 'Invalid';
+        }
+        if (!is_numeric($OrderID) || $OrderID < 0 || is_double($OrderID)) {
+            return 'Invalid';
+        }
+        if (!is_numeric($ProductID) || $ProductID < 0 || is_double($ProductID)) {
+            return 'Invalid';
+        }
+        if (!is_numeric($Quantity) || $Quantity < 0 || is_double($Quantity)) {
+            return 'Invalid';
+        } else {
+            $sql = "Insert into carts (order_id,pro_id,quantity) values($OrderID,$ProductID,$Quantity)";
+            //var_dump($sql);
+            $product = $this->insert($sql);
+            return $product;
+        }
     }
     // -------------- Checkout ---------------- //
     public function insertOrder($userID, $Firstname, $Lastname, $address, $email, $phone, $notes)
@@ -636,5 +678,22 @@ class HomeModel extends BaseModel
         } else {
             return false;
         }
+    }
+        
+    public function getUserByMonth($month)
+    {
+        if (!is_numeric($month) || $month < 0 || is_double($month)) {
+            return 'Not invalid';
+        } else {
+            $sql = "SELECT * from users where MONTH(date) = $month";
+            $id = $this->select($sql);
+            return $id;
+        }
+    }
+    public function findOrderById($id)
+    {
+        $sql = 'SELECT * FROM carts WHERE id = ' . $id;
+        $order = $this->select($sql);
+        return $order;
     }
 }
