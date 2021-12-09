@@ -113,7 +113,7 @@ $vaCate = [];
                                                     <?php if (isset($_SESSION['lgUserID'])) { ?>
                                                         <?php if (empty($productModel->getWhishlistExist($_SESSION['lgUserID'], $product['id']))) { ?>
                                                             <div class="icon-whishlist">
-                                                                <a href="shop.php?id=<?= md5($product['id'] . 'chuyen-de-web-2') ?>">
+                                                                <a href="Protype.php?id=<?= md5($product['id'] . 'chuyen-de-web-2') ?>&type_id=<?php echo $typeid; ?>">
                                                                     <i class="fa fa-heart" aria-hidden="true"></i>
                                                                 </a>
                                                             </div>
@@ -140,7 +140,7 @@ $vaCate = [];
                                 ?>
                                         <div class="product_pagination">
                                             <div class="left_btn">
-                                                <a href="Protype.php?type_id=<?php echo $typeid; ?>&<?php if (isset($searchCate)) ?>search-cate=<?php echo $searchCate ?>&<?php if (isset($_GET['submit'])) ?>submit=<?php echo $_GET['submit'] ?>&page=<?php if ($page > 1) echo $page - 1;
+                                                <a href="Protype.php?type_id=<?php echo $typeid; ?>&<?php if (!empty($searchCate)) ?>search-cate=<?php echo $searchCate ?>&<?php if (!empty($_GET['submit'])) ?>submit=<?php echo $_GET['submit'] ?>&page=<?php if ($page > 1) echo $page - 1;
                                                                                                                                                                                                                                                         else echo 1 ?>">
                                                     <i class="lnr lnr-arrow-left"></i>Trước
                                                 </a>
@@ -153,7 +153,7 @@ $vaCate = [];
                                                             <li class="page-item ">
                                                                 <a class="page-link <?php if (isset($_GET['page']) && $_GET['page'] == $i) {
                                                                                         echo 'active';
-                                                                                    } ?>" href="Protype.php?type_id=<?php echo $typeid; ?>&<?php if (isset($searchCate)) ?>search-cate=<?php echo $searchCate ?>&<?php if (isset($_GET['submit'])) ?>submit=<?php echo $_GET['submit'] ?>&page=<?php echo $i ?>"><?php echo $i ?></a>
+                                                                                    } ?>" href="Protype.php?type_id=<?php echo $typeid; ?>&<?php if (!empty($searchCate)) ?>search-cate=<?php echo $searchCate ?>&<?php if (!empty($_GET['submit'])) ?>submit=<?php echo $_GET['submit'] ?>&page=<?php echo $i ?>"><?php echo $i ?></a>
 
                                                             </li>
                                                         <?php } ?>
@@ -161,7 +161,7 @@ $vaCate = [];
                                                 </nav>
                                             </div>
                                             <div class="right_btn">
-                                                <a href="Protype.php?type_id=<?php echo $typeid; ?>&<?php if (isset($searchCate)) ?>search-cate=<?php echo $searchCate ?>&<?php if (isset($_GET['submit'])) ?>submit=<?php echo $_GET['submit'] ?>&page=<?php if ($page < $number_of_pages) echo $page + 1;
+                                                <a href="Protype.php?type_id=<?php echo $typeid; ?>&<?php if (!empty($searchCate)) ?>search-cate=<?php echo $searchCate ?>&<?php if (!empty($_GET['submit'])) ?>submit=<?php echo $_GET['submit'] ?>&page=<?php if ($page < $number_of_pages) echo $page + 1;
                                                                                                                                                                                                                                                         else echo $number_of_pages ?>">
                                                     Sau <i class="lnr lnr-arrow-right"></i>
                                                 </a>
@@ -198,7 +198,7 @@ $vaCate = [];
                                                     <?php if (isset($_SESSION['lgUserID'])) { ?>
                                                         <?php if (empty($productModel->getWhishlistExist($_SESSION['lgUserID'], $product['id']))) { ?>
                                                             <div class="icon-whishlist">
-                                                                <a href="shop.php?id=<?= md5($product['id'] . 'chuyen-de-web-2') ?>">
+                                                                <a href="Protype.php?id=<?= md5($product['id'] . 'chuyen-de-web-2') ?>&type_id=<?php echo $typeid; ?>">
                                                                     <i class="fa fa-heart" aria-hidden="true"></i>
                                                                 </a>
                                                             </div>

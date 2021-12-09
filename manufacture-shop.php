@@ -10,6 +10,7 @@ $manufactures = $productModel->getManufactures();
 // --------------Factory----------
 if (isset($_GET['manu_id'])) {
     $id = $_GET['manu_id'];
+    // var_dump($id);die();
     // $manu = $productModel->getManufactureById($id);
 }
 $noti = 0;
@@ -114,7 +115,7 @@ $vaCate = [];
                                                         <?php if (isset($_SESSION['lgUserID'])) { ?>
                                                             <?php if (empty($productModel->getWhishlistExist($_SESSION['lgUserID'], $product['id']))) { ?>
                                                                 <div class="icon-whishlist">
-                                                                    <a href="shop.php?id=<?= md5($product['id'] . 'chuyen-de-web-2') ?>">
+                                                                    <a href="manufacture-shop.php?id=<?= md5($product['id'] . 'chuyen-de-web-2') ?>&manu_id=<?php echo $id; ?>">
                                                                         <i class="fa fa-heart" aria-hidden="true"></i>
                                                                     </a>
                                                                 </div>
@@ -188,8 +189,8 @@ $vaCate = [];
                                 <div class="row product_item_inner">
                                     <?php
                                     $products = $productModel->paginationManu($id, $page, 6);
+                                    // var_dump($products);
                                     if (count($products) > 0) {
-
                                         foreach ($products as $product) { ?>
                                             <div class="col-lg-4 col-md-4 col-6">
                                                 <div class="cake_feature_item">
@@ -198,7 +199,7 @@ $vaCate = [];
                                                         <?php if (isset($_SESSION['lgUserID'])) { ?>
                                                             <?php if (empty($productModel->getWhishlistExist($_SESSION['lgUserID'], $product['id']))) { ?>
                                                                 <div class="icon-whishlist">
-                                                                    <a href="shop.php?id=<?= md5($product['id'] . 'chuyen-de-web-2') ?>">
+                                                                <a href="manufacture-shop.php?id=<?= md5($product['id'] . 'chuyen-de-web-2') ?>&manu_id=<?php echo $id; ?>">
                                                                         <i class="fa fa-heart" aria-hidden="true"></i>
                                                                     </a>
                                                                 </div>

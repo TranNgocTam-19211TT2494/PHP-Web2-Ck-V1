@@ -447,7 +447,7 @@ class HomeModel extends BaseModel
             $sql = 'SELECT * FROM products WHERE name LIKE "%' . mysqli_real_escape_string(self::$_connection, $search) . '%"';
             $searchResult = $this->select($sql);
             return $searchResult;
-        }else{
+        } else {
         }
     }
     // Hàm tìm kiếm theo tên của category(manufacture)
@@ -508,10 +508,10 @@ class HomeModel extends BaseModel
             $md5 = md5($manufac['manu_id'] . 'chuyen-de-web-2');
             if ($md5 == $manuid) {
                 $sql = 'SELECT * FROM `products` , manufactures WHERE products.manu_id = manufactures.manu_id AND products.manu_id =  ' . $manufac['manu_id'] . ' ';
+                $sql = $sql . ' LIMIT ' . $star . ',' . $num;
+                return $this->select($sql);
             }
         }
-        $sql = $sql . ' LIMIT ' . $star . ',' . $num;
-        return $this->select($sql);
     }
     public function paginationSearchCate($searchCate, $page, $num)
     {
@@ -522,8 +522,7 @@ class HomeModel extends BaseModel
         }
         if (empty($searchCate) || !is_string($searchCate)) {
             return false;
-        }
-         else {
+        } else {
             $sql = 'SELECT * FROM products,manufactures WHERE products.manu_id=manufactures.manu_id 
         AND manufactures.manu_name LIKE "%' . mysqli_real_escape_string(self::$_connection, $searchCate) . '%"';
             $sql = $sql . ' LIMIT ' . $star . ',' . $num;
