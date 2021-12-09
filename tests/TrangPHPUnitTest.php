@@ -16,15 +16,16 @@ class TrangPHPUnitTest extends TestCase
     public function testInsertCommentOk()
     {
         $HomeModel = new HomeModel();
-        $lgUserID = 47;
-        $id = md5(100 . 'chuyen-de-web-2');
-        $data = [
-            'name' => 'Trang',
+        $lgUserID = 48;
+        $id = md5(102 . 'chuyen-de-web-2');
+        $data = array(
+            'name' => 'NgoThai12',
             'content' => 'tuyệt'
-        ];
+        );
+ 
         $HomeModel->startTransaction();
         $actual = $HomeModel->insertComment($lgUserID, $id, $data);
-        $HomeModel->rollback();
+        //var_dump($actual).die();
         if ($actual == true) {
             $this->assertTrue(true);
         } else {
@@ -921,7 +922,7 @@ class TrangPHPUnitTest extends TestCase
     {
         $HomeModel = new HomeModel();
         $Search  = 'bánh';
-        $expected = 'Bánh Muffin';
+        $expected = 'Bánh Crepes';
         $user = $HomeModel->searchProduct($Search);
         $actual = $user[0]['name'];
         // var_dump($actual);
