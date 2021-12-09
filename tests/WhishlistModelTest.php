@@ -391,14 +391,16 @@ class WhishlistModelTest extends TestCase
     }
     public function testInsertWhishlistUserIdArray()
     {
-        $pro_id = ['pro_id' => '90'];
+        $pro_id = ['pro_id' => '9000'];
         $user_id = 25;
         $expected = false;
         $homeModel = new HomeModel();
         $homeModel->startTransaction();
         $actual = $homeModel->insertWhishList($pro_id, $user_id);
+        $homeModel->rollback();
+        $this->assertEquals($expected, $actual);
     }
-    
+
     //deleteWhishList
     public function testDeleteWhishlistIdOk()
     {
