@@ -243,30 +243,40 @@ class HomeModel extends BaseModel
     }
     public function getWhishlistByUserID($userid)
     {
-        $sql = "SELECT whishlist.id as whishlistId,products.pro_image,products.name,products.price 
-        FROM `whishlist`,products 
-        WHERE whishlist.pro_id = products.id 
-        AND whishlist.user_id = $userid ORDER BY `whishlist`.`id` DESC";
-        $whishlist = $this->select($sql);
-        return $whishlist;
+        if(!empty($userid) && !is_double($userid) && !is_bool($userid) && !is_object($userid) && !is_array($userid)
+        && !is_string($userid) && $userid > 0){
+            $sql = "SELECT whishlist.id as whishlistId,products.pro_image,products.name,products.price 
+            FROM `whishlist`,products 
+            WHERE whishlist.pro_id = products.id 
+            AND whishlist.user_id = $userid ORDER BY `whishlist`.`id` DESC";
+            $whishlist = $this->select($sql);
+            return $whishlist;
+        }else{
+            return false;
+        }
     }
     public function insertWhishList($paged, $userId)
     {
-        $allProduct = $this->getProducts();
-        foreach ($allProduct as $value) {
-            if (md5($value['id'] . 'chuyen-de-web-2') == $paged) {
-                $sql = "INSERT INTO `webbanhkem`.`whishlist` (`user_id` ,`pro_id`) VALUES (" .
-                    "'" . $userId
-                    . "','" . $value['id'] . "')";
-                $allWhishlist = $this->getWhishlistExist($userId, $value['id']);
-                if (empty($allWhishlist)) {
-                    $products = $this->insert($sql);
-                    return $products;
-                } else {
-                    return 2;
+        if(!empty($paged) && !empty($userId) && !is_string($userId)){
+            $allProduct = $this->getProducts();
+            foreach ($allProduct as $value) {
+                if (md5($value['id'] . 'chuyen-de-web-2') == $paged && !is_bool($paged) ) {
+                    $sql = "INSERT INTO `webbanhkem`.`whishlist` (`user_id` ,`pro_id`) VALUES (" .
+                        "'" . $userId
+                        . "','" . $value['id'] . "')";
+                    $allWhishlist = $this->getWhishlistExist($userId, $value['id']);
+                    if (empty($allWhishlist)) {
+                        $products = $this->insert($sql);
+                        return $products;
+                    } else {
+                        return 2;
+                    }
                 }
             }
+        }else{
+             return false;
         }
+        
     }
     public function deleteWhishList($paged)
     {
