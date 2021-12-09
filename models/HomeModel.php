@@ -112,9 +112,7 @@ class HomeModel extends BaseModel
     {
         if (empty($id)) {
             return "Not Empty";
-        } elseif (is_string($id)) {
-            return "Not String";
-        } elseif (is_array($id)) {
+        }elseif (is_array($id)) {
             return "Not Array";
         } elseif (is_object($id)) {
             return "Not Object";
@@ -134,8 +132,8 @@ class HomeModel extends BaseModel
     public function getWhishlistExist($userid, $pro_id)
     {
         if(!empty($userid) && !is_double($userid) && !is_bool($userid) && !is_object($userid) && !is_array($userid)
-            && !is_string($userid) && $userid > 0 && !empty($pro_id) && !is_double($pro_id) && !is_bool($pro_id) && !is_object($pro_id) && !is_array($pro_id)
-            && !is_string($pro_id) && $pro_id > 0){
+             && $userid > 0 && !empty($pro_id) && !is_double($pro_id) && !is_bool($pro_id) && !is_object($pro_id) && !is_array($pro_id)
+             && $pro_id > 0){
             $sql = "SELECT * FROM `whishlist` WHERE `user_id` = $userid and `pro_id` = $pro_id";
             $whishlist = $this->select($sql);
             return $whishlist;
@@ -146,7 +144,7 @@ class HomeModel extends BaseModel
     public function getWhishlistByUserID($userid)
     {
         if(!empty($userid) && !is_double($userid) && !is_bool($userid) && !is_object($userid) && !is_array($userid)
-        && !is_string($userid) && $userid > 0){
+        && $userid > 0){
             $sql = "SELECT whishlist.id as whishlistId,products.pro_image,products.name,products.price 
             FROM `whishlist`,products 
             WHERE whishlist.pro_id = products.id 
@@ -160,7 +158,7 @@ class HomeModel extends BaseModel
     }
     public function insertWhishList($paged, $userId)
     {
-        if(!empty($paged) && !empty($userId) && !is_string($userId)){
+        if(!empty($paged) && !empty($userId)){
             $allProduct = $this->getProducts();
             foreach ($allProduct as $value) {
                 if (md5($value['id'] . 'chuyen-de-web-2') == $paged && !is_bool($paged) ) {
