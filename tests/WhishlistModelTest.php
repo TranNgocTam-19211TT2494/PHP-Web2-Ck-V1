@@ -4,7 +4,7 @@ use PHPUnit\Framework\TestCase;
 class WhishlistModelTest extends TestCase
 {
     //getWhishlistByUserID
-    public function testgetWhishlistByUserIdOk()
+    public function testGetWhishlistByUserIdOk()
     {
         $userId = 47;
         $homeModel = new HomeModel();
@@ -13,7 +13,7 @@ class WhishlistModelTest extends TestCase
         $this->assertTrue(true);
         }
     }
-    public function testgetWhishlistByUserIdNotExist()
+    public function testGetWhishlistByUserIdNotExist()
     {
         $userId = 26151;
         $homeModel = new HomeModel();
@@ -25,7 +25,7 @@ class WhishlistModelTest extends TestCase
             $this->assertTrue(false);
         }
     }
-    public function testgetWhishlistByUserIdString()
+    public function testGetWhishlistByUserIdString()
     {
         $userId = 'asdasd';
         $homeModel = new HomeModel();
@@ -33,7 +33,7 @@ class WhishlistModelTest extends TestCase
         $actual = $homeModel->getWhishlistByUserID($userId);
         $this->assertEquals($expected, $actual);
     }
-    public function testgetWhishlistByUserIdEmpty()
+    public function testGetWhishlistByUserIdEmpty()
     {
         $userId = '';
         $homeModel = new HomeModel();
@@ -41,7 +41,7 @@ class WhishlistModelTest extends TestCase
         $actual = $homeModel->getWhishlistByUserID($userId);
         $this->assertEquals($expected, $actual);
     }
-    public function testgetWhishlistByUserIdObject()
+    public function testGetWhishlistByUserIdObject()
     {
         $userId = new stdClass();
         $homeModel = new HomeModel();
@@ -49,7 +49,7 @@ class WhishlistModelTest extends TestCase
         $actual = $homeModel->getWhishlistByUserID($userId);
         $this->assertEquals($expected, $actual);
     }
-    public function testgetWhishlistByUserIdBool()
+    public function testGetWhishlistByUserIdBool()
     {
         $userId = true;
         $homeModel = new HomeModel();
@@ -57,7 +57,7 @@ class WhishlistModelTest extends TestCase
         $actual = $homeModel->getWhishlistByUserID($userId);
         $this->assertEquals($expected, $actual);
     }
-    public function testgetWhishlistByUserIdDouble()
+    public function testGetWhishlistByUserIdDouble()
     {
         $userId = 46.00000000;
         $homeModel = new HomeModel();
@@ -65,7 +65,7 @@ class WhishlistModelTest extends TestCase
         $actual = $homeModel->getWhishlistByUserID($userId);
         $this->assertEquals($expected, $actual);
     }
-    public function testgetWhishlistByUserIdNull()
+    public function testGetWhishlistByUserIdNull()
     {
         $userId = null;
         $homeModel = new HomeModel();
@@ -73,7 +73,7 @@ class WhishlistModelTest extends TestCase
         $actual = $homeModel->getWhishlistByUserID($userId);
         $this->assertEquals($expected, $actual);
     }
-    public function testgetWhishlistByUserIdStringValueNumber()
+    public function testGetWhishlistByUserIdStringValueNumber()
     {
         $userId = '46';
         $homeModel = new HomeModel();
@@ -81,7 +81,7 @@ class WhishlistModelTest extends TestCase
         $actual = $homeModel->getWhishlistByUserID($userId);
         $this->assertEquals($expected, $actual);
     }
-    public function testgetWhishlistByUserIdNegative()
+    public function testGetWhishlistByUserIdNegative()
     {
         $userId = -46;
         $homeModel = new HomeModel();
@@ -89,7 +89,7 @@ class WhishlistModelTest extends TestCase
         $actual = $homeModel->getWhishlistByUserID($userId);
         $this->assertEquals($expected, $actual);
     }
-    public function testgetWhishlistByUserIdArray()
+    public function testGetWhishlistByUserIdArray()
     {
         $userId = ['use_id' => 46];
         $homeModel = new HomeModel();
