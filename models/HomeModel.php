@@ -542,12 +542,12 @@ class HomeModel extends BaseModel
     public function getAllOrderByMonth($month)
     {
         if(!empty($month) && !is_string($month) && !is_object($month) && !is_array($month) 
-        && is_double($month) && $month > 0 && $month <= 12){
-            $sql = "SELECT * 
-            FROM checkouts  
-            WHERE MONTH(addedDate) = $month;";
-            $id = $this->select($sql);
-            return $id;
+        && !is_double($month) && !is_bool($month) && $month > 0){
+                $sql = "SELECT * 
+                FROM checkouts  
+                WHERE MONTH(addedDate) = $month;";
+                $id = $this->select($sql);
+                return $id;
         }else{
             return false;
         }

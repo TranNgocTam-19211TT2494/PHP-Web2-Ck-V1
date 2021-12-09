@@ -4,23 +4,25 @@ use PHPUnit\Framework\TestCase;
 class ChartOrderModelTest extends TestCase
 {
     // getAllOrderByMonth moth = 12
-    public function testgetAllOrderByMonthOk()
+    public function testGetAllOrderByMonthOk()
     {
         $homeModel = new HomeModel();
         $actual = $homeModel->getAllOrderByMonth(12);
         if(!empty($actual)){
           $this->assertTrue(true);
+        }else{
+          $this->assertTrue(false);
         }
     }
-    public function testgetAllOrderByMonthNotExist()
+    public function testGetAllOrderByMonthNotExist()
     {
         $homeModel = new HomeModel();
-        $actual = $homeModel->getAllOrderByMonth(14);
+        $actual = $homeModel->getAllOrderByMonth(15);
         if(empty($actual)){
           $this->assertTrue(true);
         }
     }
-    public function testgetAllOrderByMonthNotString()
+    public function testGetAllOrderByMonthNotString()
     {
         $homeModel = new HomeModel();
         $moth = "ass";
@@ -28,7 +30,7 @@ class ChartOrderModelTest extends TestCase
         $actual = $homeModel->getAllOrderByMonth($moth);
         $this->assertEquals($expected, $actual);
     }
-    public function testgetAllOrderByMonthEmpty()
+    public function testGetAllOrderByMonthEmpty()
     {
         $homeModel = new HomeModel();
         $moth = "";
@@ -36,7 +38,7 @@ class ChartOrderModelTest extends TestCase
         $actual = $homeModel->getAllOrderByMonth($moth);
         $this->assertEquals($expected, $actual);
     }
-    public function testgetAllOrderByMonthObject()
+    public function testGetAllOrderByMonthObject()
     {
         $homeModel = new HomeModel();
         $moth = new stdClass();
@@ -44,7 +46,7 @@ class ChartOrderModelTest extends TestCase
         $actual = $homeModel->getAllOrderByMonth($moth);
         $this->assertEquals($expected, $actual);
     }
-    public function testgetAllOrderByMonthBool()
+    public function testGetAllOrderByMonthBool()
     {
         $homeModel = new HomeModel();
         $moth = true;
@@ -52,15 +54,15 @@ class ChartOrderModelTest extends TestCase
         $actual = $homeModel->getAllOrderByMonth($moth);
         $this->assertEquals($expected, $actual);
     }
-    public function testgetAllOrderByMonthDouble()
+    public function testGetAllOrderByMonthDouble()
     {
         $homeModel = new HomeModel();
-        $moth = 12.000000000000000000000;
+        $moth = 12.000000000;
         $expected = false;
         $actual = $homeModel->getAllOrderByMonth($moth);
         $this->assertEquals($expected, $actual);
     }
-    public function testgetAllOrderByMonthNull()
+    public function testGetAllOrderByMonthNull()
     {
         $homeModel = new HomeModel();
         $moth = null;
@@ -68,7 +70,7 @@ class ChartOrderModelTest extends TestCase
         $actual = $homeModel->getAllOrderByMonth($moth);
         $this->assertEquals($expected, $actual);
     }
-    public function testgetAllOrderByMonthStringValueNumber()
+    public function testGetAllOrderByMonthStringValueNumber()
     {
         $homeModel = new HomeModel();
         $moth = '12';
@@ -76,7 +78,7 @@ class ChartOrderModelTest extends TestCase
         $actual = $homeModel->getAllOrderByMonth($moth);
         $this->assertEquals($expected, $actual);
     }
-    public function testgetAllOrderByMonthNegative()
+    public function testGetAllOrderByMonthNegative()
     {
         $homeModel = new HomeModel();
         $moth = -12;
@@ -84,7 +86,7 @@ class ChartOrderModelTest extends TestCase
         $actual = $homeModel->getAllOrderByMonth($moth);
         $this->assertEquals($expected, $actual);
     }
-    public function testgetAllOrderByMonthArray()
+    public function testGetAllOrderByMonthArray()
     {
         $homeModel = new HomeModel();
         $moth = ['month' => 12];
