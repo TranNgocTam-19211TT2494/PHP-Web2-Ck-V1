@@ -29,8 +29,8 @@ class WhishlistModelTest extends TestCase
     {
         $userId = 'asdasd';
         $homeModel = new HomeModel();
-        $expected = false;
-        $actual = $homeModel->getWhishlistByUserID($userId);
+        $expected = 0;
+        $actual = count($homeModel->getWhishlistByUserID($userId));
         $this->assertEquals($expected, $actual);
     }
     public function testGetWhishlistByUserIdEmpty()
@@ -77,9 +77,12 @@ class WhishlistModelTest extends TestCase
     {
         $userId = '46';
         $homeModel = new HomeModel();
-        $expected = false ;
         $actual = $homeModel->getWhishlistByUserID($userId);
-        $this->assertEquals($expected, $actual);
+        if(!empty($actual)){
+            $this->assertTrue(true);
+        }else{
+            $this->assertTrue(false);
+        }
     }
     public function testGetWhishlistByUserIdNegative()
     {
@@ -543,7 +546,7 @@ class WhishlistModelTest extends TestCase
         $homeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
-    //getWhishlistExist
+    //getWhishlistExist user_id = 46 , pro_id = 106
     public function testGetWhishlistExistOk()
     {
         $userId = 48;
@@ -570,9 +573,9 @@ class WhishlistModelTest extends TestCase
     {
         $userId = 'ádsad';
         $productId = 96;
-        $expected = false;
+        $expected = 0;
         $homeModel = new HomeModel();
-        $actual = $homeModel->getWhishlistExist($userId,$productId);
+        $actual = count($homeModel->getWhishlistExist($userId,$productId));
         $this->assertEquals($expected, $actual);
     }
     public function testGetWhishlistExistUserIdEmpty()
@@ -623,11 +626,14 @@ class WhishlistModelTest extends TestCase
     public function testGetWhishlistExistUserIdStringValueNumber()
     {
         $userId = '46';
-        $productId = 90;
-        $expected = false;
+        $productId = 106;
         $homeModel = new HomeModel();
         $actual = $homeModel->getWhishlistExist($userId,$productId);
-        $this->assertEquals($expected, $actual);
+        if(!empty($actual)){
+            $this->assertTrue(true);
+        }else{
+            $this->assertTrue(false);
+        }
     }
     public function testGetWhishlistExistUserIdNegative()
     {
@@ -663,9 +669,9 @@ class WhishlistModelTest extends TestCase
     {
         $userId = 46;
         $productId = 'adgb';
-        $expected = false;
+        $expected = 0;
         $homeModel = new HomeModel();
-        $actual = $homeModel->getWhishlistExist($userId,$productId);
+        $actual = count($homeModel->getWhishlistExist($userId,$productId));
         $this->assertEquals($expected, $actual);
     }
     public function testGetWhishlistExistProductIdEmpty()
@@ -716,11 +722,14 @@ class WhishlistModelTest extends TestCase
     public function testGetWhishlistExistProductIdStringValueNumber()
     {
         $userId = 46;
-        $productId = '90';
-        $expected = false;
+        $productId = '106';
         $homeModel = new HomeModel();
         $actual = $homeModel->getWhishlistExist($userId,$productId);
-        $this->assertEquals($expected, $actual);
+        if(!empty($actual)){
+            $this->assertTrue(true);
+        }else{
+            $this->assertTrue(false);
+        }
     }
     public function testGetWhishlistExistProductIdNegative()
     {
