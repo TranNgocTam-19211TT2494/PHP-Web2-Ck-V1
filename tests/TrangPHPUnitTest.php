@@ -921,7 +921,7 @@ class TrangPHPUnitTest extends TestCase
     {
         $HomeModel = new HomeModel();
         $Search  = 'bánh';
-        $expected = 'Bánh Muffin';
+        $expected = 'Bánh Crepes';
         $user = $HomeModel->searchProduct($Search);
         $actual = $user[0]['name'];
         // var_dump($actual);

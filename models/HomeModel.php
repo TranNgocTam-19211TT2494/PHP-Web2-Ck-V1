@@ -34,59 +34,12 @@ class HomeModel extends BaseModel
         $user = $this->select($sql);
         return $user;
     }
-    //   Register:
-    public function insertUserDecorator($pagenput, $zipcode)
-    {
-        $allUser = $this->getAllUser();
-        foreach ($allUser as  $value) {
-            if ($pagenput['email'] == $value['email']) {
-                return false;
-            }
-        }
-        $sql = "INSERT INTO `users`(`username`, `email`, `password`,`otp`,`permission`) 
-        VALUES ('" . $pagenput['username'] . "','" . $pagenput['email'] . "','" . md5($pagenput['password']) . "','" . $pagenput['otp'] . "','" . 'User' . "')";
-        $user = $this->insert($sql);
-
-        $lastUserId = $this->lastUserId();
-
-        $data = [
-            'zipcode' => $this->getToken(8),
-            'user_id' => $lastUserId
-        ];
-        $sql1 = "INSERT INTO `webbanhkem`.`zipcode` (`zipcode`, `user_id` ,`discount`,`status`)
-         VALUES (" .
-            "'" . $this->getToken(8)
-            . "','" . $lastUserId
-            . "','" . 25
-            . "','" . 1 . "')";
-        $zipcode = $this->insert($sql1);
-
-        return $user;
-    }
-    public function getToken($length)
-    {
-        $token = "";
-        $codeAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        $codeAlphabet .= "0123456789";
-        $max = strlen($codeAlphabet);
-        for ($page = 0; $page < $length; $page++) {
-            $token .= $codeAlphabet[random_int(0, $max - 1)];
-        }
-        return $token;
-    }
-    public function getAllUser()
-    {
-        $sql = 'SELECT * FROM users';
-        $users = $this->select($sql);
-        return $users;
-    }
     public function lastUserId()
     {
         $sql = "SELECT MAX(id) FROM users";
         $paged = $this->select($sql);
         return $paged[0]['MAX(id)'];
     }
-
     //Forget Password
     public function checkMail($email)
     {
@@ -154,6 +107,330 @@ class HomeModel extends BaseModel
             return $user;
         }
     }
+    // Mã khuyến mãi:
+    public function getCouponByID($id)
+    {
+        if (empty($id)) {
+            return "Not Empty";
+        } elseif (is_string($id)) {
+            return "Not String";
+        } elseif (is_array($id)) {
+            return "Not Array";
+        } elseif (is_object($id)) {
+            return "Not Object";
+        } elseif (is_bool($id)) {
+            return "Not Boolean";
+        }
+        $sql = 'SELECT  zipcode.status,zipcode.discount,zipcode.created_at,zipcode.zipcode FROM zipcode , users WHERE zipcode.user_id = users.id AND zipcode.user_id = ' . $id;
+        $coupon = $this->select($sql);
+        return $coupon;
+    }
+    public function getWhishlist()
+    {
+        $sql = 'SELECT * FROM `whishlist` ORDER BY `id` DESC;';
+        $whishlist = $this->select($sql);
+        return $whishlist;
+    }
+    public function getWhishlistExist($userid, $pro_id)
+    {
+        if(!empty($userid) && !is_double($userid) && !is_bool($userid) && !is_object($userid) && !is_array($userid)
+            && !is_string($userid) && $userid > 0 && !empty($pro_id) && !is_double($pro_id) && !is_bool($pro_id) && !is_object($pro_id) && !is_array($pro_id)
+            && !is_string($pro_id) && $pro_id > 0){
+            $sql = "SELECT * FROM `whishlist` WHERE `user_id` = $userid and `pro_id` = $pro_id";
+            $whishlist = $this->select($sql);
+            return $whishlist;
+        }else{
+            return false;
+        }
+    }
+    public function getWhishlistByUserID($userid)
+    {
+        if(!empty($userid) && !is_double($userid) && !is_bool($userid) && !is_object($userid) && !is_array($userid)
+        && !is_string($userid) && $userid > 0){
+            $sql = "SELECT whishlist.id as whishlistId,products.pro_image,products.name,products.price 
+            FROM `whishlist`,products 
+            WHERE whishlist.pro_id = products.id 
+            AND whishlist.user_id = $userid ORDER BY `whishlist`.`id` DESC";
+            $whishlist = $this->select($sql);
+            return $whishlist;
+        }else{
+            return false;
+        }
+        
+    }
+    public function insertWhishList($paged, $userId)
+    {
+        if(!empty($paged) && !empty($userId) && !is_string($userId)){
+            $allProduct = $this->getProducts();
+            foreach ($allProduct as $value) {
+                if (md5($value['id'] . 'chuyen-de-web-2') == $paged && !is_bool($paged) ) {
+                    $sql = "INSERT INTO `webbanhkem`.`whishlist` (`user_id` ,`pro_id`) VALUES (" .
+                        "'" . $userId
+                        . "','" . $value['id'] . "')";
+                    $allWhishlist = $this->getWhishlistExist($userId, $value['id']);
+                    if (empty($allWhishlist)) {
+                        $products = $this->insert($sql);
+                        return $products;
+                    } else {
+                        return 2;
+                    }
+                }
+            }
+        }else{
+             return false;
+        }
+        
+    }
+    public function deleteWhishList($paged)
+    {
+        if(!empty($paged)){
+            $allWhishlist = $this->getWhishlist();
+            foreach ($allWhishlist as $value) {
+                $md5 = md5($value['id'] . "chuyen-de-web-2");
+                if ($md5 == $paged && !is_bool($paged)) {
+                    $sql = "DELETE FROM whishlist WHERE id =  " . $value['id'];
+                    $whishlist = $this->delete($sql);
+                    return $whishlist;
+                }
+            }
+        }else{
+            return false;
+        }
+    }
+    // Xem đơn hàng của khách hàng:
+    public function getCheckoutsByUserId($userID)
+    {
+        if (!is_numeric($userID) || $userID < 0 || is_double($userID)) {
+            return 'Not invalid';
+        } else {
+            $sql = 'SELECT checkouts.id , checkouts.user_id , checkouts.addedDate, checkouts.address ,checkouts.phone , checkouts.sum,checkouts.status FROM `checkouts` ,users WHERE checkouts.user_id = users.id AND checkouts.user_id = ' . $userID;
+            $order = $this->select($sql);
+            return $order;
+        }
+        // $sql = 'SELECT checkouts.id , checkouts.addedDate, checkouts.address ,checkouts.phone , checkouts.sum,checkouts.status FROM `checkouts` ,users WHERE checkouts.user_id = users.id AND checkouts.user_id = '.$userID;
+    }
+    // Lấy sản phẩm trong giỏ hàng:
+    public function getOrderItemById($id)
+    {
+        if (!is_numeric($id) || $id < 0 || is_double($id)) {
+            return 'Not invalid';
+        } else {
+            $sql = 'SELECT carts.pro_id , products.name , products.price, carts.quantity FROM carts INNER JOIN products ON carts.pro_id = products.id WHERE carts.order_id = ' . mysqli_real_escape_string(self::$_connection, $id) . ' ';
+            $user = $this->select($sql);
+            return $user;
+        }
+    }
+    // Thêm danh sách giỏ hàng
+    public function insertOrderItem($OrderID, $ProductID, $Quantity)
+    {
+        if (empty($OrderID) || empty($ProductID) || empty($Quantity)) {
+            return 'Invalid';
+        }
+        if (!is_numeric($OrderID) || $OrderID < 0 || is_double($OrderID)) {
+            return 'Invalid';
+        }
+        if (!is_numeric($ProductID) || $ProductID < 0 || is_double($ProductID)) {
+            return 'Invalid';
+        }
+        if (!is_numeric($Quantity) || $Quantity < 0 || is_double($Quantity)) {
+            return 'Invalid';
+        } else {
+            $sql = "Insert into carts (order_id,pro_id,quantity) values($OrderID,$ProductID,$Quantity)";
+            //var_dump($sql);
+            $product = $this->insert($sql);
+            return $product;
+        }
+    }
+    // -------------- Checkout ---------------- //
+    public function insertOrder($userID, $Firstname, $Lastname, $address, $email, $phone, $notes)
+    {
+        if (
+            !is_array($userID) && !is_array($Firstname) && !is_array($Lastname)
+            && !is_array($address)  && !is_array($email) && !is_array($phone) && !is_array($notes)
+        ) {
+            if (
+                !is_numeric($userID) && !is_string($Firstname) && !is_string($Lastname)
+                && !is_string($address)  && !is_string($email) && !is_numeric($phone) && !is_string($notes)
+            ) {
+                return 0;
+            }
+            if (is_object($userID) || is_object($phone) || is_bool($userID)) {
+                return 0;
+            }
+            if (intval($userID) <= 0) {
+                return 0;
+            }
+            $sql = "Insert into checkouts(user_id,firstname,lastname,addedDate,address,email,phone,notes) values('$userID','$Firstname','$Lastname',now(),'$address','$email','$phone','$notes')";
+            $product = $this->insert($sql);
+            return $product;
+        } else {
+            return 0;
+        }
+    }
+    // Cập nhập Tổng tiền:
+    public function updateSum($OrderID, $Sum)
+    {
+        // if (strlen("$OrderID") == 0 && strlen("$Sum") == 0) {
+        //     return false;
+        // }
+        if (!is_numeric($OrderID) && !is_numeric($Sum)) {
+            return false;
+        }
+        if($OrderID <= 0 || $Sum <= 0){
+            return false;
+        }
+        $sql = "Update checkouts set sum = $Sum where id = $OrderID";
+        $checkout = $this->update($sql);
+        return $checkout;
+    }
+    public function searchProduct($search = null)
+    {
+        if (is_array($search) || is_object($search)) {
+            return false;
+        }
+        if ($search === null) {
+            return false;
+        } else {
+            $sql = 'SELECT * FROM products WHERE name LIKE "%' . mysqli_real_escape_string(self::$_connection, $search) . '%"';
+            $searchResult = $this->select($sql);
+            return $searchResult;
+        }
+    }
+    // Hàm tìm kiếm theo tên của category(manufacture)
+    public function searchCategories($search)
+    {
+        if (is_string($search)) {
+            $sql = 'SELECT * FROM products,manufactures WHERE products.manu_id=manufactures.manu_id 
+            AND manufactures.manu_name LIKE "%' . mysqli_real_escape_string(self::$_connection, $search) . '%"';
+            $searchResult = $this->select($sql);
+            return $searchResult;
+        } else {
+            return false;
+        }
+    }
+    public function insertComment($lgUserID, $id, $input)
+    {
+        $comments = 'SELECT id FROM products';
+        $comment = $this->select($comments);
+        $insert_comment = null;
+        if (isset($lgUserID) && count($comment) != 0 && isset($input)) {
+            if (!is_array($lgUserID) && !is_array($id) && is_array($input) && !is_bool($lgUserID) && !is_bool($id) && !is_bool($input)) {
+                if (is_string($lgUserID)) {
+                    return false;
+                }
+                foreach ($comment as $commen) {
+                    $md5 = md5($commen['id'] . 'chuyen-de-web-2');
+                    // var_dump($md5);
+                    // var_dump($id);
+                    if ($md5 == $id) {
+                        $sql = "INSERT INTO `comment`(`user_id`, `id_product`, `username`, `content`) VALUES ('$lgUserID'," . "'" . $commen['id'] . "', " . "'" . $input['name'] . "'," . "'" . $input['content'] . "')";
+                        // var_dump($sql).die();
+                        $insert_comment = $this->insert($sql);
+                    }
+                }
+            }
+        }
+        return $insert_comment;
+    }
+    public function getUserByMonth($month)
+    {
+        if (!is_numeric($month) || $month < 0 || is_double($month)) {
+            return 'Not invalid';
+        } else {
+            $sql = "SELECT * from users where MONTH(date) = $month";
+            $id = $this->select($sql);
+            return $id;
+        }
+    }
+    public function findOrderById($id)
+    {
+        $sql = 'SELECT * FROM carts WHERE id = ' . $id;
+        $order = $this->select($sql);
+        return $order;
+    }
+    public function getAllOrderByMonth($month)
+    {
+        if(!empty($month) && !is_string($month) && !is_object($month) && !is_array($month) 
+        && !is_double($month) && $month > 0 && !is_bool($month)){
+            $sql = "SELECT * 
+            FROM checkouts  
+            WHERE MONTH(addedDate) = $month;";
+            $id = $this->select($sql);
+            return $id;
+        }else{
+            return false;
+        }
+        
+    }
+    // Lấy id mới nhất của đơn hàng:
+    public function getOrderMaxById()
+    {
+        $sql = "SELECT MAX(id) FROM checkouts";
+        $paged = $this->select($sql);
+        return $paged[0]['MAX(id)'];
+    }
+    public static function getInstance()
+    {
+        if (self::$_instance != null) {
+
+            return self::$_instance;
+        }
+        self::$_instance = new self();
+        return self::$_instance;
+    }
+
+
+
+
+
+    // Chưa test PHPUnit
+    //   Register:
+    public function insertUserDecorator($pagenput, $zipcode)
+    {
+        $allUser = $this->getAllUser();
+        foreach ($allUser as  $value) {
+            if ($pagenput['email'] == $value['email']) {
+                return false;
+            }
+        }
+        $sql = "INSERT INTO `users`(`username`, `email`, `password`,`otp`,`permission`) 
+        VALUES ('" . $pagenput['username'] . "','" . $pagenput['email'] . "','" . md5($pagenput['password']) . "','" . $pagenput['otp'] . "','" . 'User' . "')";
+        $user = $this->insert($sql);
+
+        $lastUserId = $this->lastUserId();
+
+        $data = [
+            'zipcode' => $this->getToken(8),
+            'user_id' => $lastUserId
+        ];
+        $sql1 = "INSERT INTO `webbanhkem`.`zipcode` (`zipcode`, `user_id` ,`discount`,`status`)
+         VALUES (" .
+            "'" . $this->getToken(8)
+            . "','" . $lastUserId
+            . "','" . 25
+            . "','" . 1 . "')";
+        $zipcode = $this->insert($sql1);
+
+        return $user;
+    }
+    public function getToken($length)
+    {
+        $token = "";
+        $codeAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        $codeAlphabet .= "0123456789";
+        $max = strlen($codeAlphabet);
+        for ($page = 0; $page < $length; $page++) {
+            $token .= $codeAlphabet[random_int(0, $max - 1)];
+        }
+        return $token;
+    }
+    public function getAllUser()
+    {
+        $sql = 'SELECT * FROM users';
+        $users = $this->select($sql);
+        return $users;
+    }
+   
     // Lay id
     public function getid()
     {
@@ -181,24 +458,6 @@ class HomeModel extends BaseModel
         $protypes = $this->update($sql);
         return $protypes;
     }
-    // Mã khuyến mãi:
-    public function getCouponByID($id)
-    {
-        if (empty($id)) {
-            return "Not Empty";
-        } elseif (is_string($id)) {
-            return "Not String";
-        } elseif (is_array($id)) {
-            return "Not Array";
-        } elseif (is_object($id)) {
-            return "Not Object";
-        } elseif (is_bool($id)) {
-            return "Not Boolean";
-        }
-        $sql = 'SELECT  zipcode.status,zipcode.discount,zipcode.created_at,zipcode.zipcode FROM zipcode , users WHERE zipcode.user_id = users.id AND zipcode.user_id = ' . $id;
-        $coupon = $this->select($sql);
-        return $coupon;
-    }
     //   ---------------------- Protype ---------------- //
     public function getProtype()
     {
@@ -225,59 +484,6 @@ class HomeModel extends BaseModel
             }
         }
         return $proty;
-    }
-
-    public function getWhishlist()
-    {
-        $sql = 'SELECT * FROM `whishlist` ORDER BY `id` DESC;';
-        $whishlist = $this->select($sql);
-        return $whishlist;
-    }
-    public function getWhishlistExist($userid, $pro_id)
-    {
-        $sql = "SELECT * FROM `whishlist` WHERE `user_id` = $userid and `pro_id` = $pro_id";
-        $whishlist = $this->select($sql);
-        return $whishlist;
-    }
-    public function getWhishlistByUserID($userid)
-    {
-        $sql = "SELECT whishlist.id as whishlistId,products.pro_image,products.name,products.price 
-        FROM `whishlist`,products 
-        WHERE whishlist.pro_id = products.id 
-        AND whishlist.user_id = $userid ORDER BY `whishlist`.`id` DESC";
-        $whishlist = $this->select($sql);
-        return $whishlist;
-    }
-    public function insertWhishList($paged, $userId)
-    {
-        $allProduct = $this->getProducts();
-        foreach ($allProduct as $value) {
-            if (md5($value['id'] . 'chuyen-de-web-2') == $paged) {
-                $sql = "INSERT INTO `webbanhkem`.`whishlist` (`user_id` ,`pro_id`) VALUES (" .
-                    "'" . $userId
-                    . "','" . $value['id'] . "')";
-                $allWhishlist = $this->getWhishlistExist($userId, $value['id']);
-                if (empty($allWhishlist)) {
-                    $products = $this->insert($sql);
-                    return $products;
-                } else {
-                    return 2;
-                }
-            }
-        }
-    }
-    public function deleteWhishList($paged)
-    {
-        $allWhishlist = $this->getWhishlist();
-        foreach ($allWhishlist as $value) {
-            $md5 = md5($value['id'] . "chuyen-de-web-2");
-            if ($md5 == $paged) {
-                $sql = "DELETE FROM whishlist WHERE id =  " . $value['id'];
-                $whishlist = $this->delete($sql);
-                return $whishlist;
-            }
-        }
-        return false;
     }
     // --------------------- Manufacture ------------------ //
     // Hien thi data bang manufactures:
@@ -387,29 +593,7 @@ class HomeModel extends BaseModel
         }
     }
     // ------------------ Giỏ hàng -------------------- //
-    // Xem đơn hàng của khách hàng:
-    public function getCheckoutsByUserId($userID)
-    {
-        if (!is_numeric($userID) || $userID < 0 || is_double($userID)) {
-            return 'Not invalid';
-        } else {
-            $sql = 'SELECT checkouts.id , checkouts.user_id , checkouts.addedDate, checkouts.address ,checkouts.phone , checkouts.sum,checkouts.status FROM `checkouts` ,users WHERE checkouts.user_id = users.id AND checkouts.user_id = ' . $userID;
-            $order = $this->select($sql);
-            return $order;
-        }
-        // $sql = 'SELECT checkouts.id , checkouts.addedDate, checkouts.address ,checkouts.phone , checkouts.sum,checkouts.status FROM `checkouts` ,users WHERE checkouts.user_id = users.id AND checkouts.user_id = '.$userID;
-    }
-    // Lấy sản phẩm trong giỏ hàng:
-    public function getOrderItemById($id)
-    {
-        if (!is_numeric($id) || $id < 0 || is_double($id)) {
-            return 'Not invalid';
-        } else {
-            $sql = 'SELECT carts.pro_id , products.name , products.price, carts.quantity FROM carts INNER JOIN products ON carts.pro_id = products.id WHERE carts.order_id = ' . mysqli_real_escape_string(self::$_connection, $id) . ' ';
-            $user = $this->select($sql);
-            return $user;
-        }
-    }
+  
     // Thêm vào giỏ hàng:
     public function getOrderItemByOrder($paged)
     {
@@ -417,76 +601,9 @@ class HomeModel extends BaseModel
         $cart = $this->select($sql);
         return $cart;
     }
-    // Thêm danh sách giỏ hàng
-    public function insertOrderItem($OrderID, $ProductID, $Quantity)
-    {
-        if (empty($OrderID) || empty($ProductID) || empty($Quantity)) {
-            return 'Invalid';
-        }
-        if (!is_numeric($OrderID) || $OrderID < 0 || is_double($OrderID)) {
-            return 'Invalid';
-        }
-        if (!is_numeric($ProductID) || $ProductID < 0 || is_double($ProductID)) {
-            return 'Invalid';
-        }
-        if (!is_numeric($Quantity) || $Quantity < 0 || is_double($Quantity)) {
-            return 'Invalid';
-        } else {
-            $sql = "Insert into carts (order_id,pro_id,quantity) values($OrderID,$ProductID,$Quantity)";
-            //var_dump($sql);
-            $product = $this->insert($sql);
-            return $product;
-        }
-    }
-    // -------------- Checkout ---------------- //
-    public function insertOrder($userID, $Firstname, $Lastname, $address, $email, $phone, $notes)
-    {
-        if (
-            !is_array($userID) && !is_array($Firstname) && !is_array($Lastname)
-            && !is_array($address)  && !is_array($email) && !is_array($phone) && !is_array($notes)
-        ) {
-            if (
-                !is_numeric($userID) && !is_string($Firstname) && !is_string($Lastname)
-                && !is_string($address)  && !is_string($email) && !is_numeric($phone) && !is_string($notes)
-            ) {
-                return 0;
-            }
-            if (is_object($userID) || is_object($phone) || is_bool($userID)) {
-                return 0;
-            }
-            if (intval($userID) <= 0) {
-                return 0;
-            }
-            $sql = "Insert into checkouts(user_id,firstname,lastname,addedDate,address,email,phone,notes) values('$userID','$Firstname','$Lastname',now(),'$address','$email','$phone','$notes')";
-            $product = $this->insert($sql);
-            return $product;
-        } else {
-            return 0;
-        }
-    }
-    // Lấy id mới nhất của đơn hàng:
-    public function getOrderMaxById()
-    {
-        $sql = "SELECT MAX(id) FROM checkouts";
-        $paged = $this->select($sql);
-        return $paged[0]['MAX(id)'];
-    }
-    // Cập nhập Tổng tiền:
-    public function updateSum($OrderID, $Sum)
-    {
-        // if (strlen("$OrderID") == 0 && strlen("$Sum") == 0) {
-        //     return false;
-        // }
-        if (!is_numeric($OrderID) && !is_numeric($Sum)) {
-            return false;
-        }
-        if($OrderID <= 0 || $Sum <= 0){
-            return false;
-        }
-        $sql = "Update checkouts set sum = $Sum where id = $OrderID";
-        $checkout = $this->update($sql);
-        return $checkout;
-    }
+   
+   
+  
     public function getCouponByZipcode($coupon)
     {
 
@@ -500,40 +617,8 @@ class HomeModel extends BaseModel
         $checkout = $this->update($sql);
         return $checkout;
     }
-    public static function getInstance()
-    {
-        if (self::$_instance != null) {
-
-            return self::$_instance;
-        }
-        self::$_instance = new self();
-        return self::$_instance;
-    }
-    public function searchProduct($search = null)
-    {
-        if (is_array($search) || is_object($search)) {
-            return false;
-        }
-        if ($search === null) {
-            return false;
-        } else {
-            $sql = 'SELECT * FROM products WHERE name LIKE "%' . mysqli_real_escape_string(self::$_connection, $search) . '%"';
-            $searchResult = $this->select($sql);
-            return $searchResult;
-        }
-    }
-    // Hàm tìm kiếm theo tên của category(manufacture)
-    public function searchCategories($search)
-    {
-        if (is_string($search)) {
-            $sql = 'SELECT * FROM products,manufactures WHERE products.manu_id=manufactures.manu_id 
-            AND manufactures.manu_name LIKE "%' . mysqli_real_escape_string(self::$_connection, $search) . '%"';
-            $searchResult = $this->select($sql);
-            return $searchResult;
-        } else {
-            return false;
-        }
-    }
+   
+   
     public function pagination($sql, $page, $num)
     {
 
@@ -594,30 +679,7 @@ class HomeModel extends BaseModel
         $comment = $this->select($sql);
         return $comment;
     }
-    public function insertComment($lgUserID, $id, $input)
-    {
-        $comments = 'SELECT id FROM products';
-        $comment = $this->select($comments);
-        $insert_comment = null;
-        if (isset($lgUserID) && count($comment) != 0 && isset($input)) {
-            if (!is_array($lgUserID) && !is_array($id) && is_array($input)) {
-                if (is_string($lgUserID)) {
-                    return false;
-                }
-                foreach ($comment as $commen) {
-                    $md5 = md5($commen['id'] . 'chuyen-de-web-2');
-                    // var_dump($md5);
-                    // var_dump($id);
-                    if ($md5 == $id) {
-                        $sql = "INSERT INTO `comment`(`user_id`, `id_product`, `username`, `content`) VALUES ('$lgUserID'," . "'" . $commen['id'] . "', " . "'" . $input['name'] . "'," . "'" . $input['content'] . "')";
-                        // var_dump($sql).die();
-                        $insert_comment = $this->insert($sql);
-                    }
-                }
-            }
-        }
-        return $insert_comment;
-    }
+   
     public function updateComment($lgUserName, $input)
     {
 
@@ -678,20 +740,5 @@ class HomeModel extends BaseModel
         }
     }
 
-    public function getUserByMonth($month)
-    {
-        if (!is_numeric($month) || $month < 0 || is_double($month)) {
-            return 'Not invalid';
-        } else {
-            $sql = "SELECT * from users where MONTH(date) = $month";
-            $id = $this->select($sql);
-            return $id;
-        }
-    }
-    public function findOrderById($id)
-    {
-        $sql = 'SELECT * FROM carts WHERE id = ' . $id;
-        $order = $this->select($sql);
-        return $order;
-    }
+    
 }
