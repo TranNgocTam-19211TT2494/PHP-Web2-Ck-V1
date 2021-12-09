@@ -97,7 +97,8 @@ $vaCate = [];
                                         $vaCate = 0;
                                     }
                                     // var_dump($products);
-                                    foreach ($products as $product) { ?>
+                                    foreach ($products as $product) {
+                                    ?>
                                         <div class="col-lg-4 col-md-4 col-6">
                                             <div class="cake_feature_item">
                                                 <div class="cake_img">
@@ -105,7 +106,7 @@ $vaCate = [];
                                                     <?php if (isset($_SESSION['lgUserID'])) { ?>
                                                         <?php if (empty($productModel->getWhishlistExist($_SESSION['lgUserID'], $product['id']))) { ?>
                                                             <div class="icon-whishlist">
-                                                                <a href="shop.php?id=<?= md5($product['id'] . 'chuyen-de-web-2') ?>">
+                                                                <a href="whishlist.php?id=<?= md5($product['id'] . 'chuyen-de-web-2') ?>">
                                                                     <i class="fa fa-heart" aria-hidden="true"></i>
                                                                 </a>
                                                             </div>
@@ -178,15 +179,10 @@ $vaCate = [];
                         } else { ?>
                             <div class="row product_item_inner">
                                 <?php
-                                $sort = '';
-                                if (isset($_GET['sort'])) {
-                                    if ($_GET['sort'] == 'desc') {
-                                        $sort = 'DESC';
-                                    } elseif ($_GET['sort'] == 'asc') {
-                                        $sort = 'ASC';
-                                    }
-                                }
-                                $sql = 'SELECT * FROM `products` WHERE detele_at IS NULL ORDER BY products.price ' . $sort;
+                                $sql = "SELECT whishlist.id as whishlistId,products.pro_image,products.name,products.price,products.id 
+                                FROM `whishlist`,products 
+                                WHERE whishlist.pro_id = products.id 
+                                AND whishlist.user_id = $userid ORDER BY `whishlist`.`id` DESC";
                                 $products = $productModel->pagination($sql, $page, 6);
                                 if (count($products) > 0) {
 
@@ -195,15 +191,11 @@ $vaCate = [];
                                             <div class="cake_feature_item">
                                                 <div class="cake_img">
                                                     <img src="<?= $product['pro_image'] ?>" alt="">
-                                                    <?php if (isset($_SESSION['lgUserID'])) { ?>
-                                                        <?php if (empty($productModel->getWhishlistExist($_SESSION['lgUserID'], $product['id']))) { ?>
-                                                            <div class="icon-whishlist">
-                                                                <a href="shop.php?id=<?= md5($product['id'] . 'chuyen-de-web-2') ?>">
-                                                                    <i class="fa fa-heart" aria-hidden="true"></i>
-                                                                </a>
-                                                            </div>
-                                                    <?php }
-                                                    } ?>
+                                                    <div class="icon-whishlist">
+                                                        <a href="whishlist.php?id=<?= md5($product['whishlistId'] . 'chuyen-de-web-2') ?>">
+                                                            <i class="fa fa-ban" aria-hidden="true"></i>
+                                                        </a>
+                                                    </div>
                                                 </div>
                                                 <div class="cake_text">
                                                     <h4>$<?= $product['price'] ?></h4>
@@ -219,7 +211,7 @@ $vaCate = [];
                             </div>
                             <!-- Phân trang -->
                             <?php
-                            $result = $productModel->getProducts();
+                            $result = $productModel->getWhishlistByUserID($_SESSION['lgUserID']);
                             $number_of_result = count($result);
                             $number_of_pages = ceil($number_of_result / 6);
                             if ($number_of_pages > 1) {
