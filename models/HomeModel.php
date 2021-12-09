@@ -112,9 +112,7 @@ class HomeModel extends BaseModel
     {
         if (empty($id)) {
             return "Not Empty";
-        } elseif (is_string($id)) {
-            return "Not String";
-        } elseif (is_array($id)) {
+        }elseif (is_array($id)) {
             return "Not Array";
         } elseif (is_object($id)) {
             return "Not Object";
@@ -160,7 +158,7 @@ class HomeModel extends BaseModel
     }
     public function insertWhishList($paged, $userId)
     {
-        if(!empty($paged) && !empty($userId) && !is_string($userId)){
+        if(!empty($paged) && !empty($userId)){
             $allProduct = $this->getProducts();
             foreach ($allProduct as $value) {
                 if (md5($value['id'] . 'chuyen-de-web-2') == $paged && !is_bool($paged) ) {

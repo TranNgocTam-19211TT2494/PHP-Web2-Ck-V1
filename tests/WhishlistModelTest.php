@@ -6,7 +6,7 @@ class WhishlistModelTest extends TestCase
     //getWhishlistByUserID
     public function testGetWhishlistByUserIdOk()
     {
-        $userId = 47;
+        $userId = 48;
         $homeModel = new HomeModel();
         $actual = $homeModel->getWhishlistByUserID($userId);
         if(!empty($actual)){
@@ -404,7 +404,7 @@ class WhishlistModelTest extends TestCase
     //deleteWhishList
     public function testDeleteWhishlistIdOk()
     {
-        $id = md5(143 . 'chuyen-de-web-2');
+        $id = md5(702 . 'chuyen-de-web-2');
         $homeModel = new HomeModel();
         $homeModel->startTransaction();
         $actual = $homeModel->deleteWhishList($id);
@@ -485,7 +485,7 @@ class WhishlistModelTest extends TestCase
     }
     public function testDeleteWhishlistIdDouble()
     {
-        $id = md5(143.0000000000.'chuyen-de-web-2');
+        $id = md5(702.0000000000.'chuyen-de-web-2');
         $homeModel = new HomeModel();
         $expected = true;
         $homeModel->startTransaction();
@@ -515,7 +515,7 @@ class WhishlistModelTest extends TestCase
     }
     public function testDeleteWhishlistIdStringValueNumber()
     {
-        $id = md5('143'. 'chuyen-de-web-2');
+        $id = md5('702'. 'chuyen-de-web-2');
         $homeModel = new HomeModel();
         $expected = true;
         $homeModel->startTransaction();
@@ -546,8 +546,8 @@ class WhishlistModelTest extends TestCase
     //getWhishlistExist
     public function testGetWhishlistExistOk()
     {
-        $userId = 46;
-        $productId = 92;
+        $userId = 48;
+        $productId = 90;
         $homeModel = new HomeModel();
         $actual = $homeModel->getWhishlistExist($userId,$productId);
         if(!empty($actual)){

@@ -167,7 +167,7 @@ class TranNgocTam_TestCase extends TestCase
     public function testCouponByIdNotString() {
         $factory = new FactoryPattent();
         $HomeModel = $factory->make('home');
-        $expected = "Not String";
+        $expected = [];
         $HomeModel->startTransaction();
         $actual = $HomeModel->getCouponByID('tam');
         $HomeModel->rollback();
