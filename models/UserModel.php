@@ -15,7 +15,7 @@ class UserModel extends BaseAdminModel {
             //$users = self::$_connection->multi_query($sql);
             $users = $this->select($sql);
         } else {
-            $sql = 'SELECT * FROM users';
+            $sql = 'SELECT * FROM users WHERE action = 1 ORDER BY id DESC ';
             $users = $this->select($sql);
         }
 
