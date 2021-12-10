@@ -13,26 +13,11 @@ for ($i=1; $i <= 12 ; $i++) {
     array_push($usersByMonthIn,count($order->getUserByMonthInactive($i)));
 }
 ?>
-<style>
-.animsition {
-    opacity: 1;
-}
 
-.highcharts-credits {
-    opacity: 0;
-}
-
-g.highcharts-legend.highcharts-no-tooltip {
-    opacity: 0;
-}
-.chart-users {
-    padding-top: 20px;
-}
-</style>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <link rel="stylesheet" href="https://cdn.usebootstrap.com/bootstrap/4.4.1/css/bootstrap.min.css">
-
+<link rel="stylesheet" href="../../../public/css/chart.css">
 <section class="statistic-chart">
     <!-- Thông kê đơn hàng -->
     <div class="container">

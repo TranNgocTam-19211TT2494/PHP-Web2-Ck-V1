@@ -40,7 +40,8 @@ $proty = $protypeModel->getProtype();
                     }
                 ?>
                     <!-- Cart -->
-                    <li id="ssl"><a href="cart.php"><i class="lnr lnr-cart"></i> <?= $dem ?></a></li>
+                    <!-- <li id="ssl"><a href="cart.php"><i class="lnr lnr-cart"></i> <?= $dem ?></a></li> -->
+                    <li id="ssl"><a href="cart.php"><i class="lnr lnr-cart"></i></a></li>
                     <!-- Search -->
                     <li><a class="popup-with-zoom-anim" href="#test-search"><i class="fa fa-search"></i></a></li>
                 </ul>

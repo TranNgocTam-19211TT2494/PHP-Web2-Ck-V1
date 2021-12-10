@@ -1,4 +1,5 @@
-<section class="main_slider_area" style="padding-top: 100px;">
+
+<section class="main_slider_area">
     <div id="main_slider" class="rev_slider" data-version="5.3.1.6">
         <ul>
             <li data-index="rs-1587" data-transition="fade" data-slotamount="default" data-hideafterloop="0"

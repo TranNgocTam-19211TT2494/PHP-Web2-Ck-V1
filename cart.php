@@ -14,11 +14,11 @@
    
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 
-<head>
+
     <?php include_once("views/head.php");?>
-</head>
+
 
 <body>
 
@@ -125,11 +125,7 @@
                                     <button type="submit" name="submit" class="btn">Áp dụng</button>
                                 </form>
                             </td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            
+                          
                         </tr>
                     </tbody>
                 </table>
