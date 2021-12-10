@@ -75,7 +75,7 @@ class WhishlistModelTest extends TestCase
     }
     public function testGetWhishlistByUserIdStringValueNumber()
     {
-        $userId = '46';
+        $userId = '48';
         $homeModel = new HomeModel();
         $actual = $homeModel->getWhishlistByUserID($userId);
         if(!empty($actual)){
@@ -625,7 +625,7 @@ class WhishlistModelTest extends TestCase
     }
     public function testGetWhishlistExistUserIdStringValueNumber()
     {
-        $userId = '46';
+        $userId = '48';
         $productId = 106;
         $homeModel = new HomeModel();
         $actual = $homeModel->getWhishlistExist($userId,$productId);
@@ -721,7 +721,7 @@ class WhishlistModelTest extends TestCase
     }
     public function testGetWhishlistExistProductIdStringValueNumber()
     {
-        $userId = 46;
+        $userId = 48;
         $productId = '106';
         $homeModel = new HomeModel();
         $actual = $homeModel->getWhishlistExist($userId,$productId);

@@ -311,9 +311,7 @@ class HomeModel extends BaseModel
         $insert_comment = null;
         if (isset($lgUserID) && count($comment) != 0 && isset($input)) {
             if (!is_array($lgUserID) && !is_array($id) && is_array($input) && !is_bool($lgUserID) && !is_bool($id) && !is_bool($input)) {
-                if (is_string($lgUserID)) {
-                    return false;
-                }
+               
                 foreach ($comment as $commen) {
                     $md5 = md5($commen['id'] . 'chuyen-de-web-2');
                     // var_dump($md5);
