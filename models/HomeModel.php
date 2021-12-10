@@ -266,9 +266,6 @@ class HomeModel extends BaseModel
     // Cập nhập Tổng tiền:
     public function updateSum($OrderID, $Sum)
     {
-        // if (strlen("$OrderID") == 0 && strlen("$Sum") == 0) {
-        //     return false;
-        // }
         if (!is_numeric($OrderID) && !is_numeric($Sum)) {
             return false;
         }

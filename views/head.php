@@ -28,5 +28,5 @@
         <link href="public/css/add.css" rel="stylesheet">
         <link href="public/css/protype.css" rel="stylesheet">
          <!-- Main CSS-->
-        <link href="public/backend/css/theme.css" rel="stylesheet" media="all">
+        
 </head>
