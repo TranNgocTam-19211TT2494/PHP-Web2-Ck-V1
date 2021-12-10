@@ -39,7 +39,7 @@ if (!is_numeric($page)) {
 $vaCate = [];
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 
 <?php include_once("views/head.php"); ?>
 

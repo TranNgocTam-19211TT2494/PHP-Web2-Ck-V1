@@ -27,14 +27,11 @@
    
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 
-<head>
-    <?php include_once("views/head.php");?>
-    <!-- Main CSS-->
-    <link href="public/backend/css/theme.css" rel="stylesheet" media="all">
+    <?php include "views/head.php"?>
+   
 
-</head>
 
 <body>
 

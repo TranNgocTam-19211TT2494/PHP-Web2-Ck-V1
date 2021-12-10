@@ -32,7 +32,7 @@
     
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 
 <head>
     <!-- Required meta tags-->

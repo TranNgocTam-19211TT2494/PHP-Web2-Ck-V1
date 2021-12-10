@@ -2,7 +2,7 @@
 session_start();
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 
 <head>
 
@@ -21,7 +21,7 @@ session_start();
             <div class="banner_text">
                 <h3>Liên hệ chúng tôi</h3>
                 <ul>
-                    <li><a href="index.php">Home</a></li>
+                    <li><a href="index.php">Nhà</a></li>
                     <li><a href="contact.php">Liên hệ chúng tôi</a></li>
                 </ul>
             </div>

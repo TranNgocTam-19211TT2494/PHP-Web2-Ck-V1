@@ -6,7 +6,7 @@
 	$products = $HomeModel->getProductHosts();
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
     
 <head>
        <?php include('views/head.php') ?>

@@ -44,11 +44,10 @@ session_start();
     }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 
-<head>
     <?php include_once("views/head.php");?>
-</head>
+
 
 <body>
 
