@@ -1,20 +1,23 @@
 <?php
  session_start();
+
   require 'models/FactoryPattent.php';
   require 'models/Cart.php';
   $factory = new FactoryPattent();
   $HomModel = $factory->make('home');
   $Cart = new Cart();
   $id = 0;
+  $error = "";
   if(isset($_GET['id'])) {
     $id = $_GET['id'];
-    $product = $HomModel->firstProductDetail($id);
+    $product = $HomModel->firstProductDetail(md5($id . 'chuyen-de-web-2'));
     // Tên sản phẩm:
     $name = $product[0]['name'];
+    //var_dump($id).die();
     $quantity = $_SESSION['mycart'][$id];
     
   } else {
-      echo "Không có sản phẩm trong giỏ hàng";
+      $error .= "Không phải sản phẩm này!Xin quý khách chọn đúng sản phẩm";
   }
   if(isset($_POST['submit'])) {
     $quantity = $_POST['quantity'];
@@ -29,8 +32,8 @@
 <!DOCTYPE html>
 <html lang="vi">
 
-    <?php include "views/head.php"?>
-   
+<?php include "views/head.php"?>
+<link href="public/backend/css/theme.css" rel="stylesheet" media="all">
 
 
 <body>
@@ -63,21 +66,28 @@
                             <img src="public/img/logo-2.png" alt="CoolAdmin">
                         </a>
                     </div>
-                    <?php if(isset($id)) {?>
+                   
                     <div class="login-form">
+                        <?php if($error != "") { ?>
+                        <div class="alert alert-danger" role="alert">
+                           <?= $error ?>
+                        </div>
+                        <?php } ?>
                         <form method="post" action="update-cart.php?id=<?php echo $id; ?>"
                             onSubmit="return IsEditCart()">
                             <div class="form-group">
                                 <label>Sản phẩm</label>
-                                <input class="au-input au-input--full" type="text" name="name" id="txtProduct" value="<?php echo $name; ?>" placeholder="Sản phẩm" readonly="readonly">
+                                <input class="au-input au-input--full" type="text" name="name" id="txtProduct"
+                                    value="<?php echo $name; ?>" placeholder="Sản phẩm" readonly="readonly">
                             </div>
                             <div class="form-group">
                                 <label>Số lượng</label>
-                                <input class="au-input au-input--full" type="number" name="quantity" value="<?php echo $quantity; ?>" id="txtQuantity"
-                                    placeholder="Số lượng">
+                                <input class="au-input au-input--full" type="number" name="quantity"
+                                    value="<?php echo $quantity; ?>" id="txtQuantity" placeholder="Số lượng">
                             </div>
 
-                            <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit" name="submit">Lưu lại</button>
+                            <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit" name="submit">Lưu
+                                lại</button>
 
                         </form>
                         <div class="register-link">
@@ -87,9 +97,7 @@
                         </div>
                     </div>
                 </div>
-                <?php } else { ?>
-                    <h2>Không có sản phẩm trong giỏ hàng</h2>
-                <?php } ?>
+             
             </div>
         </div>
     </div>
