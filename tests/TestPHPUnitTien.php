@@ -419,7 +419,7 @@ class TestPHPUnitTien extends TestCase
     {
         $homeModel = new HomeModel();
         $month = 11;
-        $expected = "Tam";
+        $expected = "Test12";
         $homeModel->startTransaction();
         $user = $homeModel->getUserByMonth($month);
         $actual = $user[0]['username'];
