@@ -699,10 +699,10 @@ class HomeModel extends BaseModel
             $md5 = md5($manufac['manu_id'] . 'chuyen-de-web-2');
             if ($md5 == $manuid) {
                 $sql = 'SELECT * FROM `products` , manufactures WHERE products.manu_id = manufactures.manu_id AND products.manu_id =  ' . $manufac['manu_id'] . ' ';
+                $sql = $sql . ' LIMIT ' . $star . ',' . $num;
+                return $this->select($sql);
             }
         }
-        $sql = $sql . ' LIMIT ' . $star . ',' . $num;
-        return $this->select($sql);
     }
     public function paginationSearchCate($searchCate, $page, $num)
     {

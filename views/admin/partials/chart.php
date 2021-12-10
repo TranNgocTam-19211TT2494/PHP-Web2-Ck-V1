@@ -1,6 +1,18 @@
-<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<link rel="stylesheet" href="https://cdn.usebootstrap.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<?php 
+require_once('../models/ChartOrderModel.php');
+$order = new ChartOrderModel();
+$orderByMonth = [];
+for ($i=1; $i <= 12 ; $i++) { 
+    array_push($orderByMonth,count($order->getAllOrderByMonth($i)));
+    
+}
+$usersByMonthIn = [];
+$usersByMonth = [];
+for ($i=1; $i <= 12 ; $i++) { 
+    array_push($usersByMonth,count($order->getUserByMonthActive($i)));
+    array_push($usersByMonthIn,count($order->getUserByMonthInactive($i)));
+}
+?>
 <style>
 .animsition {
     opacity: 1;
@@ -13,68 +25,191 @@
 g.highcharts-legend.highcharts-no-tooltip {
     opacity: 0;
 }
+.chart-users {
+    padding-top: 20px;
+}
 </style>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<link rel="stylesheet" href="https://cdn.usebootstrap.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
 <section class="statistic-chart">
+    <!-- Thông kê đơn hàng -->
     <div class="container">
+
         <div class="row">
             <div class="col-md-12">
                 <h3 class="title-5 m-b-35">statistics</h3>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6 col-lg-6">
+            <div class="col-md-12 col-lg-12">
                 <!-- CHART-->
                 <div id="chart1" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
                 <!-- END CHART-->
             </div>
-            <div class="col-md-6 col-lg-6">
-                <!-- TOP CAMPAIGN-->
-                <div class="top-campaign">
-                    <h3 class="title-3 m-b-30">top campaigns</h3>
-                    <div class="table-responsive">
-                        <table class="table table-top-campaign">
-                            <tbody>
-                                <tr>
-                                    <td>1. Australia</td>
-                                    <td>$70,261.65</td>
-                                </tr>
-                                <tr>
-                                    <td>2. United Kingdom</td>
-                                    <td>$46,399.22</td>
-                                </tr>
-                                <tr>
-                                    <td>3. Turkey</td>
-                                    <td>$35,364.90</td>
-                                </tr>
-                                <tr>
-                                    <td>4. Germany</td>
-                                    <td>$20,366.96</td>
-                                </tr>
-                                <tr>
-                                    <td>5. France</td>
-                                    <td>$10,366.96</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <!-- END TOP CAMPAIGN-->
-            </div>
+        </div>
 
+    </div>
+    <!-- Thống kê người dùng -->
+    <div class="chart-users">
+        <div class="container">
+            <!-- Thống kê người dùng -->
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 class="title-5 m-b-35">Registered user data</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-lg-12">
+                    <!-- TOP CAMPAIGN-->
+                    <div class="recent-report3 m-b-40">
+                        <div class="title-wrap">
+                            <h3 class="title-3">recent reports</h3>
+                            <div class="chart-info-wrap">
+                                <div class="chart-note">
+                                    <span class="dot dot--red"></span>
+                                    <span>Inactive</span>
+                                </div>
+                                <div class="chart-note mr-0">
+                                    <span class="dot dot--green"></span>
+                                    <span>Active</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="filters m-b-55">
+
+                            <div class="rs-select2--dark rs-select2--sm rs-select2--border">
+                                <select class="js-select2 au-select-dark" id="change-chart" name="time">
+                                    <option selected="selected">All Time</option>
+                                    <option value="month" >By Month</option>
+                                    <option value="day" >By Day</option>
+                                </select>
+                                <div class="dropDownSelect2"></div>
+                            </div>
+                        </div> -->
+                        <div class="chart-wrap">
+                            <canvas id="recent-rep3"></canvas>
+                        </div>
+                    </div>
+                    <!-- END TOP CAMPAIGN-->
+                </div>
+            </div>
         </div>
     </div>
-</section>
-<?php 
-require_once('../models/ChartOrderModel.php');
-$order = new ChartOrderModel();
-$orderByMonth = [];
-for ($i=1; $i <=12 ; $i++) { 
-    array_push($orderByMonth,count($order->getAllOrderByMonth($i)));
-}
 
-// var_dump($orderByMonth);die;
-    $a = [1.2,3.4,3.2,2.1,3.6,7.8,3.1,7.6,3.2,4.5,6.8];
-?>
+</section>
+<script>
+$(function() {
+    try {
+
+        // Recent Report 3
+        const bd_brandProduct3 = 'red';
+        const bd_brandService3 = 'rgba(0,173,95,0.9)';
+        const brandProduct3 = 'transparent';
+        const brandService3 = 'transparent';
+
+        var data5 = [<?php  foreach ($usersByMonth as $value) {echo $value.',';} ?>];
+
+        var data6 = [<?php  foreach ($usersByMonthIn as $value) {echo $value.',';} ?>];
+
+        var ctx = document.getElementById("recent-rep3");
+        if (ctx) {
+            ctx.height = 250;
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+                    ],
+                    datasets: [{
+                            label: 'Active',
+                            backgroundColor: brandService3,
+                            borderColor: bd_brandService3,
+                            pointHoverBackgroundColor: '#fff',
+                            borderWidth: 0,
+                            data: data5,
+                            pointBackgroundColor: bd_brandService3
+                        },
+                        {
+                            label: 'Inactive',
+                            backgroundColor: brandProduct3,
+                            borderColor: bd_brandProduct3,
+                            pointHoverBackgroundColor: '#fff',
+                            borderWidth: 0,
+                            data: data6,
+                            pointBackgroundColor: bd_brandProduct3
+
+                        }
+                    ]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    legend: {
+                        display: true
+                    },
+                    responsive: true,
+                    scales: {
+                        xAxes: [{
+                            gridLines: {
+                                
+                                drawOnChartArea: true,
+                                color: '#f2f2f2'
+                            },
+                            ticks: {
+                                fontFamily: "Poppins",
+                                fontSize: 12
+                            }
+                        }],
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true,
+                                maxTicksLimit: 5,
+                                stepSize: 5,
+                               
+                                fontFamily: "Poppins",
+                                fontSize: 12
+                            },
+                            gridLines: {
+                                display: true,
+                                color: '#f2f2f2'
+                            }
+                        }]
+                    },
+                    elements: {
+                        point: {
+                            radius: 3,
+                            hoverRadius: 4,
+                            hoverBorderWidth: 3,
+                            backgroundColor: '#333'
+                        }
+                    }
+
+
+                }
+            });
+        }
+
+        $('#change-chart').change(function() {
+        var value = $(this).val();
+        var _token = $('input[name="_token"]').val();
+        //alert(value);
+        $.ajax({
+            url: "chart.php",
+            method: "POST",
+            dataType: "JSON",
+            data: {value:value , _token:_token},
+            success: function(data) {
+                ctx.setData(data);
+            } 
+        });
+    });
+    } catch (error) {
+        console.log(error);
+    }
+   
+});
+</script>
 <script>
 $(function() {
     Highcharts.chart('chart1', {

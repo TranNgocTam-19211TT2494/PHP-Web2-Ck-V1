@@ -75,7 +75,7 @@ $token = $_SESSION['token'];
                                 ?>
                                 <td><?= htmlspecialchars(date_format($date ,"d-m-Y | H:i:s" ))?></td>
                                 <td class="desc"><?= htmlspecialchars($user['permission']) ?></td>
-                                <?php if($user['status'] == 0) {?>
+                                <?php if($user['action'] == 1) {?>
                                 <td>
                                     <span class="status--process">Active</span>
                                 </td>
