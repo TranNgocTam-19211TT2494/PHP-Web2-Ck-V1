@@ -6,23 +6,27 @@
   $factory = new FactoryPattent();
   $HomModel = $factory->make('home');
   $Cart = new Cart();
-  $id = 0;
+  $id = null;
   $error = "";
-  if(isset($_GET['id'])) {
+  if(!empty($_GET['id'])) {
     $id = $_GET['id'];
-    $product = $HomModel->firstProductDetail(md5($id . 'chuyen-de-web-2'));
+    //print_r($id);
+    $product = $HomModel->firstProductDetail($id);
     // Tên sản phẩm:
     $name = $product[0]['name'];
     //var_dump($id).die();
-    $quantity = $_SESSION['mycart'][$id];
-    
+    if(!empty($product)) {
+        $quantity = $_SESSION['mycart'][$product[0]['id']];
+    } else {
+        $error .= "Không phải sản phẩm này!Xin quý khách chọn đúng sản phẩm";
+    }
   } else {
       $error .= "Không phải sản phẩm này!Xin quý khách chọn đúng sản phẩm";
   }
   if(isset($_POST['submit'])) {
     $quantity = $_POST['quantity'];
     if(is_numeric($quantity)) {
-        $Cart->UpdateCart($id, $quantity);
+        $Cart->UpdateCart($product[0]['id'], $quantity);
         header("Location: cart.php");
         exit; // dừng các mã chạy phía dưới;
     }

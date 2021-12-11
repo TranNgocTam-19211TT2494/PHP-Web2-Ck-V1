@@ -142,7 +142,7 @@
             <p style="text-align: center;">
                 Cảm ơn đã tin dùng sản phẩm của chúng tôi!
             </p>
-            <a href="index.php" class="btn order_s_btn form-control">Quay lại cửa hàng</a>
+            <a href="shop.php" class="btn order_s_btn form-control">Quay lại cửa hàng</a>
         </div>
     </section>
     <?php } ?>

@@ -151,3 +151,6 @@
     display: table;
     clear: both;
 }
+#button-check {
+    margin-left: 15px;
+}
