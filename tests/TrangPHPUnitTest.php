@@ -817,7 +817,7 @@ class TrangPHPUnitTest extends TestCase
     {
         $HomeModel = new HomeModel();
         $Search  = 'bánh';
-        $expected = 'Bánh Tiramisu';
+        $expected = 'Bánh Tous ';
         $HomeModel->startTransaction();
         $user = $HomeModel->searchCategories($Search);
         $actual = $user[0]['name'];
@@ -922,7 +922,7 @@ class TrangPHPUnitTest extends TestCase
     {
         $HomeModel = new HomeModel();
         $Search  = 'bánh';
-        $expected = 'Bánh Crepes';
+        $expected = 'Bánh Tous ';
         $user = $HomeModel->searchProduct($Search);
         $actual = $user[0]['name'];
         // var_dump($actual);
