@@ -352,10 +352,11 @@ class TestPHPUnitTien extends TestCase
     public function testGetOrderItemByIdIsIsString()
     {
         $homeModel = new HomeModel();
-        $id = '123';
-        $expected = [];
+        $id = "tien";
+        $expected = "Not invalid";
         $homeModel->startTransaction();
         $actual = $homeModel->getOrderItemById($id);
+        //var_dump($actual).die();
         $homeModel->rollback();
         $this->assertEquals($expected, $actual);
     }
@@ -423,6 +424,7 @@ class TestPHPUnitTien extends TestCase
         $homeModel->startTransaction();
         $user = $homeModel->getUserByMonth($month);
         $actual = $user[0]['username'];
+        //var_dump($user[0]['username']).die();
         $homeModel->rollback();
         $this->assertEquals($expected, $actual);
     }

@@ -90,10 +90,10 @@
                             <td>$<?= $total?></td>
 
                             <td>
-                                <a href="delete-cart.php?id=<?= $key ?>" onclick="return IsDelete();">Delete</a>
+                                <a href="delete-cart.php?id=<?= md5($key . 'chuyen-de-web-2') ?>" onclick="return IsDelete();">Delete</a>
                             </td>
                             <td>
-                                <a href="update-cart.php?id=<?= $key ?>">Edit</a>
+                                <a href="update-cart.php?id=<?= md5($key . 'chuyen-de-web-2') ?>">Edit</a>
                             </td>
                         </tr>
                         <?php } ?>
