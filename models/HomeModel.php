@@ -284,7 +284,7 @@ class HomeModel extends BaseModel
         if ($search === null) {
             return false;
         } else {
-            $sql = 'SELECT * FROM products WHERE name LIKE "%' . mysqli_real_escape_string(self::$_connection, $search) . '%"';
+            $sql = 'SELECT * FROM products WHERE products.name LIKE "%' . mysqli_real_escape_string(self::$_connection, $search) . '%"';
             $searchResult = $this->select($sql);
             return $searchResult;
         }
@@ -301,6 +301,8 @@ class HomeModel extends BaseModel
             return false;
         }
     }
+
+    
     public function insertComment($lgUserID, $id, $input)
     {
         $comments = 'SELECT id FROM products';
@@ -625,6 +627,7 @@ class HomeModel extends BaseModel
             return $this->select($sql);
         }
     }
+
     public function paginationProtype($typeid, $page, $num)
     {
         if ($page < 2) {
@@ -723,7 +726,7 @@ class HomeModel extends BaseModel
             } else {
                 $star = ($page * $num) - $num;
             }
-            $sqlF = 'SELECT * FROM products WHERE name LIKE "%' . mysqli_real_escape_string(self::$_connection, $search) . '%"';
+            $sqlF = 'SELECT * FROM products WHERE products.name LIKE "%' . mysqli_real_escape_string(self::$_connection, $search) . '%"';
             $sql = $sqlF . ' LIMIT ' . $star . ',' . $num;
             return $this->select($sql);
         } else {
