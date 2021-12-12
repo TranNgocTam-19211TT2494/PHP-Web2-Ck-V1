@@ -115,7 +115,7 @@ $vaCate = [];
                                                         <?php if (isset($_SESSION['lgUserID'])) { ?>
                                                             <?php if (empty($productModel->getWhishlistExist($_SESSION['lgUserID'], $product['id']))) { ?>
                                                                 <div class="icon-whishlist">
-                                                                    <a href="manufacture-shop.php?id=<?= md5($product['id'] . 'chuyen-de-web-2') ?>&manu_id=<?php echo $id; ?>">
+                                                                    <a href="manufacture-shop.php?id=<?= md5($product['id'] . 'chuyen-de-web-2') ?>&manu_id=<?php echo $id; ?>&<?php if (isset($searchCate)) ?>search-cate=<?php echo $searchCate ?>&<?php if (isset($_GET['submit'])) ?>submit=<?php echo $_GET['submit'] ?>&page=<?php echo $page ?>">
                                                                         <i class="fa fa-heart" aria-hidden="true"></i>
                                                                     </a>
                                                                 </div>
@@ -199,7 +199,7 @@ $vaCate = [];
                                                         <?php if (isset($_SESSION['lgUserID'])) { ?>
                                                             <?php if (empty($productModel->getWhishlistExist($_SESSION['lgUserID'], $product['id']))) { ?>
                                                                 <div class="icon-whishlist">
-                                                                <a href="manufacture-shop.php?id=<?= md5($product['id'] . 'chuyen-de-web-2') ?>&manu_id=<?php echo $id; ?>">
+                                                                <a href="manufacture-shop.php?id=<?= md5($product['id'] . 'chuyen-de-web-2') ?>&manu_id=<?php echo $id; ?>&page=<?php echo $page ?>">
                                                                         <i class="fa fa-heart" aria-hidden="true"></i>
                                                                     </a>
                                                                 </div>

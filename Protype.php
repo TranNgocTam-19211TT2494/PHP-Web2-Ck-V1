@@ -115,7 +115,7 @@ $vaCate = [];
                                     <?php if (empty($productModel->getWhishlistExist($_SESSION['lgUserID'], $product['id']))) { ?>
                                     <div class="icon-whishlist">
                                         <a
-                                            href="Protype.php?id=<?= md5($product['id'] . 'chuyen-de-web-2') ?>&type_id=<?php echo $typeid; ?>">
+                                            href="Protype.php?id=<?= md5($product['id'] . 'chuyen-de-web-2') ?>&type_id=<?php echo $typeid; ?>&<?php if (!empty($searchCate)) ?>search-cate=<?php echo $searchCate ?>&<?php if (!empty($_GET['submit'])) ?>submit=<?php echo $_GET['submit'] ?>&page=<?php echo $page ?>">
                                             <i class="fa fa-heart" aria-hidden="true"></i>
                                         </a>
                                     </div>
@@ -205,7 +205,7 @@ $vaCate = [];
                                     <?php if (empty($productModel->getWhishlistExist($_SESSION['lgUserID'], $product['id']))) { ?>
                                     <div class="icon-whishlist">
                                         <a
-                                            href="Protype.php?id=<?= md5($product['id'] . 'chuyen-de-web-2') ?>&type_id=<?php echo $typeid; ?>">
+                                            href="Protype.php?id=<?= md5($product['id'] . 'chuyen-de-web-2') ?>&type_id=<?php echo $typeid; ?>&page=<?php echo $page ?>">
                                             <i class="fa fa-heart" aria-hidden="true"></i>
                                         </a>
                                     </div>
